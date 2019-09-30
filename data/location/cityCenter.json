@@ -1,0 +1,27 @@
+{
+    
+    "~bg":{
+        "100":{
+            "value":"res://media/texture/locations/cityCenter/cityCenterDay0.jpg",
+            "condition":{
+                "mode":"ALL",
+                "conditions":[
+                {
+                    "var":"WorldData/Time",
+                    "mode":"eq",
+                    "val":0
+                }
+            ]}
+        },
+        "0":{
+            "value":"res://media/texture/locations/cityCenter/cityCenterNight0.jpg"
+        }
+    },
+    "text":"City Center",
+    "rl":[
+        {
+            "locationId":"cityCenterMall",
+            "time": 180
+        }
+    ]
+}

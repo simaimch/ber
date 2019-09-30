@@ -1,0 +1,10 @@
+{
+    "bg":"res://media/texture/test/test2.jpg",
+    "text":"This is a test \n with two lines",
+    "rl":[
+        {
+            "locationId":"test2",
+            "time": 300
+        }
+    ]
+}

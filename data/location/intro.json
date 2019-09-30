@@ -1,0 +1,257 @@
+{
+    "start":{
+        "bg":"res://media/texture/events/intro/tada.jpg",
+        "text": ["Welcome and thank you for playing BER."],
+        "actions": {
+            "100":{
+                "Label": "About",
+                "goto":"SELF.about"
+            },
+            "1000":{
+                "Label": "Continue",
+                "goto":"SELF.explain"
+            }
+        }
+    },
+    "explain":{
+        "text": ["The following tutorial will lead you trough the most important aspects of this game and introduces you to your new life.","During the tutorial you can use the help-button to get additional information."],
+        "actions": {            
+            "1000":{
+                "Label": "Continue",
+                "goto":"SELF.100"
+            }
+        }
+    },
+    "100":{
+        "bg":"res://media/texture/events/intro/hbf_ffm_ice.jpg",
+        "text": ["You are a young woman of the age of 18.","You have been living in Frankfurt, Germany for the last years. But now you are heading off to Berlin."],
+        "actions": {
+            "1000":{
+                "Label": "Continue",
+                "goto":"SELF.200"
+            }
+        }
+    },
+    "200":{
+        "bg":"res://media/texture/events/intro/hbf_ffm_ice.jpg",
+        "text": ["Currently you are standing at a platform of the central train station of Frankfurt ready to board your train.","Here to say goodbye ..."],
+        "actions": {
+            "1000":{
+                "Label": "... are your parents and your little sister.",
+                "goto":"SELF.family.parents"
+            },
+            "900":{
+                "Label": "... is your aunt.",
+                "goto":"SELF.family.aunt"
+            },
+            "500":{
+                "Label": "... is nobody.",
+                "goto":"SELF.family.nobody"
+            },
+            "100":{
+                "Label": "Help",
+                "goto":"SELF.family.help"
+            }
+        }
+    },
+    "family":{
+        "parents":{
+            "onStart":{
+                "PlayerData":{
+                    "familyMode":"parents"
+                }
+            },
+            "text":["You look at your parents. They are sending you away to a boarding school because ..."],
+            "actions": {
+                "1000":{
+                    "Label": "... they are moving to Australia and you wanted to stay in Germany.",
+                    "goto":"SELF.family.parentsAustralia"
+                },
+                "900":{
+                    "Label": "... your grades have to improve.",
+                    "goto":"SELF.family.parentsGrades"
+                },
+                "800":{
+                    "Label": "... your old friends were a bad influence.",
+                    "goto":"SELF.family.parentsFriends"
+                },
+                "700":{
+                    "Label": "... you wanted to get away from home.",
+                    "goto":"SELF.family.parentsWish"
+                }
+            }
+        },
+        "parentsAustralia":{
+            "onStart":{
+                "PlayerData":{
+                    "familyHome":"australia"
+                }
+            },
+            "text":["You hug your mother, your father and lastly your little sister. Your father helps you lifting your trunk into the train. After saying goodbye for a last time you board the train."],
+            "actions": {
+                "1000":{
+                    "Label": "Continue.",
+                    "goto":"SELF.seat"
+                }
+            }
+        },
+        "parentsGrades":{
+            "onStart":{
+                "PlayerData":{
+                    "familyHome":"frankfurt"
+                }
+            },
+            "text":["You hug your mother, your father and lastly your little sister. Your father helps you lifting your trunk into the train. After saying goodbye for a last time you board the train."],
+            "actions": {
+                "1000":{
+                    "Label": "Continue.",
+                    "goto":"SELF.seat"
+                }
+            }
+        },
+        "parentsFriends":{
+            "onStart":{
+                "PlayerData":{
+                    "familyHome":"frankfurt"
+                }
+            },
+            "text":["You hug your mother, your father and lastly your little sister. Your father helps you lifting your trunk into the train. After saying goodbye for a last time you board the train."],
+            "actions": {
+                "1000":{
+                    "Label": "Continue.",
+                    "goto":"SELF.seat"
+                }
+            }
+        },
+        "parentsWish":{
+            "onStart":{
+                "PlayerData":{
+                    "familyHome":"frankfurt"
+                }
+            },
+            "text":["You hug your mother, your father and lastly your little sister. Your father helps you lifting your trunk into the train. After saying goodbye for a last time you board the train."],
+            "actions": {
+                "1000":{
+                    "Label": "Continue.",
+                    "goto":"SELF.seat"
+                }
+            }
+        },
+        "aunt":{
+            "onStart":{
+                "PlayerData":{
+                    "familyMode":"aunt"
+                }
+            },
+            "text":["You look at your aunt. Ever since your parents died in a car accident when you were a little girl she has been your entire family. She is sending you away to a boarding school because ..."],
+            "actions": {
+                "1000":{
+                    "Label": "... she has a new boyfriend who she believes to have an interest in you.",
+                    "goto":"SELF.family.auntBf"
+                },
+                "900":{
+                    "Label": "... you never got along and she is happy to finally get rid of you.",
+                    "goto":"SELF.family.auntDislike"
+                },
+                "800":{
+                    "Label": "... your old friends were a bad influence.",
+                    "goto":"SELF.family.auntFriends"
+                },
+                "700":{
+                    "Label": "... you wanted to get away from home.",
+                    "goto":"SELF.family.auntWish"
+                }
+            }
+        },
+        "auntBf":{
+            "onStart":{
+                "PlayerData":{
+                    "familyHome":"frankfurt"
+                }
+            },
+            "text":["You hug your aunt and after saying goodbye for a last time you board the train, dragging your trunk behind you."],
+            "actions": {
+                "1000":{
+                    "Label": "Continue.",
+                    "goto":"SELF.seat"
+                }
+            }
+        },
+        "auntDislike":{
+            "onStart":{
+                "PlayerData":{
+                    "familyHome":"frankfurt"
+                }
+            },
+            "text":["You shake your aunts hand and after a rather cold goodbye you board the train, dragging your trunk behind you."],
+            "actions": {
+                "1000":{
+                    "Label": "Continue.",
+                    "goto":"SELF.seat"
+                }
+            }
+        },
+        "auntFriends":{
+            "onStart":{
+                "PlayerData":{
+                    "familyHome":"frankfurt"
+                }
+            },
+            "text":["You hug your aunt and after saying goodbye for a last time you board the train, dragging your trunk behind you."],
+            "actions": {
+                "1000":{
+                    "Label": "Continue.",
+                    "goto":"SELF.seat"
+                }
+            }
+        },
+        "auntWish":{
+            "onStart":{
+                "PlayerData":{
+                    "familyHome":"frankfurt"
+                }
+            },
+            "text":["You hug your aunt and after saying goodbye for a last time you board the train, dragging your trunk behind you."],
+            "actions": {
+                "1000":{
+                    "Label": "Continue.",
+                    "goto":"SELF.seat"
+                }
+            }
+        },
+        "help":{
+            "text":["This is one of the important decisions of the game."],
+            "actions": {
+                "100":{
+                    "Label": "Back",
+                    "goto":"SELF.200"
+                }
+            }
+        }
+    },
+    "seat":{
+        "onStart":{
+            "PlayerData":{
+                "name.first":"Janine",
+                "name.last":"Bauer"
+            }
+        },
+        "text":["In the hurry you forgot you seat number. You take out your ticket. It reads:","Frau #PlayerData.name.first# #PlayerData.name.last#","Frankfurt a.M. -> Berlin","Wagon 6 Seat 48"],
+        "actions": {
+            "1000":{
+                "Label": "Change Name",
+                "showDialog":"pcName"
+            }
+        }
+    },
+    "about":{
+        "bg":"res://media/texture/events/intro/about.jpg",
+        "text": ["This game was created by me."],
+        "actions": {
+            "100":{
+                "Label": "Back",
+                "goto":"SELF.1"
+            }
+        }
+    }
+}

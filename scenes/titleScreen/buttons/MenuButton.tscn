@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://font/VarsityTeam-Bold64.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scenes/titleScreen/buttons/MenuButton.gd" type="Script" id=2]
+
+[node name="MenuButton" type="Button"]
+margin_top = 455.0
+margin_right = 612.0
+margin_bottom = 529.0
+rect_min_size = Vector2( 360, 60 )
+custom_fonts/font = ExtResource( 1 )
+flat = true
+script = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color_shadow = Color( 0.419608, 0.439216, 0.188235, 1 )
+custom_constants/shadow_offset_x = 5
+text = "Label"

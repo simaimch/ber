@@ -1,0 +1,10 @@
+{
+    "bg":"res://media/texture/locations/cityCenter/cityCanterMall0.jpg",
+    "text":"Mall",
+    "rl":[
+        {
+            "locationId":"cityCenter",
+            "time": 180
+        }
+    ]
+}

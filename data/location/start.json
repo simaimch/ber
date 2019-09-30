@@ -1,0 +1,7 @@
+{
+
+    "onStart":{
+        "goto":  "intro.start"
+    }
+    
+}

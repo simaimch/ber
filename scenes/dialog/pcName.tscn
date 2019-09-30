@@ -1,0 +1,83 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/dialog/pcName.gd" type="Script" id=1]
+[ext_resource path="res://font/VarsityTeam-Bold64.tres" type="DynamicFont" id=2]
+[ext_resource path="res://scenes/dialog/pcNameConfirm.gd" type="Script" id=3]
+
+[node name="pcName" type="PopupDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -773.0
+margin_bottom = -516.0
+popup_exclusive = true
+script = ExtResource( 1 )
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_left = 121.0
+margin_top = 160.0
+margin_right = 1025.0
+margin_bottom = 404.0
+
+[node name="FirstNameContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_right = 904.0
+margin_bottom = 80.0
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/FirstNameContainer"]
+margin_top = 5.0
+margin_right = 400.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 400, 0 )
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "First Name:"
+
+[node name="FirstName" type="LineEdit" parent="CenterContainer/VBoxContainer/FirstNameContainer"]
+margin_left = 404.0
+margin_right = 904.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 500, 0 )
+custom_fonts/font = ExtResource( 2 )
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="LastNameContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 84.0
+margin_right = 904.0
+margin_bottom = 164.0
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/LastNameContainer"]
+margin_top = 5.0
+margin_right = 400.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 400, 0 )
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Last Name:"
+
+[node name="LastName" type="LineEdit" parent="CenterContainer/VBoxContainer/LastNameContainer"]
+margin_left = 404.0
+margin_right = 904.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 500, 0 )
+custom_fonts/font = ExtResource( 2 )
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="Confirm" type="Button" parent="CenterContainer/VBoxContainer"]
+margin_top = 168.0
+margin_right = 904.0
+margin_bottom = 244.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Confirm"
+script = ExtResource( 3 )
+[connection signal="about_to_show" from="." to="." method="_on_pcName_about_to_show"]
+[connection signal="text_changed" from="CenterContainer/VBoxContainer/FirstNameContainer/FirstName" to="." method="_on_FirstName_text_changed"]
+[connection signal="text_changed" from="CenterContainer/VBoxContainer/LastNameContainer/LastName" to="." method="_on_LastName_text_changed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Confirm" to="." method="_on_Confirm_pressed"]
