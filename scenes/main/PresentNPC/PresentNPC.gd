@@ -5,7 +5,7 @@ var npc;
 
 func setNPC(n):
 	npc = n
-	text = GameManager.getValue(npc,"name.first")+"\n"+str(Util.getAge(GameManager.now(),GameManager.getValue(npc,"bday")))
+	text = GameManager.getNPCDescription(npc) +"\n"+ GameManager.getValue(npc,"name.first")+"\n"+str(Util.getAge(GameManager.now(),GameManager.getValue(npc,"bday")))
 	
 
 func _on_PresentNPC_mouse_entered():
