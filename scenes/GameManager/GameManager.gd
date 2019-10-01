@@ -371,7 +371,7 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 	if location.has("npcs") and location.npcs == true:
 		for npcId in npcs:
 			var npc = getNPC(npcId)
-			if npc.schedule.has(location.ID):
+			if npcIsPresent(npc,location.ID):
 				CurrentUi.NPCs.append(npc)
 	if CurrentUi.NPCs.size() > 0:
 		CurrentUi.ShowNPCs = true
@@ -404,6 +404,21 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 	if updateLocationId:
 		CurrentUi.LocationId = location.ID
 	updateUI()
+
+func npcIsPresent(npc,locationId,time = -1):
+	if time == -1: time =  now()
+	
+	var timeDict = Util.getDateTime(time)
+	
+	if !npc.has("schedule"): return false
+	if !npc.schedule.has(locationId): return false
+	
+	for presence in npc.schedule[locationId]:
+		if timeDict.weekday in presence.days:
+			var timeBase100 = timeDict.hour * 100 + timeDict.minute
+			if timeBase100 >= presence.timeStart and timeBase100 <= presence.timeEnd: return true
+	return false
+	
 
 func gotoLocation(locationId,time):
 	var gotoLocation = getLocation(locationId)
