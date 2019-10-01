@@ -10,6 +10,10 @@
             "1000":{
                 "Label": "Continue",
                 "goto":"SELF.explain"
+            },
+            "2000":{
+                "Label": "Cheat",
+                "goto":"cityCenter"
             }
         }
     },

@@ -17,6 +17,7 @@
             "value":"res://media/texture/locations/cityCenter/cityCenterNight0.jpg"
         }
     },
+    "npcs": true,
     "text":"City Center",
     "rl":[
         {

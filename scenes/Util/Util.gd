@@ -19,3 +19,102 @@ func formtTime(time,timeFormat="{day}.{month}.{year} {hour}:{minute}"):
 	var minute = formatInt(dateTime.minute,"00")
 
 	return timeFormat.format({"day": day,"month": month,"year": year,"hour": hour,"minute": minute})
+
+func getFilesInFolder(path):
+	#https://godotengine.org/qa/5175/how-to-get-all-the-files-inside-a-folder
+	var files = []
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin(true,true)
+	
+	while true:
+		var file = dir.get_next()
+		if file == "":
+			break
+		elif not file.begins_with("."):
+			files.append(file)
+	
+	dir.list_dir_end()
+	
+	return files
+	
+func string2DateTime(s):
+	#DD.MM.YYYY
+	#hh:mm:ss or hh:mm
+	#combine date and time with a single space in between, example:DD.MM.YYYY hh:mm:ss
+	var result = {"year":1970,"month":1,"day":1,"hour":0,"minute":0,"second":0}
+	var dateAndTime = s.split(" ")
+	
+	if dateAndTime.size() == 1:
+		var date = dateAndTime[0].split(".")
+		if date.size() == 1:
+			var time = dateAndTime[0].split(":")
+			result.hour = int(time[0])
+			result.minute = int(time[1])
+			if time.size() == 3:
+				result.second = int(time[2])
+		else:
+			result.day = int(date[0])
+			result.month = int(date[1])
+			result.year = int(date[2])
+	else:
+		var date = dateAndTime[0].split(".")
+		var time = dateAndTime[1].split(":")
+		result.day = int(date[0])
+		result.month = int(date[1])
+		result.year = int(date[2])
+		result.hour = int(time[0])
+		result.minute = int(time[1])
+		if time.size() == 3:
+			result.second = int(time[2])
+	return result
+	
+func getAge(now, bday):
+	var nowDict = getDateTime(now)
+	var bdayDict= getDateTime(bday)
+	
+	if (nowDict.month > bdayDict.month) or (nowDict.month == bdayDict.month and nowDict.day >= bdayDict.day):
+		return nowDict.year - bdayDict.year
+	else:
+		return nowDict.year - bdayDict.year - 1
+		
+func getDaysTilDate(now,target,anyyear = true):
+	var nowDict = datetimeResetTime(getDateTime(now))
+	var targetDict= datetimeResetTime(getDateTime(target))
+	
+	if anyyear:
+		if (nowDict.month > targetDict.month) or (nowDict.month == targetDict.month and nowDict.day > targetDict.day):
+			targetDict.year = nowDict.year + 1
+		else:
+			targetDict.year = nowDict.year
+			
+	var secondsTilDate = getUnixTime(targetDict) - getUnixTime(nowDict)
+	var daysTilDate = int(secondsTilDate/86400)
+	return daysTilDate
+	
+func getDateTime(dt):
+	if typeof(dt) == TYPE_DICTIONARY: return dt
+	if typeof(dt) == TYPE_STRING: return string2DateTime(dt)
+	if typeof(dt) == TYPE_INT: return OS.get_datetime_from_unix_time(dt)
+	print("Unexpected Parameter of Type "+str(typeof(dt))+" in Util.getDateTime()")
+	return OS.get_datetime_from_unix_time(0)
+	
+func getUnixTime(time):
+	if typeof(time) == TYPE_DICTIONARY: return OS.get_unix_time_from_datetime(time)
+	if typeof(time) == TYPE_STRING: return OS.get_unix_time_from_datetime(string2DateTime(time))
+	if typeof(time) == TYPE_INT: return time
+	return "Unexpected Parameter of Type "+str(typeof(time))+" in Util.getUnixTime()"
+	return 0
+	
+func datetimeResetTime(dt):
+	if typeof(dt) == TYPE_DICTIONARY:
+		dt.hour = 0
+		dt.minute=0
+		dt.second=0
+		return dt
+	if typeof(dt) == TYPE_INT:
+		var dict = getDateTime(dt)
+		dict.hour = 0
+		dict.minute=0
+		dict.second=0
+		return getUnixTime(dict)

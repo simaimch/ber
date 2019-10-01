@@ -10,10 +10,13 @@ class SorterByIndexInt:
 		return sort(b,a)
 
 const mainScene = "res://scenes/main/main.tscn"
+var rng = RandomNumberGenerator.new()
 
 var CurrentUi={
 	"Actions":[],
 	"LocationId":"",
+	"NPCs":[],
+	"ShowNPCs":false,
 	"ShowPlayerStat":true,
 	"ShowRL": true,
 	"ShowTime": true,
@@ -48,11 +51,16 @@ var WorldData = {
 }
 
 var locations = {}
+var npcs = {}
 
 func _ready():
 	playerData2UI()
 	CurrentUi.Time = WorldData.Time + WorldData.TimeOffset
-
+	rng.randomize()
+	
+func now():
+	var now = WorldData.Time + WorldData.TimeOffset
+	return now
 
 func getLocation(locationId):
 	
@@ -72,8 +80,45 @@ func getLocation(locationId):
 	l["SELF"] = locationArr[0]
 	l["ID"] = locationId
 	return l
+	
+func getNPC(npcId):
+	#all NPCs get loaded at the beginning of the game, no need to load them here
+	var npc = npcs[npcId]
+	npc["ID"] = npcId
+	if !hasValue(npc,"initialized") or getValue(npc,"initialized") == false:
+		initNpc(npc)
+	return npc
+
+
+
+func initNpc(npc):
+	if npc.has("persist"):
+		npc.persist = initEntry(npc.persist)
+	else:
+		npc.persist = {}
+	print("NPC "+npc.ID+" initialized")
+	npc.persist.initialized = true
+	
+func initEntry(entry):
+	if typeof(entry) == TYPE_STRING and entry[0] == "*":
+		entry.erase(0,1)
+		return getValueFromList(entry)
+	if typeof(entry) in [TYPE_STRING, TYPE_BOOL, TYPE_INT, TYPE_REAL]:
+		return entry
+	if typeof(entry) == TYPE_DICTIONARY:
+		var newDict = {}
+		for key in entry:
+			newDict[key] = initEntry(entry[key])
+		return newDict
+	
+func hasValue(obj, index):
+	if obj.has(index): return true
+	if obj.has("persist"): return hasValue(obj.persist, index)
+	return false
 
 func getValue(obj, index):
+	print("Request for "+index+" in:")
+	print(obj)
 	var cindex = "~"+index
 	if index in obj:
 		return obj[index]
@@ -86,7 +131,40 @@ func getValue(obj, index):
 					return obj[cindex][key].value
 			else:
 				return obj[cindex][key].value
+	elif obj.has("persist"):
+		return getValue(obj.persist,index)
+		
+	var indexArr = index.split(".")
+	if indexArr.size() > 1:
+		
+		var topObject = getValue(obj,indexArr[0])
+		indexArr.remove(0)
+		return getValue(topObject,PoolStringArray(indexArr).join("."))
+		
 	return null
+
+func getValueFromList(list):
+	var file = File.new()
+	file.open("res://data/list/"+list+".txt", file.READ)
+	var entries = []
+	var weightTotal = 0
+	while !file.eof_reached():
+		var csv = file.get_csv_line (";")
+		var weight = int(csv[1])
+		var entry = {"value":csv[0],"weight":weight}
+		entries.append(entry)
+		weightTotal += weight
+	file.close()
+		
+	var rand = rng.randi_range(1,weightTotal)
+	
+	var i = 0
+	while(rand > entries[i].weight and i < entries.size()):
+		rand -= entries[i].weight
+		i += 1
+		
+	return entries[i].value
+	
 
 func getValueFromPath(path):
 	var cObj
@@ -138,9 +216,30 @@ func loadMetadata(fileName):
 	return null
 	#TODO: Error handling
 
+func loadNPC(npcId):
+	var file = File.new()
+	file.open("res://data/npc/"+npcId+".json", file.READ)
+	var text = file.get_as_text()
+	file.close()
+	var temp = JSON.parse(text)
+	if temp.error == OK:
+		npcs[npcId] = temp.result
+		print("NPC "+npcId+" loaded")
+	else:
+		print("Error loading NPC "+npcId+": "+str(temp.error))
+
+func loadNPCs():
+	print("Start loading NPCs")
+	var npcFiles = Util.getFilesInFolder("res://data/npc")
+	for npcFile in npcFiles:
+		var npcFileParts = npcFile.split(".")
+		loadNPC(npcFileParts[0])
+	print("Complete loading NPCs")
+
 func newGame():
 	MetaData = loadMetadata("ber")
 	print(MetaData)
+	loadNPCs()
 	executeLocation(getLocation(MetaData.startLocation))
 	gotoMain()
 	
@@ -225,7 +324,19 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 			CurrentUi.RL.append(i)
 	else:
 		CurrentUi.ShowRL = false
-		
+	
+	
+	CurrentUi.NPCs.clear()
+	if location.has("npcs") and location.npcs == true:
+		for npcId in npcs:
+			var npc = getNPC(npcId)
+			if npc.schedule.has(location.ID):
+				CurrentUi.NPCs.append(npc)
+	if CurrentUi.NPCs.size() > 0:
+		CurrentUi.ShowNPCs = true
+	else:
+		CurrentUi.ShowNPCs = false
+	
 	CurrentUi.Actions.clear()
 	if location.has("actions"):
 		var keys = location.actions.keys()
@@ -266,8 +377,9 @@ func _deffered_gotoMain():
 	
 	
 func timeMove(t):
+	t = int(t)
 	WorldData.Time += t
-	CurrentUi.Time = WorldData.Time + WorldData.TimeOffset
+	CurrentUi.Time = now()
 	
 	for stat in PlayerData.stat:
 		PlayerData.stat[stat].current -= PlayerData.stat[stat].decay * t

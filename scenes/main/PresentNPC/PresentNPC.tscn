@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/main/PresentNPC/PresentNPC.gd" type="Script" id=1]
+[ext_resource path="res://media/texture/npc/portrait/female_young/p(0).jpg" type="Texture" id=2]
+
+[node name="PresentNPC" type="Button"]
+margin_right = 170.0
+margin_bottom = 170.0
+rect_min_size = Vector2( 170, 170 )
+flat = true
+script = ExtResource( 1 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 1
+[connection signal="mouse_entered" from="." to="." method="_on_PresentNPC_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_PresentNPC_mouse_exited"]
