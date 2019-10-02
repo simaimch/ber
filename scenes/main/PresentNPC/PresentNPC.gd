@@ -1,10 +1,14 @@
 extends Button
 
-var npc;
+var npc
+var id
 
+func linkNpc():
+	npc = GameManager.getNPC(id)
 
-func setNPC(n):
-	npc = n
+func setNPC(npcId):
+	id = npcId
+	linkNpc()
 	text = GameManager.getNPCDescription(npc) +"\n"+ GameManager.getValue(npc,"name.first")+"\n"+str(Util.getAge(GameManager.now(),GameManager.getValue(npc,"bday")))
 	
 

@@ -96,13 +96,15 @@ func getDateTime(dt):
 	if typeof(dt) == TYPE_DICTIONARY: return dt
 	if typeof(dt) == TYPE_STRING: return string2DateTime(dt)
 	if typeof(dt) == TYPE_INT: return OS.get_datetime_from_unix_time(dt)
-	print("Unexpected Parameter of Type "+str(typeof(dt))+" in Util.getDateTime()")
+	if typeof(dt) == TYPE_REAL: return OS.get_datetime_from_unix_time(int(dt))
+	print("Unexpected Parameter of Type "+str(typeof(dt))+" in Util.getDateTime():"+str(dt))
 	return OS.get_datetime_from_unix_time(0)
 	
 func getUnixTime(time):
 	if typeof(time) == TYPE_DICTIONARY: return OS.get_unix_time_from_datetime(time)
 	if typeof(time) == TYPE_STRING: return OS.get_unix_time_from_datetime(string2DateTime(time))
 	if typeof(time) == TYPE_INT: return time
+	if typeof(time) == TYPE_REAL: return int(time)
 	return "Unexpected Parameter of Type "+str(typeof(time))+" in Util.getUnixTime()"
 	return 0
 	

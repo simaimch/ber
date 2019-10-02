@@ -371,14 +371,14 @@ func execute(commands):
 			
 			cPos[pathArr[i]] = newValue
 		
-	print("START")
+	
 		
 	if commands.has("NPCData"):
 		for key in commands.NPCData:
 			for entry in commands.NPCData[key]:
 				setValueAtPath("NPC"+key+".persist."+entry,commands.NPCData[key][entry])
 	
-	print("REACHED")
+	
 		
 	if commands.has("goto"):
 		var gotoLocation = getLocation(commands["goto"])
@@ -441,7 +441,8 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 		for npcId in npcs:
 			var npc = getNPC(npcId)
 			if npcIsPresent(npc,location.ID):
-				CurrentUi.NPCs.append(npc)
+				#CurrentUi.NPCs.append(npc)
+				CurrentUi.NPCs.append(npcId)
 	if CurrentUi.NPCs.size() > 0:
 		CurrentUi.ShowNPCs = true
 	else:
@@ -599,15 +600,28 @@ func SaveGameLoad():
 	var data = parse_json(saveGame.get_line())
 	saveGame.close()
 	CurrentUi = data.CurrentUi
+	MiscData = data.MiscData
 	PlayerData = data.PlayerData
 	WorldData = data.WorldData
+	
+	for npcID in data.NPC:
+		if npcID in npcs:
+			npcs[npcID].persist = data.NPC[npcID]
+	
 	updateUI()
 	
 func SaveGameSave():
 	var data = {}
 	data.CurrentUi = CurrentUi
+	data.MiscData = MiscData
 	data.PlayerData = PlayerData
 	data.WorldData = WorldData
+	
+	data.NPC = {}
+	for npcID in npcs:
+		if npcs[npcID].has("persist"):
+			data.NPC[npcID] = npcs[npcID].persist
+	
 	var saveGame = File.new()
 	saveGame.open("user://quicksave.json", File.WRITE)
 	saveGame.store_line(to_json(data))
@@ -618,4 +632,5 @@ func recalcUI():
 	updateUI()
 
 func updateUI():
+	print(npcs)
 	get_tree().call_group("uiUpdate","updateUI",GameManager.CurrentUi)
