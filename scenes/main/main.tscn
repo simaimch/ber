@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scenes/main/main.gd" type="Script" id=1]
 [ext_resource path="res://media/texture/test/test.jpg" type="Texture" id=2]
@@ -17,7 +17,8 @@
 [ext_resource path="res://scenes/main/mainNPCsContainer.gd" type="Script" id=15]
 [ext_resource path="res://scenes/main/mainPresentNPCsVBoxContainer.gd" type="Script" id=16]
 [ext_resource path="res://scenes/main/PresentNPC/PresentNPC.tscn" type="PackedScene" id=17]
-[ext_resource path="res://scenes/main/mainTooltip.gd" type="Script" id=18]
+[ext_resource path="res://scenes/npc/Dialog.tscn" type="PackedScene" id=18]
+[ext_resource path="res://scenes/main/mainTooltip.gd" type="Script" id=19]
 
 [node name="main" type="Control" groups=[
 "gameCommand",
@@ -27,6 +28,7 @@ anchor_bottom = 1.0
 script = ExtResource( 1 )
 
 [node name="BackgroundTextureContainer" type="MarginContainer" parent="."]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -100,6 +102,7 @@ script = ExtResource( 6 )
 [node name="RLocationsContainer" type="MarginContainer" parent="." groups=[
 "uiUpdate",
 ]]
+editor/display_folded = true
 anchor_bottom = 1.0
 margin_left = 60.0
 margin_top = 150.0
@@ -177,9 +180,9 @@ script = ExtResource( 14 )
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -215.0
+margin_left = -282.0
 margin_top = 164.0
-margin_right = -45.0
+margin_right = -112.0
 margin_bottom = -418.0
 script = ExtResource( 15 )
 
@@ -201,16 +204,20 @@ script = ExtResource( 16 )
 
 [node name="PresentNPC" parent="NPCsContainer/ScrollContainer/PresentNPCsVBoxContainer" instance=ExtResource( 17 )]
 
+[node name="Dialog" parent="." instance=ExtResource( 18 )]
+visible = false
+
 [node name="Tooltip" type="Control" parent="." groups=[
 "tooltip",
 ]]
+editor/display_folded = true
 visible = false
 margin_left = 933.0
 margin_top = 404.0
 margin_right = 1286.0
 margin_bottom = 513.0
 mouse_filter = 2
-script = ExtResource( 18 )
+script = ExtResource( 19 )
 
 [node name="ColorRect" type="ColorRect" parent="Tooltip"]
 anchor_right = 1.0

@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://font/VarsityTeam-Bold32.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scenes/npc/DialogOption.gd" type="Script" id=2]
+
+[node name="DialogOption" type="Button"]
+margin_right = 1920.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 0, 90 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0.105882, 0.133333, 0.372549, 1 )
+custom_colors/font_color_pressed = Color( 0.392157, 0.380392, 0.686275, 1 )
+text = "Option"
+flat = true
+script = ExtResource( 2 )

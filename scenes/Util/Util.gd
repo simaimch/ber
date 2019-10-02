@@ -118,3 +118,10 @@ func datetimeResetTime(dt):
 		dict.minute=0
 		dict.second=0
 		return getUnixTime(dict)
+
+var debugLvl = 0
+func debug(msg,level):
+	if level <= debugLvl: print(msg)
+	
+func setDebugLevel(lvl):
+	debugLvl = lvl

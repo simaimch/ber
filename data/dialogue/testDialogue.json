@@ -1,0 +1,51 @@
+{
+    "start":{
+        "text":"Hello. Do I know you?",
+        "options":{
+            "1000":{
+                "text":"No",
+                "target":"SELF.intoduction",
+                "conditionShow":{
+                    "mode":"AND",
+                    "conditions":[
+                        {
+                            "var":"NPC0.known",
+                            "mode":"neq",
+                            "val":true
+                        }
+                    ]
+                }
+            },
+            "100":{
+                "text":"Yes",
+                "target":"LEAVE",
+                "conditionShow":{
+                    "mode":"AND",
+                    "conditions":[
+                        {
+                            "var":"NPC0.known",
+                            "mode":"eq",
+                            "val":true
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "intoduction":{
+        "text":"Well, I am #NPC0.name.first#",
+        "onShow":{
+            "NPCData":{
+                "0":{
+                    "known":true
+                }
+            }
+        },
+        "options":{
+            "1000":{
+                "text":"Nice to meet you",
+                "target":"LEAVE"
+            }
+        }
+    }
+}

@@ -14,3 +14,8 @@ func _on_PresentNPC_mouse_entered():
 
 func _on_PresentNPC_mouse_exited():
 	get_tree().call_group("tooltip","hideTooltip",{})
+
+
+func _on_PresentNPC_pressed():
+	get_tree().call_group("tooltip","hideTooltip",{})
+	get_tree().call_group("gameCommand","npcDialog",npc)

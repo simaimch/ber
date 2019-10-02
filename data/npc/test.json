@@ -7,9 +7,11 @@
     },
     "schedule":{
         "cityCenter":[
-            {"days":[1,2,3,4,5],"timeStart":900,"timeEnd":1800}
+            {"days":[1,2,3,4,5],"timeStart":800,"timeEnd":1800}
         ]
     },
-    "bday":"21.09.2000",
-    "gender":"f"
+    "bday":"21.09.1999",
+    "gender":"f",
+    "dialogue":"testDialogue",
+    "texture": "res://media/texture/npc/portrait/female_young/p(0).jpg"
 }

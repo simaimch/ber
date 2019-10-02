@@ -16,6 +16,9 @@ var CurrentUi={
 	"Actions":[],
 	"LocationId":"",
 	"NPCs":[],
+	"NPCDialog":[],
+	"NPCDialogOption":[],
+	"ShowNPCDialog":false,
 	"ShowNPCs":false,
 	"ShowPlayerStat":true,
 	"ShowRL": true,
@@ -50,6 +53,12 @@ var WorldData = {
 	"SunPosition":"dawn"
 }
 
+var MiscData = {
+	currentNpcId = [""],
+	currentDialogueID = ""
+}
+
+var dialogues = {}
 var locations = {}
 var npcs = {}
 
@@ -61,6 +70,23 @@ func _ready():
 func now():
 	var now = WorldData.Time + WorldData.TimeOffset
 	return now
+
+func getDialogue(dialogueId):
+	var dialogueArr = dialogueId.split(".")
+	
+	if !dialogues.has(dialogueArr[0]):
+		loadDialogue(dialogueArr[0])
+	var d = dialogues[dialogueArr[0]] 
+		
+	var i = 1
+	while i < dialogueArr.size():
+		if !d.has(dialogueArr[i]): return d
+		d = d[dialogueArr[i]]
+		i += 1
+	
+	d["SELF"] = dialogueArr[0]
+	d["ID"] = dialogueId
+	return d
 
 func getLocation(locationId):
 	
@@ -158,8 +184,8 @@ func hasValue(obj, index):
 	return false
 
 func getValue(obj, index):
-	print("Request for "+index+" in:")
-	print(obj)
+	Util.debug("Requesting "+index+" from",5)
+	Util.debug(obj,5)
 	var cindex = "~"+index
 	if index in obj:
 		return obj[index]
@@ -174,7 +200,7 @@ func getValue(obj, index):
 				return obj[cindex][key].value
 	elif obj.has("persist"):
 		return getValue(obj.persist,index)
-		
+	
 	var indexArr = index.split(".")
 	if indexArr.size() > 1:
 		
@@ -211,8 +237,10 @@ func getValueFromPath(path):
 	var cObj
 	var pathArr = path.split(".")
 	var i = 0
-	if(pathArr[0] == "PlayerData"): cObj = PlayerData
-	elif(pathArr[0] == "WorldData"): cObj = WorldData
+	#if(pathArr[0] == "PlayerData"): cObj = PlayerData
+	#elif(pathArr[0] == "WorldData"): cObj = WorldData
+	#elif(pathArr[0].begins_with("NPC")): cObj = getNPC(MiscData["currentNpcId"][int(pathArr[0].substr(3,pathArr[0].length()-3))])
+	cObj = getObjectFromPath(pathArr[0])
 	i+= 1
 	while(i < pathArr.size()):
 		cObj = getValue(cObj,pathArr[i])
@@ -220,8 +248,31 @@ func getValueFromPath(path):
 		
 	return cObj
 
+func getObjectFromPath(path):
+	if(path == "PlayerData"): return PlayerData
+	elif(path == "WorldData"): return WorldData
+	elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
+	return null
+
+func setValueAtPath(path,value):
+	var cObj
+	var pathArr = path.split(".")
+	var i = 0
+	cObj = getObjectFromPath(pathArr[0])
+	i+= 1
+	while(i < pathArr.size()-1):
+		if !cObj.has(pathArr[i]):
+			cObj[pathArr[i]] = {}
+		cObj = cObj[pathArr[i]]
+		i+=1
+		
+	cObj[pathArr[i]] = value
+	
+	
+	
+
 func checkCondition(condition):
-	if condition.mode == "ALL":
+	if condition.mode == "AND":
 		for c in condition.conditions:
 			if checkCondition(c) == false:
 				return false
@@ -234,8 +285,20 @@ func checkCondition(condition):
 	elif condition.mode == "eq":
 		if getValueFromPath(condition["var"]) == condition["val"]:
 			return true
+	elif condition.mode == "neq":
+		if getValueFromPath(condition["var"]) != condition["val"]:
+			return true
 	
 	return false
+
+func loadDialogue(dialogueId):
+	var file = File.new()
+	file.open("res://data/dialogue/"+dialogueId+".json", file.READ)
+	var text = file.get_as_text()
+	file.close()
+	var temp = JSON.parse(text)
+	if temp.error == OK:
+		dialogues[dialogueId] = temp.result
 
 func loadLocation(locationId):
 	var file = File.new()
@@ -307,9 +370,15 @@ func execute(commands):
 				i+= 1
 			
 			cPos[pathArr[i]] = newValue
-		print(PlayerData)
 		
+	print("START")
+		
+	if commands.has("NPCData"):
+		for key in commands.NPCData:
+			for entry in commands.NPCData[key]:
+				setValueAtPath("NPC"+key+".persist."+entry,commands.NPCData[key][entry])
 	
+	print("REACHED")
 		
 	if commands.has("goto"):
 		var gotoLocation = getLocation(commands["goto"])
@@ -418,6 +487,74 @@ func npcIsPresent(npc,locationId,time = -1):
 			var timeBase100 = timeDict.hour * 100 + timeDict.minute
 			if timeBase100 >= presence.timeStart and timeBase100 <= presence.timeEnd: return true
 	return false
+	
+
+func npcDialog(npc):
+	#Util.setDebugLevel(5)
+	MiscData.currentNpcId[0] = npc.ID
+	
+	CurrentUi.ShowNPCDialog = true
+	
+	var dialogueId = getValue(npc,"dialogue")+".start"
+	npcDialogShow(dialogueId)
+	
+	updateUI()
+
+
+func getDialogueOption(dialogueId,optionId):
+	var dialogue = getDialogue(dialogueId)
+	var option = dialogue.options[optionId]
+	return npcDialogOptionLink(option)
+	
+func npcDialogOptionLink(option,linkSelf="DEFAULT"):
+	var targetArr = option.target.split(".")
+	if targetArr[0] == "SELF": 
+		if linkSelf=="DEFAULT": linkSelf=MiscData.currentDialogueID.split(".")[0]
+		targetArr[0] = linkSelf
+		option.target = targetArr.join(".")
+	return option
+	
+func npcDialogOption(optionId):
+	var option = getDialogueOption(MiscData.currentDialogueID,optionId)
+	if option.target == "LEAVE": 
+		CurrentUi.ShowNPCDialog = false
+		updateUI()
+		return
+		
+	npcDialogShow(option.target)
+	updateUI()
+
+func npcDialogOptionsUpdate(options):
+	var keys = options.keys()
+	keys.sort_custom(SorterByIndexInt, "sortInv")
+	for key in keys:
+		var option = npcDialogOptionLink(options[key])
+		if option.has("conditionShow"):
+			if !checkCondition(option.conditionShow):
+				Util.debug("Condition not valid:",5)
+				Util.debug(option.conditionShow,5)
+				continue
+		var o = {"text":option.text,"ID":key}
+		CurrentUi.NPCDialogOption.append(o)
+
+func npcDialogShow(dialogueId):
+	MiscData.currentDialogueID = dialogueId
+	var dialogue = getDialogue(dialogueId)
+	if dialogue.has("onShow"):
+		execute(dialogue.onShow)
+	npcDialogUpdate(dialogue)
+
+func npcDialogUpdate(dialogue):
+		
+	CurrentUi.NPCDialog.clear()
+	CurrentUi.NPCDialogOption.clear()
+	
+	var statement = {"charId":MiscData.currentNpcId[0],"text":dialogue.text}
+	
+	CurrentUi.NPCDialog.append(statement)
+	
+	npcDialogOptionsUpdate(dialogue.options)
+	
 	
 
 func gotoLocation(locationId,time):

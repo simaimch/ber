@@ -12,7 +12,7 @@ func clearChildren():
 func updateUI(CurrentUi):
 	clearChildren()
 	
-	for npc in GameManager.CurrentUi.NPCs:
+	for npc in CurrentUi.NPCs:
 		var presentNPCInstance = presentNPCPL.instance()
 		presentNPCInstance.setNPC(npc)
 		add_child(presentNPCInstance)

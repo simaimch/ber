@@ -4,10 +4,10 @@
         "100":{
             "value":"res://media/texture/locations/cityCenter/cityCenterDay0.jpg",
             "condition":{
-                "mode":"ALL",
+                "mode":"AND",
                 "conditions":[
                 {
-                    "var":"WorldData/Time",
+                    "var":"WorldData.Time",
                     "mode":"eq",
                     "val":0
                 }
