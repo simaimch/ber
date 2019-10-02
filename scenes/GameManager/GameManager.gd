@@ -549,7 +549,7 @@ func npcDialogUpdate(dialogue):
 	CurrentUi.NPCDialog.clear()
 	CurrentUi.NPCDialogOption.clear()
 	
-	var statement = {"charId":MiscData.currentNpcId[0],"text":dialogue.text}
+	var statement = {"charId":MiscData.currentNpcId[0],"text":parseText(dialogue.text)}
 	
 	CurrentUi.NPCDialog.append(statement)
 	
