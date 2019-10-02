@@ -217,10 +217,11 @@ func getValueFromList(list):
 	var weightTotal = 0
 	while !file.eof_reached():
 		var csv = file.get_csv_line (";")
-		var weight = int(csv[1])
-		var entry = {"value":csv[0],"weight":weight}
-		entries.append(entry)
-		weightTotal += weight
+		if csv.size() == 2:
+			var weight = int(csv[1])
+			var entry = {"value":csv[0],"weight":weight}
+			entries.append(entry)
+			weightTotal += weight
 	file.close()
 		
 	var rand = rng.randi_range(1,weightTotal)
@@ -632,5 +633,4 @@ func recalcUI():
 	updateUI()
 
 func updateUI():
-	print(npcs)
 	get_tree().call_group("uiUpdate","updateUI",GameManager.CurrentUi)
