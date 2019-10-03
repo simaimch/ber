@@ -1,10 +1,28 @@
 {
     "bg":"res://media/texture/locations/cityCenter/cityCanterMall0.jpg",
-    "text":"Mall",
+    "label":"Mall (exterior)",
+    "npcs": true,
+    "text":"The exterior of a mall.",
     "rl":[
         {
             "locationId":"cityCenter",
             "time": 180
+        },
+        {
+            "locationId":"SELF.interior",
+            "time": 180
         }
-    ]
+    ],
+    "interior":{
+        "bg":"res://media/texture/locations/cityCenter/cityCanterMall0.jpg",
+        "label":"Mall (interior)",
+        "npcs": true,
+        "text":"The interior of a mall.",
+        "rl":[
+            {
+                "locationId":"SELF",
+                "time": 180
+            }
+        ]
+    }
 }

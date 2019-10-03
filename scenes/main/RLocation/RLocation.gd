@@ -12,6 +12,8 @@ func setLocation(l):
 	var targetLocation = GameManager.getLocation(transferInfo.locationId)
 	if "label" in transferInfo:
 		t = transferInfo.label
+	elif "label" in targetLocation:
+		t = targetLocation.label
 	else:
 		t = targetLocation.text
 	setText(t)

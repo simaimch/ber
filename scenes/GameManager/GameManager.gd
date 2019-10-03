@@ -55,7 +55,8 @@ var WorldData = {
 
 var MiscData = {
 	currentNpcId = [""],
-	currentDialogueID = ""
+	currentDialogueID = "",
+	currentLocationID = ""
 }
 
 var dialogues = {}
@@ -341,6 +342,14 @@ func loadNPCs():
 		loadNPC(npcFileParts[0])
 	print("Complete loading NPCs")
 
+func reachableLocationLink(rl,linkSelf="DEFAULT"):
+	var targetArr = rl.locationId.split(".")
+	if targetArr[0] == "SELF": 
+		if linkSelf=="DEFAULT": linkSelf=MiscData.currentLocationID.split(".")[0]
+		targetArr[0] = linkSelf
+		rl.locationId = targetArr.join(".")
+	return rl
+
 func newGame():
 	MetaData = loadMetadata("ber")
 	print(MetaData)
@@ -432,9 +441,10 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 	if location.has("rl"):
 		CurrentUi.ShowRL = true
 		for i in location.rl:
-			CurrentUi.RL.append(i)
+			CurrentUi.RL.append(reachableLocationLink(i))
 	else:
 		CurrentUi.ShowRL = false
+	
 	
 	
 	CurrentUi.NPCs.clear()
@@ -442,7 +452,6 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 		for npcId in npcs:
 			var npc = getNPC(npcId)
 			if npcIsPresent(npc,location.ID):
-				#CurrentUi.NPCs.append(npc)
 				CurrentUi.NPCs.append(npcId)
 	if CurrentUi.NPCs.size() > 0:
 		CurrentUi.ShowNPCs = true
@@ -560,6 +569,7 @@ func npcDialogUpdate(dialogue):
 	
 
 func gotoLocation(locationId,time):
+	MiscData.currentLocationID = locationId
 	var gotoLocation = getLocation(locationId)
 	timeMove(time)
 	executeLocation(gotoLocation)

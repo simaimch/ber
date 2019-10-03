@@ -18,7 +18,8 @@
         }
     },
     "npcs": true,
-    "text":"City Center",
+    "text":"Alexanderplatz",
+    "label":"City Center",
     "rl":[
         {
             "locationId":"cityCenterMall",
