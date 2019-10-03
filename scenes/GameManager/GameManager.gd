@@ -18,13 +18,16 @@ var CurrentUi={
 	"NPCs":[],
 	"NPCDialog":[],
 	"NPCDialogOption":[],
+	"ShopItems":[],
 	"ShowNPCDialog":false,
 	"ShowNPCs":false,
 	"ShowPlayerStat":true,
 	"ShowRL": true,
+	"ShowShop":false,
 	"ShowTime": true,
 	"RL":[],
-	"Time":0
+	"Time":0,
+	"UIGroup":"uiUpdate"
 }
 
 var MetaData = {}
@@ -56,10 +59,11 @@ var WorldData = {
 var MiscData = {
 	currentNpcId = [""],
 	currentDialogueID = "",
-	currentLocationID = ""
+	currentLocationID = "",
 }
 
 var dialogues = {}
+var items = {}
 var locations = {}
 var npcs = {}
 
@@ -270,8 +274,30 @@ func setValueAtPath(path,value):
 		
 	cObj[pathArr[i]] = value
 	
+func shop(shopKeywords):
+	CurrentUi.UIGroup = "uiShop"
+	CurrentUi.ShowShop = true
 	
+	CurrentUi.ShopItems.clear()
 	
+	for itemId in items:
+		var item = items[itemId]
+		if typeof(shopKeywords) == TYPE_STRING:
+			if shopKeywords in item.shopKWs:
+				CurrentUi.ShopItems.append(item)
+		elif typeof(shopKeywords) == TYPE_ARRAY or typeof(shopKeywords) == TYPE_STRING_ARRAY:
+			for kw in shopKeywords:
+				if kw in item.shopKWs:
+					CurrentUi.ShopItems.append(item)
+					break
+			
+	updateUI()
+
+func shopClose():
+	CurrentUi.UIGroup = "uiUpdate"
+	CurrentUi.ShowShop = false
+	CurrentUi.ShopItems.clear()
+	updateUI()
 
 func checkCondition(condition):
 	if condition.mode == "AND":
@@ -301,6 +327,28 @@ func loadDialogue(dialogueId):
 	var temp = JSON.parse(text)
 	if temp.error == OK:
 		dialogues[dialogueId] = temp.result
+
+func loadItem(filePath):
+	var file = File.new()
+	file.open("res://data/item/"+filePath+".json", file.READ)
+	var text = file.get_as_text()
+	file.close()
+	var temp = JSON.parse(text)
+	if temp.error == OK:
+		var fitems = temp.result
+		for itemId in fitems:
+			items[itemId] = fitems[itemId]
+	else:
+		print("Error loading Items from file "+filePath+": "+str(temp.error))
+
+func loadItems():
+	print("Start loading Items")
+	var itemFiles = Util.getFilesInFolder("res://data/item")
+	for itemFile in itemFiles:
+		var itemFileParts = itemFile.split(".")
+		loadItem(itemFileParts[0])
+	print(items)
+	print("Complete loading Items")
 
 func loadLocation(locationId):
 	var file = File.new()
@@ -353,6 +401,7 @@ func reachableLocationLink(rl,linkSelf="DEFAULT"):
 func newGame():
 	MetaData = loadMetadata("ber")
 	print(MetaData)
+	loadItems()
 	loadNPCs()
 	executeLocation(getLocation(MetaData.startLocation))
 	gotoMain()
@@ -393,6 +442,9 @@ func execute(commands):
 	if commands.has("goto"):
 		var gotoLocation = getLocation(commands["goto"])
 		executeLocation(gotoLocation)
+		return true
+	if commands.has("gotoShop"):
+		shop(commands.gotoShop)
 		return true
 		
 	if commands.has("showDialog"):
@@ -643,4 +695,4 @@ func recalcUI():
 	updateUI()
 
 func updateUI():
-	get_tree().call_group("uiUpdate","updateUI",GameManager.CurrentUi)
+	get_tree().call_group(GameManager.CurrentUi.UIGroup,"updateUI",GameManager.CurrentUi)

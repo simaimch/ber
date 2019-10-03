@@ -23,6 +23,12 @@
                 "locationId":"SELF",
                 "time": 180
             }
-        ]
+        ],
+        "actions": {
+            "1000":{
+                "Label": "Shop (Dresses)",
+                "gotoShop":"test"
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scenes/main/main.gd" type="Script" id=1]
 [ext_resource path="res://media/texture/test/test.jpg" type="Texture" id=2]
@@ -18,7 +18,9 @@
 [ext_resource path="res://scenes/main/mainPresentNPCsVBoxContainer.gd" type="Script" id=16]
 [ext_resource path="res://scenes/main/PresentNPC/PresentNPC.tscn" type="PackedScene" id=17]
 [ext_resource path="res://scenes/npc/Dialog.tscn" type="PackedScene" id=18]
-[ext_resource path="res://scenes/main/mainTooltip.gd" type="Script" id=19]
+[ext_resource path="res://scenes/shop/Shop.tscn" type="PackedScene" id=19]
+[ext_resource path="res://scenes/shop/Shop.gd" type="Script" id=20]
+[ext_resource path="res://scenes/main/mainTooltip.gd" type="Script" id=21]
 
 [node name="main" type="Control" groups=[
 "gameCommand",
@@ -207,6 +209,13 @@ script = ExtResource( 16 )
 [node name="Dialog" parent="." instance=ExtResource( 18 )]
 visible = false
 
+[node name="Shop" parent="." groups=[
+"uiUpdate",
+"uiShop",
+] instance=ExtResource( 19 )]
+visible = false
+script = ExtResource( 20 )
+
 [node name="Tooltip" type="Control" parent="." groups=[
 "tooltip",
 ]]
@@ -217,7 +226,7 @@ margin_top = 404.0
 margin_right = 1286.0
 margin_bottom = 513.0
 mouse_filter = 2
-script = ExtResource( 19 )
+script = ExtResource( 21 )
 
 [node name="ColorRect" type="ColorRect" parent="Tooltip"]
 anchor_right = 1.0
