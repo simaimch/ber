@@ -337,7 +337,9 @@ func loadItem(filePath):
 	if temp.error == OK:
 		var fitems = temp.result
 		for itemId in fitems:
-			items[itemId] = fitems[itemId]
+			var item = fitems[itemId]
+			item.ID = itemId
+			items[itemId] = item
 	else:
 		print("Error loading Items from file "+filePath+": "+str(temp.error))
 

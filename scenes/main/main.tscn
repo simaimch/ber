@@ -189,11 +189,11 @@ margin_bottom = -418.0
 script = ExtResource( 15 )
 
 [node name="ColorRect" type="ColorRect" parent="NPCsContainer"]
-margin_right = 182.0
+margin_right = 170.0
 margin_bottom = 498.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="NPCsContainer"]
-margin_right = 182.0
+margin_right = 170.0
 margin_bottom = 498.0
 scroll_horizontal_enabled = false
 
@@ -219,7 +219,6 @@ script = ExtResource( 20 )
 [node name="Tooltip" type="Control" parent="." groups=[
 "tooltip",
 ]]
-editor/display_folded = true
 visible = false
 margin_left = 933.0
 margin_top = 404.0
