@@ -1,0 +1,82 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/shop/BuyDialogue.gd" type="Script" id=1]
+[ext_resource path="res://media/texture/items/dress/dressA(0).jpg" type="Texture" id=2]
+
+[node name="BuyDialogue" type="PopupDialog" groups=[
+"uiShopDialogue",
+]]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -210.5
+margin_top = -317.5
+margin_right = 210.5
+margin_bottom = 317.5
+script = ExtResource( 1 )
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_clip_content = true
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_left = 60.0
+margin_top = 78.0
+margin_right = 360.0
+margin_bottom = 556.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/VBoxContainer"]
+margin_right = 300.0
+margin_bottom = 400.0
+rect_min_size = Vector2( 300, 400 )
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 6
+
+[node name="BuyLabel" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_top = 404.0
+margin_right = 300.0
+margin_bottom = 418.0
+text = "Buy this item?"
+align = 1
+
+[node name="PriceLabel" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_top = 422.0
+margin_right = 300.0
+margin_bottom = 436.0
+text = "50,00 €"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 440.0
+margin_right = 300.0
+margin_bottom = 460.0
+size_flags_vertical = 3
+alignment = 1
+
+[node name="ButtonYes" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+margin_right = 148.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Yes"
+
+[node name="ButtonNo" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 152.0
+margin_right = 300.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "No"
+
+[node name="MessageLabel" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_top = 464.0
+margin_right = 300.0
+margin_bottom = 478.0
+align = 1
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/ButtonYes" to="." method="_on_ButtonYes_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/ButtonNo" to="." method="_on_ButtonNo_pressed"]

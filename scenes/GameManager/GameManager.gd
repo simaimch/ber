@@ -19,6 +19,9 @@ var CurrentUi={
 	"NPCDialog":[],
 	"NPCDialogOption":[],
 	"ShopItems":[],
+	"ShopKeywords":[],
+	"ShopShowOwned":false,
+	"ShowPlayerMoney":true,
 	"ShowNPCDialog":false,
 	"ShowNPCs":false,
 	"ShowPlayerStat":true,
@@ -33,6 +36,8 @@ var CurrentUi={
 var MetaData = {}
 
 var PlayerData = {
+	"inventory":{},
+	"money":5000,
 	"stat":{
 		"hunger":{
 			"current":10000,
@@ -182,7 +187,17 @@ func initEntry(entry):
 		for key in entry:
 			newDict[key] = initEntry(entry[key])
 		return newDict
-	
+
+func inventoryAdd(item,count=1):
+	if PlayerData.inventory.has(item.ID):
+		PlayerData.inventory[item.ID].count += count
+	else:
+		PlayerData.inventory[item.ID] = {"count":count}
+		
+func itemPurchase(item,count=1):
+	moneySpend(item.price)
+	inventoryAdd(item,count)
+
 func hasValue(obj, index):
 	if obj.has(index): return true
 	if obj.has("persist"): return hasValue(obj.persist, index)
@@ -277,26 +292,32 @@ func setValueAtPath(path,value):
 func shop(shopKeywords):
 	CurrentUi.UIGroup = "uiShop"
 	CurrentUi.ShowShop = true
+	CurrentUi.ShopKeywords = shopKeywords
+	shopUpdateItems()
 	
-	CurrentUi.ShopItems.clear()
-	
-	for itemId in items:
-		var item = items[itemId]
-		if typeof(shopKeywords) == TYPE_STRING:
-			if shopKeywords in item.shopKWs:
-				CurrentUi.ShopItems.append(item)
-		elif typeof(shopKeywords) == TYPE_ARRAY or typeof(shopKeywords) == TYPE_STRING_ARRAY:
-			for kw in shopKeywords:
-				if kw in item.shopKWs:
-					CurrentUi.ShopItems.append(item)
-					break
-			
-	updateUI()
 
 func shopClose():
 	CurrentUi.UIGroup = "uiUpdate"
 	CurrentUi.ShowShop = false
 	CurrentUi.ShopItems.clear()
+	updateUI()
+	
+func shopUpdateItems():
+	var shopKeywords = CurrentUi.ShopKeywords
+	CurrentUi.ShopItems.clear()
+	
+	for itemId in items:
+		var item = items[itemId]
+		if CurrentUi.ShopShowOwned or !(itemId in PlayerData.inventory):
+			if typeof(shopKeywords) == TYPE_STRING:
+				if shopKeywords in item.shopKWs:
+					CurrentUi.ShopItems.append(item)
+			elif typeof(shopKeywords) == TYPE_ARRAY or typeof(shopKeywords) == TYPE_STRING_ARRAY:
+				for kw in shopKeywords:
+					if kw in item.shopKWs:
+						CurrentUi.ShopItems.append(item)
+						break
+			
 	updateUI()
 
 func checkCondition(condition):
@@ -406,6 +427,10 @@ func continueGame():
 	loadNPCs()
 	SaveGameLoad()
 	gotoMain()
+
+func moneySpend(m):
+	PlayerData.money = int(max(PlayerData.money-m,0))
+	playerData2UI()
 
 func newGame():
 	MetaData = loadMetadata("ber")
@@ -662,6 +687,7 @@ func preloadTexture(path):
 
 func playerData2UI():
 	CurrentUi.PlayerStat = PlayerData.stat
+	CurrentUi.money = PlayerData.money
 	
 func SaveGameLoad():
 	var saveGame = File.new()

@@ -26,3 +26,7 @@ func _on_Item_mouse_entered():
 
 func _on_Item_mouse_exited():
 	get_tree().call_group("tooltip","hideTooltip",{})
+
+func _on_Item_pressed():
+	get_tree().call_group("uiShopDialogue","showBuyDialogue",item)
+

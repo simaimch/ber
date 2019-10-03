@@ -1,5 +1,5 @@
 {
-    "dress0001":{"texture":"res://media/texture/items/dress/dressA(0).jpg","shopKWs":["test"]},
-    "dress0002":{"texture":"res://media/texture/items/dress/dressA(1).jpg","shopKWs":["test"]}
+    "dress0001":{"texture":"res://media/texture/items/dress/dressA(0).jpg","price":3990,"shopKWs":["test"]},
+    "dress0002":{"texture":"res://media/texture/items/dress/dressA(1).jpg","price":4990,"shopKWs":["test"]}
 
 }

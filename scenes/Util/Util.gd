@@ -8,6 +8,11 @@ func formatInt(i,format="00"):
 		else:
 			result = str(i)
 	return result
+	
+func formatMoney(money):
+	money = int(money)
+	var text = str(money/100) + ","+formatInt(money%100,"00")+" €"
+	return text
 		
 func formtTime(time,timeFormat="{day}.{month}.{year} {hour}:{minute}"):
 	var dateTime = OS.get_datetime_from_unix_time (time)
