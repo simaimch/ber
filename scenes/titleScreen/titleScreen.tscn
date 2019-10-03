@@ -46,6 +46,7 @@ script = ExtResource( 1 )
 margin_top = 322.0
 margin_right = 360.0
 margin_bottom = 382.0
+Target_Szene = "res://scenes/continueGameScreen/continueGameScreen.tscn"
 
 [node name="NewGameButton" parent="MarginContainer/HBoxContainer/VBoxContainer/MenuButtons" instance=ExtResource( 3 )]
 margin_top = 402.0

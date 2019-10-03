@@ -400,9 +400,15 @@ func reachableLocationLink(rl,linkSelf="DEFAULT"):
 		rl.locationId = targetArr.join(".")
 	return rl
 
+func continueGame():
+	MetaData = loadMetadata("ber")
+	loadItems()
+	loadNPCs()
+	SaveGameLoad()
+	gotoMain()
+
 func newGame():
 	MetaData = loadMetadata("ber")
-	print(MetaData)
 	loadItems()
 	loadNPCs()
 	executeLocation(getLocation(MetaData.startLocation))
