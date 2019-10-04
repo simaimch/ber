@@ -28,4 +28,11 @@ mouse_default_cursor_shape = 2
 texture_normal = ExtResource( 3 )
 expand = true
 stretch_mode = 5
+
+[node name="UndressButton" type="Button" parent="."]
+margin_top = 244.0
+margin_right = 200.0
+margin_bottom = 264.0
+text = "undress"
 [connection signal="pressed" from="TextureButton" to="." method="_on_TextureButton_pressed"]
+[connection signal="pressed" from="UndressButton" to="." method="_on_UndressButton_pressed"]

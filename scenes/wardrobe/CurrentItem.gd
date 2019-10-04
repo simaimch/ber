@@ -19,3 +19,7 @@ func updateUI(CurrentUi):
 func _on_TextureButton_pressed():
 	GameManager.CurrentUi.Wardrobe.seltype = type
 	GameManager.wardrobeUpdateItems()
+
+
+func _on_UndressButton_pressed():
+	GameManager.undress(type)

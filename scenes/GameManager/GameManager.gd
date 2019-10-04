@@ -807,3 +807,8 @@ func setItemWorn(item):
 	PlayerData.outfit.CURRENT[item.type] = item.ID
 	playerData2UI()
 	updateUI()
+	
+func undress(slot):
+	PlayerData.outfit.CURRENT[slot] = ""
+	playerData2UI()
+	updateUI()
