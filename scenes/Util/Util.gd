@@ -132,3 +132,12 @@ func debug(msg,level):
 	
 func setDebugLevel(lvl):
 	debugLvl = lvl
+	
+func fileExists(path):
+	var file2Check = File.new()
+	return file2Check.file_exists(path)
+		
+func texture(path):
+	if fileExists(path):
+		return load(path)
+	return preload("res://media/texture/missingTexture.jpg")

@@ -33,7 +33,7 @@ var CurrentUi={
 	"Time":0,
 	"UIGroup":"uiUpdate",
 	"Wardrobe":{
-		"coutfit":{"clothes":"dress0002"},
+		
 		"seltype":"",
 		"selitems":[]
 	}
@@ -59,7 +59,7 @@ var PlayerData = {
 		}
 	},
 	"outfit":{
-		"CURRENT":{"clothes":"dress0002"}
+		"CURRENT":{"clothes":"dress0002","shoes":"dress0002","bra":"dress0002","panties":"dress0002","coat":"dress0002","purse":"dress0002"}
 	}
 }
 
@@ -707,7 +707,7 @@ func preloadTexture(path):
 func playerData2UI():
 	CurrentUi.PlayerStat = PlayerData.stat
 	CurrentUi.money = PlayerData.money
-	CurrentUi.Wardrobe.coutfit["clothes"] = PlayerData.outfit.CURRENT["clothes"]
+	CurrentUi.Wardrobe.coutfit = PlayerData.outfit.CURRENT
 	
 func SaveGameLoad():
 	var saveGame = File.new()

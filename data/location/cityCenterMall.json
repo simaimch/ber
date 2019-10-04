@@ -29,6 +29,10 @@
                 "Label": "Shop (Dresses)",
                 "gotoShop":"test"
             },
+            "990":{
+                "Label": "Shop (Shoes)",
+                "gotoShop":"shoe"
+            },
             "900":{
                 "Label": "Wardrobe",
                 "showWardrobe":"test"

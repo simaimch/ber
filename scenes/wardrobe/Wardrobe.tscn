@@ -43,18 +43,54 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/CenterContainer"]
-margin_left = 379.0
-margin_top = 397.0
-margin_right = 579.0
-margin_bottom = 637.0
+margin_left = 277.0
+margin_top = 153.0
+margin_right = 681.0
+margin_bottom = 881.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer"]
-margin_right = 200.0
+margin_right = 404.0
 margin_bottom = 240.0
 
 [node name="CurrentItem" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
+label = "Bra"
+type = "bra"
+
+[node name="CurrentItem2" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
+margin_left = 204.0
+margin_right = 404.0
+label = "Panties"
+type = "panties"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer"]
+margin_top = 244.0
+margin_right = 404.0
+margin_bottom = 484.0
+
+[node name="CurrentItem" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 3 )]
 label = "Clothes"
 type = "clothes"
+
+[node name="CurrentItem2" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 3 )]
+margin_left = 204.0
+margin_right = 404.0
+label = "Shoes"
+type = "shoes"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer"]
+margin_top = 488.0
+margin_right = 404.0
+margin_bottom = 728.0
+
+[node name="CurrentItem" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/HBoxContainer3" instance=ExtResource( 3 )]
+label = "Coat"
+type = "coat"
+
+[node name="CurrentItem2" parent="VBoxContainer/HBoxContainer/CenterContainer/VBoxContainer/HBoxContainer3" instance=ExtResource( 3 )]
+margin_left = 204.0
+margin_right = 404.0
+label = "Purse"
+type = "purse"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 962.0
