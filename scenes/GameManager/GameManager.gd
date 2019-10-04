@@ -28,16 +28,22 @@ var CurrentUi={
 	"ShowRL": true,
 	"ShowShop":false,
 	"ShowTime": true,
+	"ShowWardrobe":false,
 	"RL":[],
 	"Time":0,
-	"UIGroup":"uiUpdate"
+	"UIGroup":"uiUpdate",
+	"Wardrobe":{
+		"coutfit":{"clothes":"dress0002"},
+		"seltype":"",
+		"selitems":[]
+	}
 }
 
 var MetaData = {}
 
 var PlayerData = {
 	"inventory":{},
-	"money":5000,
+	"money":10000,
 	"stat":{
 		"hunger":{
 			"current":10000,
@@ -51,6 +57,9 @@ var PlayerData = {
 			"current":10000,
 			"decay":0.15
 		}
+	},
+	"outfit":{
+		"CURRENT":{"clothes":"dress0002"}
 	}
 }
 
@@ -97,6 +106,12 @@ func getDialogue(dialogueId):
 	d["SELF"] = dialogueArr[0]
 	d["ID"] = dialogueId
 	return d
+
+func getItem(itemId):
+	#all items get loaded at the beginning of the game, no need to load them here
+	var item = items[itemId]
+	item["ID"] = itemId
+	return item
 
 func getLocation(locationId):
 	
@@ -480,6 +495,10 @@ func execute(commands):
 		shop(commands.gotoShop)
 		return true
 		
+	if commands.has("showWardrobe"):
+		wardrobe()
+		return true
+		
 	if commands.has("showDialog"):
 		var dialog = load("res://scenes/dialog/"+commands.showDialog+".tscn").instance()
 		get_tree().get_root().add_child(dialog)
@@ -688,6 +707,7 @@ func preloadTexture(path):
 func playerData2UI():
 	CurrentUi.PlayerStat = PlayerData.stat
 	CurrentUi.money = PlayerData.money
+	CurrentUi.Wardrobe.coutfit["clothes"] = PlayerData.outfit.CURRENT["clothes"]
 	
 func SaveGameLoad():
 	var saveGame = File.new()
@@ -730,3 +750,28 @@ func recalcUI():
 
 func updateUI():
 	get_tree().call_group(GameManager.CurrentUi.UIGroup,"updateUI",GameManager.CurrentUi)
+
+
+func wardrobe():
+	CurrentUi.UIGroup = "uiWardrobe"
+	CurrentUi.ShowWardrobe = true
+	updateUI()
+	
+func wardrobeClose():
+	CurrentUi.UIGroup = "uiUpdate"
+	CurrentUi.ShowWardrobe = false
+	CurrentUi.Wardrobe.selitems.clear()
+	updateUI()
+	
+func wardrobeUpdateItems():
+	CurrentUi.Wardrobe.selitems.clear()
+	for itemId in PlayerData.inventory:
+		var item = getItem(itemId)
+		if item.type == CurrentUi.Wardrobe.seltype:
+			CurrentUi.Wardrobe.selitems.append(item)
+	updateUI()
+	
+func setItemWorn(item):
+	PlayerData.outfit.CURRENT[item.type] = item.ID
+	playerData2UI()
+	updateUI()

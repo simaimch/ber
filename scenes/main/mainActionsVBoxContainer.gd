@@ -12,7 +12,7 @@ func clearChildren():
 func updateUI(CurrentUi):
 	clearChildren()
 	
-	for action in GameManager.CurrentUi.Actions:
+	for action in CurrentUi.Actions:
 		var actionInstance = actionPL.instance()
 		actionInstance.setAction(action)
 		add_child(actionInstance)
