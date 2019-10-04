@@ -59,7 +59,7 @@ var PlayerData = {
 		}
 	},
 	"outfit":{
-		"CURRENT":{"clothes":"dress0002","shoes":"dress0002","bra":"dress0002","panties":"dress0002","coat":"dress0002","purse":"dress0002"}
+		"CURRENT":{"clothes":"","shoes":"","bra":"","panties":"","coat":"","purse":""}
 	}
 }
 
@@ -86,6 +86,24 @@ func _ready():
 	CurrentUi.Time = WorldData.Time + WorldData.TimeOffset
 	rng.randomize()
 	
+
+func bodyTexture(bodypart):
+	return getValue(PlayerData.body,bodypart+".texture","")
+	
+func itemWornAtSlot(itemslot):
+	var itemId = getValue(PlayerData.outfit.CURRENT,itemslot)
+	if itemId == "" or itemId == null or itemId == "naked":
+		var texture
+		if itemslot == "coat":
+			texture = itemWornAtSlot("clothes").texture
+		elif itemslot == "clothes":
+			texture = itemWornAtSlot("bra").texture
+		else:
+			texture = bodyTexture(itemslot2bodypart(itemslot))
+		var pseudoItem = {"ID":"NAKED","texture":texture}
+		return pseudoItem
+	return getItem(itemId)
+
 func now():
 	var now = WorldData.Time + WorldData.TimeOffset
 	return now
@@ -213,14 +231,25 @@ func itemPurchase(item,count=1):
 	moneySpend(item.price)
 	inventoryAdd(item,count)
 
+func itemslot2bodypart(itemslot):
+	match itemslot:
+		"bra": return "breast"
+		"coat": return "torsoOuter"
+		"clothes": return "torso"
+		"panties": return "lap"
+		"purse": return "hand"
+		"shoes": return "feet"
+		
+
 func hasValue(obj, index):
 	if obj.has(index): return true
 	if obj.has("persist"): return hasValue(obj.persist, index)
 	return false
 
-func getValue(obj, index):
+func getValue(obj, index, default = null):
 	Util.debug("Requesting "+index+" from",5)
 	Util.debug(obj,5)
+	if obj == null: return default
 	var cindex = "~"+index
 	if index in obj:
 		return obj[index]
@@ -234,16 +263,16 @@ func getValue(obj, index):
 			else:
 				return obj[cindex][key].value
 	elif obj.has("persist"):
-		return getValue(obj.persist,index)
+		return getValue(obj.persist,index,default)
 	
 	var indexArr = index.split(".")
 	if indexArr.size() > 1:
 		
 		var topObject = getValue(obj,indexArr[0])
 		indexArr.remove(0)
-		return getValue(topObject,PoolStringArray(indexArr).join("."))
+		return getValue(topObject,PoolStringArray(indexArr).join("."),default)
 		
-	return null
+	return default
 
 func getValueFromList(list):
 	var file = File.new()
@@ -269,7 +298,7 @@ func getValueFromList(list):
 	return entries[i].value
 	
 
-func getValueFromPath(path):
+func getValueFromPath(path,default=""):
 	var cObj
 	var pathArr = path.split(".")
 	var i = 0
@@ -280,6 +309,9 @@ func getValueFromPath(path):
 	i+= 1
 	while(i < pathArr.size()):
 		cObj = getValue(cObj,pathArr[i])
+		if cObj == null:
+			#ERROR
+			return default
 		i+=1
 		
 	return cObj
@@ -707,7 +739,7 @@ func preloadTexture(path):
 func playerData2UI():
 	CurrentUi.PlayerStat = PlayerData.stat
 	CurrentUi.money = PlayerData.money
-	CurrentUi.Wardrobe.coutfit = PlayerData.outfit.CURRENT
+	#CurrentUi.Wardrobe.coutfit = PlayerData.outfit.CURRENT
 	
 func SaveGameLoad():
 	var saveGame = File.new()

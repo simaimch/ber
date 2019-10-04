@@ -1,6 +1,12 @@
 {
 
     "onStart":{
+        "PlayerData":{
+            "body.breast.texture":"res://media/texture/body/female/breast/breastB_1.jpg",
+            "body.feet.texture":"res://media/texture/body/female/feet/feet_1.jpg",
+            "body.hand.texture":"res://media/texture/body/female/hand/hand1.jpg",
+            "body.lap.texture":"res://media/texture/body/female/lap/lap1.jpg"
+        },
         "goto":  "intro.start"
     }
     
