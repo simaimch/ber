@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://scenes/main/main.gd" type="Script" id=1]
 [ext_resource path="res://media/texture/test/test.jpg" type="Texture" id=2]
@@ -22,7 +22,8 @@
 [ext_resource path="res://scenes/shop/Shop.tscn" type="PackedScene" id=20]
 [ext_resource path="res://scenes/shop/Shop.gd" type="Script" id=21]
 [ext_resource path="res://scenes/wardrobe/Wardrobe.tscn" type="PackedScene" id=22]
-[ext_resource path="res://scenes/main/mainTooltip.gd" type="Script" id=23]
+[ext_resource path="res://scenes/detailsMenu/pcDetails.tscn" type="PackedScene" id=23]
+[ext_resource path="res://scenes/main/mainTooltip.gd" type="Script" id=24]
 
 [node name="main" type="Control" groups=[
 "gameCommand",
@@ -134,6 +135,7 @@ script = ExtResource( 9 )
 [node name="RLocation" parent="RLocationsContainer/RLocationsScrollContainer/RLocationsVBoxContainer" instance=ExtResource( 10 )]
 
 [node name="StatusBarContainer" type="MarginContainer" parent="."]
+editor/display_folded = true
 anchor_right = 1.0
 margin_left = 40.0
 margin_top = 40.0
@@ -235,6 +237,9 @@ script = ExtResource( 21 )
 [node name="Wardrobe" parent="." instance=ExtResource( 22 )]
 visible = false
 
+[node name="pcDetails" parent="." instance=ExtResource( 23 )]
+visible = false
+
 [node name="Tooltip" type="Control" parent="." groups=[
 "tooltip",
 ]]
@@ -245,7 +250,7 @@ margin_top = 404.0
 margin_right = 1286.0
 margin_bottom = 513.0
 mouse_filter = 2
-script = ExtResource( 23 )
+script = ExtResource( 24 )
 
 [node name="ColorRect" type="ColorRect" parent="Tooltip"]
 anchor_right = 1.0

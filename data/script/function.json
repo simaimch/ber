@@ -1,0 +1,32 @@
+{
+    "langIsAre":{
+        "result":{
+            "1000":{
+                "value": "are",
+                "condition":{
+                    "mode":"eq",
+                    "var":"FOBJ.ID",
+                    "valRef":"PlayerData.ID"
+                }
+            },
+            "0":{
+                "value": "is"
+            }
+        }
+    },
+    "usedName":{
+        "result":{
+            "1000":{
+                "value": "you",
+                "condition":{
+                    "mode":"eq",
+                    "var":"FOBJ.ID",
+                    "valRef":"PlayerData.ID"
+                }
+            },
+            "0":{
+                "valueRef": "FOBJ.name.first"
+            }
+        }
+    }
+}

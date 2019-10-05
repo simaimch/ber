@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://font/VarsityTeam-Bold32.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scenes/detailsMenu/Modifier.gd" type="Script" id=2]
+
+[node name="Modifier" type="Label"]
+margin_right = 1920.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 0, 80 )
+mouse_filter = 0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Label"
+align = 1
+valign = 1
+script = ExtResource( 2 )
+[connection signal="mouse_entered" from="." to="." method="_on_Modifier_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_Modifier_mouse_exited"]

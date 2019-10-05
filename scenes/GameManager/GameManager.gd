@@ -14,6 +14,7 @@ var rng = RandomNumberGenerator.new()
 
 var CurrentUi={
 	"Actions":[],
+	"ActiveModfiers":{},
 	"LocationId":"",
 	"NPCs":[],
 	"NPCDialog":[],
@@ -21,6 +22,7 @@ var CurrentUi={
 	"ShopItems":[],
 	"ShopKeywords":[],
 	"ShopShowOwned":false,
+	"ShowDetailsPC":false,
 	"ShowPlayerMoney":true,
 	"ShowNPCDialog":false,
 	"ShowNPCs":false,
@@ -42,7 +44,9 @@ var CurrentUi={
 var MetaData = {}
 
 var PlayerData = {
+	"ID":"PC",
 	"inventory":{},
+	"modifier":{},
 	"money":10000,
 	"stat":{
 		"hunger":{
@@ -71,15 +75,19 @@ var WorldData = {
 }
 
 var MiscData = {
-	currentNpcId = [""],
+	currentNpcId = ["","","",""], #0-2: Dialogue, 3: Script calculations
 	currentDialogueID = "",
 	currentLocationID = "",
 }
 
 var dialogues = {}
+var functions = {}
 var items = {}
 var locations = {}
+var modifiers = {}
 var npcs = {}
+
+var functionObjects = []
 
 func _ready():
 	playerData2UI()
@@ -152,6 +160,8 @@ func getLocation(locationId):
 	
 func getNPC(npcId):
 	#all NPCs get loaded at the beginning of the game, no need to load them here
+	if npcId == PlayerData.ID:
+		return PlayerData
 	var npc = npcs[npcId]
 	npc["ID"] = npcId
 	if !hasValue(npc,"initialized") or getValue(npc,"initialized") == false:
@@ -299,13 +309,19 @@ func getValueFromList(list):
 	
 
 func getValueFromPath(path,default=""):
-	var cObj
+	if path[0] == "?":
+		var functionArr = path.split(":")
+		var functionId = functionArr[0].substr(1,functionArr[0].length()-1)
+		var functionObj = getValueFromPath(functionArr[1])
+		return getValueFromFunction(functionId,functionObj)
+		
 	var pathArr = path.split(".")
 	var i = 0
 	#if(pathArr[0] == "PlayerData"): cObj = PlayerData
 	#elif(pathArr[0] == "WorldData"): cObj = WorldData
 	#elif(pathArr[0].begins_with("NPC")): cObj = getNPC(MiscData["currentNpcId"][int(pathArr[0].substr(3,pathArr[0].length()-3))])
-	cObj = getObjectFromPath(pathArr[0])
+	var tObj = getObjectFromPath(pathArr[0])
+	var cObj = tObj
 	i+= 1
 	while(i < pathArr.size()):
 		cObj = getValue(cObj,pathArr[i])
@@ -315,11 +331,37 @@ func getValueFromPath(path,default=""):
 		i+=1
 		
 	return cObj
+	
+	
 
+func getValueFromFunction(functionId,functionObj):
+	var function = functions[functionId]
+	functionObjects.append(functionObj)
+	
+	var result = null
+	
+	var keys = function.result.keys()
+	keys.sort_custom(SorterByIndexInt, "sortInv")
+	for key in keys:
+		var possibleResult = function.result[key]
+		if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+			if possibleResult.has("valueRef"):
+				result = getValueFromPath(possibleResult.valueRef)
+			else:
+				result = possibleResult.value
+			break
+	
+	functionObjects.pop_back()
+	
+	return result
+			
+	
 func getObjectFromPath(path):
+	if(path == "FOBJ"): return functionObjects[functionObjects.size()-1]
 	if(path == "PlayerData"): return PlayerData
 	elif(path == "WorldData"): return WorldData
 	elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
+	
 	return null
 
 func setValueAtPath(path,value):
@@ -368,6 +410,13 @@ func shopUpdateItems():
 	updateUI()
 
 func checkCondition(condition):
+	var conditionValue
+	
+	if condition.has("val"):
+		conditionValue = condition["val"]
+	elif condition.has("valRef"):
+		conditionValue = getValueFromPath(condition["valRef"])
+	
 	if condition.mode == "AND":
 		for c in condition.conditions:
 			if checkCondition(c) == false:
@@ -379,11 +428,11 @@ func checkCondition(condition):
 				return true
 		return false
 	elif condition.mode == "eq":
-		if getValueFromPath(condition["var"]) == condition["val"]:
-			return true
+		var valueFromPath = getValueFromPath(condition["var"])
+		return Util.equals(valueFromPath,conditionValue)
 	elif condition.mode == "neq":
-		if getValueFromPath(condition["var"]) != condition["val"]:
-			return true
+		var valueFromPath = getValueFromPath(condition["var"])
+		return !Util.equals(valueFromPath,conditionValue)
 	
 	return false
 
@@ -395,6 +444,19 @@ func loadDialogue(dialogueId):
 	var temp = JSON.parse(text)
 	if temp.error == OK:
 		dialogues[dialogueId] = temp.result
+
+func loadFunctions():
+	print("Start loading Functions")
+	var file = File.new()
+	file.open("res://data/script/function.json", file.READ)
+	var text = file.get_as_text()
+	file.close()
+	var temp = JSON.parse(text)
+	if temp.error == OK:
+		functions = temp.result
+	else:
+		print("Error loading Functions :"+str(temp.error))
+	print("Complete loading Functions")
 
 func loadItem(filePath):
 	var file = File.new()
@@ -475,15 +537,71 @@ func continueGame():
 	SaveGameLoad()
 	gotoMain()
 
+func detailsShow():
+	MiscData.currentNpcId[3] = PlayerData.ID
+	
+	CurrentUi.UIGroup = "uiDetails"
+	CurrentUi.ShowDetailsPC = true
+	
+	CurrentUi.ActiveModfiers.clear()
+	
+	for modifierGroupId in PlayerData.modifier:
+		CurrentUi.ActiveModfiers[modifierGroupId] = []
+		var modifierGroup = modifiers[modifierGroupId]
+		for modifierId in modifierGroup:
+			var modifier = getModifier(modifierGroupId,modifierId)
+			modifier.description = parseText(modifier.description)
+			CurrentUi.ActiveModfiers[modifierGroupId].append(modifier)
+			
+	updateUI()
+	
+func getModifier(modifierGroupId,modifierID):
+	return modifiers[modifierGroupId][modifierID]
+
+func modifiersCalculate(npcId):
+	var npc = getNPC(npcId)
+	
+	if !npc.has("modifier"): npc.modifier = {}
+	npc.modifier.clear()
+	
+	MiscData.currentNpcId[3] = npcId
+	
+	for modifierGroupId in modifiers:
+		var modifierGroup = modifiers[modifierGroupId]
+		npc.modifier[modifierGroupId] = []
+		for modifierId in modifierGroup:
+			var modifier = modifierGroup[modifierId]
+			if checkCondition(modifier.condition):
+				npc.modifier[modifierGroupId].append(modifierId)
+		
+
+func loadModifiers():
+	print("Start loading Modifiers")
+	var file = File.new()
+	file.open("res://data/script/modifier.json", file.READ)
+	var text = file.get_as_text()
+	file.close()
+	var temp = JSON.parse(text)
+	if temp.error == OK:
+		modifiers = temp.result
+	else:
+		print("Error loading Modifiers :"+str(temp.error))
+	print("Complete loading Modifiers")
+
 func moneySpend(m):
 	PlayerData.money = int(max(PlayerData.money-m,0))
 	playerData2UI()
 
 func newGame():
 	MetaData = loadMetadata("ber")
+	loadFunctions()
 	loadItems()
+	loadModifiers()
 	loadNPCs()
 	executeLocation(getLocation(MetaData.startLocation))
+
+	modifiersCalculate(PlayerData.ID)
+
 	gotoMain()
 	
 func execute(commands):
@@ -494,21 +612,22 @@ func execute(commands):
 		
 	if commands.has("PlayerData"):
 		for key in commands.PlayerData:
-			var PlayerDataEntry = commands.PlayerData[key]
-			var newValue
-			if typeof(PlayerDataEntry) == TYPE_STRING or typeof(PlayerDataEntry) == TYPE_INT:
-				newValue = PlayerDataEntry
-			
-			var pathArr = key.split(".")
-			var i = 0
-			var cPos = PlayerData
-			while i+1<pathArr.size():
-				if !cPos.has(pathArr[i]):
-					cPos[pathArr[i]] = {}
-				cPos = cPos[pathArr[i]]
-				i+= 1
-			
-			cPos[pathArr[i]] = newValue
+			setValueAtPath("PlayerData."+key,commands.PlayerData[key])
+#			var PlayerDataEntry = commands.PlayerData[key]
+#			var newValue
+#			if typeof(PlayerDataEntry) == TYPE_STRING or typeof(PlayerDataEntry) == TYPE_INT or typeof(PlayerDataEntry) == TYPE_REAL:
+#				newValue = PlayerDataEntry
+#
+#			var pathArr = key.split(".")
+#			var i = 0
+#			var cPos = PlayerData
+#			while i+1<pathArr.size():
+#				if !cPos.has(pathArr[i]):
+#					cPos[pathArr[i]] = {}
+#				cPos = cPos[pathArr[i]]
+#				i+= 1
+#
+#			cPos[pathArr[i]] = newValue
 		
 	
 		

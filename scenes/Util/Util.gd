@@ -126,12 +126,39 @@ func datetimeResetTime(dt):
 		dict.second=0
 		return getUnixTime(dict)
 
+
+
 var debugLvl = 0
 func debug(msg,level):
 	if level <= debugLvl: print(msg)
 	
 func setDebugLevel(lvl):
 	debugLvl = lvl
+	
+func bigger(a,b):
+	var ta = typeof(a)
+	var tb = typeof(b)
+	
+	if ta == TYPE_STRING: a = int(a)
+	elif ta != TYPE_INT and ta != TYPE_REAL: return false
+	
+	if tb == TYPE_STRING: b = int(b)
+	elif tb != TYPE_INT and tb != TYPE_REAL: return false
+	
+	return (a > b)
+	
+
+func equals(a,b):
+	var ta = typeof(a)
+	var tb = typeof(b)
+	
+	if (ta == TYPE_REAL or ta == TYPE_INT) and (tb == TYPE_REAL or tb == TYPE_INT):
+		if a == b: return true
+	elif a == b:
+		return true
+		
+	return false
+	
 	
 func fileExists(path):
 	var file2Check = File.new()

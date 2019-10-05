@@ -1,0 +1,19 @@
+{
+    "appearance":{
+        "gene_+2":{
+            "label":"Naturally  Beautiful",
+            "description":"#?usedName:NPC3# #?langIsAre:NPC3# naturally beautiful.",
+            "modifier": 2,
+            "condition":{
+                "mode":"AND",
+                "conditions":[
+                    {
+                        "var":"NPC3.trait.genes.appearance",
+                        "mode":"eq",
+                        "val":2
+                    }
+                ]
+            }
+        }
+    }
+}

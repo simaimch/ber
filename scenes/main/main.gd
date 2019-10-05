@@ -22,6 +22,8 @@ func _process(delta):
 		#updateUI()
 	elif Input.is_action_pressed("ui_quicksave"):
 		GameManager.SaveGameSave()
+	elif Input.is_action_pressed("ui_details"):
+		GameManager.detailsShow()
 
 func _ready():
 	GameManager.updateUI()
