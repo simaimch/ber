@@ -28,5 +28,151 @@
                 "valueRef": "FOBJ.name.first"
             }
         }
+    },
+    "shoeDescription":{
+        "resultMode": "stringConcat",
+        "result":{
+            "0":{
+                "valueCalc":"Lockable ",
+                "condition":{
+                    "mode":"has",
+                    "target":"FOBJ",
+                    "index":"lockable"
+                }
+            },
+            "100":{
+                "valueCalc":"#FOBJ.color# ",
+                "condition":{
+                    "mode":"has",
+                    "target":"FOBJ",
+                    "index":"color"
+                }
+            },
+            "200":{
+                "valueCalc":"#FOBJ.subtype# ",
+                "condition":{
+                    "mode":"has",
+                    "target":"FOBJ",
+                    "index":"subtype"
+                }
+            },
+            "300":{
+                "valueCalc":"with #FOBJ.height# cm high heels ",
+                "condition":{
+                    "mode":"has",
+                    "target":"FOBJ",
+                    "index":"height"
+                }
+            }
+        }
+    },
+    "shoeDifficulty":{
+        "resultMode": "mathAdd",
+        "result":{
+            "3":{
+                "value":1,
+                "condition":{
+                    "mode":"heq",
+                    "var":"FOBJ.height",
+                    "val":"3"
+                }
+            },
+            "6":{
+                "value":1,
+                "condition":{
+                    "mode":"heq",
+                    "var":"FOBJ.height",
+                    "val":"6"
+                }
+            },
+            "9":{
+                "value":1,
+                "condition":{
+                    "mode":"heq",
+                    "var":"FOBJ.height",
+                    "val":"9"
+                }
+            },
+            "12":{
+                "value":1,
+                "condition":{
+                    "mode":"heq",
+                    "var":"FOBJ.height",
+                    "val":"12"
+                }
+            },
+            "15":{
+                "value":1,
+                "condition":{
+                    "mode":"heq",
+                    "var":"FOBJ.height",
+                    "val":"15"
+                }
+            },
+            "18":{
+                "value":1,
+                "condition":{
+                    "mode":"heq",
+                    "var":"FOBJ.height",
+                    "val":"18"
+                }
+            }
+        }
+    },
+    "shoeDifficultyDiscriptionPC":{
+        "FOBJ":["?SUB:(?shoeDifficulty:FOBJ):PlayerData.skill.heels"],
+        "result":{
+            "600":{
+                "value": "You can't walk in these shoes. If you put them on you have to crawl.",
+                "condition":{
+                    "mode":"eq",
+                    "var":"FOBJ2",
+                    "val":6
+                }
+            },
+            "500":{
+                "value": "You can merely stand in this shoes. Walking will be extremely difficult.",
+                "condition":{
+                    "mode":"eq",
+                    "var":"FOBJ2",
+                    "val":5
+                }
+            },
+            "400":{
+                "value": "You can only walk very slowly in these shoes and the risk of stumbling is high.",
+                "condition":{
+                    "mode":"eq",
+                    "var":"FOBJ2",
+                    "val":4
+                }
+            },
+            "300":{
+                "value": "You can walk slowly in these shoes.",
+                "condition":{
+                    "mode":"eq",
+                    "var":"FOBJ2",
+                    "val":3
+                }
+            },
+            "200":{
+                "value": "You can walk at a slightly slower than normal pace in these sheos.",
+                "condition":{
+                    "mode":"eq",
+                    "var":"FOBJ2",
+                    "val":2
+                }
+            },
+            "100":{
+                "value": "You can walk normally in these shoes.",
+                "condition":{
+                    "mode":"eq",
+                    "var":"FOBJ2",
+                    "val":1
+                }
+            },
+            "0":{
+                "value": "You have no problem walking in these shoes."
+            }
+        }
     }
 }

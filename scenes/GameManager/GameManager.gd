@@ -48,6 +48,9 @@ var PlayerData = {
 	"inventory":{},
 	"modifier":{},
 	"money":10000,
+	"skill":{
+		"heels":2
+	},
 	"stat":{
 		"hunger":{
 			"current":10000,
@@ -93,6 +96,8 @@ func _ready():
 	playerData2UI()
 	CurrentUi.Time = WorldData.Time + WorldData.TimeOffset
 	rng.randomize()
+	
+	
 	
 
 func bodyTexture(bodypart):
@@ -308,13 +313,44 @@ func getValueFromList(list):
 	return entries[i].value
 	
 
+func getArgumentsFromString(s):
+	var result = []
+	
+	var start = 0
+	var end = 0
+	var current = 0
+	var level = 0
+	var endHere
+	
+	for c in s:
+		endHere = true
+		if c == "(":
+			if level == 0: start += 1
+			level += 1
+			end = current
+		elif c == ")":
+			level -= 1
+			if level == 0: endHere = false
+		elif c == ":" and level == 0:
+			result.append(s.substr(start,end-start))
+			start = current + 1
+		
+		current += 1
+		if endHere: end = current
+	if end > start:
+		result.append(s.substr(start,end-start))
+	return result
+
 func getValueFromPath(path,default=""):
 	if path[0] == "?":
-		var functionArr = path.split(":")
+		var functionArr = path.split(":",false,1)
 		var functionId = functionArr[0].substr(1,functionArr[0].length()-1)
-		var functionObj = getValueFromPath(functionArr[1])
-		return getValueFromFunction(functionId,functionObj)
-		
+		#var functionObj = getValueFromPath(functionArr[1])
+		#return getValueFromFunction(functionId,functionObj)
+		return getValueFromFunction(functionId,functionArr[1])
+	
+	if default == "": default = path
+	
 	var pathArr = path.split(".")
 	var i = 0
 	#if(pathArr[0] == "PlayerData"): cObj = PlayerData
@@ -326,42 +362,111 @@ func getValueFromPath(path,default=""):
 	while(i < pathArr.size()):
 		cObj = getValue(cObj,pathArr[i])
 		if cObj == null:
-			#ERROR
+			print("ERROR loading "+path)
 			return default
 		i+=1
 		
 	return cObj
 	
-	
+func getFOBJ(index):
+	return functionObjects[functionObjects.size()-index]
 
-func getValueFromFunction(functionId,functionObj):
-	var function = functions[functionId]
-	functionObjects.append(functionObj)
-	
+#func getValueFromFunction(functionId,functionObj):
+func getValueFromFunction(functionId,functionParameter):
 	var result = null
+	if functionId == "INT":
+		return int(functionParameter)
 	
-	var keys = function.result.keys()
-	keys.sort_custom(SorterByIndexInt, "sortInv")
-	for key in keys:
-		var possibleResult = function.result[key]
-		if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-			if possibleResult.has("valueRef"):
-				result = getValueFromPath(possibleResult.valueRef)
-			else:
-				result = possibleResult.value
-			break
+	var arguments = []
+	if typeof(functionParameter) == TYPE_STRING:
+		var targuments = getArgumentsFromString(functionParameter)
+		for targument in targuments:
+			arguments.append(getValueFromPath(targument))
+	else:
+		arguments.append(functionParameter)
 	
-	functionObjects.pop_back()
+	if functionId == "SUB":
+		var a = float(arguments[0])
+		var b = float(arguments[1])
+		result = a - b
+	else:
+	
+		var function = functions[functionId]
+		
+		#We have to do this here because if function.has("FOBJ"): might require FOBJs to be set up
+		arguments.invert()
+		for argument in arguments:
+			functionObjects.append(argument)
+		var argumentCount = arguments.size()
+		
+		if function.has("FOBJ"):
+			for fobj in function.FOBJ:
+				arguments.push_front(getValueFromPath(fobj))
+		
+			#We have to set up FOBJs again because new FOBJs have been added
+			for i in range(argumentCount):
+				functionObjects.pop_back()
+			for argument in arguments:
+				functionObjects.append(argument)
+			argumentCount = arguments.size()	
+		
+		
+		var resultMode = "standard"
+		
+		if function.has("resultMode"): resultMode = function.resultMode
+		
+		
+		if resultMode == "standard":
+			var keys = function.result.keys()
+			keys.sort_custom(SorterByIndexInt, "sortInv")
+			for key in keys:
+				var possibleResult = function.result[key]
+				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+					if possibleResult.has("valueRef"):
+						result = getValueFromPath(possibleResult.valueRef)
+					else:
+						result = possibleResult.value
+					break
+		elif resultMode == "stringConcat":
+			result = ""
+			var keys = function.result.keys()
+			keys.sort_custom(SorterByIndexInt, "sort")
+			for key in keys:
+				var possibleResult = function.result[key]
+				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+					if possibleResult.has("valueCalc"):
+						result += parseText(possibleResult.valueCalc)
+					elif possibleResult.has("valueRef"):
+						result += str(getValueFromPath(possibleResult.valueRef))
+					else:
+						result += str(possibleResult.value)
+		elif resultMode == "mathAdd":
+			result = 0
+			var keys = function.result.keys()
+			for key in keys:
+				var possibleResult = function.result[key]
+				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+					if possibleResult.has("valueCalc"):
+						result += float(parseText(possibleResult.valueCalc))
+					elif possibleResult.has("valueRef"):
+						result += getValueFromPath(possibleResult.valueRef)
+					else:
+						result += possibleResult.value
+						
+		for i in range(argumentCount):
+			functionObjects.pop_back()
 	
 	return result
 			
 	
 func getObjectFromPath(path):
-	if(path == "FOBJ"): return functionObjects[functionObjects.size()-1]
+	#if(path == "FOBJ"): return functionObjects[functionObjects.size()-1]
+	if(path == "FOBJ"): return getFOBJ(1)
 	if(path == "PlayerData"): return PlayerData
 	elif(path == "WorldData"): return WorldData
 	elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
-	
+	#elif(path.begins_with("FOBJ")): return functionObjects[functionObjects.size()-int(path.substr(4,path.length()-4))]
+	elif(path.begins_with("FOBJ")): return getFOBJ(int(path.substr(4,path.length()-4)))
 	return null
 
 func setValueAtPath(path,value):
@@ -429,10 +534,16 @@ func checkCondition(condition):
 		return false
 	elif condition.mode == "eq":
 		var valueFromPath = getValueFromPath(condition["var"])
-		return Util.equals(valueFromPath,conditionValue)
+		return Util.equals(conditionValue,valueFromPath)
 	elif condition.mode == "neq":
 		var valueFromPath = getValueFromPath(condition["var"])
-		return !Util.equals(valueFromPath,conditionValue)
+		return !Util.equals(conditionValue,valueFromPath)
+	elif condition.mode == "heq":
+		var valueFromPath = getValueFromPath(condition["var"])
+		return (Util.bigger(valueFromPath,conditionValue) or Util.equals(conditionValue,valueFromPath))
+	elif condition.mode == "has":
+		var target = getValueFromPath(condition["target"])
+		return target.has(condition["index"])
 	
 	return false
 
@@ -479,7 +590,6 @@ func loadItems():
 	for itemFile in itemFiles:
 		var itemFileParts = itemFile.split(".")
 		loadItem(itemFileParts[0])
-	print(items)
 	print("Complete loading Items")
 
 func loadLocation(locationId):
@@ -532,10 +642,17 @@ func reachableLocationLink(rl,linkSelf="DEFAULT"):
 
 func continueGame():
 	MetaData = loadMetadata("ber")
+	loadFunctions()
 	loadItems()
+	loadModifiers()
 	loadNPCs()
 	SaveGameLoad()
 	gotoMain()
+
+func detailsHide():
+	CurrentUi.UIGroup = "uiUpdate"
+	CurrentUi.ShowDetailsPC = false
+	updateUI()
 
 func detailsShow():
 	MiscData.currentNpcId[3] = PlayerData.ID

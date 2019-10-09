@@ -4,7 +4,8 @@
             "first":"*names_first_female_90s",
             "last":"*names_last"
         },
-        "texture": "*textures_female_18-25"
+        "texture": "*textures_female_18-25",
+        "known": false
     },
     "schedule":{
         "cityCenter":[

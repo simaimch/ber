@@ -154,7 +154,14 @@ func equals(a,b):
 	
 	if (ta == TYPE_REAL or ta == TYPE_INT) and (tb == TYPE_REAL or tb == TYPE_INT):
 		if a == b: return true
-	elif a == b:
+	
+	if ta == TYPE_BOOL and tb != TYPE_BOOL:
+		b = bool(b)
+		
+	#if tb == TYPE_BOOL and ta != TYPE_BOOL:
+	#	a = bool(a)
+	
+	if a == b:
 		return true
 		
 	return false
