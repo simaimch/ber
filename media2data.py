@@ -72,6 +72,7 @@ def mediaFolder2Data(path):
 data = mediaFolder2Data('media/texture/items/shoes/set1/')
 
 with open('test.json','w') as outfile:
-	json.dump(data,outfile)
+	#json.dump(data,outfile)
+	outfile.write(json.dumps(data, indent=4, sort_keys=True))
 
 

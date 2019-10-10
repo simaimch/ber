@@ -12,3 +12,5 @@ media/
 *.import
 
 *.xlsx
+
+test.json
