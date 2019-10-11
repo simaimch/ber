@@ -74,7 +74,8 @@ var WorldData = {
 	"Time": 0,
 	"TimeOffset":1537430400,
 	"Weather":"clear",
-	"SunPosition":"dawn"
+	"SunPosition":"dawn",
+	"Shops":{}
 }
 
 var MiscData = {
@@ -258,6 +259,8 @@ func itemslot2bodypart(itemslot):
 
 func hasValue(obj, index):
 	if obj.has(index): return true
+	var cindex = "~"+index
+	if obj.has(cindex): return true
 	if obj.has("persist"): return hasValue(obj.persist, index)
 	return false
 
@@ -342,7 +345,11 @@ func getArgumentsFromString(s):
 	return result
 
 func getValueFromPath(path,default=""):
+	if path[0] == "'" and path[path.length()-1] == "'":
+		return path.substr(1,path.length()-2)
+	
 	if path[0] == "?":
+		#Call a function
 		var functionArr = path.split(":",false,1)
 		var functionId = functionArr[0].substr(1,functionArr[0].length()-1)
 		#var functionObj = getValueFromPath(functionArr[1])
@@ -389,6 +396,8 @@ func getValueFromFunction(functionId,functionParameter):
 		var a = float(arguments[0])
 		var b = float(arguments[1])
 		result = a - b
+	elif functionId == "TIME":
+		result = Util.time(now(),arguments[0])
 	else:
 	
 		var function = functions[functionId]
@@ -483,10 +492,41 @@ func setValueAtPath(path,value):
 		
 	cObj[pathArr[i]] = value
 	
-func shop(shopKeywords):
+func shop(arguments):
+	
+	if !WorldData.has("shops"): WorldData.shops = {}
+	if !WorldData.shops.has(arguments.ID): WorldData.shops[arguments.ID] = {"validTil":-1,"items":[]}
+	
+	if WorldData.shops[arguments.ID].validTil < WorldData.Time:
+		var possibleItems = []
+		for itemId in items:
+			var item = items[itemId]
+			if typeof(arguments.kw) == TYPE_STRING:
+				if arguments.kw in item.shopKWs:
+					possibleItems.append(itemId)
+			elif typeof(arguments.kw) == TYPE_ARRAY or typeof(arguments.kw) == TYPE_STRING_ARRAY:
+				for kw in arguments.kw:
+					if kw in item.shopKWs:
+						possibleItems.append(itemId)
+						break
+		possibleItems.shuffle()
+		var itemCountMax = 20
+		var itemCountMin = 10
+		if arguments.has("itemCountMax"): itemCountMax = arguments.itemCountMax
+		if arguments.has("itemCountMin"): itemCountMin = arguments.itemCountMin
+		
+		var itemCount = rng.randi_range(itemCountMin,itemCountMax)
+		
+		if possibleItems.size() > itemCount : possibleItems.resize(itemCount)
+		
+		WorldData.shops[arguments.ID].items = possibleItems
+		
+		WorldData.shops[arguments.ID].validTil = GameManager.getValueFromPath(arguments.validTil)
+		print(WorldData.shops[arguments.ID].validTil)
+	
 	CurrentUi.UIGroup = "uiShop"
 	CurrentUi.ShowShop = true
-	CurrentUi.ShopKeywords = shopKeywords
+	CurrentUi.ShopID = arguments.ID
 	shopUpdateItems()
 	
 
@@ -497,20 +537,14 @@ func shopClose():
 	updateUI()
 	
 func shopUpdateItems():
-	var shopKeywords = CurrentUi.ShopKeywords
+	var shopID = CurrentUi.ShopID
+	var shopItems = WorldData.shops[shopID].items
 	CurrentUi.ShopItems.clear()
 	
-	for itemId in items:
+	for itemId in shopItems:
 		var item = items[itemId]
 		if CurrentUi.ShopShowOwned or !(itemId in PlayerData.inventory):
-			if typeof(shopKeywords) == TYPE_STRING:
-				if shopKeywords in item.shopKWs:
-					CurrentUi.ShopItems.append(item)
-			elif typeof(shopKeywords) == TYPE_ARRAY or typeof(shopKeywords) == TYPE_STRING_ARRAY:
-				for kw in shopKeywords:
-					if kw in item.shopKWs:
-						CurrentUi.ShopItems.append(item)
-						break
+			CurrentUi.ShopItems.append(item)
 			
 	updateUI()
 

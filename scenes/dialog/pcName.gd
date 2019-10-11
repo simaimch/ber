@@ -1,4 +1,4 @@
-extends PopupDialog
+extends PopupPanel
 
 var fname = ""
 var lname = ""

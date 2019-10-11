@@ -17,11 +17,15 @@ func setLocation(l):
 	else:
 		t = targetLocation.text
 	setText(t)
-	setTexture(GameManager.getValue(targetLocation,"bg"))
+	
+	if GameManager.hasValue(targetLocation,"rlTexture"):
+		setTexture(GameManager.getValue(targetLocation,"rlTexture"))
+	elif GameManager.hasValue(targetLocation,"bg"):
+		setTexture(GameManager.getValue(targetLocation,"bg"))
 
 func setText(text):
 	$Label.text = text
 	
 func setTexture(path):
-	var texture = load(path)
+	var texture = Util.texture(path)#load(path)
 	$TextureRect.set_texture(texture)

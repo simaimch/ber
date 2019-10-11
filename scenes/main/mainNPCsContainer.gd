@@ -1,4 +1,4 @@
-extends MarginContainer
+extends PanelContainer
 
 func updateUI(CurrentUi):
 	if CurrentUi.ShowNPCs == true:

@@ -175,3 +175,22 @@ func texture(path):
 	if fileExists(path):
 		return load(path)
 	return preload("res://media/texture/missingTexture.jpg")
+	
+func time(now,arg):
+	var nowDict = getDateTime(now)
+	var target = nowDict.duplicate()
+	
+	match arg:
+		"NEXT_SUN":
+			var daysTilTarget = 7 - nowDict.weekday
+			if daysTilTarget > 7: daysTilTarget -= 7
+			target = getUnixTime(datetimeResetTime(target))
+			target += daysTilTarget * 86400
+		"NEXT_MON":
+			var daysTilTarget = 8 - nowDict.weekday # Cant do mod since 7%7=0
+			if daysTilTarget > 7: daysTilTarget -= 7
+			target = getUnixTime(datetimeResetTime(target))
+			target += daysTilTarget * 86400
+		
+	return target
+	

@@ -22,20 +22,37 @@
             {
                 "locationId":"SELF",
                 "time": 180
+            },
+            {
+                "locationId":"SELF.shopFN",
+                "time": 60
+            }
+        ]
+    },
+    "shopFN":{
+        "rlTexture":"res://media/texture/locations/shop/fn.png",
+        "bg":"res://media/texture/locations/shop/fnInterior.jpg",
+        "label":"",
+        "npcs": false,
+        "text":"F+N (Fröken and Nilsson) is a Swedish multinational clothing-retail company.",
+        "rl":[
+            {
+                "locationId":"SELF.interior",
+                "time": 60
             }
         ],
         "actions": {
             "1000":{
                 "Label": "Shop (Dresses)",
-                "gotoShop":"test"
+                "gotoShop":{"ID":"FN_CC_Dress","kw":"test","itemCountMin":10,"itemCountMax":16,"validTil":"?TIME:'NEXT_MON'"}
             },
             "990":{
                 "Label": "Shop (Shoes)",
-                "gotoShop":"shoe"
+                "gotoShop":{"ID":"FN_CC_Shoe","kw":"shoe","itemCountMin":10,"itemCountMax":16,"validTil":"?TIME:'NEXT_MON'"}
             },
             "980":{
                 "Label": "Shop (Underwear)",
-                "gotoShop":"underwear"
+                "gotoShop":{"ID":"FN_CC_Underwear","kw":"underwear","itemCountMin":10,"itemCountMax":16,"validTil":"?TIME:'NEXT_MON'"}
             },
             "900":{
                 "Label": "Wardrobe",

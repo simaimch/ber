@@ -2,6 +2,7 @@ extends Button
 
 var npc
 var id
+var tooltipText
 
 func linkNpc():
 	npc = GameManager.getNPC(id)
@@ -9,11 +10,11 @@ func linkNpc():
 func setNPC(npcId):
 	id = npcId
 	linkNpc()
-	text = GameManager.getNPCDescription(npc) +"\n"+ GameManager.getValue(npc,"name.first")+"\n"+str(Util.getAge(GameManager.now(),GameManager.getValue(npc,"bday")))
+	tooltipText = GameManager.getNPCDescription(npc) +"\n"+ GameManager.getValue(npc,"name.first")+"\n"+str(Util.getAge(GameManager.now(),GameManager.getValue(npc,"bday")))
 	$TextureRect.texture = load(GameManager.getValue(npc,"texture"))
 
 func _on_PresentNPC_mouse_entered():
-	get_tree().call_group("tooltip","showTooltip",{"text":text,"followMouse":true})
+	get_tree().call_group("tooltip","showTooltip",{"text":tooltipText,"followMouse":true})
 
 
 func _on_PresentNPC_mouse_exited():
