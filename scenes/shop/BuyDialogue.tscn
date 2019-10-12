@@ -6,6 +6,7 @@
 [node name="BuyDialogue" type="PopupDialog" groups=[
 "uiShopDialogue",
 ]]
+visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -24,9 +25,9 @@ size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 margin_left = 60.0
-margin_top = 78.0
+margin_top = 60.0
 margin_right = 360.0
-margin_bottom = 556.0
+margin_bottom = 574.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
@@ -53,10 +54,26 @@ margin_bottom = 436.0
 text = "50,00 €"
 align = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+[node name="ErrorPriceTooHigh" type="Label" parent="CenterContainer/VBoxContainer"]
 margin_top = 440.0
 margin_right = 300.0
-margin_bottom = 460.0
+margin_bottom = 454.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+text = "You can't afford this item."
+align = 1
+
+[node name="ErrorOwned" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_top = 458.0
+margin_right = 300.0
+margin_bottom = 472.0
+custom_colors/font_color = Color( 0.494118, 0.792157, 0.0627451, 1 )
+text = "You already own this item."
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 476.0
+margin_right = 300.0
+margin_bottom = 496.0
 size_flags_vertical = 3
 alignment = 1
 
@@ -74,9 +91,9 @@ size_flags_horizontal = 3
 text = "No"
 
 [node name="MessageLabel" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_top = 464.0
+margin_top = 500.0
 margin_right = 300.0
-margin_bottom = 478.0
+margin_bottom = 514.0
 align = 1
 [connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/ButtonYes" to="." method="_on_ButtonYes_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/ButtonNo" to="." method="_on_ButtonNo_pressed"]
