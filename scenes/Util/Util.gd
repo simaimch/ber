@@ -170,6 +170,16 @@ func equals(a,b):
 func fileExists(path):
 	var file2Check = File.new()
 	return file2Check.file_exists(path)
+
+func isInStr(a,b):
+	if typeof(a) != TYPE_STRING: return false
+	if typeof(b) == TYPE_STRING:
+		if a == b:
+			return true
+	if typeof(b) == TYPE_ARRAY or typeof(b) == TYPE_STRING_ARRAY:
+		if a in b:
+			return true
+	return false
 		
 func texture(path):
 	if fileExists(path):

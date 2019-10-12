@@ -3,8 +3,8 @@ extends Control
 func executeAction(action):
 	GameManager.execute(action)
 
-func gotoLocation(targetLocation,time):
-	GameManager.gotoLocation(targetLocation,time)
+func gotoLocation(targetLocation,time,mode):
+	GameManager.gotoLocation(targetLocation,time,mode)
 	#updateUI()
 
 func npcDialog(npc):

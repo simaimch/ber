@@ -1,0 +1,12 @@
+{
+    "testEvent":{
+        "listen": "timePass",
+        "arguments":"*",
+        "mtth": 5,
+        "actions":{
+            "PlayerData":{
+                "money":{"mode":"inc","value":10000}
+            }
+        }
+    }
+}

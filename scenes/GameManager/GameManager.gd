@@ -85,6 +85,7 @@ var MiscData = {
 }
 
 var dialogues = {}
+var events = {}
 var functions = {}
 var items = {}
 var locations = {}
@@ -478,6 +479,21 @@ func getObjectFromPath(path):
 	elif(path.begins_with("FOBJ")): return getFOBJ(int(path.substr(4,path.length()-4)))
 	return null
 
+func modValueAtPath(path,mode,value):
+	
+	
+	if mode == "set": 
+		setValueAtPath(path,value)
+		return
+		
+	var oldValue = getValueFromPath(path)
+	var newValue
+	
+	if mode == "inc": 
+		newValue = oldValue + value
+		
+	setValueAtPath(path,newValue)
+
 func setValueAtPath(path,value):
 	var cObj
 	var pathArr = path.split(".")
@@ -590,6 +606,31 @@ func loadDialogue(dialogueId):
 	if temp.error == OK:
 		dialogues[dialogueId] = temp.result
 
+func loadEvent(filePath):
+	var file = File.new()
+	file.open("res://data/event/"+filePath+".json", file.READ)
+	var text = file.get_as_text()
+	file.close()
+	var temp = JSON.parse(text)
+	if temp.error == OK:
+		var fitems = temp.result
+		for eventId in fitems:
+			var event = fitems[eventId]
+			event.ID = eventId
+			events[event.listen][eventId] = event
+	else:
+		print("Error loading Items from file "+filePath+": "+str(temp.error))
+
+func loadEvents():
+	events = {}
+	events.timePass = {}
+	print("Start loading Events")
+	var itemFiles = Util.getFilesInFolder("res://data/event")
+	for itemFile in itemFiles:
+		var itemFileParts = itemFile.split(".")
+		loadEvent(itemFileParts[0])
+	print("Complete loading Events")
+
 func loadFunctions():
 	print("Start loading Functions")
 	var file = File.new()
@@ -676,6 +717,7 @@ func reachableLocationLink(rl,linkSelf="DEFAULT"):
 
 func continueGame():
 	MetaData = loadMetadata("ber")
+	loadEvents()
 	loadFunctions()
 	loadItems()
 	loadModifiers()
@@ -745,6 +787,7 @@ func moneySpend(m):
 
 func newGame():
 	MetaData = loadMetadata("ber")
+	loadEvents()
 	loadFunctions()
 	loadItems()
 	loadModifiers()
@@ -756,31 +799,23 @@ func newGame():
 	gotoMain()
 	
 func execute(commands):
+	
 	var consume = false
+	
+	if typeof(commands) == TYPE_ARRAY:
+		for command in commands:
+			if execute(commands): consume = true
+		return consume
 	
 	if commands.has("bg"):
 		CurrentUi.Bg = commands["bg"]
 		
 	if commands.has("PlayerData"):
 		for key in commands.PlayerData:
-			setValueAtPath("PlayerData."+key,commands.PlayerData[key])
-#			var PlayerDataEntry = commands.PlayerData[key]
-#			var newValue
-#			if typeof(PlayerDataEntry) == TYPE_STRING or typeof(PlayerDataEntry) == TYPE_INT or typeof(PlayerDataEntry) == TYPE_REAL:
-#				newValue = PlayerDataEntry
-#
-#			var pathArr = key.split(".")
-#			var i = 0
-#			var cPos = PlayerData
-#			while i+1<pathArr.size():
-#				if !cPos.has(pathArr[i]):
-#					cPos[pathArr[i]] = {}
-#				cPos = cPos[pathArr[i]]
-#				i+= 1
-#
-#			cPos[pathArr[i]] = newValue
-		
-	
+			if typeof(commands.PlayerData[key]) == TYPE_DICTIONARY:
+				modValueAtPath("PlayerData."+key,commands.PlayerData[key].mode,commands.PlayerData[key].value)
+			else:
+				setValueAtPath("PlayerData."+key,commands.PlayerData[key])
 		
 	if commands.has("NPCData"):
 		for key in commands.NPCData:
@@ -974,10 +1009,10 @@ func npcDialogUpdate(dialogue):
 	
 	
 
-func gotoLocation(locationId,time):
+func gotoLocation(locationId,time,mode):
 	MiscData.currentLocationID = locationId
 	var gotoLocation = getLocation(locationId)
-	timeMove(time)
+	timePass(time,mode)
 	executeLocation(gotoLocation)
 
 func gotoMain():
@@ -986,8 +1021,18 @@ func gotoMain():
 func _deffered_gotoMain():
 	return get_tree().change_scene(mainScene)
 	
+func timePass(t,activity):
+	if t <= 0: return
 	
+	for eventID in events.timePass:
+		var event = events.timePass[eventID]
+		if event.arguments == "*" or Util.isInStr(activity,event.arguments):
+			var chanceToHappen = 1-pow(1-(1/event.mtth),t/60)
+			if chanceToHappen >= rng.randf():
+				execute(event.actions)
+		
 func timeMove(t):
+	#meant for internal use, most modules might want to call timePass()
 	t = int(t)
 	WorldData.Time += t
 	CurrentUi.Time = now()
@@ -1051,6 +1096,7 @@ func recalcUI():
 	updateUI()
 
 func updateUI():
+	playerData2UI()
 	get_tree().call_group(GameManager.CurrentUi.UIGroup,"updateUI",GameManager.CurrentUi)
 
 

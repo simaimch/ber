@@ -4,7 +4,7 @@ var duration = 0
 var transferInfo
 
 func _pressed():
-	get_tree().call_group("gameCommand","gotoLocation",transferInfo.locationId,transferInfo.time)
+	get_tree().call_group("gameCommand","gotoLocation",transferInfo.locationId,transferInfo.time,"walk")
 
 func setLocation(l):
 	transferInfo = l
