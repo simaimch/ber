@@ -48,6 +48,7 @@ var PlayerData = {
 	"inventory":{},
 	"modifier":{},
 	"money":10000,
+	"name":{"first":"","last":""},
 	"skill":{
 		"heels":2
 	},
@@ -91,6 +92,7 @@ var items = {}
 var locations = {}
 var modifiers = {}
 var npcs = {}
+var skills = {}
 
 var functionObjects = []
 
@@ -706,6 +708,24 @@ func loadNPCs():
 		var npcFileParts = npcFile.split(".")
 		loadNPC(npcFileParts[0])
 	print("Complete loading NPCs")
+	
+
+func loadSkills():
+	print("Start loading Skills")
+	var file = File.new()
+	file.open("res://data/misc/skills.json", file.READ)
+	var text = file.get_as_text()
+	file.close()
+	var temp = JSON.parse(text)
+	if temp.error == OK:
+		var fitems = temp.result
+		for itemId in fitems:
+			var item = fitems[itemId]
+			item.ID = itemId
+			skills[itemId] = item
+	else:
+		print("Error loading Skills: "+str(temp.error))
+	print("Complete loading Skills")
 
 func reachableLocationLink(rl,linkSelf="DEFAULT"):
 	var targetArr = rl.locationId.split(".")
@@ -717,13 +737,17 @@ func reachableLocationLink(rl,linkSelf="DEFAULT"):
 
 func continueGame():
 	MetaData = loadMetadata("ber")
+	loadConstantData()
+	SaveGameLoad()
+	gotoMain()
+
+func loadConstantData():
 	loadEvents()
 	loadFunctions()
 	loadItems()
 	loadModifiers()
 	loadNPCs()
-	SaveGameLoad()
-	gotoMain()
+	loadSkills()
 
 func detailsHide():
 	CurrentUi.UIGroup = "uiUpdate"
@@ -787,11 +811,7 @@ func moneySpend(m):
 
 func newGame():
 	MetaData = loadMetadata("ber")
-	loadEvents()
-	loadFunctions()
-	loadItems()
-	loadModifiers()
-	loadNPCs()
+	loadConstantData()
 	executeLocation(getLocation(MetaData.startLocation))
 
 	modifiersCalculate(PlayerData.ID)

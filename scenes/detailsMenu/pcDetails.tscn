@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/detailsMenu/pcDetails.gd" type="Script" id=1]
-[ext_resource path="res://scenes/detailsMenu/AppearanceModifiersContainer.gd" type="Script" id=2]
-[ext_resource path="res://scenes/detailsMenu/Modifier.tscn" type="PackedScene" id=3]
+[ext_resource path="res://font/Timeless-Bold24.tres" type="DynamicFont" id=2]
+[ext_resource path="res://scenes/detailsMenu/GeneralDataContainer.gd" type="Script" id=3]
+[ext_resource path="res://scenes/detailsMenu/SkillsContainer.gd" type="Script" id=4]
+[ext_resource path="res://scenes/detailsMenu/Skill.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/detailsMenu/AppearanceModifiersContainer.gd" type="Script" id=6]
+[ext_resource path="res://scenes/detailsMenu/Modifier.tscn" type="PackedScene" id=7]
 
 [node name="pcDetails" type="Control" groups=[
 "uiUpdate",
@@ -16,11 +20,124 @@ script = ExtResource( 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="AppearanceModifiersContainer" type="VBoxContainer" parent="." groups=[
-"uiDetails",
-]]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 2 )
 
-[node name="Modifier" parent="AppearanceModifiersContainer" instance=ExtResource( 3 )]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GeneralDataContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+editor/display_folded = true
+margin_right = 637.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/GeneralDataContainer"]
+margin_right = 637.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "General Data"
+align = 1
+
+[node name="GeneralDataContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer/GeneralDataContainer" groups=[
+"uiDetails",
+]]
+margin_top = 32.0
+margin_right = 637.0
+margin_bottom = 92.0
+size_flags_horizontal = 3
+columns = 2
+script = ExtResource( 3 )
+
+[node name="FirstNameLabel" type="Label" parent="VBoxContainer/HBoxContainer/GeneralDataContainer/GeneralDataContainer"]
+margin_right = 150.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 150, 0 )
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "First Name"
+
+[node name="FirstNameDisplay" type="Label" parent="VBoxContainer/HBoxContainer/GeneralDataContainer/GeneralDataContainer"]
+margin_left = 154.0
+margin_right = 272.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "First Name"
+
+[node name="LastNameLabel" type="Label" parent="VBoxContainer/HBoxContainer/GeneralDataContainer/GeneralDataContainer"]
+margin_top = 32.0
+margin_right = 150.0
+margin_bottom = 60.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Last Name"
+
+[node name="LastNameDisplay" type="Label" parent="VBoxContainer/HBoxContainer/GeneralDataContainer/GeneralDataContainer"]
+margin_left = 154.0
+margin_top = 32.0
+margin_right = 272.0
+margin_bottom = 60.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Last Name"
+
+[node name="SkillsContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 641.0
+margin_right = 1278.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/SkillsContainer"]
+margin_right = 637.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Skills"
+align = 1
+
+[node name="SkillsContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/SkillsContainer" groups=[
+"uiDetails",
+]]
+margin_top = 32.0
+margin_right = 637.0
+margin_bottom = 62.0
+script = ExtResource( 4 )
+
+[node name="Skill" parent="VBoxContainer/HBoxContainer/SkillsContainer/SkillsContainer" instance=ExtResource( 5 )]
+
+[node name="ModifiersContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 1282.0
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/ModifiersContainer"]
+margin_right = 638.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Active Modifiers"
+align = 1
+
+[node name="AppearanceModifiersContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/ModifiersContainer" groups=[
+"uiDetails",
+]]
+editor/display_folded = true
+margin_top = 32.0
+margin_right = 638.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 6 )
+
+[node name="Modifier" parent="VBoxContainer/HBoxContainer/ModifiersContainer/AppearanceModifiersContainer" instance=ExtResource( 7 )]
+margin_right = 638.0
