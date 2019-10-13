@@ -254,7 +254,7 @@
         "actions": {
             "100":{
                 "Label": "Back",
-                "goto":"SELF.1"
+                "goto":"SELF.start"
             }
         }
     }
