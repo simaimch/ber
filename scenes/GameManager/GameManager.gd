@@ -81,6 +81,7 @@ var MiscData = {
 	currentNpcId = ["","","",""], #0-2: Dialogue, 3: Script calculations
 	currentDialogueID = "",
 	currentLocationID = "",
+	locationStack = []
 }
 
 var dialogues = {}
@@ -836,6 +837,10 @@ func execute(commands):
 			if execute(commands): consume = true
 		return consume
 	
+	if commands.has("debug"):
+		print(str(OS.get_ticks_msec())+":")
+		print(commands)
+	
 	if commands.has("bg"):
 		CurrentUi.Bg = commands["bg"]
 		
@@ -861,6 +866,15 @@ func execute(commands):
 		var gotoLocation = getLocation(commands["goto"])
 		executeLocation(gotoLocation)
 		return true
+	
+	if commands.has("gotoLocationPop"):
+		var locationId = MiscData.locationStack.pop_back()
+		return execute({"goto":locationId})
+	
+	if commands.has("interrupt"):
+		MiscData.locationStack.append(MiscData.currentLocationID)
+		return execute({"goto":commands.interrupt})
+		
 	if commands.has("gotoShop"):
 		shop(commands.gotoShop)
 		return true
@@ -868,7 +882,7 @@ func execute(commands):
 	if commands.has("showWardrobe"):
 		wardrobe()
 		return true
-		
+	
 	if commands.has("showDialog"):
 		var dialog = load("res://scenes/dialog/"+commands.showDialog+".tscn").instance()
 		get_tree().get_root().add_child(dialog)
@@ -1049,8 +1063,9 @@ func gotoLocation(transferInfo):#locationId,time,mode):
 	var mode = getValue(transferInfo,"mode","walk")
 	MiscData.currentLocationID = locationId
 	var gotoLocation = getLocation(locationId)
-	timePass(time,mode)
 	executeLocation(gotoLocation)
+	timePass(time,mode)
+	
 
 func gotoMain():
 	call_deferred("_deffered_gotoMain")
@@ -1064,7 +1079,9 @@ func timePass(t,activity):
 	for eventID in events.timePass:
 		var event = events.timePass[eventID]
 		if event.arguments == "*" or Util.isInStr(activity,event.arguments):
-			var chanceToHappen = 1-pow(1-(1/event.mtth),t/60)
+			var chanceToHappen = 1 # without mtth the event will happen no matter what
+			if event.has("mtth"):
+				chanceToHappen = 1-pow(1-(1/event.mtth),t/60)
 			if chanceToHappen >= rng.randf():
 				execute(event.actions)
 				

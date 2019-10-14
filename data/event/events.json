@@ -1,4 +1,11 @@
 {
+    "subway":{
+        "listen": "timePass",
+        "arguments":"subway",
+        "actions":{
+            "interrupt":"subway.event"
+        }
+    },
     "testEvent":{
         "listen": "timePass",
         "arguments":"*",

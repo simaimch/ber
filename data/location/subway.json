@@ -3,7 +3,9 @@
         "rl":[
             {
                 "locationId":"cityCenter.subway",
-                "time": 180,
+                "time": 1200,
+                "label":"Alexanderplatz",
+                "mode":"subway",
                 "condition":{
                     "var":"MiscData.currentLocationID",
                     "mode":"neq",
@@ -12,7 +14,9 @@
             },
             {
                 "locationId":"testStreet.subway",
-                "time": 180,
+                "time": 1200,
+                "label":"Görlitzer Straße",
+                "mode":"subway",
                 "condition":{
                     "var":"MiscData.currentLocationID",
                     "mode":"neq",
@@ -20,5 +24,14 @@
                 }
             }
         ]
+    },
+    "event":{
+        "text":"You are driving with the subway.",
+        "actions": {
+            "1000":{
+                "Label": "Continue",
+                "gotoLocationPop":true
+            }
+        }
     }
 }
