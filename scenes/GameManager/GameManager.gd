@@ -478,7 +478,8 @@ func getValueFromFunction(functionId,functionParameter):
 func getObjectFromPath(path):
 	#if(path == "FOBJ"): return functionObjects[functionObjects.size()-1]
 	if(path == "FOBJ"): return getFOBJ(1)
-	if(path == "PlayerData"): return PlayerData
+	if(path == "MiscData"): return MiscData
+	elif(path == "PlayerData"): return PlayerData
 	elif(path == "WorldData"): return WorldData
 	elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
 	#elif(path.begins_with("FOBJ")): return functionObjects[functionObjects.size()-int(path.substr(4,path.length()-4))]
@@ -913,8 +914,9 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 	CurrentUi.RL.clear()
 	if location.has("rl"):
 		CurrentUi.ShowRL = true
-		for i in location.rl:
-			CurrentUi.RL.append(reachableLocationLink(i))
+		for rl in location.rl:
+			if !rl.has("condition") or checkCondition(rl.condition):
+				CurrentUi.RL.append(reachableLocationLink(rl))
 	else:
 		CurrentUi.ShowRL = false
 	

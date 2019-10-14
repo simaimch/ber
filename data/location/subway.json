@@ -2,8 +2,22 @@
     "template":{
         "rl":[
             {
-                "locationId":"cityCenterMall",
-                "time": 180
+                "locationId":"cityCenter.subway",
+                "time": 180,
+                "condition":{
+                    "var":"MiscData.currentLocationID",
+                    "mode":"neq",
+                    "val":"cityCenter.subway"
+                }
+            },
+            {
+                "locationId":"testStreet.subway",
+                "time": 180,
+                "condition":{
+                    "var":"MiscData.currentLocationID",
+                    "mode":"neq",
+                    "val":"testStreet.subway"
+                }
             }
         ]
     }
