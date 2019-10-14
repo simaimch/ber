@@ -3,7 +3,7 @@ extends Label
 func updateUI(CurrentUi):
 	if CurrentUi.ShowTime == true:
 		show()
-		text = Util.formtTime(CurrentUi.Time)
+		text = Util.formtTime(GameManager.now())
 	else:
 		hide()
 		

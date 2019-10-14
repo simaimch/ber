@@ -49,9 +49,7 @@ var PlayerData = {
 	"modifier":{},
 	"money":10000,
 	"name":{"first":"","last":""},
-	"skill":{
-		"heels":2
-	},
+	"skill":{},
 	"stat":{
 		"hunger":{
 			"current":10000,
@@ -73,7 +71,7 @@ var PlayerData = {
 
 var WorldData = {
 	"Time": 0,
-	"TimeOffset":1537430400,
+	"TimeOffset":0,
 	"Weather":"clear",
 	"SunPosition":"dawn",
 	"Shops":{}
@@ -590,6 +588,9 @@ func checkCondition(condition):
 	elif condition.mode == "neq":
 		var valueFromPath = getValueFromPath(condition["var"])
 		return !Util.equals(conditionValue,valueFromPath)
+	elif condition.mode == "leq":
+		var valueFromPath = getValueFromPath(condition["var"])
+		return (Util.bigger(conditionValue,valueFromPath) or Util.equals(conditionValue,valueFromPath))
 	elif condition.mode == "heq":
 		var valueFromPath = getValueFromPath(condition["var"])
 		return (Util.bigger(valueFromPath,conditionValue) or Util.equals(conditionValue,valueFromPath))
@@ -842,9 +843,13 @@ func execute(commands):
 			for entry in commands.NPCData[key]:
 				setValueAtPath("NPC"+key+".persist."+entry,commands.NPCData[key][entry])
 	
-	
+	if commands.has("Time"):
+		if commands.Time.has("Offset"):
+			WorldData.TimeOffset = int(commands.Time.Offset)
+		timeUpdate()
 		
 	if commands.has("goto"):
+		MiscData.currentLocationID = commands["goto"]
 		var gotoLocation = getLocation(commands["goto"])
 		executeLocation(gotoLocation)
 		return true
@@ -1050,18 +1055,22 @@ func timePass(t,activity):
 			var chanceToHappen = 1-pow(1-(1/event.mtth),t/60)
 			if chanceToHappen >= rng.randf():
 				execute(event.actions)
+				
+	for stat in PlayerData.stat:
+		PlayerData.stat[stat].current -= PlayerData.stat[stat].decay * t
+				
+	timeMove(t)
 		
 func timeMove(t):
 	#meant for internal use, most modules might want to call timePass()
 	t = int(t)
 	WorldData.Time += t
-	CurrentUi.Time = now()
-	
-	for stat in PlayerData.stat:
-		PlayerData.stat[stat].current -= PlayerData.stat[stat].decay * t
-	
-	playerData2UI()
+	#CurrentUi.Time = now()
+	timeUpdate()
+	#playerData2UI()
 
+func timeUpdate():
+	WorldData.TimeDict = Util.getDateTime(now())
 
 var preloadedTextures = []
 var preloadedTexturesMax = 20

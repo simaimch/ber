@@ -4,6 +4,7 @@ var duration = 0
 var transferInfo
 
 func _pressed():
+	get_tree().call_group("tooltip","hideTooltip",{})
 	get_tree().call_group("gameCommand","gotoLocation",transferInfo.locationId,transferInfo.time,"walk")
 
 func setLocation(l):
@@ -29,3 +30,10 @@ func setText(text):
 func setTexture(path):
 	var texture = Util.texture(path)#load(path)
 	$TextureRect.set_texture(texture)
+
+func _on_RLocation_mouse_entered():
+	get_tree().call_group("tooltip","showTooltip",{"text":$Label.text+"\n"+str(transferInfo.time)+" seconds","followMouse":true})
+
+
+func _on_RLocation_mouse_exited():
+	get_tree().call_group("tooltip","hideTooltip",{})

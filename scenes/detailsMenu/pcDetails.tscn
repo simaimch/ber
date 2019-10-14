@@ -1,12 +1,17 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/detailsMenu/pcDetails.gd" type="Script" id=1]
 [ext_resource path="res://font/Timeless-Bold24.tres" type="DynamicFont" id=2]
-[ext_resource path="res://scenes/detailsMenu/GeneralDataContainer.gd" type="Script" id=3]
-[ext_resource path="res://scenes/detailsMenu/SkillsContainer.gd" type="Script" id=4]
-[ext_resource path="res://scenes/detailsMenu/Skill.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/detailsMenu/AppearanceModifiersContainer.gd" type="Script" id=6]
-[ext_resource path="res://scenes/detailsMenu/Modifier.tscn" type="PackedScene" id=7]
+[ext_resource path="res://media/texture/npc/portrait/female_young/p(14).jpg" type="Texture" id=3]
+[ext_resource path="res://media/texture/body/female/hair/blonde/6-brastrap/hair(0).jpg" type="Texture" id=4]
+[ext_resource path="res://media/texture/body/female/figure/figure(1).jpg" type="Texture" id=5]
+[ext_resource path="res://scenes/detailsMenu/ClothesTexture.gd" type="Script" id=6]
+[ext_resource path="res://scenes/detailsMenu/ShoesTexture.gd" type="Script" id=7]
+[ext_resource path="res://scenes/detailsMenu/GeneralDataContainer.gd" type="Script" id=8]
+[ext_resource path="res://scenes/detailsMenu/SkillsContainer.gd" type="Script" id=9]
+[ext_resource path="res://scenes/detailsMenu/Skill.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/detailsMenu/AppearanceModifiersContainer.gd" type="Script" id=11]
+[ext_resource path="res://scenes/detailsMenu/Modifier.tscn" type="PackedScene" id=12]
 
 [node name="pcDetails" type="Control" groups=[
 "uiUpdate",
@@ -24,16 +29,149 @@ anchor_bottom = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1920.0
+margin_bottom = 430.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+margin_right = 380.0
+margin_bottom = 430.0
+size_flags_horizontal = 3
+
+[node name="FaceLabel" type="Label" parent="VBoxContainer/HBoxContainer2/VBoxContainer"]
+margin_right = 380.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Face"
+align = 1
+
+[node name="FaceTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer2/VBoxContainer"]
+margin_top = 32.0
+margin_right = 380.0
+margin_bottom = 430.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 384.0
+margin_right = 764.0
+margin_bottom = 430.0
+size_flags_horizontal = 3
+
+[node name="HairLabel" type="Label" parent="VBoxContainer/HBoxContainer2/VBoxContainer2"]
+margin_right = 380.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Hair"
+align = 1
+
+[node name="HairTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer2/VBoxContainer2"]
+margin_top = 32.0
+margin_right = 380.0
+margin_bottom = 430.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 6
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 768.0
+margin_right = 1148.0
+margin_bottom = 430.0
+size_flags_horizontal = 3
+
+[node name="FigureLabel" type="Label" parent="VBoxContainer/HBoxContainer2/VBoxContainer3"]
+margin_right = 380.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Figure"
+align = 1
+
+[node name="FigureTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer2/VBoxContainer3"]
+margin_top = 32.0
+margin_right = 380.0
+margin_bottom = 430.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 6
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 1152.0
+margin_right = 1532.0
+margin_bottom = 430.0
+size_flags_horizontal = 3
+
+[node name="ClothesLabel" type="Label" parent="VBoxContainer/HBoxContainer2/VBoxContainer4"]
+margin_right = 380.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Clothes"
+align = 1
+
+[node name="ClothesTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer2/VBoxContainer4" groups=[
+"uiDetails",
+]]
+margin_top = 32.0
+margin_right = 380.0
+margin_bottom = 430.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+script = ExtResource( 6 )
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 1536.0
+margin_right = 1920.0
+margin_bottom = 430.0
+size_flags_horizontal = 3
+
+[node name="ShoesLabel" type="Label" parent="VBoxContainer/HBoxContainer2/VBoxContainer5"]
+margin_right = 384.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Shoes"
+align = 1
+
+[node name="ShoesTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer2/VBoxContainer5" groups=[
+"uiDetails",
+]]
+margin_top = 32.0
+margin_right = 384.0
+margin_bottom = 430.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6
+script = ExtResource( 7 )
+
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 434.0
 margin_right = 1920.0
 margin_bottom = 1080.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+size_flags_stretch_ratio = 3.0
 
 [node name="GeneralDataContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 editor/display_folded = true
 margin_right = 637.0
-margin_bottom = 1080.0
+margin_bottom = 646.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -53,7 +191,7 @@ margin_right = 637.0
 margin_bottom = 92.0
 size_flags_horizontal = 3
 columns = 2
-script = ExtResource( 3 )
+script = ExtResource( 8 )
 
 [node name="FirstNameLabel" type="Label" parent="VBoxContainer/HBoxContainer/GeneralDataContainer/GeneralDataContainer"]
 margin_right = 150.0
@@ -91,7 +229,7 @@ text = "Last Name"
 [node name="SkillsContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 641.0
 margin_right = 1278.0
-margin_bottom = 1080.0
+margin_bottom = 646.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -109,14 +247,14 @@ align = 1
 margin_top = 32.0
 margin_right = 637.0
 margin_bottom = 62.0
-script = ExtResource( 4 )
+script = ExtResource( 9 )
 
-[node name="Skill" parent="VBoxContainer/HBoxContainer/SkillsContainer/SkillsContainer" instance=ExtResource( 5 )]
+[node name="Skill" parent="VBoxContainer/HBoxContainer/SkillsContainer/SkillsContainer" instance=ExtResource( 10 )]
 
 [node name="ModifiersContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 1282.0
 margin_right = 1920.0
-margin_bottom = 1080.0
+margin_bottom = 646.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -134,10 +272,10 @@ align = 1
 editor/display_folded = true
 margin_top = 32.0
 margin_right = 638.0
-margin_bottom = 1080.0
+margin_bottom = 646.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource( 6 )
+script = ExtResource( 11 )
 
-[node name="Modifier" parent="VBoxContainer/HBoxContainer/ModifiersContainer/AppearanceModifiersContainer" instance=ExtResource( 7 )]
+[node name="Modifier" parent="VBoxContainer/HBoxContainer/ModifiersContainer/AppearanceModifiersContainer" instance=ExtResource( 12 )]
 margin_right = 638.0
