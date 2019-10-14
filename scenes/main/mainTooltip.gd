@@ -11,7 +11,6 @@ func _process(delta):
 	if !sizeUpdated:
 		rect_size = rect_min_size
 		sizeUpdated = true
-		#show()
 		set_process(followMouse)
 	
 	rect_position = get_viewport().get_mouse_position() - rect_size

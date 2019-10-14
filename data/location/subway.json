@@ -1,0 +1,10 @@
+{
+    "template":{
+        "rl":[
+            {
+                "locationId":"cityCenterMall",
+                "time": 180
+            }
+        ]
+    }
+}

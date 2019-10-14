@@ -177,6 +177,13 @@ func fileExists(path):
 	var file2Check = File.new()
 	return file2Check.file_exists(path)
 
+func isArray(a):
+	match typeof(a):
+		TYPE_ARRAY: return true
+		TYPE_INT_ARRAY: return true
+		TYPE_STRING_ARRAY: return true
+	return false
+
 func isInStr(a,b):
 	if typeof(a) != TYPE_STRING: return false
 	if typeof(b) == TYPE_STRING:
@@ -186,6 +193,24 @@ func isInStr(a,b):
 		if a in b:
 			return true
 	return false
+
+func mergeInto(source,target):
+	if isArray(source) and isArray(target):
+		var result = [] # to make sure the result is TYPE_ARRAY
+		for i in target: result.append(i)
+		for i in source: result.append(i)
+		return result
+	if typeof(source) != TYPE_DICTIONARY: return {}
+	if typeof(target) != TYPE_DICTIONARY: return {}
+	
+	for key in source:
+		var value = source[key]
+		if !target.has(key):
+			target[key] = value
+		elif target.has("+"+key):
+			target[key] = mergeInto(value, target["+"+key])
+			
+	return target
 		
 func texture(path):
 	if fileExists(path):

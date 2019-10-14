@@ -14,7 +14,7 @@
         }
     ],
     "interior":{
-        "bg":"res://media/texture/locations/cityCenter/cityCanterMall0.jpg",
+        "bg":"res://media/texture/locations/cityCenter/cityCanterMall1.jpg",
         "label":"Mall (interior)",
         "npcs": true,
         "text":"The interior of a mall.",

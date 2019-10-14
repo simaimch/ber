@@ -7,9 +7,14 @@
                 "mode":"AND",
                 "conditions":[
                 {
-                    "var":"WorldData.Time",
-                    "mode":"eq",
-                    "val":0
+                    "var":"WorldData.TimeDict.hour",
+                    "mode":"heq",
+                    "val":9
+                },
+                {
+                    "var":"WorldData.TimeDict.hour",
+                    "mode":"leq",
+                    "val":10
                 }
             ]}
         },
@@ -24,6 +29,23 @@
         {
             "locationId":"cityCenterMall",
             "time": 180
+        },
+        {
+            "locationId":"SELF.subway",
+            "time": 180
         }
-    ]
+    ],
+
+    "subway":{
+        "rlTexture":"res://media/texture/locations/cityCenter/cityCenterSubway0.jpg",
+        "bg":"res://media/texture/locations/cityCenter/cityCenterSubway1.jpg",
+        "inherit":"subway.template",
+        "label":"Subway Station",
+        "+rl":[
+            {
+                "locationId":"SELF",
+                "time": 180
+            }
+        ]
+    }
 }

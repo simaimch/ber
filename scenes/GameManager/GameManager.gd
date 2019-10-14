@@ -163,6 +163,12 @@ func getLocation(locationId):
 	
 	l["SELF"] = locationArr[0]
 	l["ID"] = locationId
+	
+	if l.has("inherit"):
+		var parent = getLocation(l.inherit)
+		l = Util.mergeInto(parent,l)
+	
+	
 	return l
 	
 func getNPC(npcId):
@@ -1035,7 +1041,10 @@ func npcDialogUpdate(dialogue):
 	
 	
 
-func gotoLocation(locationId,time,mode):
+func gotoLocation(transferInfo):#locationId,time,mode):
+	var locationId = getValue(transferInfo,"locationId","start")
+	var time = getValue(transferInfo,"time",0)
+	var mode = getValue(transferInfo,"mode","walk")
 	MiscData.currentLocationID = locationId
 	var gotoLocation = getLocation(locationId)
 	timePass(time,mode)
