@@ -620,6 +620,7 @@ func loadEvent(filePath):
 		for eventId in fitems:
 			var event = fitems[eventId]
 			event.ID = eventId
+			if !events.has(event.listen): events[event.listen] = {}
 			events[event.listen][eventId] = event
 	else:
 		print("Error loading Items from file "+filePath+": "+str(temp.error))
@@ -1058,8 +1059,28 @@ func timePass(t,activity):
 				
 	for stat in PlayerData.stat:
 		PlayerData.stat[stat].current -= PlayerData.stat[stat].decay * t
+	
+	var hoursToCalc = Util.getHoursTilTime(now(),t+now())
+	var daysToCalc = Util.getDaysTilDate(now(),t+now(),false)
+	
+	if hoursToCalc > 0:
+		if events.has("timePass_HOUR"):
+			
+			for eventID in events.timePass_HOUR: 
+				var event = events.timePass_HOUR[eventID]
+				for i in range(hoursToCalc):
+					execute(event.actions)
+					
+	if daysToCalc > 0:
+		if events.has("timePass_DAY"):
+			for eventID in events.timePass_DAY: 
+				var event = events.timePass_DAY[eventID]
+				for i in range(daysToCalc):
+					execute(event.actions)
 				
 	timeMove(t)
+	
+	
 		
 func timeMove(t):
 	#meant for internal use, most modules might want to call timePass()

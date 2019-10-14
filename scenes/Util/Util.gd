@@ -97,6 +97,12 @@ func getDaysTilDate(now,target,anyyear = true):
 	var daysTilDate = int(secondsTilDate/86400)
 	return daysTilDate
 	
+func getHoursTilTime(now,target):
+	var nowDict = getDateTime(now)
+	var targetDict= getDateTime(target)
+	
+	return int(targetDict.hour - nowDict.hour + 24*getDaysTilDate(now,target,false))
+	
 func getDateTime(dt):
 	if typeof(dt) == TYPE_DICTIONARY: return dt
 	if typeof(dt) == TYPE_STRING: return string2DateTime(dt)

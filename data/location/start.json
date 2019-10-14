@@ -6,6 +6,7 @@
             "body.feet.texture":"res://media/texture/body/female/feet/feet_1.jpg",
             "body.hand.texture":"res://media/texture/body/female/hand/hand1.jpg",
             "body.lap.texture":"res://media/texture/body/female/lap/lap1.jpg",
+            "body.hair.length":510000,
             "skill.heels": 3,
             "trait.genes.appearance":2
         },

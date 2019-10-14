@@ -1,17 +1,18 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/detailsMenu/pcDetails.gd" type="Script" id=1]
 [ext_resource path="res://font/Timeless-Bold24.tres" type="DynamicFont" id=2]
 [ext_resource path="res://media/texture/npc/portrait/female_young/p(14).jpg" type="Texture" id=3]
 [ext_resource path="res://media/texture/body/female/hair/blonde/6-brastrap/hair(0).jpg" type="Texture" id=4]
-[ext_resource path="res://media/texture/body/female/figure/figure(1).jpg" type="Texture" id=5]
-[ext_resource path="res://scenes/detailsMenu/ClothesTexture.gd" type="Script" id=6]
-[ext_resource path="res://scenes/detailsMenu/ShoesTexture.gd" type="Script" id=7]
-[ext_resource path="res://scenes/detailsMenu/GeneralDataContainer.gd" type="Script" id=8]
-[ext_resource path="res://scenes/detailsMenu/SkillsContainer.gd" type="Script" id=9]
-[ext_resource path="res://scenes/detailsMenu/Skill.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scenes/detailsMenu/AppearanceModifiersContainer.gd" type="Script" id=11]
-[ext_resource path="res://scenes/detailsMenu/Modifier.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/detailsMenu/HairTexture.gd" type="Script" id=5]
+[ext_resource path="res://media/texture/body/female/figure/figure(1).jpg" type="Texture" id=6]
+[ext_resource path="res://scenes/detailsMenu/ClothesTexture.gd" type="Script" id=7]
+[ext_resource path="res://scenes/detailsMenu/ShoesTexture.gd" type="Script" id=8]
+[ext_resource path="res://scenes/detailsMenu/GeneralDataContainer.gd" type="Script" id=9]
+[ext_resource path="res://scenes/detailsMenu/SkillsContainer.gd" type="Script" id=10]
+[ext_resource path="res://scenes/detailsMenu/Skill.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/detailsMenu/AppearanceModifiersContainer.gd" type="Script" id=12]
+[ext_resource path="res://scenes/detailsMenu/Modifier.tscn" type="PackedScene" id=13]
 
 [node name="pcDetails" type="Control" groups=[
 "uiUpdate",
@@ -72,7 +73,9 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Hair"
 align = 1
 
-[node name="HairTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer2/VBoxContainer2"]
+[node name="HairTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer2/VBoxContainer2" groups=[
+"uiDetails",
+]]
 margin_top = 32.0
 margin_right = 380.0
 margin_bottom = 430.0
@@ -81,6 +84,7 @@ size_flags_vertical = 3
 texture = ExtResource( 4 )
 expand = true
 stretch_mode = 6
+script = ExtResource( 5 )
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
 margin_left = 768.0
@@ -102,7 +106,7 @@ margin_right = 380.0
 margin_bottom = 430.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 expand = true
 stretch_mode = 6
 
@@ -131,7 +135,7 @@ size_flags_vertical = 3
 texture = ExtResource( 3 )
 expand = true
 stretch_mode = 6
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 
 [node name="VBoxContainer5" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
 margin_left = 1536.0
@@ -158,7 +162,7 @@ size_flags_vertical = 3
 texture = ExtResource( 3 )
 expand = true
 stretch_mode = 6
-script = ExtResource( 7 )
+script = ExtResource( 8 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 434.0
@@ -191,7 +195,7 @@ margin_right = 637.0
 margin_bottom = 92.0
 size_flags_horizontal = 3
 columns = 2
-script = ExtResource( 8 )
+script = ExtResource( 9 )
 
 [node name="FirstNameLabel" type="Label" parent="VBoxContainer/HBoxContainer/GeneralDataContainer/GeneralDataContainer"]
 margin_right = 150.0
@@ -247,9 +251,9 @@ align = 1
 margin_top = 32.0
 margin_right = 637.0
 margin_bottom = 62.0
-script = ExtResource( 9 )
+script = ExtResource( 10 )
 
-[node name="Skill" parent="VBoxContainer/HBoxContainer/SkillsContainer/SkillsContainer" instance=ExtResource( 10 )]
+[node name="Skill" parent="VBoxContainer/HBoxContainer/SkillsContainer/SkillsContainer" instance=ExtResource( 11 )]
 
 [node name="ModifiersContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 margin_left = 1282.0
@@ -275,7 +279,9 @@ margin_right = 638.0
 margin_bottom = 646.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource( 11 )
+script = ExtResource( 12 )
 
-[node name="Modifier" parent="VBoxContainer/HBoxContainer/ModifiersContainer/AppearanceModifiersContainer" instance=ExtResource( 12 )]
+[node name="Modifier" parent="VBoxContainer/HBoxContainer/ModifiersContainer/AppearanceModifiersContainer" instance=ExtResource( 13 )]
 margin_right = 638.0
+[connection signal="mouse_entered" from="VBoxContainer/HBoxContainer2/VBoxContainer2/HairTexture" to="VBoxContainer/HBoxContainer2/VBoxContainer2/HairTexture" method="_on_HairTexture_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/HBoxContainer2/VBoxContainer2/HairTexture" to="VBoxContainer/HBoxContainer2/VBoxContainer2/HairTexture" method="_on_HairTexture_mouse_exited"]

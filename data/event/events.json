@@ -3,9 +3,25 @@
         "listen": "timePass",
         "arguments":"*",
         "mtth": 5,
+        "actions":{}
+    },
+    "hourUpdate":{
+        "listen":"timePass_HOUR",
         "actions":{
             "PlayerData":{
                 "money":{"mode":"inc","value":10000}
+            }
+        }
+    },
+    "dayUpdate":{
+        "listen":"timePass_DAY",
+        "actions":{}
+    },
+    "hairGrowth":{
+        "listen":"timePass_DAY",
+        "actions":{
+            "PlayerData":{
+                "body.hair.length":{"mode":"inc","value":500}
             }
         }
     }
