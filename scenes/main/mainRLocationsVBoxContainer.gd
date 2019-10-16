@@ -12,7 +12,7 @@ func clearChildren():
 func updateUI(CurrentUi):
 	clearChildren()
 	
-	for rl in GameManager.CurrentUi.RL:
+	for rl in CurrentUi.RL:
 		var rlInstance = rlocationPL.instance()
 		rlInstance.setLocation(rl)
 		add_child(rlInstance)

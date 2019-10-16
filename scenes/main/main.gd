@@ -16,6 +16,7 @@ func npcDialogOption(id):
 func shopClose():
 	GameManager.shopClose()
 
+# warning-ignore:unused_argument
 func _process(delta):
 	if Input.is_action_pressed("ui_quickload"):
 		GameManager.SaveGameLoad()

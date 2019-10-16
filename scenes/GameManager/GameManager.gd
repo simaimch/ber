@@ -28,14 +28,15 @@ var CurrentUi={
 	"ShowNPCs":false,
 	"ShowPlayerStat":true,
 	"ShowRL": true,
+	"ShowServices":false,
 	"ShowShop":false,
 	"ShowTime": true,
 	"ShowWardrobe":false,
 	"RL":[],
 	"Time":0,
 	"UIGroup":"uiUpdate",
-	"Wardrobe":{
-		
+	"Services":{"type":"","available":[],"availableCategories":{}},
+	"Wardrobe":{		
 		"seltype":"",
 		"selitems":[]
 	}
@@ -91,6 +92,7 @@ var items = {}
 var locations = {}
 var modifiers = {}
 var npcs = {}
+var services = {}
 var skills = {}
 
 var functionObjects = []
@@ -487,6 +489,9 @@ func getObjectFromPath(path):
 	elif(path.begins_with("FOBJ")): return getFOBJ(int(path.substr(4,path.length()-4)))
 	return null
 
+func getService(serviceId):
+	return services[serviceId]
+
 func modValueAtPath(path,mode,value):
 	
 	
@@ -719,6 +724,22 @@ func loadNPCs():
 		loadNPC(npcFileParts[0])
 	print("Complete loading NPCs")
 	
+func loadServices():
+	print("Start loading Services")
+	var file = File.new()
+	file.open("res://data/services/services.json", file.READ)
+	var text = file.get_as_text()
+	file.close()
+	var temp = JSON.parse(text)
+	if temp.error == OK:
+		var fitems = temp.result
+		for itemId in fitems:
+			var item = fitems[itemId]
+			item.ID = itemId
+			services[itemId] = item
+	else:
+		print("Error loading Services: "+str(temp.error))
+	print("Complete loading Services")
 
 func loadSkills():
 	print("Start loading Skills")
@@ -757,6 +778,7 @@ func loadConstantData():
 	loadItems()
 	loadModifiers()
 	loadNPCs()
+	loadServices()
 	loadSkills()
 
 func detailsHide():
@@ -877,6 +899,10 @@ func execute(commands):
 		
 	if commands.has("gotoShop"):
 		shop(commands.gotoShop)
+		return true
+		
+	if commands.has("services"):
+		services(commands.services)
 		return true
 		
 	if commands.has("showWardrobe"):
@@ -1200,6 +1226,29 @@ func wardrobeUpdateItems():
 func setItemWorn(item):
 	PlayerData.outfit.CURRENT[item.type] = item.ID
 	playerData2UI()
+	updateUI()
+
+func services(type):
+	CurrentUi.UIGroup = "uiServices"
+	CurrentUi.ShowServices = true
+	CurrentUi.Services.type = type
+	CurrentUi.Services.category = ""
+	
+	CurrentUi.Services.available.clear()
+	CurrentUi.Services.availableCategories.clear()
+	
+	for serviceId in services:
+		var service = services[serviceId]
+		if type in service.available:
+			CurrentUi.Services.available.append(serviceId)
+			if !CurrentUi.Services.availableCategories.has(service.category):
+				CurrentUi.Services.availableCategories[service.category] = {"ID":service.category,"label":service.category,"texture":service.texture}
+	updateUI()
+
+func servicesClose():
+	CurrentUi.UIGroup = "uiUpdate"
+	CurrentUi.ShowServices = false
+	#CurrentUi.Wardrobe.selitems.clear()
 	updateUI()
 	
 func undress(slot):

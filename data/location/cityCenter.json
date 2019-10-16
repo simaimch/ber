@@ -31,11 +31,32 @@
             "time": 180
         },
         {
+            "locationId":"SELF.kebabhouse",
+            "time": 180
+        },
+        {
             "locationId":"SELF.subway",
             "time": 180
         }
     ],
-
+    "kebabhouse":{
+        "bg":"res://media/texture/locations/kebab/kebabHouseInside.jpg",
+        "rlTexture":"res://media/texture/locations/kebab/kebabHouse.jpg",
+        "text":"Kabab House",
+        "label":"Kabab House",
+        "rl":[
+            {
+                "locationId":"SELF",
+                "time": 180
+            }
+        ],
+        "actions": {
+            "1000":{
+                "Label": "Order from Menu",
+                "services": "kebab"
+            }
+        }
+    },
     "subway":{
         "rlTexture":"res://media/texture/locations/cityCenter/cityCenterSubway0.jpg",
         "bg":"res://media/texture/locations/cityCenter/cityCenterSubway1.jpg",

@@ -1,0 +1,22 @@
+{
+    "kebab":{
+        "category":"food",
+        "available":["kebab"],
+        "name":"Döner Kebab",
+        "description":"Döner Kebab Description",
+        "texture":"res://media/texture/services/food/kebab.jpg",
+        "effects":[
+            {"food":{"calories":760000,"saturation":5000}}
+        ]
+    },
+    "water":{
+        "category":"drink",
+        "available":["kebab"],
+        "name":"Water",
+        "description":"Water Description",
+        "texture":"res://media/texture/services/drink/water.jpg",
+        "effects":[
+            {"drink":{"calories":0,"saturation":5000}}
+        ]
+    }
+}
