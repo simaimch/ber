@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://themes/default.tres" type="Theme" id=1]
 [ext_resource path="res://scenes/main/main.gd" type="Script" id=2]
@@ -13,19 +13,22 @@
 [ext_resource path="res://scenes/main/RLocation/RLocation.tscn" type="PackedScene" id=11]
 [ext_resource path="res://font/VarsityTeam-Bold64.tres" type="DynamicFont" id=12]
 [ext_resource path="res://scenes/main/mainStatusTime.gd" type="Script" id=13]
-[ext_resource path="res://font/VarsityTeam-Bold32.tres" type="DynamicFont" id=14]
-[ext_resource path="res://scenes/main/mainStatusMoney.gd" type="Script" id=15]
-[ext_resource path="res://scenes/main/mainStatusHunger.gd" type="Script" id=16]
-[ext_resource path="res://scenes/main/mainNPCsContainer.gd" type="Script" id=17]
-[ext_resource path="res://scenes/main/mainPresentNPCsVBoxContainer.gd" type="Script" id=18]
-[ext_resource path="res://scenes/main/PresentNPC/PresentNPC.tscn" type="PackedScene" id=19]
-[ext_resource path="res://scenes/npc/Dialog.tscn" type="PackedScene" id=20]
-[ext_resource path="res://scenes/services/Services.tscn" type="PackedScene" id=21]
-[ext_resource path="res://scenes/shop/Shop.tscn" type="PackedScene" id=22]
-[ext_resource path="res://scenes/shop/Shop.gd" type="Script" id=23]
-[ext_resource path="res://scenes/wardrobe/Wardrobe.tscn" type="PackedScene" id=24]
-[ext_resource path="res://scenes/detailsMenu/pcDetails.tscn" type="PackedScene" id=25]
-[ext_resource path="res://scenes/main/mainTooltip.gd" type="Script" id=26]
+[ext_resource path="res://scenes/main/StatusContainer.gd" type="Script" id=14]
+[ext_resource path="res://font/VarsityTeam-Bold32.tres" type="DynamicFont" id=15]
+[ext_resource path="res://scenes/main/mainStatusMoney.gd" type="Script" id=16]
+[ext_resource path="res://scenes/main/mainStatusHunger.gd" type="Script" id=17]
+[ext_resource path="res://scenes/main/mainNPCsContainer.gd" type="Script" id=18]
+[ext_resource path="res://scenes/main/mainPresentNPCsVBoxContainer.gd" type="Script" id=19]
+[ext_resource path="res://scenes/main/PresentNPC/PresentNPC.tscn" type="PackedScene" id=20]
+[ext_resource path="res://scenes/npc/Dialog.tscn" type="PackedScene" id=21]
+[ext_resource path="res://scenes/services/Services.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scenes/shop/Shop.tscn" type="PackedScene" id=23]
+[ext_resource path="res://scenes/shop/Shop.gd" type="Script" id=24]
+[ext_resource path="res://scenes/wardrobe/Wardrobe.tscn" type="PackedScene" id=25]
+[ext_resource path="res://scenes/detailsMenu/pcDetails.tscn" type="PackedScene" id=26]
+[ext_resource path="res://scenes/main/mainTooltip.gd" type="Script" id=27]
+[ext_resource path="res://scenes/main/StatusDetailsContainer.gd" type="Script" id=28]
+[ext_resource path="res://scenes/main/Statdisplay/Statdisplay.tscn" type="PackedScene" id=29]
 
 [node name="main" type="Control" groups=[
 "gameCommand",
@@ -110,7 +113,6 @@ script = ExtResource( 7 )
 [node name="RLocationsContainer" type="PanelContainer" parent="." groups=[
 "uiUpdate",
 ]]
-editor/display_folded = true
 anchor_bottom = 1.0
 margin_left = 60.0
 margin_top = 150.0
@@ -169,33 +171,34 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "123123123123123123123"
 script = ExtResource( 13 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="StatusBarContainer/HBoxContainer"]
+[node name="StatusContainer" type="HBoxContainer" parent="StatusBarContainer/HBoxContainer"]
 margin_left = 1689.0
 margin_right = 1840.0
 margin_bottom = 82.0
+script = ExtResource( 14 )
 
-[node name="StatusMoney" type="Label" parent="StatusBarContainer/HBoxContainer/HBoxContainer" groups=[
+[node name="StatusMoney" type="Label" parent="StatusBarContainer/HBoxContainer/StatusContainer" groups=[
 "uiUpdate",
 ]]
 margin_top = 23.0
 margin_right = 81.0
 margin_bottom = 59.0
-custom_fonts/font = ExtResource( 14 )
+custom_fonts/font = ExtResource( 15 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0,00 €"
-script = ExtResource( 15 )
+script = ExtResource( 16 )
 
-[node name="StatusHunger" type="Label" parent="StatusBarContainer/HBoxContainer/HBoxContainer" groups=[
+[node name="StatusHunger" type="Label" parent="StatusBarContainer/HBoxContainer/StatusContainer" groups=[
 "uiUpdate",
 ]]
 margin_left = 85.0
 margin_top = 23.0
 margin_right = 151.0
 margin_bottom = 59.0
-custom_fonts/font = ExtResource( 14 )
+custom_fonts/font = ExtResource( 15 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "100%"
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 
 [node name="NPCsContainer" type="PanelContainer" parent="." groups=[
 "uiUpdate",
@@ -208,7 +211,7 @@ margin_left = -333.0
 margin_top = 153.0
 margin_right = -163.0
 margin_bottom = -426.0
-script = ExtResource( 17 )
+script = ExtResource( 18 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="NPCsContainer"]
 margin_right = 182.0
@@ -224,34 +227,35 @@ margin_right = 182.0
 margin_bottom = 501.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource( 18 )
+script = ExtResource( 19 )
 
-[node name="PresentNPC" parent="NPCsContainer/ScrollContainer/PresentNPCsVBoxContainer" instance=ExtResource( 19 )]
+[node name="PresentNPC" parent="NPCsContainer/ScrollContainer/PresentNPCsVBoxContainer" instance=ExtResource( 20 )]
 margin_right = 182.0
 
-[node name="Dialog" parent="." instance=ExtResource( 20 )]
+[node name="Dialog" parent="." instance=ExtResource( 21 )]
 visible = false
 
-[node name="Services" parent="." instance=ExtResource( 21 )]
+[node name="Services" parent="." instance=ExtResource( 22 )]
 visible = false
 
 [node name="Shop" parent="." groups=[
 "uiUpdate",
 "uiShop",
-] instance=ExtResource( 22 )]
+] instance=ExtResource( 23 )]
 visible = false
-script = ExtResource( 23 )
+script = ExtResource( 24 )
 
-[node name="Wardrobe" parent="." instance=ExtResource( 24 )]
+[node name="Wardrobe" parent="." instance=ExtResource( 25 )]
 visible = false
 
-[node name="pcDetails" parent="." instance=ExtResource( 25 )]
+[node name="pcDetails" parent="." instance=ExtResource( 26 )]
 visible = false
 
 [node name="Tooltip" type="PanelContainer" parent="." groups=[
 "tooltip",
 ]]
 editor/display_folded = true
+visible = false
 margin_left = 935.0
 margin_top = 404.0
 margin_right = 1286.0
@@ -259,7 +263,7 @@ margin_bottom = 515.0
 mouse_filter = 2
 size_flags_horizontal = 5
 size_flags_vertical = 5
-script = ExtResource( 26 )
+script = ExtResource( 27 )
 
 [node name="CenterContainer" type="CenterContainer" parent="Tooltip"]
 margin_right = 351.0
@@ -278,3 +282,42 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "ddddddddd"
 align = 1
 valign = 1
+
+[node name="StatusDetailsContainer" type="MarginContainer" parent="." groups=[
+"uiUpdate",
+]]
+editor/display_folded = true
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -358.0
+margin_top = 143.0
+margin_right = -106.0
+margin_bottom = 241.0
+script = ExtResource( 28 )
+
+[node name="Panel" type="Panel" parent="StatusDetailsContainer"]
+margin_right = 252.0
+margin_bottom = 98.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="StatusDetailsContainer"]
+margin_right = 252.0
+margin_bottom = 98.0
+
+[node name="StatdisplayHunger" parent="StatusDetailsContainer/VBoxContainer" instance=ExtResource( 29 )]
+LabelText = "Hunger"
+Stat = "hunger"
+
+[node name="StatdisplayThirst" parent="StatusDetailsContainer/VBoxContainer" instance=ExtResource( 29 )]
+margin_top = 34.0
+margin_bottom = 64.0
+LabelText = "Thirst"
+Stat = "thirst"
+
+[node name="StatdisplaySleep" parent="StatusDetailsContainer/VBoxContainer" instance=ExtResource( 29 )]
+margin_top = 68.0
+margin_bottom = 98.0
+LabelText = "Sleep"
+Stat = "sleep"
+[connection signal="mouse_entered" from="StatusBarContainer/HBoxContainer/StatusContainer" to="StatusBarContainer/HBoxContainer/StatusContainer" method="_on_StatusContainer_mouse_entered"]
+[connection signal="mouse_exited" from="StatusBarContainer/HBoxContainer/StatusContainer" to="StatusBarContainer/HBoxContainer/StatusContainer" method="_on_StatusContainer_mouse_exited"]

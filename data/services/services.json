@@ -5,8 +5,10 @@
         "name":"Döner Kebab",
         "description":"Döner Kebab Description",
         "texture":"res://media/texture/services/food/kebab.jpg",
+        "time": 600,
+        "price": 400,
         "effects":[
-            {"food":{"calories":760000,"saturation":5000}}
+            {"eat":{"calories":760000,"saturation":5000}}
         ]
     },
     "water":{
@@ -15,6 +17,8 @@
         "name":"Water",
         "description":"Water Description",
         "texture":"res://media/texture/services/drink/water.jpg",
+        "time": 600,
+        "price": 100,
         "effects":[
             {"drink":{"calories":0,"saturation":5000}}
         ]

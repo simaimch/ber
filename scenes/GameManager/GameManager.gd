@@ -30,6 +30,7 @@ var CurrentUi={
 	"ShowRL": true,
 	"ShowServices":false,
 	"ShowShop":false,
+	"ShowStatusDetails":false,
 	"ShowTime": true,
 	"ShowWardrobe":false,
 	"RL":[],
@@ -489,8 +490,10 @@ func getObjectFromPath(path):
 	elif(path.begins_with("FOBJ")): return getFOBJ(int(path.substr(4,path.length()-4)))
 	return null
 
-func getService(serviceId):
-	return services[serviceId]
+func getServiceById(serviceId):
+	var result = services[serviceId]
+	result.ID = serviceId
+	return result
 
 func modValueAtPath(path,mode,value):
 	
@@ -872,6 +875,13 @@ func execute(commands):
 				modValueAtPath("PlayerData."+key,commands.PlayerData[key].mode,commands.PlayerData[key].value)
 			else:
 				setValueAtPath("PlayerData."+key,commands.PlayerData[key])
+			
+	if commands.has("eat"):
+		#PlayerData.stat.hunger.current += commands.eat.saturation
+		stateInc("hunger",commands.eat.saturation)
+	if commands.has("drink"):
+		#PlayerData.stat.thirst.current += commands.drink.saturation
+		stateInc("thirst",commands.drink.saturation)
 		
 	if commands.has("NPCData"):
 		for key in commands.NPCData:
@@ -881,7 +891,16 @@ func execute(commands):
 	if commands.has("Time"):
 		if commands.Time.has("Offset"):
 			WorldData.TimeOffset = int(commands.Time.Offset)
-		timeUpdate()
+			timeUpdate()
+		if commands.Time.has("Pass"):
+			var Activity = "idle"
+			var Duration = 0
+			if commands.Time.Pass.has("Activity"):
+				Activity = commands.Time.Pass.Activity
+			if commands.Time.Pass.has("Duration"):
+				Duration = commands.Time.Pass.Duration
+			timePass(Duration,Activity)
+		
 		
 	if commands.has("goto"):
 		MiscData.currentLocationID = commands["goto"]
@@ -1228,6 +1247,15 @@ func setItemWorn(item):
 	playerData2UI()
 	updateUI()
 
+func serviceBuy(serviceId):
+	var service = getServiceById(serviceId)
+	var duration = 0
+	var activity = "idle"
+	if service.has("time"): duration = service.time
+	timePass(duration,activity)
+	if service.has("price"): moneySpend(service.price)
+	if service.has("effects"): execute(service.effects)
+
 func services(type):
 	CurrentUi.UIGroup = "uiServices"
 	CurrentUi.ShowServices = true
@@ -1250,6 +1278,13 @@ func servicesClose():
 	CurrentUi.ShowServices = false
 	#CurrentUi.Wardrobe.selitems.clear()
 	updateUI()
+	
+func stateInc(index,value):
+	stateSet(index, PlayerData.stat[index].current + value)
+	
+func stateSet(index,value):
+	value = min(max(value,0),10000)
+	PlayerData.stat[index].current = value
 	
 func undress(slot):
 	PlayerData.outfit.CURRENT[slot] = ""

@@ -22,8 +22,21 @@ func formtTime(time,timeFormat="{day}.{month}.{year} {hour}:{minute}"):
 	
 	var hour = formatInt(dateTime.hour,"00")
 	var minute = formatInt(dateTime.minute,"00")
+	var second = formatInt(dateTime.second,"00")
 
-	return timeFormat.format({"day": day,"month": month,"year": year,"hour": hour,"minute": minute})
+	return timeFormat.format({"day": day,"month": month,"year": year,"hour": hour,"minute": minute,"second":second})
+
+func formatTimeHHMMSS(t):
+	t = int(t)
+	var seconds = t % 60
+	var minutes = (t % 3600)/60
+	var hours = t/3600
+	
+	var result = ""
+	if hours > 0:
+		result = formatInt(hours,"00")+":"
+	result += formatInt(minutes,"00")+":"+formatInt(seconds,"00")
+	return result
 
 func getFilesInFolder(path):
 	#https://godotengine.org/qa/5175/how-to-get-all-the-files-inside-a-folder
