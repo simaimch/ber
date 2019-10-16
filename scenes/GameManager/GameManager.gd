@@ -856,7 +856,7 @@ func execute(commands):
 	
 	if typeof(commands) == TYPE_ARRAY:
 		for command in commands:
-			if execute(commands): consume = true
+			if execute(command): consume = true
 		return consume
 	
 	if commands.has("debug"):
