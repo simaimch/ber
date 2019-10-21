@@ -29,11 +29,24 @@
             }
         }
     },
+    "itemDescription":{
+        "result":{
+            "1000":{
+                "valueCalc":"#?shoeDescription:FOBJ#",
+                "condition":{
+                    "mode":"eq",
+                    "var":"FOBJ.type",
+                    "val":"shoes"
+                }
+            },
+            "0":{"valueRef":"FOBJ.ID"}
+        }
+    },
     "shoeDescription":{
         "resultMode": "stringConcat",
         "result":{
             "0":{
-                "valueCalc":"Lockable ",
+                "value":"Lockable ",
                 "condition":{
                     "mode":"has",
                     "target":"FOBJ",
@@ -62,6 +75,14 @@
                     "mode":"has",
                     "target":"FOBJ",
                     "index":"height"
+                }
+            },
+            "20000":{
+                "valueCalc":"\n#?shoeDifficultyDiscriptionPC:FOBJ#",
+                "condition":{
+                    "mode":"eq",
+                    "var":"CurrentUi.ShowWearInformation",
+                    "val":true
                 }
             }
         }
@@ -155,7 +176,7 @@
                 }
             },
             "200":{
-                "value": "You can walk at a slightly slower than normal pace in these sheos.",
+                "value": "You can walk at a slightly slower than normal pace in these shoes.",
                 "condition":{
                     "mode":"eq",
                     "var":"FOBJ2",

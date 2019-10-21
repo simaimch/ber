@@ -180,9 +180,15 @@ func equals(a,b):
 	#if tb == TYPE_BOOL and ta != TYPE_BOOL:
 	#	a = bool(a)
 	
+	print("Check equality:")
+	print(a)
+	print(b)
+	
 	if a == b:
+		print("Result true")
 		return true
 		
+	print("Result false")
 	return false
 	
 	
@@ -196,6 +202,19 @@ func isArray(a):
 		TYPE_INT_ARRAY: return true
 		TYPE_STRING_ARRAY: return true
 	return false
+
+func isImageFile(path):
+	if typeof(path) != TYPE_STRING: return false
+	var pathArr = path.split(".")
+	if pathArr.size() < 2: return false
+	var ending = pathArr[pathArr.size()-1].to_lower()
+	match ending:
+		"bmp": return true
+		"jpg": return true
+		"jpeg": return true
+		"png": return true
+	return false
+		
 
 func isInStr(a,b):
 	if typeof(a) != TYPE_STRING: return false
@@ -227,7 +246,14 @@ func mergeInto(source,target):
 		
 func texture(path):
 	if fileExists(path):
-		return load(path)
+		if(path.substr(0,6) == "res://"):
+			return load(path)
+		else:
+			var image = Image.new()
+			image.load(path)
+			var texture = ImageTexture.new()
+			texture.create_from_image(image)
+			return texture
 	return preload("res://media/texture/missingTexture.jpg")
 	
 func time(now,arg):

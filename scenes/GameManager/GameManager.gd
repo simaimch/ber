@@ -33,6 +33,7 @@ var CurrentUi={
 	"ShowStatusDetails":false,
 	"ShowTime": true,
 	"ShowWardrobe":false,
+	"ShowWearInformation":false,
 	"RL":[],
 	"Time":0,
 	"UIGroup":"uiUpdate",
@@ -43,7 +44,7 @@ var CurrentUi={
 	}
 }
 
-var MetaData = {}
+var MetaData = {} #does not get saved in savegame
 
 var PlayerData = {
 	"ID":"PC",
@@ -161,7 +162,10 @@ func getLocation(locationId):
 		
 	var i = 1
 	while i < locationArr.size():
-		if !l.has(locationArr[i]): return l
+		if !l.has(locationArr[i]): 
+			l["ID"] = locationId
+			print("Error loading location: "+locationId)
+			return l
 		l = l[locationArr[i]]
 		i += 1
 	
@@ -442,7 +446,9 @@ func getValueFromFunction(functionId,functionParameter):
 			for key in keys:
 				var possibleResult = function.result[key]
 				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-					if possibleResult.has("valueRef"):
+					if possibleResult.has("valueCalc"):
+						result = parseText(possibleResult.valueCalc)
+					elif possibleResult.has("valueRef"):
 						result = getValueFromPath(possibleResult.valueRef)
 					else:
 						result = possibleResult.value
@@ -485,6 +491,7 @@ func getObjectFromPath(path):
 	if(path == "MiscData"): return MiscData
 	elif(path == "PlayerData"): return PlayerData
 	elif(path == "WorldData"): return WorldData
+	elif(path == "CurrentUi"): return CurrentUi
 	elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
 	#elif(path.begins_with("FOBJ")): return functionObjects[functionObjects.size()-int(path.substr(4,path.length()-4))]
 	elif(path.begins_with("FOBJ")): return getFOBJ(int(path.substr(4,path.length()-4)))
@@ -770,12 +777,14 @@ func reachableLocationLink(rl,linkSelf="DEFAULT"):
 	return rl
 
 func continueGame():
-	MetaData = loadMetadata("ber")
 	loadConstantData()
 	SaveGameLoad()
 	gotoMain()
 
 func loadConstantData():
+	MetaData = loadMetadata("ber")
+	if MetaData.has("onLoad"):
+		execute(MetaData.onLoad)
 	loadEvents()
 	loadFunctions()
 	loadItems()
@@ -845,10 +854,9 @@ func moneySpend(m):
 	playerData2UI()
 
 func newGame():
-	MetaData = loadMetadata("ber")
+	
 	loadConstantData()
 	executeLocation(getLocation(MetaData.startLocation))
-
 	modifiersCalculate(PlayerData.ID)
 
 	gotoMain()
@@ -869,12 +877,21 @@ func execute(commands):
 	if commands.has("bg"):
 		CurrentUi.Bg = commands["bg"]
 		
-	if commands.has("PlayerData"):
-		for key in commands.PlayerData:
-			if typeof(commands.PlayerData[key]) == TYPE_DICTIONARY:
-				modValueAtPath("PlayerData."+key,commands.PlayerData[key].mode,commands.PlayerData[key].value)
-			else:
-				setValueAtPath("PlayerData."+key,commands.PlayerData[key])
+	#if commands.has("PlayerData"):
+	#	for key in commands.PlayerData:
+	#		if typeof(commands.PlayerData[key]) == TYPE_DICTIONARY and commands.PlayerData[key].has("mode"):
+	#			modValueAtPath("PlayerData."+key,commands.PlayerData[key].mode,commands.PlayerData[key].value)
+	#		else:
+	#			setValueAtPath("PlayerData."+key,commands.PlayerData[key])
+	
+	for dataContainer in ["PlayerData","MiscData"]:
+		if commands.has(dataContainer):
+			var command = commands[dataContainer]
+			for key in command:
+				if typeof(command[key]) == TYPE_DICTIONARY and command[key].has("mode"):
+					modValueAtPath(dataContainer+"."+key,command[key].mode,command[key].value)
+				else:
+					setValueAtPath(dataContainer+"."+key,command[key])
 			
 	if commands.has("eat"):
 		#PlayerData.stat.hunger.current += commands.eat.saturation
@@ -1220,12 +1237,13 @@ func recalcUI():
 
 func updateUI():
 	playerData2UI()
-	get_tree().call_group(GameManager.CurrentUi.UIGroup,"updateUI",GameManager.CurrentUi)
+	get_tree().call_group(CurrentUi.UIGroup,"updateUI",CurrentUi)
 
 
 func wardrobe():
 	CurrentUi.UIGroup = "uiWardrobe"
 	CurrentUi.ShowWardrobe = true
+	CurrentUi.ShowWearInformation = true
 	updateUI()
 	
 func wardrobeClose():
