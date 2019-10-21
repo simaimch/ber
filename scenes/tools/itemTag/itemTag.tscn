@@ -4,9 +4,11 @@
 [ext_resource path="res://font/Timeless-Bold24.tres" type="DynamicFont" id=2]
 [ext_resource path="res://scenes/tools/itemTag/ImageFileButton.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/tools/itemTag/TagButton.tscn" type="PackedScene" id=4]
-[ext_resource path="res://media/texture/items/bra/bra1.jpg" type="Texture" id=5]
+[ext_resource path="res://scenes/ui/InputDialog.tscn" type="PackedScene" id=5]
 
-[node name="itemTag" type="Control"]
+[node name="itemTag" type="Control" groups=[
+"inputDialogResult",
+]]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
@@ -116,7 +118,6 @@ margin_right = 850.0
 margin_bottom = 339.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
 
@@ -167,9 +168,10 @@ margin_bottom = 413.0
 popup_exclusive = true
 resizable = true
 access = 1
-filters = PoolStringArray( "*.json;Mod-File" )
 current_dir = "user://"
 current_path = "user://"
+
+[node name="InputDialog" parent="." instance=ExtResource( 5 )]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/OpenFolderButton" to="." method="_on_OpenFolderButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/SaveButton" to="." method="_on_SaveButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]

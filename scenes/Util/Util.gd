@@ -180,7 +180,7 @@ func clearChildren(obj):
 	for i in obj.get_children():
     	i.queue_free()
 
-func data2File(data,file,readable=false):
+func data2File(data,file:String,readable=false):
 	var saveFile = File.new()
 	saveFile.open(file, File.WRITE)
 	if readable:
@@ -252,6 +252,15 @@ func equals(a,b):
 func fileExists(path):
 	var file2Check = File.new()
 	return file2Check.file_exists(path)
+	
+func folderCreate(parent, name):
+	var dir = Directory.new()
+	dir.open(parent)
+	dir.make_dir(name)
+
+func folderExists(path):
+	var directory = Directory.new();
+	return directory.dir_exists(path)
 
 func isArray(a):
 	match typeof(a):

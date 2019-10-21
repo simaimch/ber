@@ -146,7 +146,8 @@ func _process(delta):
 		cbutton = -1
 		
 func _ready():
-	print(OS.get_user_data_dir())
+	$SaveFileDialog.current_dir = GameManager.folderMod
+	$SaveFileDialog.current_path= GameManager.folderMod
 	tbs  = [
 		$VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/TB_7,
 		$VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/TB_8,
@@ -175,8 +176,22 @@ func _on_SaveFileDialog_file_selected(path):
 
 
 func _on_SaveButton_pressed():
-	$SaveFileDialog.popup_centered()
-
+	$InputDialog.showDialog("Mod ID")
 
 func _on_MainMenuButton_pressed():
 	return get_tree().change_scene("res://scenes/titleScreen/titleScreen.tscn")
+	
+func inputResult(value):
+	var modFolder = GameManager.folderMod+"/"+value
+	if value.empty():
+		get_tree().call_group("inputDialog","dialogError","The value must not be empty") 
+	elif(Util.folderExists(modFolder)):
+		get_tree().call_group("inputDialog","dialogError","The folder already exists") 
+	else:
+		var modInfo = {
+				"name": value,
+				"description": "Created with ItemTag"
+			}
+		Util.folderCreate(GameManager.folderMod,value)
+		Util.data2File(modInfo,modFolder+"/info.json")
+		get_tree().call_group("inputDialog","dialogClose",{})
