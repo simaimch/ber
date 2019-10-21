@@ -99,6 +99,9 @@ var skills = {}
 
 var functionObjects = []
 
+var folderRoot:String setget , getRootFolder
+var folderMod:String setget , getModFolder
+
 func _ready():
 	playerData2UI()
 	CurrentUi.Time = WorldData.Time + WorldData.TimeOffset
@@ -497,6 +500,17 @@ func getObjectFromPath(path):
 	elif(path.begins_with("FOBJ")): return getFOBJ(int(path.substr(4,path.length()-4)))
 	return null
 
+func getModFolder():
+	return getRootFolder()+"/mods"
+
+func getRootFolder():
+	var path
+	if OS.is_debug_build ( ):
+		path = "I:/ownCloud/Development/Godot/Ber_folder/ber.exe"
+	else:
+		path = OS.get_executable_path()
+	return Util.folderFromPath(path)
+
 func getServiceById(serviceId):
 	var result = services[serviceId]
 	result.ID = serviceId
@@ -835,6 +849,16 @@ func modifiersCalculate(npcId):
 			if checkCondition(modifier.condition):
 				npc.modifier[modifierGroupId].append(modifierId)
 		
+
+func loadModInfo(modId):
+	var result = {"name":modId,"description":"","version":0}
+	var modDataFile = {}
+	var modInfoFile = getModFolder()+"/"+modId+"/info.json"
+	
+	if Util.fileExists(modInfoFile):
+		modDataFile = Util.loadJSONfromFile(modInfoFile)
+	
+	return Util.mergeInto(modDataFile,result,true) 
 
 func loadModifiers():
 	print("Start loading Modifiers")

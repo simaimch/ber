@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/titleScreen/mods/ModOverview.gd" type="Script" id=1]
+[ext_resource path="res://scenes/titleScreen/mods/Mod.tscn" type="PackedScene" id=2]
+
+[node name="ModOverview" type="VBoxContainer"]
+margin_left = 364.0
+margin_right = 1750.0
+margin_bottom = 980.0
+size_flags_horizontal = 3
+script = ExtResource( 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 1386.0
+margin_bottom = 40.0
+
+[node name="Refresh" type="Button" parent="HBoxContainer"]
+margin_right = 60.0
+margin_bottom = 40.0
+text = "Refresh"
+
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer"]
+margin_left = 64.0
+margin_right = 356.0
+margin_bottom = 40.0
+text = "Automatically activate new mods"
+
+[node name="HSeparator" type="HSeparator" parent="."]
+margin_top = 44.0
+margin_right = 1386.0
+margin_bottom = 48.0
+
+[node name="NoModsFoundLabel" type="Label" parent="."]
+margin_top = 52.0
+margin_right = 1386.0
+margin_bottom = 66.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+text = "There are no Mods in the Mod-Folder."
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+visible = false
+margin_top = 52.0
+margin_right = 1386.0
+margin_bottom = 980.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ModsContainer" type="VBoxContainer" parent="ScrollContainer"]
+margin_right = 1386.0
+margin_bottom = 54.0
+size_flags_horizontal = 3
+
+[node name="Mod" parent="ScrollContainer/ModsContainer" instance=ExtResource( 2 )]
+[connection signal="pressed" from="HBoxContainer/Refresh" to="." method="_on_Refresh_pressed"]

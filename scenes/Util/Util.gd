@@ -1,5 +1,12 @@
 extends Control
 
+func folderFromPath(path):
+	var pathArr = path.split("/")
+	var fileName = pathArr[pathArr.size()-1]
+	var fileNameParts = fileName.split(".")
+	if fileNameParts.size() == 1: return path #path already was a folder
+	return path.substr(0,path.length()-fileName.length()-1)
+
 func formatInt(i,format="00"):
 	var result = ""
 	if format == "00":
@@ -38,6 +45,14 @@ func formatTimeHHMMSS(t):
 	result += formatInt(minutes,"00")+":"+formatInt(seconds,"00")
 	return result
 
+func formatVersion(v):
+	if typeof(v) != TYPE_INT: v = int(v)
+	var v1 = v/10000
+	var v2 = (v%10000)/100
+	var v3 = v%100
+	var result = str(v1)+"."+str(v2)+"."+str(v3)
+	return result
+
 func getFilesInFolder(path):
 	#https://godotengine.org/qa/5175/how-to-get-all-the-files-inside-a-folder
 	var files = []
@@ -55,6 +70,23 @@ func getFilesInFolder(path):
 	dir.list_dir_end()
 	
 	return files
+	
+func getFoldersInFolder(path):
+	var folders = []
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin(true,true)
+	
+	while true:
+		var file = dir.get_next()
+		if file == "":
+			break
+		elif dir.current_is_dir() and !file.begins_with("."):
+			folders.append(file)
+	
+	dir.list_dir_end()
+	
+	return folders
 	
 func string2DateTime(s):
 	#DD.MM.YYYY
@@ -131,7 +163,23 @@ func getUnixTime(time):
 	if typeof(time) == TYPE_REAL: return int(time)
 	return "Unexpected Parameter of Type "+str(typeof(time))+" in Util.getUnixTime()"
 	return 0
-	
+
+func loadJSONfromFile(path):
+	var file = File.new()
+	file.open(path, file.READ)
+	var text = file.get_as_text()
+	file.close()
+	var temp = JSON.parse(text)
+	if temp.error == OK:
+		return temp.result
+	else:
+		printerr("Error loading JSON from "+path+": "+str(temp.error))
+		return {}
+
+func clearChildren(obj):
+	for i in obj.get_children():
+    	i.queue_free()
+
 func datetimeResetTime(dt):
 	if typeof(dt) == TYPE_DICTIONARY:
 		dt.hour = 0
@@ -226,7 +274,7 @@ func isInStr(a,b):
 			return true
 	return false
 
-func mergeInto(source,target):
+func mergeInto(source,target,overwrite=false):
 	if isArray(source) and isArray(target):
 		var result = [] # to make sure the result is TYPE_ARRAY
 		for i in target: result.append(i)
@@ -237,7 +285,7 @@ func mergeInto(source,target):
 	
 	for key in source:
 		var value = source[key]
-		if !target.has(key):
+		if !target.has(key) or overwrite:
 			target[key] = value
 		elif target.has("+"+key):
 			target[key] = mergeInto(value, target["+"+key])
