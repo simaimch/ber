@@ -9,7 +9,7 @@ func _on_NewGameButton_pressed():
 
 
 func _on_QuitButton_pressed():
-	get_tree().quit()
+	GameManager.QUIT()
 
 
 

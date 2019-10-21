@@ -19,7 +19,7 @@ margin_right = 60.0
 margin_bottom = 40.0
 text = "Refresh"
 
-[node name="CheckButton" type="CheckButton" parent="HBoxContainer"]
+[node name="AutoactivateMods" type="CheckButton" parent="HBoxContainer"]
 margin_left = 64.0
 margin_right = 356.0
 margin_bottom = 40.0
@@ -51,4 +51,7 @@ margin_bottom = 54.0
 size_flags_horizontal = 3
 
 [node name="Mod" parent="ScrollContainer/ModsContainer" instance=ExtResource( 2 )]
+[connection signal="hide" from="." to="." method="_on_ModOverview_hide"]
+[connection signal="tree_exited" from="." to="." method="_on_ModOverview_tree_exited"]
 [connection signal="pressed" from="HBoxContainer/Refresh" to="." method="_on_Refresh_pressed"]
+[connection signal="pressed" from="HBoxContainer/AutoactivateMods" to="." method="_on_AutoactivateMods_pressed"]

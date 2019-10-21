@@ -5,7 +5,7 @@ var modsContainer
 func _ready():
 	modsContainer = $ScrollContainer/ModsContainer
 	updateModList()
-
+	$HBoxContainer/AutoactivateMods.pressed = GameManager.Preferences.modsAutoactivate
 
 func updateModList():
 	Util.clearChildren(modsContainer)
@@ -26,3 +26,18 @@ func updateModList():
 
 func _on_Refresh_pressed():
 	updateModList()
+
+func updatePreferences():
+	GameManager.savePreferences()
+	
+func _on_ModOverview_tree_exited():
+	updatePreferences()
+
+
+func _on_ModOverview_hide():
+	updatePreferences()
+
+
+
+func _on_AutoactivateMods_pressed():
+	GameManager.Preferences.modsAutoactivate = $HBoxContainer/AutoactivateMods.pressed

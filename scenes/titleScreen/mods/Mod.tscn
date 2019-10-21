@@ -42,3 +42,4 @@ margin_top = 40.0
 margin_right = 1306.0
 margin_bottom = 54.0
 text = "Description"
+[connection signal="pressed" from="CheckButton" to="." method="_on_CheckButton_pressed"]

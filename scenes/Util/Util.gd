@@ -180,6 +180,15 @@ func clearChildren(obj):
 	for i in obj.get_children():
     	i.queue_free()
 
+func data2File(data,file,readable=false):
+	var saveFile = File.new()
+	saveFile.open(file, File.WRITE)
+	if readable:
+		saveFile.store_line(JSON.print(data,"	",true))
+	else:
+		saveFile.store_line(to_json(data))
+	saveFile.close()
+
 func datetimeResetTime(dt):
 	if typeof(dt) == TYPE_DICTIONARY:
 		dt.hour = 0

@@ -87,6 +87,11 @@ var MiscData = {
 	locationStack = []
 }
 
+var Preferences = {
+	"modsAutoactivate":false,
+	"mods":{}
+}
+
 var dialogues = {}
 var events = {}
 var functions = {}
@@ -102,12 +107,21 @@ var functionObjects = []
 var folderRoot:String setget , getRootFolder
 var folderMod:String setget , getModFolder
 
+func _notification(notification):
+	if notification == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		QUIT()
+
 func _ready():
+	get_tree().set_auto_accept_quit(false) # so that we can save preferences
+	loadPreferences()
 	playerData2UI()
 	CurrentUi.Time = WorldData.Time + WorldData.TimeOffset
 	rng.randomize()
 	
-	
+func QUIT():
+	print("QUIT")
+	savePreferences()
+	get_tree().quit()
 	
 
 func bodyTexture(bodypart):
@@ -747,6 +761,18 @@ func loadNPCs():
 		var npcFileParts = npcFile.split(".")
 		loadNPC(npcFileParts[0])
 	print("Complete loading NPCs")
+	
+func loadPreferences():
+	var preferencesPath = getRootFolder()+"/preferences.json"
+	if !Util.fileExists(preferencesPath): savePreferences()
+	else:
+		var preferencesFromFile = Util.loadJSONfromFile(preferencesPath)
+		Preferences = Util.mergeInto(preferencesFromFile,Preferences,true)
+		
+func savePreferences():
+	var preferencesPath = getRootFolder()+"/preferences.json"
+	Util.data2File(Preferences,preferencesPath,true)
+	
 	
 func loadServices():
 	print("Start loading Services")
