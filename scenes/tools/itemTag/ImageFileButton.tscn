@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://font/Timeless-Bold24.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scenes/tools/itemTag/ImageFileButton.gd" type="Script" id=2]
+[ext_resource path="res://media/texture/items/bra/bra1.jpg" type="Texture" id=3]
+
+[node name="ImageFileButton" type="Button" groups=[
+"uiImageFileButton",
+]]
+margin_right = 638.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 0, 100 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Some File"
+script = ExtResource( 2 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_bottom = 1.0
+rect_min_size = Vector2( 100, 100 )
+texture = ExtResource( 3 )
+expand = true
+stretch_mode = 6

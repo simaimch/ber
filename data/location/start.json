@@ -10,6 +10,48 @@
             "skill.heels": 3,
             "trait.genes.appearance":2
         },
+        "MiscData":{
+            "bodyparts":{
+                "hair":{"tattoo":false,"pain":false,"pierce":false},
+                "eyes":{"tattoo":false,"dirt":false},
+                "nose":{},
+                "lips":{},
+                "face":{},
+                "head":{},
+                "neck":{},
+                "upperfront":{},
+                "breast":{},
+                "nipples":{},
+                "tummy":{},
+                "genitals":{},
+                "upperback":{},
+                "lowerback":{},
+                "buttocks":{},
+                "leftshoulder":{},
+                "rightshoulder":{},
+                "upperleftarm":{},
+                "lowerleftarm":{},
+                "upperrightarm":{},
+                "lowerrightarm":{},
+                "lefthand":{},
+                "righthand":{},
+                "upperleftleg":{},
+                "lowerleftleg":{},
+                "upperrightleg":{},
+                "lowerrightleg":{},
+                "leftfoot":{},
+                "rightfoot":{}
+            },
+            "clothtype":{
+                "panties":{"cover":["genitals"]},
+                "bra":{"cover":["breast","nipples"]},
+                "jeans":{"cover":["genitals","buttocks","upperleftleg","lowerleftleg","upperrightleg","lowerrightleg"]},
+                "shirt":{"cover":["breast","nipples","leftshoulder","rightshoulder","upperfront","tummy","upperback","lowerback"]},
+                "haltertop":{"cover":["breast","nipples","upperfront","tummy","upperback","lowerback"]},
+                "longsleeves":{"cover":["leftshoulder","rightshoulder","upperleftarm","lowerleftarm","upperrightarm","lowerrightarm"]},
+                "medsleeves":{"cover":["leftshoulder","rightshoulder","upperleftarm","upperrightarm"]}
+            }
+        },
         "Time":{"Offset":1537430400},
         "goto":  "intro.start"
     }

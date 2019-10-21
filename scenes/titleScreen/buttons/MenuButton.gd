@@ -1,3 +1,6 @@
 extends Button
 
-export(String) var Target_Szene
+export var caption:String
+
+func _ready():
+	$Label.text = caption

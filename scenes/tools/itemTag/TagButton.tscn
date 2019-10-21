@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/tools/itemTag/TagButton.gd" type="Script" id=1]
+
+[node name="TagButton" type="TextureButton"]
+margin_right = 423.0
+margin_bottom = 357.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+expand = true
+stretch_mode = 5
+script = ExtResource( 1 )

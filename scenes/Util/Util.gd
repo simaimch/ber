@@ -1,5 +1,12 @@
 extends Control
 
+func folderFromPath(path):
+	var pathArr = path.split("/")
+	var fileName = pathArr[pathArr.size()-1]
+	var fileNameParts = fileName.split(".")
+	if fileNameParts.size() == 1: return path #path already was a folder
+	return path.substr(0,path.length()-fileName.length()-1)
+
 func formatInt(i,format="00"):
 	var result = ""
 	if format == "00":
@@ -38,6 +45,14 @@ func formatTimeHHMMSS(t):
 	result += formatInt(minutes,"00")+":"+formatInt(seconds,"00")
 	return result
 
+func formatVersion(v):
+	if typeof(v) != TYPE_INT: v = int(v)
+	var v1 = v/10000
+	var v2 = (v%10000)/100
+	var v3 = v%100
+	var result = str(v1)+"."+str(v2)+"."+str(v3)
+	return result
+
 func getFilesInFolder(path):
 	#https://godotengine.org/qa/5175/how-to-get-all-the-files-inside-a-folder
 	var files = []
@@ -55,6 +70,23 @@ func getFilesInFolder(path):
 	dir.list_dir_end()
 	
 	return files
+	
+func getFoldersInFolder(path):
+	var folders = []
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin(true,true)
+	
+	while true:
+		var file = dir.get_next()
+		if file == "":
+			break
+		elif dir.current_is_dir() and !file.begins_with("."):
+			folders.append(file)
+	
+	dir.list_dir_end()
+	
+	return folders
 	
 func string2DateTime(s):
 	#DD.MM.YYYY
@@ -131,7 +163,32 @@ func getUnixTime(time):
 	if typeof(time) == TYPE_REAL: return int(time)
 	return "Unexpected Parameter of Type "+str(typeof(time))+" in Util.getUnixTime()"
 	return 0
-	
+
+func loadJSONfromFile(path):
+	var file = File.new()
+	file.open(path, file.READ)
+	var text = file.get_as_text()
+	file.close()
+	var temp = JSON.parse(text)
+	if temp.error == OK:
+		return temp.result
+	else:
+		printerr("Error loading JSON from "+path+": "+str(temp.error))
+		return {}
+
+func clearChildren(obj):
+	for i in obj.get_children():
+    	i.queue_free()
+
+func data2File(data,file,readable=false):
+	var saveFile = File.new()
+	saveFile.open(file, File.WRITE)
+	if readable:
+		saveFile.store_line(JSON.print(data,"	",true))
+	else:
+		saveFile.store_line(to_json(data))
+	saveFile.close()
+
 func datetimeResetTime(dt):
 	if typeof(dt) == TYPE_DICTIONARY:
 		dt.hour = 0
@@ -180,9 +237,15 @@ func equals(a,b):
 	#if tb == TYPE_BOOL and ta != TYPE_BOOL:
 	#	a = bool(a)
 	
+	print("Check equality:")
+	print(a)
+	print(b)
+	
 	if a == b:
+		print("Result true")
 		return true
 		
+	print("Result false")
 	return false
 	
 	
@@ -197,6 +260,19 @@ func isArray(a):
 		TYPE_STRING_ARRAY: return true
 	return false
 
+func isImageFile(path):
+	if typeof(path) != TYPE_STRING: return false
+	var pathArr = path.split(".")
+	if pathArr.size() < 2: return false
+	var ending = pathArr[pathArr.size()-1].to_lower()
+	match ending:
+		"bmp": return true
+		"jpg": return true
+		"jpeg": return true
+		"png": return true
+	return false
+		
+
 func isInStr(a,b):
 	if typeof(a) != TYPE_STRING: return false
 	if typeof(b) == TYPE_STRING:
@@ -207,7 +283,7 @@ func isInStr(a,b):
 			return true
 	return false
 
-func mergeInto(source,target):
+func mergeInto(source,target,overwrite=false):
 	if isArray(source) and isArray(target):
 		var result = [] # to make sure the result is TYPE_ARRAY
 		for i in target: result.append(i)
@@ -218,7 +294,7 @@ func mergeInto(source,target):
 	
 	for key in source:
 		var value = source[key]
-		if !target.has(key):
+		if !target.has(key) or overwrite:
 			target[key] = value
 		elif target.has("+"+key):
 			target[key] = mergeInto(value, target["+"+key])
@@ -227,7 +303,14 @@ func mergeInto(source,target):
 		
 func texture(path):
 	if fileExists(path):
-		return load(path)
+		if(path.substr(0,6) == "res://"):
+			return load(path)
+		else:
+			var image = Image.new()
+			image.load(path)
+			var texture = ImageTexture.new()
+			texture.create_from_image(image)
+			return texture
 	return preload("res://media/texture/missingTexture.jpg")
 	
 func time(now,arg):

@@ -1,0 +1,28 @@
+{
+    "start":[
+        "",
+        {
+            "texture":"res://media/texture/misc/itemtype/dress.png",
+            "result":"",
+            "next":""
+        },
+        "",
+        {
+            "texture":"res://media/texture/misc/itemtype/bra.png",
+            "result":"",
+            "next":""
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/panties.jpg",
+            "result":"",
+            "next":""
+        },
+        "",
+        {
+            "texture":"res://media/texture/misc/itemtype/shoes.jpg",
+            "result":{"type":"shoes"},
+            "next":"COMPLETE"
+        },
+        ""
+    ]
+}
