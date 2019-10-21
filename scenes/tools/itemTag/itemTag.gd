@@ -176,3 +176,7 @@ func _on_SaveFileDialog_file_selected(path):
 
 func _on_SaveButton_pressed():
 	$SaveFileDialog.popup_centered()
+
+
+func _on_MainMenuButton_pressed():
+	return get_tree().change_scene("res://scenes/titleScreen/titleScreen.tscn")
