@@ -237,15 +237,12 @@ func equals(a,b):
 	#if tb == TYPE_BOOL and ta != TYPE_BOOL:
 	#	a = bool(a)
 	
-	print("Check equality:")
 	print(a)
 	print(b)
 	
 	if a == b:
-		print("Result true")
 		return true
 		
-	print("Result false")
 	return false
 	
 	

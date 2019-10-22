@@ -3,8 +3,8 @@
         "",
         {
             "texture":"res://media/texture/misc/itemtype/dress.png",
-            "result":"",
-            "next":""
+            "result":{"type":"clohtes"},
+            "next":"shopShoe"
         },
         "",
         {
@@ -21,8 +21,15 @@
         {
             "texture":"res://media/texture/misc/itemtype/shoes.jpg",
             "result":{"type":"shoes"},
-            "next":"COMPLETE"
+            "next":"shopShoe"
         },
         ""
+    ],
+    "shopShoe":[
+        {
+            "texture":"res://media/texture/locations/shop/fn.png",
+            "result":{"shopKWs":["test"]},
+            "next":"COMPLETE"
+        }
     ]
 }

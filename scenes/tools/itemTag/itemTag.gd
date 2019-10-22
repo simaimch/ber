@@ -32,12 +32,16 @@ func button2index(button):
 func execute(button):
 	var category = categories[ccategory]
 	var index = button2index(button)
+	print("DAS")
 	if category.size() <= index or typeof(category[index]) != TYPE_DICTIONARY:
 		return
+	print("ASD")
 	var result = category[index].result
 	for key in result:
 		var entry = result[key]
 		if typeof(entry) == TYPE_STRING:
+			citem[key] = entry
+		elif typeof(entry) == TYPE_ARRAY:
 			citem[key] = entry
 	
 	showCategory(category[index].next)
@@ -64,7 +68,7 @@ func showCategory(cat):
 	if cat == "COMPLETE":
 		var path = imageFiles[cimage]
 		var pathArr = path.split("/")
-		var id = pathArr[pathArr.size()-2]+"_"+pathArr[pathArr.size()-1]
+		var id = pathArr[pathArr.size()-1]
 		items[id] = citem
 		set_cimage(cimage+1)
 		if cimage >= imageFiles.size():
@@ -126,11 +130,11 @@ func _on_SelectFolderDialog_dir_selected(dir):
 	
 func _process(delta):
 	if Input.is_action_pressed("ui_upleft"):
-		cbutton = 9
+		cbutton = 7
 	elif Input.is_action_pressed("ui_up"):
 		cbutton = 8
 	elif Input.is_action_pressed("ui_upright"):
-		cbutton = 7
+		cbutton = 9
 	elif Input.is_action_pressed("ui_left"):
 		cbutton = 4
 	elif Input.is_action_pressed("ui_right"):
@@ -193,5 +197,16 @@ func inputResult(value):
 				"description": "Created with ItemTag"
 			}
 		Util.folderCreate(GameManager.folderMod,value)
-		Util.data2File(modInfo,modFolder+"/info.json")
+		Util.data2File(modInfo,modFolder+"/info.json",true)
+		
+		var itemFolder = modFolder + "/item"
+		var itemFile = itemFolder + "/items.json"
+		
+		Util.folderCreate(modFolder,"item")
+		
+		var itemToSave = {}
+		for key in items:
+			itemToSave[value+"_"+key] = items[key]
+		Util.data2File(itemToSave,itemFile,true)
+		
 		get_tree().call_group("inputDialog","dialogClose",{})

@@ -701,7 +701,8 @@ func loadFunctions():
 
 func loadItem(filePath):
 	var file = File.new()
-	file.open("res://data/item/"+filePath+".json", file.READ)
+	#file.open("res://data/item/"+filePath+".json", file.READ)
+	file.open(filePath, file.READ)
 	var text = file.get_as_text()
 	file.close()
 	var temp = JSON.parse(text)
@@ -714,12 +715,13 @@ func loadItem(filePath):
 	else:
 		print("Error loading Items from file "+filePath+": "+str(temp.error))
 
-func loadItems():
+func loadItems(path="res://data"):
 	print("Start loading Items")
-	var itemFiles = Util.getFilesInFolder("res://data/item")
+	var itemFiles = Util.getFilesInFolder(path+"/item")
 	for itemFile in itemFiles:
-		var itemFileParts = itemFile.split(".")
-		loadItem(itemFileParts[0])
+		#var itemFileParts = itemFile.split(".")
+		#loadItem(itemFileParts[0])
+		loadItem(path+"/item/"+itemFile)
 	print("Complete loading Items")
 
 func loadLocation(locationId):
@@ -741,6 +743,11 @@ func loadMetadata(fileName):
 		return temp.result
 	return null
 	#TODO: Error handling
+	
+func loadMods():
+	for modId in Preferences.mods:
+		if Preferences.mods[modId] == true and Util.folderExists(getModFolder()+"/"+modId):
+			loadItems(getModFolder()+"/"+modId)
 
 func loadNPC(npcId):
 	var file = File.new()
@@ -832,6 +839,7 @@ func loadConstantData():
 	loadNPCs()
 	loadServices()
 	loadSkills()
+	loadMods()
 
 func detailsHide():
 	CurrentUi.UIGroup = "uiUpdate"
