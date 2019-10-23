@@ -163,9 +163,18 @@ func getDialogue(dialogueId):
 	return d
 
 func getItem(itemId):
-	#all items get loaded at the beginning of the game, no need to load them here
+	#all items get loaded at startup, no need to load them here
 	var item = items[itemId]
 	item["ID"] = itemId
+	
+	if item.has("inherit"):
+		
+		var parent = getItem(item.inherit)
+		item = Util.inherit(item,parent)
+		
+	
+	
+	
 	return item
 
 func getLocation(locationId):
@@ -191,8 +200,8 @@ func getLocation(locationId):
 	
 	if l.has("inherit"):
 		var parent = getLocation(l.inherit)
-		l = Util.mergeInto(parent,l)
-	
+		#l = Util.mergeInto(parent,l)
+		l = Util.inherit(l,parent)
 	
 	return l
 	
@@ -716,13 +725,11 @@ func loadItem(filePath):
 		print("Error loading Items from file "+filePath+": "+str(temp.error))
 
 func loadItems(path="res://data"):
-	print("Start loading Items")
 	var itemFiles = Util.getFilesInFolder(path+"/item")
 	for itemFile in itemFiles:
 		#var itemFileParts = itemFile.split(".")
 		#loadItem(itemFileParts[0])
 		loadItem(path+"/item/"+itemFile)
-	print("Complete loading Items")
 
 func loadLocation(locationId):
 	var file = File.new()
@@ -762,12 +769,10 @@ func loadNPC(npcId):
 		print("Error loading NPC "+npcId+": "+str(temp.error))
 
 func loadNPCs():
-	print("Start loading NPCs")
 	var npcFiles = Util.getFilesInFolder("res://data/npc")
 	for npcFile in npcFiles:
 		var npcFileParts = npcFile.split(".")
 		loadNPC(npcFileParts[0])
-	print("Complete loading NPCs")
 	
 func loadPreferences():
 	var preferencesPath = getRootFolder()+"/preferences.json"
@@ -782,7 +787,6 @@ func savePreferences():
 	
 	
 func loadServices():
-	print("Start loading Services")
 	var file = File.new()
 	file.open("res://data/services/services.json", file.READ)
 	var text = file.get_as_text()
@@ -796,10 +800,8 @@ func loadServices():
 			services[itemId] = item
 	else:
 		print("Error loading Services: "+str(temp.error))
-	print("Complete loading Services")
 
 func loadSkills():
-	print("Start loading Skills")
 	var file = File.new()
 	file.open("res://data/misc/skills.json", file.READ)
 	var text = file.get_as_text()
@@ -813,7 +815,6 @@ func loadSkills():
 			skills[itemId] = item
 	else:
 		print("Error loading Skills: "+str(temp.error))
-	print("Complete loading Skills")
 
 func reachableLocationLink(rl,linkSelf="DEFAULT"):
 	var targetArr = rl.locationId.split(".")

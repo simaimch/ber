@@ -1,11 +1,11 @@
-Ber
+# Ber
 
-Modding:
+## Modding:
 
 Value Provided by Mod -> Previous Value
 
 
-?AnyValue -> AnyValue
+### ?AnyValue -> AnyValue
     Ignores the modded value if the original values does not exist.
 
     Example
@@ -17,7 +17,7 @@ Value Provided by Mod -> Previous Value
     Result:{
     }
 
-!AnyValue -> AnyValue
+### !AnyValue -> AnyValue
     Ignores the modded value if the original values existe. Can't be combined with ?
 
     Example
@@ -40,7 +40,7 @@ Value Provided by Mod -> Previous Value
         }
     }
 
--True -> AnyValue
+### -True -> AnyValue
     Deletes the original value if it exists. Can't be combined with other directives
 
     Example
@@ -54,7 +54,7 @@ Value Provided by Mod -> Previous Value
     }
 
 
-AnyValue -> Null
+### AnyValue -> Null
     Example
     Base:{
     }
@@ -65,7 +65,7 @@ AnyValue -> Null
         "example": "NewString"
     }
 
-§AnyValue -> AnyValue
+### §AnyValue -> AnyValue
     Will replace the original value. If the original value does not exist works like AnyValue -> Null
     Example
     Base:{
@@ -78,7 +78,7 @@ AnyValue -> Null
         "example": [2,4,6]
     }
 
-String -> String
+### String -> String
 §String-> String
 Int -> Int
 §Int -> Int
@@ -99,7 +99,7 @@ Bool -> Bool
         "example": "NewString"
     }
 
-+String -> String
+### +String -> String
     Append a string.
 
     Example
@@ -113,7 +113,7 @@ Bool -> Bool
         "example": "String,Something New"
     }
 
-*String -> String
+### *String -> String
     Prepends a string
 
     Example
@@ -127,7 +127,7 @@ Bool -> Bool
         "example": ",Something NewString"
     }
 
-Array->Array
+### Array->Array
 +Array->Array
     Modded values will be appended to the base values.
 
@@ -142,7 +142,7 @@ Array->Array
         "example": [1,3,5,2,4,6]
     }
 
-*Array->Array
+### *Array->Array
     Modded values will be prepended to the base values.
 
     Example
@@ -157,7 +157,7 @@ Array->Array
     }
 
 
-Object -> Object
+### Object -> Object
     All entries will be handled recursively by the same rules the base objects get handeld by.
 
     Example

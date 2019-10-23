@@ -285,8 +285,12 @@ func isInStr(a,b):
 		if a in b:
 			return true
 	return false
-
-func mergeInto(source,target):
+	
+func inherit(child, parent):
+	
+	return mergeInto(child, parent, false)
+	
+func mergeInto(source,target,inplace = true):
 	var commandSigns = {
 		"ignoreNonexistent": "?",
 		"ignoreExistent":    "!",
@@ -296,7 +300,9 @@ func mergeInto(source,target):
 		"prepend":           "*"
 	}
 	var commandSignsValues = commandSigns.values()
-		
+	
+	if inplace == false: target = target.duplicate(true)
+	
 	for key in source:
 		var skey
 		var commands = []

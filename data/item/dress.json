@@ -1,5 +1,15 @@
 {
-    "dress0001":{"texture":"res://media/texture/items/dress/dressA(0).jpg","type":"clothes","price":3990,"shopKWs":["test"]},
+    "dress":{
+        "price": 5000,
+        "type":"clothes",
+        "shopKWs":[]
+    },
+    "dress0001":{
+        "inherit":"dress",
+        "texture":"res://media/texture/items/dress/dressA(0).jpg",
+        "price":3990,
+        "shopKWs":["test"]
+    },
     "dress0002":{"texture":"res://media/texture/items/dress/dressA(1).jpg","type":"clothes","price":4990,"shopKWs":["test"]}
 
 }
