@@ -10,7 +10,7 @@ func updateUI(CurrentUi):
 	clearChildren()
 	for skillId in GameManager.PlayerData.skill:
 		var skillLevel = GameManager.PlayerData.skill[skillId]
-		var skill = GameManager.skills[skillId]
+		var skill = GameManager.getSkill(skillId)
 		var skillInstance = skillPL.instance()
 		skillInstance.setSkill(skill,skillLevel)
 		add_child(skillInstance)

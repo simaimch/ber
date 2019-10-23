@@ -48,7 +48,8 @@
         },
         {
             "text":"More",
-            "next":"dressNeckP2"
+            "next":"dressNeckP2",
+            "color": "blue"
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/plungling.png",
@@ -134,6 +135,7 @@
             "next":"COMPLETE"
         },""
     ],
+    "dressColor":[],
     "shopShoe":[
         {
             "texture":"res://media/texture/locations/shop/fn.png",

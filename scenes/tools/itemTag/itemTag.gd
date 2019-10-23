@@ -93,9 +93,14 @@ func showCategory(cat):
 				tbs[i].setLabel(category[i].text)
 			else:
 				tbs[i].setLabel("")
+			if category[i].has("color"):
+				tbs[i].setColor(GameManager.getColor(category[i].color).rgb)
+			else:
+				tbs[i].setColor(null)
 		else:
 			tbs[i].setTexture(null)
 			tbs[i].setLabel("")
+			tbs[i].setColor(null)
 
 func startItem(fileIndex):
 	set_cimage(fileIndex)

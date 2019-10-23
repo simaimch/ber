@@ -97,10 +97,11 @@ var events = {}
 var functions = {}
 var items = {}
 var locations = {}
+var misc = {}
 var modifiers = {}
 var npcs = {}
 var services = {}
-var skills = {}
+#var skills = {}
 
 var functionObjects = []
 
@@ -144,6 +145,10 @@ func itemWornAtSlot(itemslot):
 func now():
 	var now = WorldData.Time + WorldData.TimeOffset
 	return now
+	
+func getColor(id):
+	if !misc.has("colors"): loadMisc()
+	return misc.colors[id]
 
 func getDialogue(dialogueId):
 	var dialogueArr = dialogueId.split(".")
@@ -539,6 +544,9 @@ func getServiceById(serviceId):
 	result.ID = serviceId
 	return result
 
+func getSkill(id):
+	return misc.skills[id]
+
 func modValueAtPath(path,mode,value):
 	
 	
@@ -750,6 +758,13 @@ func loadMetadata(fileName):
 		return temp.result
 	return null
 	#TODO: Error handling
+
+func loadMisc(path="res://data/misc"):
+	var miscFiles = Util.getFilesInFolder(path)
+	for fname in miscFiles:
+		var fnameArr = fname.split(".")
+		misc[fnameArr[0]] = Util.loadJSONfromFile(path+"/"+fname)
+	print(misc)
 	
 func loadMods():
 	for modId in Preferences.mods:
@@ -801,20 +816,20 @@ func loadServices():
 	else:
 		print("Error loading Services: "+str(temp.error))
 
-func loadSkills():
-	var file = File.new()
-	file.open("res://data/misc/skills.json", file.READ)
-	var text = file.get_as_text()
-	file.close()
-	var temp = JSON.parse(text)
-	if temp.error == OK:
-		var fitems = temp.result
-		for itemId in fitems:
-			var item = fitems[itemId]
-			item.ID = itemId
-			skills[itemId] = item
-	else:
-		print("Error loading Skills: "+str(temp.error))
+#func loadSkills():
+#	var file = File.new()
+#	file.open("res://data/misc/skills.json", file.READ)
+#	var text = file.get_as_text()
+#	file.close()
+#	var temp = JSON.parse(text)
+#	if temp.error == OK:
+#		var fitems = temp.result
+#		for itemId in fitems:
+#			var item = fitems[itemId]
+#			item.ID = itemId
+#			#skills[itemId] = item
+#	else:
+#		print("Error loading Skills: "+str(temp.error))
 
 func reachableLocationLink(rl,linkSelf="DEFAULT"):
 	var targetArr = rl.locationId.split(".")
@@ -836,10 +851,11 @@ func loadConstantData():
 	loadEvents()
 	loadFunctions()
 	loadItems()
+	loadMisc()
 	loadModifiers()
 	loadNPCs()
 	loadServices()
-	loadSkills()
+	#loadSkills()
 	loadMods()
 
 func detailsHide():
