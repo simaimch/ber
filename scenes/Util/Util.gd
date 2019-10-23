@@ -338,9 +338,9 @@ func mergeInto(source,target):
 			elif commands.has(commandSigns.prepend):
 				var values = valueTarget
 				target[skey] = valueSource #.duplicate()?
-				for i in values: target[skey].append(values[i])
+				for i in range(valueSource.size()): target[skey].append(values[i])
 			else:
-				for i in valueSource: target[skey].append(valueSource[i])
+				for i in range(valueSource.size()): target[skey].append(valueSource[i])
 				
 		elif typeSource == TYPE_DICTIONARY and typeTarget == TYPE_DICTIONARY:
 			target[skey] = mergeInto(valueSource,valueTarget)
