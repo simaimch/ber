@@ -237,9 +237,6 @@ func equals(a,b):
 	#if tb == TYPE_BOOL and ta != TYPE_BOOL:
 	#	a = bool(a)
 	
-	print(a)
-	print(b)
-	
 	if a == b:
 		return true
 		
@@ -289,23 +286,80 @@ func isInStr(a,b):
 			return true
 	return false
 
-func mergeInto(source,target,overwrite=false):
-	if isArray(source) and isArray(target):
-		var result = [] # to make sure the result is TYPE_ARRAY
-		for i in target: result.append(i)
-		for i in source: result.append(i)
-		return result
-	if typeof(source) != TYPE_DICTIONARY: return {}
-	if typeof(target) != TYPE_DICTIONARY: return {}
-	
+func mergeInto(source,target):
+	var commandSigns = {
+		"ignoreNonexistent": "?",
+		"ignoreExistent":    "!",
+		"deleteEntry":       "-",
+		"replaceEntry":      "§",
+		"append":            "+",
+		"prepend":           "*"
+	}
+	var commandSignsValues = commandSigns.values()
+		
 	for key in source:
-		var value = source[key]
-		if !target.has(key) or overwrite:
-			target[key] = value
-		elif target.has("+"+key):
-			target[key] = mergeInto(value, target["+"+key])
-			
+		var skey
+		var commands = []
+		
+		for i in range(key.length()):
+			print(str(i))
+			if commandSignsValues.has(key[i]):
+				commands.append(key[i])
+			else:
+				skey = key.substr(i,key.length()-i)
+				break
+
+		var valueSource = source[key]
+		var typeSource = typeof(valueSource)
+		
+		var valueTarget
+		var typeTarget
+		if target.has(skey):
+			valueTarget = target[skey]
+			typeTarget = typeof(valueTarget)
+		else:
+			valueTarget = null
+			typeTarget = TYPE_NIL
+		
+		if commands.has(commandSigns.ignoreNonexistent):
+			if typeTarget == TYPE_NIL: continue
+		elif commands.has(commandSigns.ignoreExistent):
+			if typeTarget != TYPE_NIL: continue
+		elif commands.has(commandSigns.deleteEntry):
+			if typeSource == TYPE_BOOL and valueSource == true and typeTarget != TYPE_NIL: target.erase(key)
+			continue
+		
+		if typeTarget == TYPE_NIL:
+			target[skey] = valueSource
+		
+		elif typeSource == TYPE_ARRAY and typeTarget == TYPE_ARRAY:
+			if commands.has(commandSigns.replaceEntry):
+				target[skey] = valueSource
+			elif commands.has(commandSigns.prepend):
+				var values = valueTarget
+				target[skey] = valueSource #.duplicate()?
+				for i in values: target[skey].append(values[i])
+			else:
+				for i in valueSource: target[skey].append(valueSource[i])
+				
+		elif typeSource == TYPE_DICTIONARY and typeTarget == TYPE_DICTIONARY:
+			target[skey] = mergeInto(valueSource,valueTarget)
+		
+		elif (typeSource == TYPE_STRING and typeTarget == TYPE_STRING):
+			if commands.has(commandSigns.prepend):
+				target[skey] = valueSource + valueTarget
+			elif commands.has(commandSigns.append):
+				target[skey] = valueTarget + valueSource
+			else:
+				target[skey] = valueSource
+		elif ((typeSource == TYPE_INT and typeTarget == TYPE_INT) or
+			(typeSource == TYPE_REAL and typeTarget == TYPE_REAL) or 
+			(typeSource == TYPE_BOOL and typeTarget == TYPE_BOOL)):
+				target[skey] = valueSource
+				
+	
 	return target
+	
 		
 func texture(path):
 	if fileExists(path):

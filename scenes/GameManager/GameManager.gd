@@ -774,7 +774,7 @@ func loadPreferences():
 	if !Util.fileExists(preferencesPath): savePreferences()
 	else:
 		var preferencesFromFile = Util.loadJSONfromFile(preferencesPath)
-		Preferences = Util.mergeInto(preferencesFromFile,Preferences,true)
+		Preferences = Util.mergeInto(preferencesFromFile,Preferences)
 		
 func savePreferences():
 	var preferencesPath = getRootFolder()+"/preferences.json"
@@ -892,7 +892,7 @@ func loadModInfo(modId):
 	if Util.fileExists(modInfoFile):
 		modDataFile = Util.loadJSONfromFile(modInfoFile)
 	
-	return Util.mergeInto(modDataFile,result,true) 
+	return Util.mergeInto(modDataFile,result) 
 
 func loadModifiers():
 	print("Start loading Modifiers")
