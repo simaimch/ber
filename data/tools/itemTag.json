@@ -4,7 +4,7 @@
         {
             "texture":"res://media/texture/misc/itemtype/dress.png",
             "result":{"type":"clohtes"},
-            "next":"shopShoe"
+            "next":"dressNeck"
         },
         "",
         {
@@ -24,6 +24,115 @@
             "next":"shopShoe"
         },
         ""
+    ],
+    "dressNeck":[
+        {
+            "texture":"res://media/texture/misc/itemtype/neck/sweatheart.png",
+            "result":{"components":["neck_swh"]},
+            "next":"dressSleeve"
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/neck/offshoulder.png",
+            "result":{"components":["neck_os"]},
+            "next":"dressSleeve"
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/neck/spaghetti.png",
+            "result":{"components":["neck_sp"]},
+            "next":"dressSleeve"
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/neck/crew.png",
+            "result":{"components":["neck_cr"]},
+            "next":"dressSleeve"
+        },
+        {
+            "text":"More",
+            "next":"dressNeckP2"
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/neck/plungling.png",
+            "result":{"components":["neck_pl"]},
+            "next":"dressSleeve"
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/neck/vneck.png",
+            "result":{"components":["neck_v"]},
+            "next":"dressSleeve"
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/neck/scoop.png",
+            "result":{"components":["neck_sc"]},
+            "next":"dressSleeve"
+        }
+    ],
+    "dressNeckP2":[
+        {
+            "texture":"res://media/texture/misc/itemtype/neck/grecian.png",
+            "result":{"components":["neck_gr"]},
+            "next":"dressSleeve"
+        },{
+            "texture":"res://media/texture/misc/itemtype/neck/queenanne.png",
+            "result":{"components":["neck_qa"]},
+            "next":"dressSleeve"
+        },{
+            "texture":"res://media/texture/misc/itemtype/neck/halter.png",
+            "result":{"components":["neck_ha"]},
+            "next":"dressSleeve"
+        },{
+            "texture":"res://media/texture/misc/itemtype/neck/assymetric.png",
+            "result":{"components":["neck_as"]},
+            "next":"dressSleeve"
+        },
+        {
+            "text":"Back",
+            "next":"dressNeck"
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/neck/split.png",
+            "result":{"components":["neck_spl"]},
+            "next":"dressSleeve"
+        },{
+            "texture":"res://media/texture/misc/itemtype/neck/keyhole.png",
+            "result":{"components":["neck_kh"]},
+            "next":"dressSleeve"
+        },{
+            "texture":"res://media/texture/misc/itemtype/neck/illusion.png",
+            "result":{"components":["neck_il"]},
+            "next":"dressSleeve"
+        }
+    ],
+    "dressSleeve":[
+        {
+            "texture":"res://media/texture/misc/itemtype/sleeve/short.png",
+            "result":{"components":["sleeve_s"]},
+            "next":"COMPLETE"
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/sleeve/vshort.png",
+            "result":{"components":["sleeve_vs"]},
+            "next":"COMPLETE"
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/sleeve/none.png",
+            "result":{"components":["sleeve_n"]},
+            "next":"COMPLETE"
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/sleeve/med.png",
+            "result":{"components":["sleeve_m"]},
+            "next":"COMPLETE"
+        },
+        "",
+        {
+            "texture":"res://media/texture/misc/itemtype/sleeve/long.png",
+            "result":{"components":["sleeve_l"]},
+            "next":"COMPLETE"
+        },{
+            "texture":"res://media/texture/misc/itemtype/sleeve/longOpen.png",
+            "result":{"components":["sleeve_lo"]},
+            "next":"COMPLETE"
+        },""
     ],
     "shopShoe":[
         {

@@ -32,17 +32,18 @@ func button2index(button):
 func execute(button):
 	var category = categories[ccategory]
 	var index = button2index(button)
-	print("DAS")
+	
 	if category.size() <= index or typeof(category[index]) != TYPE_DICTIONARY:
 		return
-	print("ASD")
-	var result = category[index].result
-	for key in result:
-		var entry = result[key]
-		if typeof(entry) == TYPE_STRING:
-			citem[key] = entry
-		elif typeof(entry) == TYPE_ARRAY:
-			citem[key] = entry
+	
+	if category[index].has("result"):
+		var result = category[index].result
+		for key in result:
+			var entry = result[key]
+			if typeof(entry) == TYPE_STRING:
+				citem[key] = entry
+			elif typeof(entry) == TYPE_ARRAY:
+				citem[key] = entry
 	
 	showCategory(category[index].next)
 
@@ -84,9 +85,17 @@ func showCategory(cat):
 	
 	for i in range(8):
 		if category.size() > i and typeof(category[i]) == TYPE_DICTIONARY:
-			tbs[i].texture_normal = Util.texture(category[i].texture)
+			if category[i].has("texture"):
+				tbs[i].setTexture(Util.texture(category[i].texture))
+			else:
+				tbs[i].setTexture(null)
+			if category[i].has("text"):
+				tbs[i].setLabel(category[i].text)
+			else:
+				tbs[i].setLabel("")
 		else:
-			tbs[i].texture_normal = null
+			tbs[i].setTexture(null)
+			tbs[i].setLabel("")
 
 func startItem(fileIndex):
 	set_cimage(fileIndex)
