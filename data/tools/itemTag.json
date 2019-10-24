@@ -48,8 +48,7 @@
         },
         {
             "text":"More",
-            "next":"dressNeckP2",
-            "color": "blue"
+            "next":"dressNeckP2"
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/plungling.png",
@@ -107,35 +106,71 @@
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/short.png",
             "result":{"components":["sleeve_s"]},
-            "next":"COMPLETE"
+            "next":"dressColor"
         },
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/vshort.png",
             "result":{"components":["sleeve_vs"]},
-            "next":"COMPLETE"
+            "next":"dressColor"
         },
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/none.png",
             "result":{"components":["sleeve_n"]},
-            "next":"COMPLETE"
+            "next":"dressColor"
         },
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/med.png",
             "result":{"components":["sleeve_m"]},
-            "next":"COMPLETE"
+            "next":"dressColor"
         },
         "",
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/long.png",
             "result":{"components":["sleeve_l"]},
-            "next":"COMPLETE"
+            "next":"dressColor"
         },{
             "texture":"res://media/texture/misc/itemtype/sleeve/longOpen.png",
             "result":{"components":["sleeve_lo"]},
-            "next":"COMPLETE"
+            "next":"dressColor"
         },""
     ],
-    "dressColor":[],
+    "dressColor":[
+        {
+            "color":"black",
+            "result":{"color1":["black"]},
+            "text":"black"
+        },
+        {
+            "color":"blue",
+            "result":{"color1":["blue"]},
+            "text":"blue"
+        },
+        {
+            "color":"white",
+            "result":{"color1":["white"]},
+            "text":"white"
+        },{
+            "color":"pink",
+            "result":{"color1":["pink"]},
+            "text":"pink"
+        },
+        "",
+        {
+            "color":"violet",
+            "result":{"color1":["violet"]},
+            "text":"violet"
+        },
+        {
+            "color":"red",
+            "result":{"color1":["red"]},
+            "text":"red"
+        },
+        {
+            "color":"green",
+            "result":{"color1":["green"]},
+            "text":"green"
+        }
+    ],
     "shopShoe":[
         {
             "texture":"res://media/texture/locations/shop/fn.png",

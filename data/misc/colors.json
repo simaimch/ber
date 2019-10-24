@@ -1,6 +1,13 @@
 {
     "black":{"rgb":"000000","name":"black"},
     "blue":{"rgb":"0000ff","name":"blue"},
-    "white":{"rgb":"ffffff","name":"white"}
-       
+    "brown": {"rgb":"8B4513","name":"brown"},
+    "green": {"rgb":"006400","name":"green"},
+    "orange": {"rgb":"FF8C00","name":"orange"},
+    "pink": {"rgb":"FF1493","name":"pink"},
+    "red": {"rgb":"DC143C","name":"red"},
+    "turquoise": {"rgb":"00CED1","name":"turquoise"},
+    "violet": {"rgb":"9400D3","name":"violet"},
+    "white":{"rgb":"ffffff","name":"white"},
+    "yellow": {"rgb":"FFD700","name":"yellow"}
 }
