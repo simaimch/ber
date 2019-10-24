@@ -4,7 +4,7 @@ var item
 
 func showBuyDialogue(i):
 	item = i
-	$CenterContainer/VBoxContainer/TextureRect.texture = load(item.texture)
+	$CenterContainer/VBoxContainer/TextureRect.texture = Util.texture(item.texture)
 	$CenterContainer/VBoxContainer/PriceLabel.text = Util.formatMoney(item.price)
 	
 	var buyButtonDisabled = false

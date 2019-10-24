@@ -584,7 +584,9 @@ func shop(arguments):
 	if WorldData.shops[arguments.ID].validTil < WorldData.Time:
 		var possibleItems = []
 		for itemId in items:
-			var item = items[itemId]
+			#var item = items[itemId]
+			var item = getItem(itemId)
+			if item.has("isTemplate") and item.isTemplate == true: continue
 			if typeof(arguments.kw) == TYPE_STRING:
 				if arguments.kw in item.shopKWs:
 					possibleItems.append(itemId)
@@ -626,7 +628,8 @@ func shopUpdateItems():
 	CurrentUi.ShopItems.clear()
 	
 	for itemId in shopItems:
-		var item = items[itemId]
+		#var item = items[itemId]
+		var item = getItem(itemId)
 		if CurrentUi.ShopShowOwned or !(itemId in PlayerData.inventory):
 			CurrentUi.ShopItems.append(item)
 			
@@ -1044,7 +1047,12 @@ func parseText(t):
 				textReturn += getValueFromPath(textArr[i])
 		i += 1
 	return textReturn
-	
+
+func path(p):
+	if p.substr(0,7) == "mods://":
+		return getModFolder() + "/" + p.substr(7,p.length()-7)
+	return p
+
 func executeLocation(location,omitStart=false,updateLocationId=true):
 	if !omitStart and location.has("onStart"):
 		if execute(location.onStart): return

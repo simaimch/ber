@@ -14,7 +14,8 @@ func setHeight(h):
 
 func setItem(i):
 	item = i
-	setTexture(load(item.texture))
+	#setTexture(load(item.texture))
+	setTexture(Util.texture(item.texture))
 
 func setTexture(t):
 	$Texture.texture = t

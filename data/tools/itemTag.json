@@ -3,171 +3,176 @@
         "",
         {
             "texture":"res://media/texture/misc/itemtype/dress.png",
-            "result":{"type":"clohtes"},
-            "next":"dressNeck"
+            "result":{"type":"clothes","inherit":"dress"},
+            "categories":[
+                "neck",
+                "sleeve",
+                "skirtlength",
+                {"category":"color","target":"color"}
+            ]
         },
         "",
         {
-            "texture":"res://media/texture/misc/itemtype/bra.png",
-            "result":"",
-            "next":""
+            "texture":"res://media/texture/misc/itemtype/bra.png"
+            
         },
         {
-            "texture":"res://media/texture/misc/itemtype/panties.jpg",
-            "result":"",
-            "next":""
+            "texture":"res://media/texture/misc/itemtype/panties.jpg"
+            
         },
         "",
         {
-            "texture":"res://media/texture/misc/itemtype/shoes.jpg",
-            "result":{"type":"shoes"},
-            "next":"shopShoe"
+            "texture":"res://media/texture/misc/itemtype/shoes.jpg"
+            
         },
         ""
     ],
-    "dressNeck":[
+    "neck":[
         {
             "texture":"res://media/texture/misc/itemtype/neck/sweatheart.png",
-            "result":{"components":["neck_swh"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_swh"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/offshoulder.png",
-            "result":{"components":["neck_os"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_os"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/spaghetti.png",
-            "result":{"components":["neck_sp"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_sp"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/crew.png",
-            "result":{"components":["neck_cr"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_cr"]}
         },
         {
             "text":"More",
-            "next":"dressNeckP2"
+            "jump":"neckP2"
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/plungling.png",
-            "result":{"components":["neck_pl"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_pl"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/vneck.png",
-            "result":{"components":["neck_v"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_v"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/scoop.png",
-            "result":{"components":["neck_sc"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_sc"]}
         }
     ],
-    "dressNeckP2":[
+    "neckP2":[
         {
             "texture":"res://media/texture/misc/itemtype/neck/grecian.png",
-            "result":{"components":["neck_gr"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_gr"]}
         },{
             "texture":"res://media/texture/misc/itemtype/neck/queenanne.png",
-            "result":{"components":["neck_qa"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_qa"]}
         },{
             "texture":"res://media/texture/misc/itemtype/neck/halter.png",
-            "result":{"components":["neck_ha"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_ha"]}
         },{
             "texture":"res://media/texture/misc/itemtype/neck/assymetric.png",
-            "result":{"components":["neck_as"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_as"]}
         },
         {
             "text":"Back",
-            "next":"dressNeck"
+            "jump":"neck"
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/split.png",
-            "result":{"components":["neck_spl"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_spl"]}
         },{
             "texture":"res://media/texture/misc/itemtype/neck/keyhole.png",
-            "result":{"components":["neck_kh"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_kh"]}
         },{
             "texture":"res://media/texture/misc/itemtype/neck/illusion.png",
-            "result":{"components":["neck_il"]},
-            "next":"dressSleeve"
+            "result":{"components":["neck_il"]}
         }
     ],
-    "dressSleeve":[
+    "skirtlength":[
+        {
+            "texture":"res://media/texture/misc/itemtype/skirt/micro.png",
+            "result":{"components":["skirt_micro"]}
+        },{
+            "texture":"res://media/texture/misc/itemtype/skirt/mini.png",
+            "result":{"components":["skirt_mini"]}
+        },{
+            "texture":"res://media/texture/misc/itemtype/skirt/aboveKnee.png",
+            "result":{"components":["skirt_ak"]}
+        },
+        "","",
+        {
+            "texture":"res://media/texture/misc/itemtype/skirt/midi.png",
+            "result":{"components":["skirt_midi"]}
+        },{
+            "texture":"res://media/texture/misc/itemtype/skirt/long.png",
+            "result":{"components":["skirt_long"]}
+        },{
+            "texture":"res://media/texture/misc/itemtype/skirt/evening.png",
+            "result":{"components":["skirt_ev"]}
+        }
+    ],
+    "sleeve":[
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/short.png",
-            "result":{"components":["sleeve_s"]},
-            "next":"dressColor"
+            "result":{"components":["sleeve_s"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/vshort.png",
-            "result":{"components":["sleeve_vs"]},
-            "next":"dressColor"
+            "result":{"components":["sleeve_vs"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/none.png",
-            "result":{"components":["sleeve_n"]},
-            "next":"dressColor"
+            "result":{"components":["sleeve_n"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/med.png",
-            "result":{"components":["sleeve_m"]},
-            "next":"dressColor"
+            "result":{"components":["sleeve_m"]}
         },
         "",
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/long.png",
-            "result":{"components":["sleeve_l"]},
-            "next":"dressColor"
+            "result":{"components":["sleeve_l"]}
         },{
             "texture":"res://media/texture/misc/itemtype/sleeve/longOpen.png",
-            "result":{"components":["sleeve_lo"]},
-            "next":"dressColor"
+            "result":{"components":["sleeve_lo"]}
         },""
     ],
-    "dressColor":[
+    "color":[
         {
             "color":"black",
-            "result":{"color1":["black"]},
+            "result":{"color1":"black"},
             "text":"black"
         },
         {
             "color":"blue",
-            "result":{"color1":["blue"]},
+            "result":{"color1":"blue"},
             "text":"blue"
         },
         {
             "color":"white",
-            "result":{"color1":["white"]},
+            "result":{"color1":"white"},
             "text":"white"
         },{
             "color":"pink",
-            "result":{"color1":["pink"]},
+            "result":{"color1":"pink"},
             "text":"pink"
         },
         "",
         {
             "color":"violet",
-            "result":{"color1":["violet"]},
+            "result":{"color1":"violet"},
             "text":"violet"
         },
         {
             "color":"red",
-            "result":{"color1":["red"]},
+            "result":{"color1":"red"},
             "text":"red"
         },
         {
             "color":"green",
-            "result":{"color1":["green"]},
+            "result":{"color1":"green"},
             "text":"green"
         }
     ],

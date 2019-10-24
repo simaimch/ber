@@ -4,7 +4,7 @@ var item
 
 func setItem(i):
 	item = i
-	$HBoxContainer/TextureRect.texture = load(item.texture)
+	$HBoxContainer/TextureRect.texture = Util.texture(item.texture)
 	$HBoxContainer/VBoxContainer/NameLabel.text = item.ID
 	$HBoxContainer/VBoxContainer/DescriptionLabel.text = GameManager.getValueFromFunction("itemDescription",item)
 	

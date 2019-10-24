@@ -53,6 +53,10 @@ func formatVersion(v):
 	var result = str(v1)+"."+str(v2)+"."+str(v3)
 	return result
 
+func getFilename(path):
+	var pathArr = path.split("/")
+	return pathArr[pathArr.size()-1]
+
 func getFilesInFolder(path):
 	#https://godotengine.org/qa/5175/how-to-get-all-the-files-inside-a-folder
 	var files = []
@@ -287,8 +291,12 @@ func isInStr(a,b):
 	return false
 	
 func inherit(child, parent):
+	var result = mergeInto(child, parent, false)
 	
-	return mergeInto(child, parent, false)
+	if parent.has("isTemplate") and parent.isTemplate == true and (!child.has("isTemplate") or child.isTemplate != true):
+		result.erase("isTemplate")
+	
+	return result
 	
 func mergeInto(source,target,inplace = true):
 	var commandSigns = {
@@ -368,6 +376,7 @@ func mergeInto(source,target,inplace = true):
 	
 		
 func texture(path):
+	path = GameManager.path(path)
 	if fileExists(path):
 		if(path.substr(0,6) == "res://"):
 			return load(path)

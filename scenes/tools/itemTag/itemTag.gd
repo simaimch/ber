@@ -1,7 +1,10 @@
 extends Control
 
 var categories = {}
-var ccategory = "start"
+var ccategories = {}
+var ccategoryIndex = 0
+var ccategory = {}
+var ctarget = ""
 
 var imageFiles = []
 var cimage = 0
@@ -30,22 +33,67 @@ func button2index(button):
 
 
 func execute(button):
-	var category = categories[ccategory]
+	#var category = categories[ccategory]
+	#var category = categories[ccategories[ccategory]]
 	var index = button2index(button)
 	
-	if category.size() <= index or typeof(category[index]) != TYPE_DICTIONARY:
+	if ccategory.size() <= index or typeof(ccategory[index]) != TYPE_DICTIONARY:
 		return
 	
-	if category[index].has("result"):
-		var result = category[index].result
+	if ccategory[index].has("result"):
+		var result = ccategory[index].result
 		for key in result:
 			var entry = result[key]
+			var currentTarget = key
+			if !ctarget.empty(): currentTarget = ctarget
 			if typeof(entry) == TYPE_STRING:
-				citem[key] = entry
+				citem[currentTarget] = entry
 			elif typeof(entry) == TYPE_ARRAY:
-				citem[key] = entry
+				if !citem.has(currentTarget) or typeof(citem[currentTarget]) != TYPE_ARRAY: citem[currentTarget] = []
+				for i in entry:
+					citem[currentTarget].append(i)
 	
-	showCategory(category[index].next)
+	if ccategory[index].has("categories"):
+		ccategories = ccategory[index].categories
+		ccategoryIndex = 0
+	elif ccategory[index].has("jump"):
+		ccategory = categories[ccategory[index].jump]
+		showCCategory()
+		return
+	else:
+		ccategoryIndex += 1
+		
+	if ccategoryIndex < ccategories.size():
+		var id = ccategories[ccategoryIndex]
+		if typeof(id) == TYPE_STRING:
+			ccategory = categories[id]
+			ctarget = ""
+		elif typeof(id) == TYPE_DICTIONARY:
+			ccategory = categories[id.category]
+			ctarget = id.target
+	else:
+		finalizeCItem()
+		set_cimage(cimage+1)
+		if cimage >= imageFiles.size():
+			print("COMPLETE")
+			print(items)
+		else:
+			startItem(cimage)
+		
+	showCCategory()
+
+func finalizeCItem():
+	var path = imageFiles[cimage]
+	var pathArr = path.split("/")
+	var id = pathArr[pathArr.size()-1]
+	items[id] = citem
+	
+	#if cimage >= imageFiles.size():
+	#	print("COMPLETE")
+	#	print(items)
+	#else:
+	#	startItem(cimage)
+	#return
 
 func loadCategoires():
 	var file = File.new()
@@ -65,36 +113,36 @@ func set_cimage(value):
 	get_tree().call_group("uiImageFileButton","set_cimage",value)
 	cimage = value
 
-func showCategory(cat):
-	if cat == "COMPLETE":
-		var path = imageFiles[cimage]
-		var pathArr = path.split("/")
-		var id = pathArr[pathArr.size()-1]
-		items[id] = citem
-		set_cimage(cimage+1)
-		if cimage >= imageFiles.size():
-			print("COMPLETE")
-			print(items)
-		else:
-			startItem(cimage)
-		return
+func showCCategory():
+	#if cat == "COMPLETE":
+	#	var path = imageFiles[cimage]
+	#	var pathArr = path.split("/")
+	#	var id = pathArr[pathArr.size()-1]
+	#	items[id] = citem
+	#	set_cimage(cimage+1)
+	#	if cimage >= imageFiles.size():
+	#		print("COMPLETE")
+	#		print(items)
+	#	else:
+	#		startItem(cimage)
+	#	return
 	
-	ccategory = cat
-	if !categories.has(ccategory): return
-	var category = categories[ccategory]
+	#ccategory = cat
+	#if !categories.has(ccategory): return
+	#var category = categories[ccategory]
 	
 	for i in range(8):
-		if category.size() > i and typeof(category[i]) == TYPE_DICTIONARY:
-			if category[i].has("texture"):
-				tbs[i].setTexture(Util.texture(category[i].texture))
+		if ccategory.size() > i and typeof(ccategory[i]) == TYPE_DICTIONARY:
+			if ccategory[i].has("texture"):
+				tbs[i].setTexture(Util.texture(ccategory[i].texture))
 			else:
 				tbs[i].setTexture(null)
-			if category[i].has("text"):
-				tbs[i].setLabel(category[i].text)
+			if ccategory[i].has("text"):
+				tbs[i].setLabel(ccategory[i].text)
 			else:
 				tbs[i].setLabel("")
-			if category[i].has("color"):
-				tbs[i].setColor(GameManager.getColor(category[i].color).rgb)
+			if ccategory[i].has("color"):
+				tbs[i].setColor(GameManager.getColor(ccategory[i].color).rgb)
 			else:
 				tbs[i].setColor(null)
 		else:
@@ -108,7 +156,9 @@ func startItem(fileIndex):
 	var texture = Util.texture(file)
 	$VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2/TextureRect.texture = texture
 	citem = {"texture":file}
-	showCategory("start")
+	ccategory = categories["start"]
+	ctarget = ""
+	showCCategory()
 	
 	
 	
@@ -215,12 +265,22 @@ func inputResult(value):
 		
 		var itemFolder = modFolder + "/item"
 		var itemFile = itemFolder + "/items.json"
+		var mediaFolder = modFolder + "/media"
 		
 		Util.folderCreate(modFolder,"item")
+		Util.folderCreate(modFolder,"media")
+		
+		var dir = Directory.new()
+
 		
 		var itemToSave = {}
 		for key in items:
+			var fileName = Util.getFilename(items[key].texture)
+			dir.copy(items[key].texture, mediaFolder+"/"+fileName)
+			items[key].texture = "mods://"+value+"/media/"+fileName
 			itemToSave[value+"_"+key] = items[key]
+			
+			
 		Util.data2File(itemToSave,itemFile,true)
 		
 		get_tree().call_group("inputDialog","dialogClose",{})

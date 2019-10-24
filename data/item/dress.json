@@ -1,8 +1,9 @@
 {
     "dress":{
+        "isTemplate":true,
         "price": 5000,
         "type":"clothes",
-        "shopKWs":[]
+        "shopKWs":["test"]
     },
     "dress0001":{
         "inherit":"dress",
