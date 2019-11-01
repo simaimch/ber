@@ -38,7 +38,7 @@ var CurrentUi={
 	"Time":0,
 	"UIGroup":"uiUpdate",
 	"Services":{"type":"","available":[],"availableCategories":{}},
-	"Wardrobe":{		
+	"Wardrobe":{
 		"seltype":"",
 		"selitems":[]
 	}
@@ -528,8 +528,10 @@ func getObjectFromPath(path):
 	elif(path.begins_with("FOBJ")): return getFOBJ(int(path.substr(4,path.length()-4)))
 	return null
 
-func getModFolder():
-	return getRootFolder()+"/mods"
+func getModFolder(modID=""):
+	if modID=="":
+		return getRootFolder()+"/mods"
+	return getRootFolder()+"/mods"+"/"+modID
 
 func getRootFolder():
 	var path
@@ -767,11 +769,10 @@ func loadMisc(path="res://data/misc"):
 	for fname in miscFiles:
 		var fnameArr = fname.split(".")
 		misc[fnameArr[0]] = Util.loadJSONfromFile(path+"/"+fname)
-	print(misc)
 	
 func loadMods():
 	for modId in Preferences.mods:
-		if Preferences.mods[modId] == true and Util.folderExists(getModFolder()+"/"+modId):
+		if Preferences.mods[modId] == true and Util.folderExists(getModFolder(modId)):
 			loadItems(getModFolder()+"/"+modId)
 
 func loadNPC(npcId):
