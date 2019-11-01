@@ -1,6 +1,5 @@
 {
     "start":[
-        "",
         {
             "texture":"res://media/texture/misc/itemtype/dress.png",
             "result":{"type":"clothes","inherit":"dress"},
@@ -8,10 +7,30 @@
                 "neck",
                 "sleeve",
                 "skirtlength",
-                {"category":"color","target":"color"}
+                {"category":"color","target":"color","label":"Dress Color"}
             ]
         },
-        "",
+        {
+            "text":"Top+Skirt",
+            "result":{"type":"clothes","inherit":"dress"},
+            "categories":[
+                "neck",
+                "sleeve",
+                {"category":"color","target":"colorTop","label":"Top Color"},
+                "skirtlength",
+                {"category":"color","target":"color","label":"Skirt Color"}
+            ]
+        },
+        {
+            "text":"Top+Pants",
+            "result":{"type":"clothes","inherit":"dress"},
+            "categories":[
+                "neck",
+                "sleeve",
+                "skirtlength",
+                {"category":"color","target":"color","label":"Skirt Color"}
+            ]
+        },
         {
             "texture":"res://media/texture/misc/itemtype/bra.png"
             
@@ -30,19 +49,19 @@
     "neck":[
         {
             "texture":"res://media/texture/misc/itemtype/neck/sweatheart.png",
-            "result":{"components":["neck_swh"]}
+            "result":{"parts":["neck_swh"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/offshoulder.png",
-            "result":{"components":["neck_os"]}
+            "result":{"parts":["neck_os"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/spaghetti.png",
-            "result":{"components":["neck_sp"]}
+            "result":{"parts":["neck_sp"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/crew.png",
-            "result":{"components":["neck_cr"]}
+            "result":{"parts":["neck_cr"]}
         },
         {
             "text":"More",
@@ -50,30 +69,30 @@
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/plungling.png",
-            "result":{"components":["neck_pl"]}
+            "result":{"parts":["neck_pl"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/vneck.png",
-            "result":{"components":["neck_v"]}
+            "result":{"parts":["neck_v"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/scoop.png",
-            "result":{"components":["neck_sc"]}
+            "result":{"parts":["neck_sc"]}
         }
     ],
     "neckP2":[
         {
             "texture":"res://media/texture/misc/itemtype/neck/grecian.png",
-            "result":{"components":["neck_gr"]}
+            "result":{"parts":["neck_gr"]}
         },{
             "texture":"res://media/texture/misc/itemtype/neck/queenanne.png",
-            "result":{"components":["neck_qa"]}
+            "result":{"parts":["neck_qa"]}
         },{
             "texture":"res://media/texture/misc/itemtype/neck/halter.png",
-            "result":{"components":["neck_ha"]}
+            "result":{"parts":["neck_ha"]}
         },{
             "texture":"res://media/texture/misc/itemtype/neck/assymetric.png",
-            "result":{"components":["neck_as"]}
+            "result":{"parts":["neck_as"]}
         },
         {
             "text":"Back",
@@ -81,62 +100,62 @@
         },
         {
             "texture":"res://media/texture/misc/itemtype/neck/split.png",
-            "result":{"components":["neck_spl"]}
+            "result":{"parts":["neck_spl"]}
         },{
             "texture":"res://media/texture/misc/itemtype/neck/keyhole.png",
-            "result":{"components":["neck_kh"]}
+            "result":{"parts":["neck_kh"]}
         },{
             "texture":"res://media/texture/misc/itemtype/neck/illusion.png",
-            "result":{"components":["neck_il"]}
+            "result":{"parts":["neck_il"]}
         }
     ],
     "skirtlength":[
         {
             "texture":"res://media/texture/misc/itemtype/skirt/micro.png",
-            "result":{"components":["skirt_micro"]}
+            "result":{"parts":["skirt_micro"]}
         },{
             "texture":"res://media/texture/misc/itemtype/skirt/mini.png",
-            "result":{"components":["skirt_mini"]}
+            "result":{"parts":["skirt_mini"]}
         },{
             "texture":"res://media/texture/misc/itemtype/skirt/aboveKnee.png",
-            "result":{"components":["skirt_ak"]}
+            "result":{"parts":["skirt_ak"]}
         },
         "","",
         {
             "texture":"res://media/texture/misc/itemtype/skirt/midi.png",
-            "result":{"components":["skirt_midi"]}
+            "result":{"parts":["skirt_midi"]}
         },{
             "texture":"res://media/texture/misc/itemtype/skirt/long.png",
-            "result":{"components":["skirt_long"]}
+            "result":{"parts":["skirt_long"]}
         },{
             "texture":"res://media/texture/misc/itemtype/skirt/evening.png",
-            "result":{"components":["skirt_ev"]}
+            "result":{"parts":["skirt_ev"]}
         }
     ],
     "sleeve":[
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/short.png",
-            "result":{"components":["sleeve_s"]}
+            "result":{"parts":["sleeve_s"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/vshort.png",
-            "result":{"components":["sleeve_vs"]}
+            "result":{"parts":["sleeve_vs"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/none.png",
-            "result":{"components":["sleeve_n"]}
+            "result":{"parts":["sleeve_n"]}
         },
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/med.png",
-            "result":{"components":["sleeve_m"]}
+            "result":{"parts":["sleeve_m"]}
         },
         "",
         {
             "texture":"res://media/texture/misc/itemtype/sleeve/long.png",
-            "result":{"components":["sleeve_l"]}
+            "result":{"parts":["sleeve_l"]}
         },{
             "texture":"res://media/texture/misc/itemtype/sleeve/longOpen.png",
-            "result":{"components":["sleeve_lo"]}
+            "result":{"parts":["sleeve_lo"]}
         },""
     ],
     "color":[

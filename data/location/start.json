@@ -41,15 +41,6 @@
                 "lowerrightleg":{},
                 "leftfoot":{},
                 "rightfoot":{}
-            },
-            "clothtype":{
-                "panties":{"cover":["genitals"]},
-                "bra":{"cover":["breast","nipples"]},
-                "jeans":{"cover":["genitals","buttocks","upperleftleg","lowerleftleg","upperrightleg","lowerrightleg"]},
-                "shirt":{"cover":["breast","nipples","leftshoulder","rightshoulder","upperfront","tummy","upperback","lowerback"]},
-                "haltertop":{"cover":["breast","nipples","upperfront","tummy","upperback","lowerback"]},
-                "longsleeves":{"cover":["leftshoulder","rightshoulder","upperleftarm","lowerleftarm","upperrightarm","lowerrightarm"]},
-                "medsleeves":{"cover":["leftshoulder","rightshoulder","upperleftarm","upperrightarm"]}
             }
         },
         "Time":{"Offset":1537430400},

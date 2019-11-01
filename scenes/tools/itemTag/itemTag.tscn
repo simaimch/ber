@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/tools/itemTag/itemTag.gd" type="Script" id=1]
 [ext_resource path="res://font/Timeless-Bold24.tres" type="DynamicFont" id=2]
 [ext_resource path="res://scenes/tools/itemTag/ImageFileButton.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/tools/itemTag/TagButton.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/ui/InputDialog.tscn" type="PackedScene" id=5]
+[ext_resource path="res://font/VarsityTeam-Bold32.tres" type="DynamicFont" id=4]
+[ext_resource path="res://scenes/tools/itemTag/TagButton.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/ui/InputDialog.tscn" type="PackedScene" id=6]
 
 [node name="itemTag" type="Control" groups=[
 "inputDialogResult",
@@ -59,6 +60,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ImageFileScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer"]
+editor/display_folded = true
 margin_right = 638.0
 margin_bottom = 1026.0
 size_flags_horizontal = 3
@@ -79,75 +81,87 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_right = 1278.0
-margin_bottom = 339.0
+margin_bottom = 36.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Label"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+editor/display_folded = true
+margin_top = 40.0
+margin_right = 1278.0
+margin_bottom = 366.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TB_7" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 4 )]
-margin_bottom = 339.0
+[node name="TB_7" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 5 )]
+margin_bottom = 326.0
 Number = "7"
 
-[node name="TB_8" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 4 )]
+[node name="TB_8" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 5 )]
 margin_left = 427.0
 margin_right = 850.0
-margin_bottom = 339.0
+margin_bottom = 326.0
 Number = "8"
 
-[node name="TB_9" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 4 )]
+[node name="TB_9" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 5 )]
 margin_left = 854.0
 margin_right = 1278.0
-margin_bottom = 339.0
+margin_bottom = 326.0
 Number = "9"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 343.0
+editor/display_folded = true
+margin_top = 370.0
 margin_right = 1278.0
-margin_bottom = 682.0
+margin_bottom = 696.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TB_4" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 4 )]
-margin_bottom = 339.0
+[node name="TB_4" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 5 )]
+margin_bottom = 326.0
 Number = "4"
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2"]
 margin_left = 427.0
 margin_right = 850.0
-margin_bottom = 339.0
+margin_bottom = 326.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 expand = true
 stretch_mode = 6
 
-[node name="TB_6" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 4 )]
+[node name="TB_6" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 5 )]
 margin_left = 854.0
 margin_right = 1278.0
-margin_bottom = 339.0
+margin_bottom = 326.0
 Number = "6"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 686.0
+editor/display_folded = true
+margin_top = 700.0
 margin_right = 1278.0
 margin_bottom = 1026.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TB_1" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer3" instance=ExtResource( 4 )]
-margin_bottom = 340.0
+[node name="TB_1" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer3" instance=ExtResource( 5 )]
+margin_bottom = 326.0
 Number = "1"
 
-[node name="TB_2" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer3" instance=ExtResource( 4 )]
+[node name="TB_2" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer3" instance=ExtResource( 5 )]
 margin_left = 427.0
 margin_right = 850.0
-margin_bottom = 340.0
+margin_bottom = 326.0
 Number = "2"
 
-[node name="TB_3" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer3" instance=ExtResource( 4 )]
+[node name="TB_3" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer3" instance=ExtResource( 5 )]
 margin_left = 854.0
 margin_right = 1278.0
-margin_bottom = 340.0
+margin_bottom = 326.0
 Number = "3"
 
 [node name="SelectFolderDialog" type="FileDialog" parent="."]
@@ -171,7 +185,7 @@ access = 1
 current_dir = "user://"
 current_path = "user://"
 
-[node name="InputDialog" parent="." instance=ExtResource( 5 )]
+[node name="InputDialog" parent="." instance=ExtResource( 6 )]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/OpenFolderButton" to="." method="_on_OpenFolderButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/SaveButton" to="." method="_on_SaveButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]

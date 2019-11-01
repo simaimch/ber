@@ -4,6 +4,7 @@ var categories = {}
 var ccategories = {}
 var ccategoryIndex = 0
 var ccategory = {}
+var clabel = ""
 var ctarget = ""
 
 var imageFiles = []
@@ -68,9 +69,17 @@ func execute(button):
 		if typeof(id) == TYPE_STRING:
 			ccategory = categories[id]
 			ctarget = ""
+			clabel = ""
 		elif typeof(id) == TYPE_DICTIONARY:
 			ccategory = categories[id.category]
-			ctarget = id.target
+			if id.has("target"): 
+				ctarget = id.target
+			else:
+				ctarget = ""
+			if id.has("label"): 
+				clabel = id.label
+			else:
+				clabel = ""
 	else:
 		finalizeCItem()
 		set_cimage(cimage+1)
@@ -88,12 +97,6 @@ func finalizeCItem():
 	var id = pathArr[pathArr.size()-1]
 	items[id] = citem
 	
-	#if cimage >= imageFiles.size():
-	#	print("COMPLETE")
-	#	print(items)
-	#else:
-	#	startItem(cimage)
-	#return
 
 func loadCategoires():
 	var file = File.new()
@@ -114,23 +117,7 @@ func set_cimage(value):
 	cimage = value
 
 func showCCategory():
-	#if cat == "COMPLETE":
-	#	var path = imageFiles[cimage]
-	#	var pathArr = path.split("/")
-	#	var id = pathArr[pathArr.size()-1]
-	#	items[id] = citem
-	#	set_cimage(cimage+1)
-	#	if cimage >= imageFiles.size():
-	#		print("COMPLETE")
-	#		print(items)
-	#	else:
-	#		startItem(cimage)
-	#	return
-	
-	#ccategory = cat
-	#if !categories.has(ccategory): return
-	#var category = categories[ccategory]
-	
+	$VBoxContainer/HBoxContainer/VBoxContainer/Label.text = clabel
 	for i in range(8):
 		if ccategory.size() > i and typeof(ccategory[i]) == TYPE_DICTIONARY:
 			if ccategory[i].has("texture"):
@@ -158,6 +145,7 @@ func startItem(fileIndex):
 	citem = {"texture":file}
 	ccategory = categories["start"]
 	ctarget = ""
+	clabel = ""
 	showCCategory()
 	
 	
@@ -250,37 +238,53 @@ func _on_MainMenuButton_pressed():
 	return get_tree().change_scene("res://scenes/titleScreen/titleScreen.tscn")
 	
 func inputResult(value):
-	var modFolder = GameManager.folderMod+"/"+value
-	if value.empty():
-		get_tree().call_group("inputDialog","dialogError","The value must not be empty") 
+	var resultCode = saveMod(value)
+	match resultCode:
+		ERR_PARAMETER_RANGE_ERROR:
+			get_tree().call_group("inputDialog","dialogError","The value must not be empty")
+		ERR_ALREADY_EXISTS:
+			get_tree().call_group("inputDialog","dialogError","The folder already exists") 
+		OK:
+			get_tree().call_group("inputDialog","dialogClose",{})
+		_:
+			get_tree().call_group("inputDialog","dialogError","Unexpected Error: "+resultCode) 
+	
+	
+func saveMod(modId):
+	var modFolder = GameManager.folderMod+"/"+modId
+	if modId.empty():
+		return ERR_PARAMETER_RANGE_ERROR
+		#get_tree().call_group("inputDialog","dialogError","The value must not be empty") 
 	elif(Util.folderExists(modFolder)):
-		get_tree().call_group("inputDialog","dialogError","The folder already exists") 
-	else:
-		var modInfo = {
-				"name": value,
-				"description": "Created with ItemTag"
-			}
-		Util.folderCreate(GameManager.folderMod,value)
-		Util.data2File(modInfo,modFolder+"/info.json",true)
-		
-		var itemFolder = modFolder + "/item"
-		var itemFile = itemFolder + "/items.json"
-		var mediaFolder = modFolder + "/media"
-		
-		Util.folderCreate(modFolder,"item")
-		Util.folderCreate(modFolder,"media")
-		
-		var dir = Directory.new()
+		return ERR_ALREADY_EXISTS
+		#get_tree().call_group("inputDialog","dialogError","The folder already exists") 
+	
+	var modInfo = {
+			"name": modId,
+			"description": "Created with ItemTag"
+		}
+	Util.folderCreate(GameManager.folderMod,modId)
+	Util.data2File(modInfo,modFolder+"/info.json",true)
+	
+	var itemFolder = modFolder + "/item"
+	var itemFile = itemFolder + "/items.json"
+	var mediaFolder = modFolder + "/media"
+	
+	Util.folderCreate(modFolder,"item")
+	Util.folderCreate(modFolder,"media")
+	
+	var dir = Directory.new()
 
+	
+	var itemToSave = {}
+	for key in items:
+		var fileName = Util.getFilename(items[key].texture)
+		dir.copy(items[key].texture, mediaFolder+"/"+fileName)
+		items[key].texture = "mods://"+modId+"/media/"+fileName
+		items[key].covers = GameManager.getItemCoveredBodyParts(items[key])
+		itemToSave[modId+"_"+key] = items[key]
 		
-		var itemToSave = {}
-		for key in items:
-			var fileName = Util.getFilename(items[key].texture)
-			dir.copy(items[key].texture, mediaFolder+"/"+fileName)
-			items[key].texture = "mods://"+value+"/media/"+fileName
-			itemToSave[value+"_"+key] = items[key]
-			
-			
-		Util.data2File(itemToSave,itemFile,true)
 		
-		get_tree().call_group("inputDialog","dialogClose",{})
+	Util.data2File(itemToSave,itemFile,true)
+	
+	return OK

@@ -176,12 +176,22 @@ func getItem(itemId):
 		
 		var parent = getItem(item.inherit)
 		item = Util.inherit(item,parent)
-		
+	return item	
 	
 	
-	
-	return item
+func getItemCoveredBodyParts(item):
+	if !item.has("parts"): return []
+	var result = []
+	for partId in item.parts:
+		var part = getItempart(partId)
+		for cover in part.covers:
+			if !result.has(cover): result.append(cover)
+	return result
 
+func getItempart(id):
+	if !misc.has("itemparts"): loadMisc()
+	return misc.itemparts[id]
+	
 func getLocation(locationId):
 	
 	var locationArr = locationId.split(".")
