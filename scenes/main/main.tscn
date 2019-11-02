@@ -214,7 +214,7 @@ margin_bottom = -426.0
 script = ExtResource( 18 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="NPCsContainer"]
-margin_right = 170.0
+margin_right = 182.0
 margin_bottom = 501.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -223,13 +223,14 @@ scroll_horizontal_enabled = false
 [node name="PresentNPCsVBoxContainer" type="VBoxContainer" parent="NPCsContainer/ScrollContainer" groups=[
 "uiUpdate",
 ]]
-margin_right = 170.0
+margin_right = 182.0
 margin_bottom = 501.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 19 )
 
 [node name="PresentNPC" parent="NPCsContainer/ScrollContainer/PresentNPCsVBoxContainer" instance=ExtResource( 20 )]
+margin_right = 182.0
 
 [node name="Dialog" parent="." instance=ExtResource( 21 )]
 visible = false

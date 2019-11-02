@@ -58,14 +58,19 @@ func execute(button):
 			var entry = result[key]
 			var currentTarget = key
 			if !ctarget.empty(): currentTarget = ctarget
-			if entry == null:
-				citem.erase(currentTarget)
-			elif typeof(entry) == TYPE_STRING:
-				citem[currentTarget] = entry
-			elif typeof(entry) == TYPE_ARRAY:
-				if !citem.has(currentTarget) or typeof(citem[currentTarget]) != TYPE_ARRAY: citem[currentTarget] = []
-				for i in entry:
-					citem[currentTarget].append(i)
+			
+			match typeof(entry):
+				TYPE_NIL:
+					citem.erase(currentTarget)
+				TYPE_STRING, TYPE_REAL, TYPE_INT, TYPE_BOOL:
+					citem[currentTarget] = entry
+				TYPE_ARRAY, TYPE_INT_ARRAY, TYPE_STRING_ARRAY, TYPE_REAL_ARRAY:
+					if !citem.has(currentTarget) or typeof(citem[currentTarget]) != TYPE_ARRAY: citem[currentTarget] = []
+					for i in entry:
+						citem[currentTarget].append(i)
+				var entryType:
+					print("Unexpected Value Type ",entryType," for entry ",key)
+					
 	
 	if ccategory[index].has("categories"):
 		ccategories = ccategory[index].categories

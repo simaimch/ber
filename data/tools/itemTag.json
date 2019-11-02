@@ -246,7 +246,8 @@
         {
             "texture":"res://media/texture/misc/itemtype/shoe/pump.png",
             "categories":[
-                "shoeTypePump"
+                "shoeTypePump",
+                "shoeHeight"
             ]
         }
     ],
@@ -290,6 +291,40 @@
         {
             "texture":"res://media/texture/misc/itemtype/shoe/tstrapplatform.png",
             "result":{"parts":["shoe_tstrapplatform"]}
+        }
+    ],
+    "shoeHeight":[
+        {
+            "text":"Flat",
+            "result":{"heel":0}
+        },
+        {
+            "text":"2 cm",
+            "result":{"heel":2}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoeHeight/5cm.png",
+            "result":{"heel":5}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoeHeight/8cm.png",
+            "result":{"heel":8}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoeHeight/10cm.png",
+            "result":{"heel":10}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoeHeight/12cm.png",
+            "result":{"heel":12}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoeHeight/16cm.png",
+            "result":{"heel":16}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoeHeight/20cm.png",
+            "result":{"heel":20}
         }
     ],
     "shopShoe":[
