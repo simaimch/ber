@@ -485,8 +485,21 @@ func getValueFromFunction(functionId,functionParameter):
 		
 		if function.has("resultMode"): resultMode = function.resultMode
 		
-		
-		if resultMode == "standard":
+		if resultMode == "has":
+			var condition = {"mode":"has", "target":function.target, "index":""}
+			var keys = function.result.keys()
+			keys.sort_custom(SorterByIndexInt, "sortInv")
+			for key in keys:
+				var possibleResult = function.result[key]
+				if possibleResult[0] == null:
+					result = possibleResult[1]
+					break
+				condition.index = possibleResult[0]
+				if checkCondition(condition):
+					result = possibleResult[1]
+					break
+			
+		elif resultMode == "standard":
 			var keys = function.result.keys()
 			keys.sort_custom(SorterByIndexInt, "sortInv")
 			for key in keys:

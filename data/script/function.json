@@ -44,7 +44,7 @@
     },
     "shoeDescription":{
         "resultMode": "stringFormat",
-        "string":"^{lockable}{color}{subtype}{heels}^{shoeDifficultyDiscriptionPC}",
+        "string":"^{lockable}{color}{shoetype}{heels}^{shoeDifficultyDiscriptionPC}",
         "result":{
             "lockable":{
                 "value":"lockable ",
@@ -62,13 +62,8 @@
                     "index":"color"
                 }
             },
-            "subtype":{
-                "valueCalc":"#FOBJ.subtype# ",
-                "condition":{
-                    "mode":"has",
-                    "target":"FOBJ",
-                    "index":"subtype"
-                }
+            "shoetype":{
+                "valueCalc":"#?shoeType:FOBJ# "
             },
             "heels":{
                 "valueCalc":"with #FOBJ.height# cm high heels ",
@@ -86,6 +81,14 @@
                     "val":true
                 }
             }
+        }
+    },
+    "shoeType":{
+        "resultMode": "has",
+        "target": "FOBJ.parts",
+        "result":{
+            "1000":["shoe_pump","pumps"],
+            "0":[null,"shoes"]
         }
     },
     "shoeDifficulty":{
