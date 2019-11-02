@@ -54,7 +54,7 @@
                 }
             },
             "100":{
-                "valueCalc":"#FOBJ.color# ",
+                "valueCalc":"#?COLORNAME:FOBJ.color# ",
                 "condition":{
                     "mode":"has",
                     "target":"FOBJ",

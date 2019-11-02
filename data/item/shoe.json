@@ -1,4 +1,10 @@
 {
+    "shoe":{
+        "isTemplate":true,
+        "price": 5000,
+        "type":"shoes",
+        "shopKWs":["shoe"]
+    },
     "shoe0001":{"texture":"res://media/texture/items/shoes/set1/s(0).jpg","type":"shoes","price":1990,"shopKWs":["shoe"]}
 
 }

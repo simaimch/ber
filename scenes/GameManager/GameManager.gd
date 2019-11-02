@@ -148,7 +148,9 @@ func now():
 	
 func getColor(id):
 	if !misc.has("colors"): loadMisc()
-	return misc.colors[id]
+	if misc.colors.has(id):
+		return misc.colors[id]
+	return {"name":id,"rgb":"000000"}
 
 func getDialogue(dialogueId):
 	var dialogueArr = dialogueId.split(".")
@@ -448,7 +450,10 @@ func getValueFromFunction(functionId,functionParameter):
 	else:
 		arguments.append(functionParameter)
 	
-	if functionId == "SUB":
+	if functionId == "COLORNAME":
+		var color = getColor(arguments[0])
+		result = color.name
+	elif functionId == "SUB":
 		var a = float(arguments[0])
 		var b = float(arguments[1])
 		result = a - b

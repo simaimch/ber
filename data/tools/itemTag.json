@@ -247,7 +247,8 @@
             "texture":"res://media/texture/misc/itemtype/shoe/pump.png",
             "categories":[
                 "shoeTypePump",
-                "shoeHeight"
+                "shoeHeight",
+                {"category":"color","target":"color","label":"Shoe Color"}
             ]
         }
     ],
@@ -296,35 +297,35 @@
     "shoeHeight":[
         {
             "text":"Flat",
-            "result":{"heel":0}
+            "result":{"height":null}
         },
         {
             "text":"2 cm",
-            "result":{"heel":2}
+            "result":{"height":2}
         },
         {
             "texture":"res://media/texture/misc/itemtype/shoeHeight/5cm.png",
-            "result":{"heel":5}
+            "result":{"height":5}
         },
         {
             "texture":"res://media/texture/misc/itemtype/shoeHeight/8cm.png",
-            "result":{"heel":8}
+            "result":{"height":8}
         },
         {
             "texture":"res://media/texture/misc/itemtype/shoeHeight/10cm.png",
-            "result":{"heel":10}
+            "result":{"height":10}
         },
         {
             "texture":"res://media/texture/misc/itemtype/shoeHeight/12cm.png",
-            "result":{"heel":12}
+            "result":{"height":12}
         },
         {
             "texture":"res://media/texture/misc/itemtype/shoeHeight/16cm.png",
-            "result":{"heel":16}
+            "result":{"height":16}
         },
         {
             "texture":"res://media/texture/misc/itemtype/shoeHeight/20cm.png",
-            "result":{"heel":20}
+            "result":{"height":20}
         }
     ],
     "shopShoe":[
