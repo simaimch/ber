@@ -373,6 +373,20 @@ func mergeInto(source,target,inplace = true):
 				
 	
 	return target
+
+func stringFormat(string):
+	var result = ""
+	var stringArr = string.split("^")
+	
+	for stringPart in stringArr:
+		var s = stringPart.strip_edges()
+		if !s.empty():
+			s[0] = s[0].to_upper()
+			if s[s.length()-1] != ".": s += "."
+			result += s
+		
+	
+	return result
 	
 		
 func texture(path):

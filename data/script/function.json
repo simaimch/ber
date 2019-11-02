@@ -43,17 +43,18 @@
         }
     },
     "shoeDescription":{
-        "resultMode": "stringConcat",
+        "resultMode": "stringFormat",
+        "string":"^{lockable}{color}{subtype}{heels}^{shoeDifficultyDiscriptionPC}",
         "result":{
-            "0":{
-                "value":"Lockable ",
+            "lockable":{
+                "value":"lockable ",
                 "condition":{
                     "mode":"has",
                     "target":"FOBJ",
                     "index":"lockable"
                 }
             },
-            "100":{
+            "color":{
                 "valueCalc":"#?COLORNAME:FOBJ.color# ",
                 "condition":{
                     "mode":"has",
@@ -61,7 +62,7 @@
                     "index":"color"
                 }
             },
-            "200":{
+            "subtype":{
                 "valueCalc":"#FOBJ.subtype# ",
                 "condition":{
                     "mode":"has",
@@ -69,7 +70,7 @@
                     "index":"subtype"
                 }
             },
-            "300":{
+            "heels":{
                 "valueCalc":"with #FOBJ.height# cm high heels ",
                 "condition":{
                     "mode":"has",
@@ -77,7 +78,7 @@
                     "index":"height"
                 }
             },
-            "20000":{
+            "shoeDifficultyDiscriptionPC":{
                 "valueCalc":"\n#?shoeDifficultyDiscriptionPC:FOBJ#",
                 "condition":{
                     "mode":"eq",

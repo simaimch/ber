@@ -512,6 +512,23 @@ func getValueFromFunction(functionId,functionParameter):
 						result += str(getValueFromPath(possibleResult.valueRef))
 					else:
 						result += str(possibleResult.value)
+		elif resultMode == "stringFormat":
+			result = function.string
+			var resultValues = {}
+			var keys = function.result.keys()
+			for key in keys:
+				var possibleResult = function.result[key]
+				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+					if possibleResult.has("valueCalc"):
+						resultValues[key] = parseText(possibleResult.valueCalc)
+					elif possibleResult.has("valueRef"):
+						resultValues[key] = str(getValueFromPath(possibleResult.valueRef))
+					else:
+						resultValues[key] = str(possibleResult.value)
+				else:
+					resultValues[key] = ""
+			result = result.format(resultValues)
+			result = Util.stringFormat(result)
 		elif resultMode == "mathAdd":
 			result = 0
 			var keys = function.result.keys()
