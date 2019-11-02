@@ -7,7 +7,8 @@
                 "neck",
                 "sleeve",
                 "skirtlength",
-                {"category":"color","target":"color","label":"Dress Color"}
+                {"category":"color","target":"color","label":"Dress Color"},
+                "extras"
             ]
         },
         {
@@ -18,7 +19,8 @@
                 "sleeve",
                 {"category":"color","target":"colorTop","label":"Top Color"},
                 "skirtlength",
-                {"category":"color","target":"color","label":"Skirt Color"}
+                {"category":"color","target":"color","label":"Skirt Color"},
+                "extras"
             ]
         },
         {
@@ -28,7 +30,8 @@
                 "neck",
                 "sleeve",
                 "skirtlength",
-                {"category":"color","target":"color","label":"Skirt Color"}
+                {"category":"color","target":"color","label":"Skirt Color"},
+                "extras"
             ]
         },
         {
@@ -41,8 +44,8 @@
         },
         "",
         {
-            "texture":"res://media/texture/misc/itemtype/shoes.jpg"
-            
+            "texture":"res://media/texture/misc/itemtype/shoes.jpg",
+            "jump":"shoeType"
         },
         ""
     ],
@@ -193,6 +196,100 @@
             "color":"green",
             "result":{"color1":"green"},
             "text":"green"
+        }
+    ],
+    "extras":[
+        {
+            "text":"Hosiery",
+            "jump":"etraHosiery"
+        },
+        {
+            "text":"Choker",
+            "jump":"etraChoker"
+        },
+        "",
+        "",
+        "",
+        "",
+        "",
+        {
+            "text":"Finish",
+            "next":"COMPLETE"
+        }
+    ],
+    "etraHosiery":[
+        {
+            "text":"123",
+            "result":{"hosiery":"green"},
+            "jump":"extras"
+        },
+        {
+            "text":"4321",
+            "result":{"hosiery":"green"},
+            "jump":"extras"
+        },
+        "",
+        "",
+        "",
+        "",
+        {
+            "text":"No Hosiery",
+            "result":{"hosiery":null},
+            "jump":"extras"
+        },
+        {
+            "text":"Back",
+            "jump":"extras"
+        }
+    ],
+    "shoeType":[
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/pump.png",
+            "categories":[
+                "shoeTypePump"
+            ]
+        }
+    ],
+    "shoeTypePump":[
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/pump.png",
+            "result":{"parts":["shoe_pump"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/stiletto.png",
+            "result":{"parts":["shoe_stiletto"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/anklestrap.png",
+            "result":{"parts":["shoe_anklestrap"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/platformpump.png",
+            "result":{"parts":["shoe_platformpump"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/peeptoe.png",
+            "result":{"parts":["shoe_peeptoe"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/slingbackpump.png",
+            "result":{"parts":["shoe_slingbackpump"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/dorsaypump.png",
+            "result":{"parts":["shoe_dorsaypump"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/kitten.png",
+            "result":{"parts":["shoe_kitten"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/maryjane.png",
+            "result":{"parts":["shoe_maryjane"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/tstrapplatform.png",
+            "result":{"parts":["shoe_tstrapplatform"]}
         }
     ],
     "shopShoe":[

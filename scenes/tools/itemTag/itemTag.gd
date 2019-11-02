@@ -6,6 +6,7 @@ var ccategoryIndex = 0
 var ccategory = {}
 var clabel = ""
 var ctarget = ""
+var cpage = 0
 
 var imageFiles = []
 var cimage = 0
@@ -36,7 +37,17 @@ func button2index(button):
 func execute(button):
 	#var category = categories[ccategory]
 	#var category = categories[ccategories[ccategory]]
-	var index = button2index(button)
+	var positon = button2index(button)
+	var index = pos2Index(positon)
+	
+	if index == -1:
+		cpage = max(0,cpage-1)
+		showCCategory()
+		return OK
+	elif index == -2:
+		cpage += 1
+		showCCategory()
+		return OK
 	
 	if ccategory.size() <= index or typeof(ccategory[index]) != TYPE_DICTIONARY:
 		return
@@ -47,7 +58,9 @@ func execute(button):
 			var entry = result[key]
 			var currentTarget = key
 			if !ctarget.empty(): currentTarget = ctarget
-			if typeof(entry) == TYPE_STRING:
+			if entry == null:
+				citem.erase(currentTarget)
+			elif typeof(entry) == TYPE_STRING:
 				citem[currentTarget] = entry
 			elif typeof(entry) == TYPE_ARRAY:
 				if !citem.has(currentTarget) or typeof(citem[currentTarget]) != TYPE_ARRAY: citem[currentTarget] = []
@@ -116,26 +129,53 @@ func set_cimage(value):
 	get_tree().call_group("uiImageFileButton","set_cimage",value)
 	cimage = value
 
+func pos2Index(pos:int):
+	if cpage == 0:
+		if ccategory.size() <= 8 or pos <= 6:
+			return pos
+		return -2
+	
+	if pos == 5: return -1
+	
+	var index = cpage * 6 + 1 + pos
+	if pos == 6 or pos == 7: index -= 1 # because the previous page-button is on 5
+	
+	if pos == 7 and ccategory.size() > cpage * 6 + 7:
+		index  = -2
+	
+	return index
+		
+
 func showCCategory():
 	$VBoxContainer/HBoxContainer/VBoxContainer/Label.text = clabel
-	for i in range(8):
-		if ccategory.size() > i and typeof(ccategory[i]) == TYPE_DICTIONARY:
-			if ccategory[i].has("texture"):
-				tbs[i].setTexture(Util.texture(ccategory[i].texture))
+	#cpage = 0
+	for pos in range(8):
+		var ind = pos2Index(pos)
+		if ind == -1:
+			tbs[pos].setTexture(null)
+			tbs[pos].setLabel("<--")
+			tbs[pos].setColor(null)
+		elif ind == -2:
+			tbs[pos].setTexture(null)
+			tbs[pos].setLabel("-->")
+			tbs[pos].setColor(null)
+		elif ccategory.size() > ind and typeof(ccategory[ind]) == TYPE_DICTIONARY:
+			if ccategory[ind].has("texture"):
+				tbs[pos].setTexture(Util.texture(ccategory[ind].texture))
 			else:
-				tbs[i].setTexture(null)
-			if ccategory[i].has("text"):
-				tbs[i].setLabel(ccategory[i].text)
+				tbs[pos].setTexture(null)
+			if ccategory[ind].has("text"):
+				tbs[pos].setLabel(ccategory[ind].text)
 			else:
-				tbs[i].setLabel("")
-			if ccategory[i].has("color"):
-				tbs[i].setColor(GameManager.getColor(ccategory[i].color).rgb)
+				tbs[pos].setLabel("")
+			if ccategory[ind].has("color"):
+				tbs[pos].setColor(GameManager.getColor(ccategory[ind].color).rgb)
 			else:
-				tbs[i].setColor(null)
+				tbs[pos].setColor(null)
 		else:
-			tbs[i].setTexture(null)
-			tbs[i].setLabel("")
-			tbs[i].setColor(null)
+			tbs[pos].setTexture(null)
+			tbs[pos].setLabel("")
+			tbs[pos].setColor(null)
 
 func startItem(fileIndex):
 	set_cimage(fileIndex)
