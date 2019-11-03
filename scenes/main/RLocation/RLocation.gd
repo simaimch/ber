@@ -19,20 +19,22 @@ func setLocation(l):
 		t = targetLocation.text
 	setText(t)
 	
+	$VBoxContainer/TimeLabel.text = "("+Util.formatDuration(transferInfo.time)+")"
+	
 	if GameManager.hasValue(targetLocation,"rlTexture"):
 		setTexture(GameManager.getValue(targetLocation,"rlTexture"))
 	elif GameManager.hasValue(targetLocation,"bg"):
 		setTexture(GameManager.getValue(targetLocation,"bg"))
 
 func setText(text):
-	$Label.text = text
+	$VBoxContainer/Label.text = text
 	
 func setTexture(path):
 	var texture = Util.texture(path)#load(path)
-	$TextureRect.set_texture(texture)
+	$VBoxContainer/TextureRect.set_texture(texture)
 
 func _on_RLocation_mouse_entered():
-	get_tree().call_group("tooltip","showTooltip",{"text":$Label.text+"\n"+str(transferInfo.time)+" seconds","followMouse":true})
+	get_tree().call_group("tooltip","showTooltip",{"text":$VBoxContainer/Label.text+"\n"+str(transferInfo.time)+" seconds","followMouse":true})
 
 
 func _on_RLocation_mouse_exited():

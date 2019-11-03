@@ -1,7 +1,7 @@
 extends Label
 
 func updateUI(CurrentUi):
-	if CurrentUi.ShowTime == true:
+	if CurrentUi.get("ShowTime",true) == true:
 		show()
 		text = Util.formtTime(GameManager.now())
 	else:

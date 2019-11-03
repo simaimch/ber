@@ -1,7 +1,7 @@
 extends Control
 
 func updateUI(CurrentUi):
-	if CurrentUi.ShowWardrobe == true:
+	if CurrentUi.get("ShowWardrobe",false) == true:
 		show()
 	else:
 		hide()

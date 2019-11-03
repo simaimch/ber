@@ -423,24 +423,20 @@ func getValueFromPath(path,default=""):
 		#Call a function
 		var functionArr = path.split(":",false,1)
 		var functionId = functionArr[0].substr(1,functionArr[0].length()-1)
-		#var functionObj = getValueFromPath(functionArr[1])
-		#return getValueFromFunction(functionId,functionObj)
 		return getValueFromFunction(functionId,functionArr[1])
 	
 	if default == "": default = path
 	
 	var pathArr = path.split(".")
 	var i = 0
-	#if(pathArr[0] == "PlayerData"): cObj = PlayerData
-	#elif(pathArr[0] == "WorldData"): cObj = WorldData
-	#elif(pathArr[0].begins_with("NPC")): cObj = getNPC(MiscData["currentNpcId"][int(pathArr[0].substr(3,pathArr[0].length()-3))])
+	
 	var tObj = getObjectFromPath(pathArr[0])
 	var cObj = tObj
 	i+= 1
 	while(i < pathArr.size()):
 		cObj = getValue(cObj,pathArr[i])
 		if cObj == null:
-			print("ERROR loading "+path)
+			logOut("ERROR loading "+path,"ERROR")
 			return default
 		i+=1
 		
@@ -690,7 +686,7 @@ func shopUpdateItems():
 	for itemId in shopItems:
 		#var item = items[itemId]
 		var item = getItem(itemId)
-		if CurrentUi.ShopShowOwned or !(itemId in PlayerData.inventory):
+		if CurrentUi.get("ShopShowOwned",false) or !(itemId in PlayerData.inventory):
 			CurrentUi.ShopItems.append(item)
 			
 	updateUI()
@@ -1200,7 +1196,7 @@ func gameStatusShow():
 	updateUI()
 	
 func gameStatusToggle():
-	CurrentUi.ShowGameStatus = !CurrentUi.ShowGameStatus
+	CurrentUi.ShowGameStatus = !CurrentUi.get("ShowGameStatus",false)
 	updateUI()
 	
 func npcIsPresent(npc,locationId,time = -1):

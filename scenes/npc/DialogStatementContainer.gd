@@ -7,16 +7,6 @@ func clearChildren():
     	i.queue_free()
 		
 
-#func scrollToEnd():
-	#var tree = get_tree()
-	#if tree==null:return
-	#yield(tree, "idle_frame")
-	#get_parent().scroll_vertical = 10000000000#get_parent().get_v_scrollbar().max_value
-	#get_parent().get_v_scrollbar().allow_greater = true
-	#get_parent().set_v_scroll(rect_size.y)
-	#print(get_parent().scroll_vertical)
-	#print(get_parent().get_v_scrollbar().max_value)
-
 func updateUI(CurrentUi):
 	clearChildren()
 	

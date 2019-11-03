@@ -1,7 +1,7 @@
 extends PanelContainer
 
 func updateUI(CurrentUi):
-	if CurrentUi.ShowRL == true:
+	if CurrentUi.get("ShowRL",true) == true:
 		show()
 	else:
 		hide()

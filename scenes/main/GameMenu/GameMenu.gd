@@ -1,7 +1,7 @@
 extends ColorRect
 
 func updateUI(CurrentUi):
-	if CurrentUi.ShowGameMenu == true:
+	if CurrentUi.get("ShowGameMenu",false) == true:
 		show()
 	else:
 		hide()

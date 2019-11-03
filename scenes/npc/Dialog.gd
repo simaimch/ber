@@ -1,7 +1,7 @@
 extends Control
 
 func updateUI(CurrentUi):
-	if CurrentUi.ShowNPCDialog == true:
+	if CurrentUi.get("ShowNPCDialog",false) == true:
 		show()
 	else:
 		hide()

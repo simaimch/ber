@@ -1,7 +1,7 @@
 extends Control
 
 func updateUI(CurrentUi):
-	if CurrentUi.ShowServices == true:
+	if CurrentUi.get("ShowServices",false) == true:
 		show()
 	else:
 		hide()

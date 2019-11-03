@@ -9,6 +9,9 @@ func logOut(msg,type):
 	
 	var leInstance = plLogEntry.instance()
 	leInstance.text = time+" : "+msg
+	
+	if type == "ERROR": leInstance.font_color = Color(1,0,0)
+	
 	add_child(leInstance)
 	move_child(leInstance,0)
 	

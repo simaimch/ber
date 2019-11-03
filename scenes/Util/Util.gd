@@ -7,6 +7,14 @@ func folderFromPath(path):
 	if fileNameParts.size() == 1: return path #path already was a folder
 	return path.substr(0,path.length()-fileName.length()-1)
 
+func formatDuration(d):
+	if d > 7200:
+		return str(d/3600)+" hours"
+	elif d > 120:
+		return str(d/60)+" minutes"
+	else:
+		return str(d)+" seconds"
+
 func formatInt(i,format="00"):
 	var result = ""
 	if format == "00":

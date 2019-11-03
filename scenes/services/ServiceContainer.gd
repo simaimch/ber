@@ -14,9 +14,11 @@ func updateUI(CurrentUi):
 	
 	for serviceId in CurrentUi.Services.available:
 		var service = GameManager.getServiceById(serviceId)
-		if CurrentUi.Services.category == "" or CurrentUi.Services.category == service.category:
-			var serviceInstance = servicePL.instance()
-			serviceInstance.setService(service)
-			add_child(serviceInstance)
+		match CurrentUi.Services.get("category",""):
+		#if CurrentUi.Services.category == "" or CurrentUi.Services.category == service.category:
+			"", service.category:
+				var serviceInstance = servicePL.instance()
+				serviceInstance.setService(service)
+				add_child(serviceInstance)
 			
 

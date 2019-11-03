@@ -1,7 +1,7 @@
 extends Label
 
 func updateUI(CurrentUi):
-	if CurrentUi.ShowPlayerMoney == true:
+	if CurrentUi.get("ShowPlayerMoney",true) == true:
 		show()
 		var money = CurrentUi.money
 		text = Util.formatMoney(money)

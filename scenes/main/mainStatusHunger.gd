@@ -1,7 +1,7 @@
 extends Label
 
 func updateUI(CurrentUi):
-	if CurrentUi.ShowPlayerStat == true:
+	if CurrentUi.get("ShowPlayerStat",true) == true:
 		show()
 		var stat = CurrentUi.PlayerStat.hunger.current
 		text = str(stat/100) + "%"

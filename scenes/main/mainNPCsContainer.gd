@@ -1,7 +1,7 @@
 extends PanelContainer
 
 func updateUI(CurrentUi):
-	if CurrentUi.ShowNPCs == true:
+	if CurrentUi.get("ShowNPCs",true) == true:
 		show()
 	else:
 		hide()

@@ -1,6 +1,7 @@
 extends Control
 
 var action = ""
+var advancedControl = false
 
 func executeAction(action):
 	GameManager.execute(action)
@@ -51,7 +52,14 @@ func _process(delta):
 	elif action == "gamestatus":
 		GameManager.gameStatusToggle()
 		action = ""
-
+	
+	elif Input.is_action_pressed("ui_advancedcontrol"):
+		if advancedControl == false:
+			advancedControl = true
+			get_tree().call_group("splitContainer","showControl")
+	elif advancedControl == true:
+		advancedControl = false
+		get_tree().call_group("splitContainer","hideControl")
 func _ready():
 	GameManager.updateUI()
 	

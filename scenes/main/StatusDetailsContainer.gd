@@ -1,7 +1,7 @@
 extends MarginContainer
 
 func updateUI(CurrentUi):
-	if CurrentUi.ShowStatusDetails == true:
+	if CurrentUi.get("ShowStatusDetails",false) == true:
 		show()
 	else:
 		hide()
