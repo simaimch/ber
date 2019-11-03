@@ -119,6 +119,7 @@ func _ready():
 	playerData2UI()
 	CurrentUi.Time = WorldData.Time + WorldData.TimeOffset
 	rng.randomize()
+	randomize()
 	
 func QUIT():
 	print("QUIT")
@@ -296,9 +297,10 @@ func initEntry(entry):
 			newDict[key] = initEntry(entry[key])
 		return newDict
 
-func inventoryAdd(item,count=1):
+func inventoryAdd(item,count=1,ignoreOwned=false):
 	if PlayerData.inventory.has(item.ID):
-		PlayerData.inventory[item.ID].count += count
+		if !ignoreOwned:
+			PlayerData.inventory[item.ID].count += count
 	else:
 		PlayerData.inventory[item.ID] = {"count":count}
 		
@@ -1008,12 +1010,7 @@ func execute(commands):
 	if commands.has("bg"):
 		CurrentUi.Bg = commands["bg"]
 		
-	#if commands.has("PlayerData"):
-	#	for key in commands.PlayerData:
-	#		if typeof(commands.PlayerData[key]) == TYPE_DICTIONARY and commands.PlayerData[key].has("mode"):
-	#			modValueAtPath("PlayerData."+key,commands.PlayerData[key].mode,commands.PlayerData[key].value)
-	#		else:
-	#			setValueAtPath("PlayerData."+key,commands.PlayerData[key])
+	
 	
 	for dataContainer in ["PlayerData","MiscData"]:
 		if commands.has(dataContainer):
@@ -1025,11 +1022,12 @@ func execute(commands):
 					setValueAtPath(dataContainer+"."+key,command[key])
 			
 	if commands.has("eat"):
-		#PlayerData.stat.hunger.current += commands.eat.saturation
 		stateInc("hunger",commands.eat.saturation)
 	if commands.has("drink"):
-		#PlayerData.stat.thirst.current += commands.drink.saturation
 		stateInc("thirst",commands.drink.saturation)
+		
+	if commands.has("playerOutfit"):
+		setPlayerOutfit(commands.playerOutfit)
 		
 	if commands.has("NPCData"):
 		for key in commands.NPCData:
@@ -1403,6 +1401,43 @@ func wardrobeUpdateItems():
 		if item.type == CurrentUi.Wardrobe.seltype:
 			CurrentUi.Wardrobe.selitems.append(item)
 	updateUI()
+
+func setPlayerOutfit(playerOutfit):
+	var itemKeys = items.keys()
+	itemKeys.shuffle()
+	for itemType in playerOutfit:
+		var playerOutfitItem = playerOutfit[itemType]
+		for itemId in itemKeys:
+			var item = getItem(itemId)
+			if item.has("isTemplate") and item.isTemplate == true: continue
+			if item.type != itemType: continue
+			
+			var matched = true
+			
+			for filterId in playerOutfitItem:
+				
+				if !item.has(filterId): 
+					matched = false
+					break
+					
+				var filterTarget = playerOutfitItem[filterId]
+				match typeof(filterTarget):
+					TYPE_ARRAY, TYPE_REAL_ARRAY, TYPE_INT_ARRAY:
+						if filterTarget.size() == 2 and Util.isNumber(filterTarget[0]) and Util.isNumber(filterTarget[1]): # a range
+							if item[filterId] < filterTarget[0] or item[filterId] < filterTarget[0]:
+								matched = false
+								break
+					TYPE_STRING, TYPE_INT, TYPE_BOOL, TYPE_REAL:
+						if !Util.equals(item[filterId],filterTarget):
+							matched = false
+							break
+							
+			if matched == true:
+				inventoryAdd(item,1,true)
+				setItemWorn(item)
+				break
+			
+		pass
 	
 func setItemWorn(item):
 	PlayerData.outfit.CURRENT[item.type] = item.ID

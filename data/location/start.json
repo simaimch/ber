@@ -10,6 +10,20 @@
             "skill.heels": 3,
             "trait.genes.appearance":2
         },
+        "playerOutfit":{
+            "clothes":{
+                "price": [0,100]
+            },
+            "shoes":{
+                "height": 0
+            },
+            "bra":{
+                "price": [0,40]
+            },
+            "panties":{
+                "price": [0,40]
+            }
+        },
         "MiscData":{
             "bodyparts":{
                 "hair":{"tattoo":false,"pain":false,"pierce":false},

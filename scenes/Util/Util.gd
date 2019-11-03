@@ -241,6 +241,10 @@ func equals(a,b):
 	#if tb == TYPE_BOOL and ta != TYPE_BOOL:
 	#	a = bool(a)
 	
+	if ta == TYPE_STRING or tb == TYPE_STRING:
+		if str(a) == str(b): return true
+		return false
+	
 	if a == b:
 		return true
 		
@@ -288,6 +292,12 @@ func isInStr(a,b):
 	if typeof(b) == TYPE_ARRAY or typeof(b) == TYPE_STRING_ARRAY:
 		if a in b:
 			return true
+	return false
+
+func isNumber(val):
+	match typeof(val):
+		TYPE_INT: return true
+		TYPE_REAL: return true
 	return false
 	
 func inherit(child, parent):
