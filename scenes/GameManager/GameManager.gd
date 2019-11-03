@@ -24,6 +24,7 @@ var CurrentUi={
 	"ShopShowOwned":false,
 	"ShowDetailsPC":false,
 	"ShowGameMenu": false,
+	"ShowGameStatus":false,
 	"ShowPlayerMoney":true,
 	"ShowNPCDialog":false,
 	"ShowNPCs":false,
@@ -877,6 +878,9 @@ func loadServices():
 	else:
 		print("Error loading Services: "+str(temp.error))
 
+func logOut(msg,type="NOTICE"):
+	get_tree().call_group("logger","logOut",msg,type)
+
 #func loadSkills():
 #	var file = File.new()
 #	file.open("res://data/misc/skills.json", file.READ)
@@ -1187,6 +1191,18 @@ func gameMenuShow():
 	CurrentUi.ShowGameMenu = true
 	updateUI()
 
+func gameStatusHide():
+	CurrentUi.ShowGameStatus = false
+	updateUI()
+
+func gameStatusShow():
+	CurrentUi.ShowGameStatus = true
+	updateUI()
+	
+func gameStatusToggle():
+	CurrentUi.ShowGameStatus = !CurrentUi.ShowGameStatus
+	updateUI()
+	
 func npcIsPresent(npc,locationId,time = -1):
 	if time == -1: time =  now()
 	
@@ -1365,6 +1381,8 @@ func SaveGameLoad(path = "user://quicksave.json"):
 	
 	updateUI()
 	
+	logOut("Game loaded from \""+path+"\"")
+	
 func SaveGameSave(path="user://quicksave.json"):
 	var data = {}
 	data.CurrentUi = CurrentUi
@@ -1381,6 +1399,8 @@ func SaveGameSave(path="user://quicksave.json"):
 	saveGame.open(path, File.WRITE)
 	saveGame.store_line(to_json(data))
 	saveGame.close()
+	
+	logOut("Game saved at \""+path+"\"")
 
 func recalcUI():
 	executeLocation(getLocation(CurrentUi.LocationId),true)

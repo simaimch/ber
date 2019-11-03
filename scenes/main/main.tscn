@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://themes/default.tres" type="Theme" id=1]
 [ext_resource path="res://scenes/main/main.gd" type="Script" id=2]
@@ -20,16 +20,18 @@
 [ext_resource path="res://scenes/main/mainTextMain.gd" type="Script" id=18]
 [ext_resource path="res://scenes/main/mainActionsVBoxContainer.gd" type="Script" id=19]
 [ext_resource path="res://scenes/main/ActionButton/ActionButton.tscn" type="PackedScene" id=20]
-[ext_resource path="res://scenes/npc/Dialog.tscn" type="PackedScene" id=21]
-[ext_resource path="res://scenes/services/Services.tscn" type="PackedScene" id=22]
-[ext_resource path="res://scenes/shop/Shop.tscn" type="PackedScene" id=23]
-[ext_resource path="res://scenes/shop/Shop.gd" type="Script" id=24]
-[ext_resource path="res://scenes/wardrobe/Wardrobe.tscn" type="PackedScene" id=25]
-[ext_resource path="res://scenes/detailsMenu/pcDetails.tscn" type="PackedScene" id=26]
-[ext_resource path="res://scenes/main/mainTooltip.gd" type="Script" id=27]
-[ext_resource path="res://scenes/main/StatusDetailsContainer.gd" type="Script" id=28]
-[ext_resource path="res://scenes/main/Statdisplay/Statdisplay.tscn" type="PackedScene" id=29]
-[ext_resource path="res://scenes/main/GameMenu/GameMenu.tscn" type="PackedScene" id=30]
+[ext_resource path="res://scenes/main/GameStatusContainer.gd" type="Script" id=21]
+[ext_resource path="res://scenes/main/LogContainer/LogContainer.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scenes/npc/Dialog.tscn" type="PackedScene" id=23]
+[ext_resource path="res://scenes/services/Services.tscn" type="PackedScene" id=24]
+[ext_resource path="res://scenes/shop/Shop.tscn" type="PackedScene" id=25]
+[ext_resource path="res://scenes/shop/Shop.gd" type="Script" id=26]
+[ext_resource path="res://scenes/wardrobe/Wardrobe.tscn" type="PackedScene" id=27]
+[ext_resource path="res://scenes/detailsMenu/pcDetails.tscn" type="PackedScene" id=28]
+[ext_resource path="res://scenes/main/mainTooltip.gd" type="Script" id=29]
+[ext_resource path="res://scenes/main/StatusDetailsContainer.gd" type="Script" id=30]
+[ext_resource path="res://scenes/main/Statdisplay/Statdisplay.tscn" type="PackedScene" id=31]
+[ext_resource path="res://scenes/main/GameMenu/GameMenu.tscn" type="PackedScene" id=32]
 
 [node name="main" type="Control" groups=[
 "gameCommand",
@@ -45,6 +47,7 @@ anchor_bottom = 1.0
 custom_constants/separation = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+editor/display_folded = true
 margin_right = 1920.0
 margin_bottom = 70.0
 
@@ -98,7 +101,7 @@ script = ExtResource( 8 )
 editor/display_folded = true
 margin_top = 70.0
 margin_right = 1920.0
-margin_bottom = 827.0
+margin_bottom = 602.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
 custom_constants/separation = 0
@@ -108,13 +111,13 @@ custom_constants/separation = 0
 ]]
 editor/display_folded = true
 margin_right = 194.0
-margin_bottom = 757.0
+margin_bottom = 532.0
 size_flags_horizontal = 3
 script = ExtResource( 9 )
 
 [node name="RLocationsScrollContainer" type="ScrollContainer" parent="VBoxContainer/BGRLNPCContainer/RLocationsContainer"]
 margin_right = 194.0
-margin_bottom = 757.0
+margin_bottom = 532.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -122,7 +125,7 @@ size_flags_vertical = 3
 "uiUpdate",
 ]]
 margin_right = 194.0
-margin_bottom = 757.0
+margin_bottom = 532.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 10 )
@@ -135,7 +138,7 @@ margin_right = 194.0
 ]]
 margin_left = 194.0
 margin_right = 1749.0
-margin_bottom = 757.0
+margin_bottom = 532.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 8.0
@@ -146,15 +149,14 @@ script = ExtResource( 13 )
 [node name="NPCsContainer" type="PanelContainer" parent="VBoxContainer/BGRLNPCContainer" groups=[
 "uiUpdate",
 ]]
-editor/display_folded = true
 margin_left = 1749.0
 margin_right = 1919.0
-margin_bottom = 757.0
+margin_bottom = 532.0
 script = ExtResource( 14 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/BGRLNPCContainer/NPCsContainer"]
 margin_right = 170.0
-margin_bottom = 757.0
+margin_bottom = 532.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
@@ -163,7 +165,7 @@ scroll_horizontal_enabled = false
 "uiUpdate",
 ]]
 margin_right = 170.0
-margin_bottom = 757.0
+margin_bottom = 532.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 15 )
@@ -172,14 +174,14 @@ script = ExtResource( 15 )
 
 [node name="TextAndActionContainer" type="VBoxContainer" parent="VBoxContainer"]
 editor/display_folded = true
-margin_top = 827.0
+margin_top = 602.0
 margin_right = 1920.0
-margin_bottom = 1080.0
+margin_bottom = 779.0
 size_flags_vertical = 3
 
 [node name="TextMainBg" type="ColorRect" parent="VBoxContainer/TextAndActionContainer"]
 margin_right = 1920.0
-margin_bottom = 124.0
+margin_bottom = 86.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 1, 1, 1, 0.568627 )
@@ -199,9 +201,9 @@ bbcode_enabled = true
 script = ExtResource( 18 )
 
 [node name="ActionsBg" type="ColorRect" parent="VBoxContainer/TextAndActionContainer"]
-margin_top = 128.0
+margin_top = 90.0
 margin_right = 1920.0
-margin_bottom = 253.0
+margin_bottom = 177.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 1, 1, 1, 0.568627 )
@@ -214,7 +216,7 @@ anchor_bottom = 1.0
 "uiUpdate",
 ]]
 margin_right = 1920.0
-margin_bottom = 125.0
+margin_bottom = 87.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 19 )
@@ -222,23 +224,40 @@ script = ExtResource( 19 )
 [node name="Button" parent="VBoxContainer/TextAndActionContainer/ActionsBg/ScrollContainer/ActionsVBoxContainer" instance=ExtResource( 20 )]
 margin_right = 1920.0
 
-[node name="Dialog" parent="." instance=ExtResource( 21 )]
+[node name="GameStatusContainer" type="PanelContainer" parent="VBoxContainer" groups=[
+"uiUpdate",
+]]
+margin_top = 779.0
+margin_right = 1920.0
+margin_bottom = 1079.0
+rect_min_size = Vector2( 50, 300 )
+script = ExtResource( 21 )
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/GameStatusContainer"]
+margin_right = 1920.0
+margin_bottom = 300.0
+scroll_horizontal_enabled = false
+
+[node name="LogContainer" parent="VBoxContainer/GameStatusContainer/ScrollContainer" instance=ExtResource( 22 )]
+margin_bottom = 0.0
+
+[node name="Dialog" parent="." instance=ExtResource( 23 )]
 visible = false
 
-[node name="Services" parent="." instance=ExtResource( 22 )]
+[node name="Services" parent="." instance=ExtResource( 24 )]
 visible = false
 
 [node name="Shop" parent="." groups=[
 "uiShop",
 "uiUpdate",
-] instance=ExtResource( 23 )]
+] instance=ExtResource( 25 )]
 visible = false
-script = ExtResource( 24 )
+script = ExtResource( 26 )
 
-[node name="Wardrobe" parent="." instance=ExtResource( 25 )]
+[node name="Wardrobe" parent="." instance=ExtResource( 27 )]
 visible = false
 
-[node name="pcDetails" parent="." instance=ExtResource( 26 )]
+[node name="pcDetails" parent="." instance=ExtResource( 28 )]
 visible = false
 
 [node name="Tooltip" type="PanelContainer" parent="." groups=[
@@ -253,7 +272,7 @@ margin_bottom = 515.0
 mouse_filter = 2
 size_flags_horizontal = 5
 size_flags_vertical = 5
-script = ExtResource( 27 )
+script = ExtResource( 29 )
 
 [node name="CenterContainer" type="CenterContainer" parent="Tooltip"]
 margin_right = 351.0
@@ -284,7 +303,7 @@ margin_left = -358.0
 margin_top = 143.0
 margin_right = -106.0
 margin_bottom = 241.0
-script = ExtResource( 28 )
+script = ExtResource( 30 )
 
 [node name="Panel" type="Panel" parent="StatusDetailsContainer"]
 margin_right = 252.0
@@ -294,23 +313,23 @@ margin_bottom = 98.0
 margin_right = 252.0
 margin_bottom = 98.0
 
-[node name="StatdisplayHunger" parent="StatusDetailsContainer/VBoxContainer" instance=ExtResource( 29 )]
+[node name="StatdisplayHunger" parent="StatusDetailsContainer/VBoxContainer" instance=ExtResource( 31 )]
 LabelText = "Hunger"
 Stat = "hunger"
 
-[node name="StatdisplayThirst" parent="StatusDetailsContainer/VBoxContainer" instance=ExtResource( 29 )]
+[node name="StatdisplayThirst" parent="StatusDetailsContainer/VBoxContainer" instance=ExtResource( 31 )]
 margin_top = 34.0
 margin_bottom = 64.0
 LabelText = "Thirst"
 Stat = "thirst"
 
-[node name="StatdisplaySleep" parent="StatusDetailsContainer/VBoxContainer" instance=ExtResource( 29 )]
+[node name="StatdisplaySleep" parent="StatusDetailsContainer/VBoxContainer" instance=ExtResource( 31 )]
 margin_top = 68.0
 margin_bottom = 98.0
 LabelText = "Sleep"
 Stat = "sleep"
 
-[node name="GameMenu" parent="." instance=ExtResource( 30 )]
+[node name="GameMenu" parent="." instance=ExtResource( 32 )]
 visible = false
 [connection signal="mouse_entered" from="VBoxContainer/PanelContainer/StatusContainer/StatusContainer" to="VBoxContainer/PanelContainer/StatusContainer/StatusContainer" method="_on_StatusContainer_mouse_entered"]
 [connection signal="mouse_exited" from="VBoxContainer/PanelContainer/StatusContainer/StatusContainer" to="VBoxContainer/PanelContainer/StatusContainer/StatusContainer" method="_on_StatusContainer_mouse_exited"]
