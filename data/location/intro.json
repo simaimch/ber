@@ -1,6 +1,6 @@
 {
     "start":{
-        "bg":"res://media/texture/events/intro/tada.jpg",
+        "bg":"texture/events/intro/tada.jpg",
         "text": ["Welcome and thank you for playing BER."],
         "actions": {
             "100":{
@@ -27,7 +27,7 @@
         }
     },
     "100":{
-        "bg":"res://media/texture/events/intro/hbf_ffm_ice.jpg",
+        "bg":"texture/events/intro/hbf_ffm_ice.jpg",
         "text": ["You are a young woman of the age of 18.","You have been living in Frankfurt, Germany for the last years. But now you are heading off to Berlin."],
         "actions": {
             "1000":{
@@ -37,7 +37,7 @@
         }
     },
     "200":{
-        "bg":"res://media/texture/events/intro/hbf_ffm_ice.jpg",
+        "bg":"texture/events/intro/hbf_ffm_ice.jpg",
         "text": ["Currently you are standing at a platform of the central train station of Frankfurt ready to board your train.","Here to say goodbye ..."],
         "actions": {
             "1000":{
@@ -249,7 +249,7 @@
         }
     },
     "about":{
-        "bg":"res://media/texture/events/intro/about.jpg",
+        "bg":"texture/events/intro/about.jpg",
         "text": ["This game was created by me."],
         "actions": {
             "100":{

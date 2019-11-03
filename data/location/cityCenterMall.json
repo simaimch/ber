@@ -1,5 +1,5 @@
 {
-    "bg":"res://media/texture/locations/cityCenter/cityCanterMall0.jpg",
+    "bg":"texture/locations/cityCenter/cityCanterMall0.jpg",
     "label":"Mall (exterior)",
     "npcs": true,
     "text":"The exterior of a mall.",
@@ -14,7 +14,7 @@
         }
     ],
     "interior":{
-        "bg":"res://media/texture/locations/cityCenter/cityCanterMall1.jpg",
+        "bg":"texture/locations/cityCenter/cityCanterMall1.jpg",
         "label":"Mall (interior)",
         "npcs": true,
         "text":"The interior of a mall.",
@@ -30,8 +30,8 @@
         ]
     },
     "shopFN":{
-        "rlTexture":"res://media/texture/locations/shop/fn.png",
-        "bg":"res://media/texture/locations/shop/fnInterior.jpg",
+        "rlTexture":"texture/locations/shop/fn.png",
+        "bg":"texture/locations/shop/fnInterior.jpg",
         "label":"",
         "npcs": false,
         "text":"F+N (Fröken and Nilsson) is a Swedish multinational clothing-retail company.",

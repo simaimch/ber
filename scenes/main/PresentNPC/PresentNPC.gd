@@ -11,7 +11,7 @@ func setNPC(npcId):
 	id = npcId
 	linkNpc()
 	tooltipText = GameManager.getNPCDescription(npc) +"\n"+ GameManager.getValue(npc,"name.first")+"\n"+str(Util.getAge(GameManager.now(),GameManager.getValue(npc,"bday")))
-	$TextureRect.texture = load(GameManager.getValue(npc,"texture"))
+	$TextureRect.texture = Util.texture(GameManager.getValue(npc,"texture"))
 
 func _on_PresentNPC_mouse_entered():
 	get_tree().call_group("tooltip","showTooltip",{"text":tooltipText,"followMouse":true})

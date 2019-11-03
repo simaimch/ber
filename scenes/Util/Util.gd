@@ -399,16 +399,20 @@ func stringFormat(string):
 	
 		
 func texture(path):
-	path = GameManager.path(path)
-	if fileExists(path):
-		if(path.substr(0,6) == "res://"):
-			return load(path)
-		else:
+	var mods = GameManager.getActiveMods()
+	
+	for modId in mods:
+		var fpath = GameManager.getModFolder(modId)+"/media/"+path
+		if fileExists(fpath):
 			var image = Image.new()
-			image.load(path)
+			image.load(fpath)
 			var texture = ImageTexture.new()
 			texture.create_from_image(image)
 			return texture
+			
+	if fileExists("res://media/"+path):
+		return load("res://media/"+path)
+	
 	return preload("res://media/texture/missingTexture.jpg")
 	
 func time(now,arg):

@@ -4,7 +4,7 @@
         "available":["kebab"],
         "name":"Döner Kebab",
         "description":"Döner Kebab Description",
-        "texture":"res://media/texture/services/food/kebab.jpg",
+        "texture":"texture/services/food/kebab.jpg",
         "time": 600,
         "price": 400,
         "effects":[
@@ -16,7 +16,7 @@
         "available":["kebab"],
         "name":"Water",
         "description":"Water Description",
-        "texture":"res://media/texture/services/drink/water.jpg",
+        "texture":"texture/services/drink/water.jpg",
         "time": 600,
         "price": 100,
         "effects":[

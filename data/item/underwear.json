@@ -1,5 +1,5 @@
 {
-    "bra0001":{"texture":"res://media/texture/items/bra/bra1.jpg","type":"bra","price":990,"shopKWs":["underwear"]},
-    "panties0001":{"texture":"res://media/texture/items/panties/panties1.jpg","type":"panties","price":990,"shopKWs":["underwear"]}
+    "bra0001":{"texture":"texture/items/bra/bra1.jpg","type":"bra","price":990,"shopKWs":["underwear"]},
+    "panties0001":{"texture":"texture/items/panties/panties1.jpg","type":"panties","price":990,"shopKWs":["underwear"]}
 
 }

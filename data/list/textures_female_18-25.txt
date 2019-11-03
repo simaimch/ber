@@ -1,3 +1,3 @@
-res://media/texture/npc/portrait/female_young/p(0).jpg;1000
-res://media/texture/npc/portrait/female_young/p(1).jpg;950
-res://media/texture/npc/portrait/female_young/p(14).jpg;903
+texture/npc/portrait/female_young/p(0).jpg;1000
+texture/npc/portrait/female_young/p(1).jpg;950
+texture/npc/portrait/female_young/p(14).jpg;903

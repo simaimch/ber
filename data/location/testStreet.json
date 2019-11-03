@@ -1,7 +1,7 @@
 {
     "subway":{
-        "rlTexture":"res://media/texture/locations/cityCenter/cityCenterSubway0.jpg",
-        "bg":"res://media/texture/locations/cityCenter/cityCenterSubway1.jpg",
+        "rlTexture":"texture/locations/cityCenter/cityCenterSubway0.jpg",
+        "bg":"texture/locations/cityCenter/cityCenterSubway1.jpg",
         "inherit":"subway.template",
         "label":"Subway Station",
         "+rl":[

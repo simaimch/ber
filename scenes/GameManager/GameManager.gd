@@ -377,6 +377,15 @@ func getValueFromList(list):
 	return entries[i].value
 	
 
+func getActiveMods():
+	var result = []
+	for modID in Preferences.mods:
+		if !Util.folderExists(getModFolder(modID)):
+			Preferences.mods.erase(modID)
+		elif Preferences.mods[modID] == true:
+			result.append(modID)
+	return result
+
 func getArgumentsFromString(s):
 	var result = []
 	

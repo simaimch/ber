@@ -6,7 +6,7 @@ func setContent(statement):
 	var npcTexture = GameManager.getValue(npc,"texture")
 	var text = statement.text
 	
-	$VBoxContainer/CenterContainer/CharTexture.texture = load(npcTexture)
+	$VBoxContainer/CenterContainer/CharTexture.texture = Util.texture(npcTexture)
 	$VBoxContainer/CenterContainer2/CharName.text = npcName
 	$Statement.setText(text)
 	

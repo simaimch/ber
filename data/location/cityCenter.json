@@ -2,7 +2,7 @@
     
     "~bg":{
         "100":{
-            "value":"res://media/texture/locations/cityCenter/cityCenterDay0.jpg",
+            "value":"texture/locations/cityCenter/cityCenterDay0.jpg",
             "condition":{
                 "mode":"AND",
                 "conditions":[
@@ -19,7 +19,7 @@
             ]}
         },
         "0":{
-            "value":"res://media/texture/locations/cityCenter/cityCenterNight0.jpg"
+            "value":"texture/locations/cityCenter/cityCenterNight0.jpg"
         }
     },
     "npcs": true,
@@ -40,8 +40,8 @@
         }
     ],
     "kebabhouse":{
-        "bg":"res://media/texture/locations/kebab/kebabHouseInside.jpg",
-        "rlTexture":"res://media/texture/locations/kebab/kebabHouse.jpg",
+        "bg":"texture/locations/kebab/kebabHouseInside.jpg",
+        "rlTexture":"texture/locations/kebab/kebabHouse.jpg",
         "text":"Kabab House",
         "label":"Kabab House",
         "rl":[
@@ -58,8 +58,8 @@
         }
     },
     "subway":{
-        "rlTexture":"res://media/texture/locations/cityCenter/cityCenterSubway0.jpg",
-        "bg":"res://media/texture/locations/cityCenter/cityCenterSubway1.jpg",
+        "rlTexture":"texture/locations/cityCenter/cityCenterSubway0.jpg",
+        "bg":"texture/locations/cityCenter/cityCenterSubway1.jpg",
         "inherit":"subway.template",
         "label":"Subway Station",
         "+rl":[

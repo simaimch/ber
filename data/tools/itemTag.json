@@ -1,7 +1,7 @@
 {
     "start":[
         {
-            "texture":"res://media/texture/misc/itemtype/dress.png",
+            "texture":"texture/misc/itemtype/dress.png",
             "result":{"type":"clothes","inherit":"dress"},
             "categories":[
                 "neck",
@@ -35,16 +35,16 @@
             ]
         },
         {
-            "texture":"res://media/texture/misc/itemtype/bra.png"
+            "texture":"texture/misc/itemtype/bra.png"
             
         },
         {
-            "texture":"res://media/texture/misc/itemtype/panties.jpg"
+            "texture":"texture/misc/itemtype/panties.jpg"
             
         },
         "",
         {
-            "texture":"res://media/texture/misc/itemtype/shoes.jpg",
+            "texture":"texture/misc/itemtype/shoes.jpg",
             "result":{"type":"shoes","inherit":"shoe"},
             "jump":"shoeType"
         },
@@ -52,19 +52,19 @@
     ],
     "neck":[
         {
-            "texture":"res://media/texture/misc/itemtype/neck/sweatheart.png",
+            "texture":"texture/misc/itemtype/neck/sweatheart.png",
             "result":{"parts":["neck_swh"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/neck/offshoulder.png",
+            "texture":"texture/misc/itemtype/neck/offshoulder.png",
             "result":{"parts":["neck_os"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/neck/spaghetti.png",
+            "texture":"texture/misc/itemtype/neck/spaghetti.png",
             "result":{"parts":["neck_sp"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/neck/crew.png",
+            "texture":"texture/misc/itemtype/neck/crew.png",
             "result":{"parts":["neck_cr"]}
         },
         {
@@ -72,30 +72,30 @@
             "jump":"neckP2"
         },
         {
-            "texture":"res://media/texture/misc/itemtype/neck/plungling.png",
+            "texture":"texture/misc/itemtype/neck/plungling.png",
             "result":{"parts":["neck_pl"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/neck/vneck.png",
+            "texture":"texture/misc/itemtype/neck/vneck.png",
             "result":{"parts":["neck_v"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/neck/scoop.png",
+            "texture":"texture/misc/itemtype/neck/scoop.png",
             "result":{"parts":["neck_sc"]}
         }
     ],
     "neckP2":[
         {
-            "texture":"res://media/texture/misc/itemtype/neck/grecian.png",
+            "texture":"texture/misc/itemtype/neck/grecian.png",
             "result":{"parts":["neck_gr"]}
         },{
-            "texture":"res://media/texture/misc/itemtype/neck/queenanne.png",
+            "texture":"texture/misc/itemtype/neck/queenanne.png",
             "result":{"parts":["neck_qa"]}
         },{
-            "texture":"res://media/texture/misc/itemtype/neck/halter.png",
+            "texture":"texture/misc/itemtype/neck/halter.png",
             "result":{"parts":["neck_ha"]}
         },{
-            "texture":"res://media/texture/misc/itemtype/neck/assymetric.png",
+            "texture":"texture/misc/itemtype/neck/assymetric.png",
             "result":{"parts":["neck_as"]}
         },
         {
@@ -103,62 +103,62 @@
             "jump":"neck"
         },
         {
-            "texture":"res://media/texture/misc/itemtype/neck/split.png",
+            "texture":"texture/misc/itemtype/neck/split.png",
             "result":{"parts":["neck_spl"]}
         },{
-            "texture":"res://media/texture/misc/itemtype/neck/keyhole.png",
+            "texture":"texture/misc/itemtype/neck/keyhole.png",
             "result":{"parts":["neck_kh"]}
         },{
-            "texture":"res://media/texture/misc/itemtype/neck/illusion.png",
+            "texture":"texture/misc/itemtype/neck/illusion.png",
             "result":{"parts":["neck_il"]}
         }
     ],
     "skirtlength":[
         {
-            "texture":"res://media/texture/misc/itemtype/skirt/micro.png",
+            "texture":"texture/misc/itemtype/skirt/micro.png",
             "result":{"parts":["skirt_micro"]}
         },{
-            "texture":"res://media/texture/misc/itemtype/skirt/mini.png",
+            "texture":"texture/misc/itemtype/skirt/mini.png",
             "result":{"parts":["skirt_mini"]}
         },{
-            "texture":"res://media/texture/misc/itemtype/skirt/aboveKnee.png",
+            "texture":"texture/misc/itemtype/skirt/aboveKnee.png",
             "result":{"parts":["skirt_ak"]}
         },
         "","",
         {
-            "texture":"res://media/texture/misc/itemtype/skirt/midi.png",
+            "texture":"texture/misc/itemtype/skirt/midi.png",
             "result":{"parts":["skirt_midi"]}
         },{
-            "texture":"res://media/texture/misc/itemtype/skirt/long.png",
+            "texture":"texture/misc/itemtype/skirt/long.png",
             "result":{"parts":["skirt_long"]}
         },{
-            "texture":"res://media/texture/misc/itemtype/skirt/evening.png",
+            "texture":"texture/misc/itemtype/skirt/evening.png",
             "result":{"parts":["skirt_ev"]}
         }
     ],
     "sleeve":[
         {
-            "texture":"res://media/texture/misc/itemtype/sleeve/short.png",
+            "texture":"texture/misc/itemtype/sleeve/short.png",
             "result":{"parts":["sleeve_s"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/sleeve/vshort.png",
+            "texture":"texture/misc/itemtype/sleeve/vshort.png",
             "result":{"parts":["sleeve_vs"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/sleeve/none.png",
+            "texture":"texture/misc/itemtype/sleeve/none.png",
             "result":{"parts":["sleeve_n"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/sleeve/med.png",
+            "texture":"texture/misc/itemtype/sleeve/med.png",
             "result":{"parts":["sleeve_m"]}
         },
         "",
         {
-            "texture":"res://media/texture/misc/itemtype/sleeve/long.png",
+            "texture":"texture/misc/itemtype/sleeve/long.png",
             "result":{"parts":["sleeve_l"]}
         },{
-            "texture":"res://media/texture/misc/itemtype/sleeve/longOpen.png",
+            "texture":"texture/misc/itemtype/sleeve/longOpen.png",
             "result":{"parts":["sleeve_lo"]}
         },""
     ],
@@ -245,7 +245,7 @@
     ],
     "shoeType":[
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/pump.png",
+            "texture":"texture/misc/itemtype/shoe/pump.png",
             "categories":[
                 "shoeTypePump",
                 "shoeHeight",
@@ -254,7 +254,7 @@
             ]
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/wedgepump.png",
+            "texture":"texture/misc/itemtype/shoe/wedgepump.png",
             "categories":[
                 "shoeTypeWedge",
                 "shoeHeight",
@@ -263,7 +263,7 @@
             ]
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/anklebootie.png",
+            "texture":"texture/misc/itemtype/shoe/anklebootie.png",
             "categories":[
                 "shoeTypeBootie",
                 "shoeHeight",
@@ -272,7 +272,7 @@
             ]
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/sneaker.png",
+            "texture":"texture/misc/itemtype/shoe/sneaker.png",
             "categories":[
                 "shoeTypeFlatClosed",
                 {"category":"color","target":"color","label":"Shoe Color"},
@@ -280,7 +280,7 @@
             ]
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/fkipflop.png",
+            "texture":"texture/misc/itemtype/shoe/fkipflop.png",
             "categories":[
                 "shoeTypeFlatOpen",
                 {"category":"color","target":"color","label":"Shoe Color"},
@@ -290,151 +290,151 @@
     ],
     "shoeTypeBootie":[
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/anklebootie.png",
+            "texture":"texture/misc/itemtype/shoe/anklebootie.png",
             "result":{"parts":["shoe_anklebootie"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/mule.png",
+            "texture":"texture/misc/itemtype/shoe/mule.png",
             "result":{"parts":["shoe_mule"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/litaboot.png",
+            "texture":"texture/misc/itemtype/shoe/litaboot.png",
             "result":{"parts":["shoe_litaboot"]}
         }
     ],
     "shoeTypeFlatClosed":[
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/sneaker.png",
+            "texture":"texture/misc/itemtype/shoe/sneaker.png",
             "result":{"parts":["shoe_sneaker"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/highhopsneaker.png",
+            "texture":"texture/misc/itemtype/shoe/highhopsneaker.png",
             "result":{"parts":["shoe_highhopsneaker"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/hiking.png",
+            "texture":"texture/misc/itemtype/shoe/hiking.png",
             "result":{"parts":["shoe_hiking"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/saddle.png",
+            "texture":"texture/misc/itemtype/shoe/saddle.png",
             "result":{"parts":["shoe_saddle"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/chelsea.png",
+            "texture":"texture/misc/itemtype/shoe/chelsea.png",
             "result":{"parts":["shoe_chelsea"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/wingtip.png",
+            "texture":"texture/misc/itemtype/shoe/wingtip.png",
             "result":{"parts":["shoe_wingtip"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/oxford.png",
+            "texture":"texture/misc/itemtype/shoe/oxford.png",
             "result":{"parts":["shoe_oxford"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/pennyloafer.png",
+            "texture":"texture/misc/itemtype/shoe/pennyloafer.png",
             "result":{"parts":["shoe_pennyloafer"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/boatshoe.png",
+            "texture":"texture/misc/itemtype/shoe/boatshoe.png",
             "result":{"parts":["shoe_boatshoe"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/moccasin.png",
+            "texture":"texture/misc/itemtype/shoe/moccasin.png",
             "result":{"parts":["shoe_moccasin"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/slipon.png",
+            "texture":"texture/misc/itemtype/shoe/slipon.png",
             "result":{"parts":["shoe_slipon"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/clog.png",
+            "texture":"texture/misc/itemtype/shoe/clog.png",
             "result":{"parts":["shoe_clog"]}
         }
     ],
     "shoeTypeFlatOpen":[
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/fkipflop.png",
+            "texture":"texture/misc/itemtype/shoe/fkipflop.png",
             "result":{"parts":["shoe_flipflop"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/thong.png",
+            "texture":"texture/misc/itemtype/shoe/thong.png",
             "result":{"parts":["shoe_thong"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/gldaiator.png",
+            "texture":"texture/misc/itemtype/shoe/gldaiator.png",
             "result":{"parts":["shoe_gladiator"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/dorsayflat.png",
+            "texture":"texture/misc/itemtype/shoe/dorsayflat.png",
             "result":{"parts":["shoe_dorsayflat"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/balletflat.png",
+            "texture":"texture/misc/itemtype/shoe/balletflat.png",
             "result":{"parts":["shoe_balletflat"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/espadrille.png",
+            "texture":"texture/misc/itemtype/shoe/espadrille.png",
             "result":{"parts":["shoe_espadrille"]}
         }
     ],
     "shoeTypePump":[
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/pump.png",
+            "texture":"texture/misc/itemtype/shoe/pump.png",
             "result":{"parts":["shoe_pump"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/stiletto.png",
+            "texture":"texture/misc/itemtype/shoe/stiletto.png",
             "result":{"parts":["shoe_stiletto"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/anklestrap.png",
+            "texture":"texture/misc/itemtype/shoe/anklestrap.png",
             "result":{"parts":["shoe_anklestrap"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/platformpump.png",
+            "texture":"texture/misc/itemtype/shoe/platformpump.png",
             "result":{"parts":["shoe_platformpump"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/peeptoe.png",
+            "texture":"texture/misc/itemtype/shoe/peeptoe.png",
             "result":{"parts":["shoe_peeptoe"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/slingbackpump.png",
+            "texture":"texture/misc/itemtype/shoe/slingbackpump.png",
             "result":{"parts":["shoe_slingbackpump"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/dorsaypump.png",
+            "texture":"texture/misc/itemtype/shoe/dorsaypump.png",
             "result":{"parts":["shoe_dorsaypump"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/kitten.png",
+            "texture":"texture/misc/itemtype/shoe/kitten.png",
             "result":{"parts":["shoe_kitten"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/maryjane.png",
+            "texture":"texture/misc/itemtype/shoe/maryjane.png",
             "result":{"parts":["shoe_maryjane"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/tstrapplatform.png",
+            "texture":"texture/misc/itemtype/shoe/tstrapplatform.png",
             "result":{"parts":["shoe_tstrapplatform"]}
         }
     ],
     "shoeTypeWedge":[
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/wedgepump.png",
+            "texture":"texture/misc/itemtype/shoe/wedgepump.png",
             "result":{"parts":["shoe_wedgepump"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/wedgesandal.png",
+            "texture":"texture/misc/itemtype/shoe/wedgesandal.png",
             "result":{"parts":["shoe_wedgesandal"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/wedgebootie.png",
+            "texture":"texture/misc/itemtype/shoe/wedgebootie.png",
             "result":{"parts":["shoe_wedgebootie"]}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoe/slingbackwedge.png",
+            "texture":"texture/misc/itemtype/shoe/slingbackwedge.png",
             "result":{"parts":["shoe_slingbackwedge"]}
         },
     ],
@@ -448,33 +448,33 @@
             "result":{"height":2}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoeHeight/5cm.png",
+            "texture":"texture/misc/itemtype/shoeHeight/5cm.png",
             "result":{"height":5}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoeHeight/8cm.png",
+            "texture":"texture/misc/itemtype/shoeHeight/8cm.png",
             "result":{"height":8}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoeHeight/10cm.png",
+            "texture":"texture/misc/itemtype/shoeHeight/10cm.png",
             "result":{"height":10}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoeHeight/12cm.png",
+            "texture":"texture/misc/itemtype/shoeHeight/12cm.png",
             "result":{"height":12}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoeHeight/16cm.png",
+            "texture":"texture/misc/itemtype/shoeHeight/16cm.png",
             "result":{"height":16}
         },
         {
-            "texture":"res://media/texture/misc/itemtype/shoeHeight/20cm.png",
+            "texture":"texture/misc/itemtype/shoeHeight/20cm.png",
             "result":{"height":20}
         }
     ],
     "shopShoe":[
         {
-            "texture":"res://media/texture/locations/shop/fn.png",
+            "texture":"texture/locations/shop/fn.png",
             "result":{"shopKWs":["test"]},
             "next":"COMPLETE"
         }
