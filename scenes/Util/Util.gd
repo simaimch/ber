@@ -316,7 +316,6 @@ func mergeInto(source,target,inplace = true):
 		var commands = []
 		
 		for i in range(key.length()):
-			print(str(i))
 			if commandSignsValues.has(key[i]):
 				commands.append(key[i])
 			else:

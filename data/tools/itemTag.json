@@ -45,6 +45,7 @@
         "",
         {
             "texture":"res://media/texture/misc/itemtype/shoes.jpg",
+            "result":{"type":"shoes","inherit":"shoe"},
             "jump":"shoeType"
         },
         ""
@@ -248,8 +249,133 @@
             "categories":[
                 "shoeTypePump",
                 "shoeHeight",
-                {"category":"color","target":"color","label":"Shoe Color"}
+                {"category":"color","target":"color","label":"Shoe Color"},
+                "priceShoes"
             ]
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/wedgepump.png",
+            "categories":[
+                "shoeTypeWedge",
+                "shoeHeight",
+                {"category":"color","target":"color","label":"Shoe Color"},
+                "priceShoes"
+            ]
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/anklebootie.png",
+            "categories":[
+                "shoeTypeBootie",
+                "shoeHeight",
+                {"category":"color","target":"color","label":"Shoe Color"},
+                "priceShoes"
+            ]
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/sneaker.png",
+            "categories":[
+                "shoeTypeFlatClosed",
+                {"category":"color","target":"color","label":"Shoe Color"},
+                "priceShoes"
+            ]
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/fkipflop.png",
+            "categories":[
+                "shoeTypeFlatOpen",
+                {"category":"color","target":"color","label":"Shoe Color"},
+                "priceShoes"
+            ]
+        }
+    ],
+    "shoeTypeBootie":[
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/anklebootie.png",
+            "result":{"parts":["shoe_anklebootie"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/mule.png",
+            "result":{"parts":["shoe_mule"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/litaboot.png",
+            "result":{"parts":["shoe_litaboot"]}
+        }
+    ],
+    "shoeTypeFlatClosed":[
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/sneaker.png",
+            "result":{"parts":["shoe_sneaker"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/highhopsneaker.png",
+            "result":{"parts":["shoe_highhopsneaker"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/hiking.png",
+            "result":{"parts":["shoe_hiking"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/saddle.png",
+            "result":{"parts":["shoe_saddle"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/chelsea.png",
+            "result":{"parts":["shoe_chelsea"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/wingtip.png",
+            "result":{"parts":["shoe_wingtip"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/oxford.png",
+            "result":{"parts":["shoe_oxford"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/pennyloafer.png",
+            "result":{"parts":["shoe_pennyloafer"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/boatshoe.png",
+            "result":{"parts":["shoe_boatshoe"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/moccasin.png",
+            "result":{"parts":["shoe_moccasin"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/slipon.png",
+            "result":{"parts":["shoe_slipon"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/clog.png",
+            "result":{"parts":["shoe_clog"]}
+        }
+    ],
+    "shoeTypeFlatOpen":[
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/fkipflop.png",
+            "result":{"parts":["shoe_flipflop"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/thong.png",
+            "result":{"parts":["shoe_thong"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/gldaiator.png",
+            "result":{"parts":["shoe_gladiator"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/dorsayflat.png",
+            "result":{"parts":["shoe_dorsayflat"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/balletflat.png",
+            "result":{"parts":["shoe_balletflat"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/espadrille.png",
+            "result":{"parts":["shoe_espadrille"]}
         }
     ],
     "shoeTypePump":[
@@ -294,6 +420,24 @@
             "result":{"parts":["shoe_tstrapplatform"]}
         }
     ],
+    "shoeTypeWedge":[
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/wedgepump.png",
+            "result":{"parts":["shoe_wedgepump"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/wedgesandal.png",
+            "result":{"parts":["shoe_wedgesandal"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/wedgebootie.png",
+            "result":{"parts":["shoe_wedgebootie"]}
+        },
+        {
+            "texture":"res://media/texture/misc/itemtype/shoe/slingbackwedge.png",
+            "result":{"parts":["shoe_slingbackwedge"]}
+        },
+    ],
     "shoeHeight":[
         {
             "text":"Flat",
@@ -333,6 +477,40 @@
             "texture":"res://media/texture/locations/shop/fn.png",
             "result":{"shopKWs":["test"]},
             "next":"COMPLETE"
+        }
+    ],
+    "priceShoes":[
+        {
+            "text":"9,99 €",
+            "result":{"price":999}
+        },
+        {
+            "text":"19,99 €",
+            "result":{"price":1999}
+        },
+        {
+            "text":"29,99 €",
+            "result":{"price":2999}
+        },
+        {
+            "text":"49,99 €",
+            "result":{"price":4999}
+        },
+        {
+            "text":"69,99 €",
+            "result":{"price":1999}
+        },
+        {
+            "text":"99,99 €",
+            "result":{"price":1999}
+        },
+        {
+            "text":"149,99 €",
+            "result":{"price":1999}
+        },
+        {
+            "text":"199,99 €",
+            "result":{"price":1999}
         }
     ]
 }
