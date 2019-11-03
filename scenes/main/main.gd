@@ -25,6 +25,8 @@ func _process(delta):
 		GameManager.SaveGameSave()
 	elif Input.is_action_pressed("ui_details"):
 		GameManager.detailsShow()
+	elif Input.is_action_pressed("ui_cancel"):
+		GameManager.gameMenuShow()
 
 func _ready():
 	GameManager.updateUI()

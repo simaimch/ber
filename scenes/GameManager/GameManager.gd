@@ -23,6 +23,7 @@ var CurrentUi={
 	"ShopKeywords":[],
 	"ShopShowOwned":false,
 	"ShowDetailsPC":false,
+	"ShowGameMenu": false,
 	"ShowPlayerMoney":true,
 	"ShowNPCDialog":false,
 	"ShowNPCs":false,
@@ -893,6 +894,12 @@ func continueGame():
 	SaveGameLoad()
 	gotoMain()
 
+func loadGame(path):
+	loadConstantData()
+	SaveGameLoad(path)
+	gotoMain()
+	
+
 func loadConstantData():
 	MetaData = loadMetadata("ber")
 	if MetaData.has("onLoad"):
@@ -1165,6 +1172,14 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 		CurrentUi.LocationId = location.ID
 	updateUI()
 
+func gameMenuHide():
+	CurrentUi.ShowGameMenu = false
+	updateUI()
+	
+func gameMenuShow():
+	CurrentUi.ShowGameMenu = true
+	updateUI()
+
 func npcIsPresent(npc,locationId,time = -1):
 	if time == -1: time =  now()
 	
@@ -1325,11 +1340,11 @@ func playerData2UI():
 	CurrentUi.money = PlayerData.money
 	#CurrentUi.Wardrobe.coutfit = PlayerData.outfit.CURRENT
 	
-func SaveGameLoad():
+func SaveGameLoad(path = "user://quicksave.json"):
 	var saveGame = File.new()
-	if not saveGame.file_exists("user://quicksave.json"):
+	if not saveGame.file_exists(path):
         return # Error! We don't have a save to load.
-	saveGame.open("user://quicksave.json", File.READ)
+	saveGame.open(path, File.READ)
 	var data = parse_json(saveGame.get_line())
 	saveGame.close()
 	CurrentUi = data.CurrentUi
@@ -1343,7 +1358,7 @@ func SaveGameLoad():
 	
 	updateUI()
 	
-func SaveGameSave():
+func SaveGameSave(path="user://quicksave.json"):
 	var data = {}
 	data.CurrentUi = CurrentUi
 	data.MiscData = MiscData
@@ -1356,7 +1371,7 @@ func SaveGameSave():
 			data.NPC[npcID] = npcs[npcID].persist
 	
 	var saveGame = File.new()
-	saveGame.open("user://quicksave.json", File.WRITE)
+	saveGame.open(path, File.WRITE)
 	saveGame.store_line(to_json(data))
 	saveGame.close()
 

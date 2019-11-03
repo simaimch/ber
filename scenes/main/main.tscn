@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://themes/default.tres" type="Theme" id=1]
 [ext_resource path="res://scenes/main/main.gd" type="Script" id=2]
@@ -29,6 +29,7 @@
 [ext_resource path="res://scenes/main/mainTooltip.gd" type="Script" id=27]
 [ext_resource path="res://scenes/main/StatusDetailsContainer.gd" type="Script" id=28]
 [ext_resource path="res://scenes/main/Statdisplay/Statdisplay.tscn" type="PackedScene" id=29]
+[ext_resource path="res://scenes/main/GameMenu/GameMenu.tscn" type="PackedScene" id=30]
 
 [node name="main" type="Control" groups=[
 "gameCommand",
@@ -113,6 +114,7 @@ script = ExtResource( 7 )
 [node name="RLocationsContainer" type="PanelContainer" parent="." groups=[
 "uiUpdate",
 ]]
+editor/display_folded = true
 anchor_bottom = 1.0
 margin_left = 60.0
 margin_top = 150.0
@@ -239,8 +241,8 @@ visible = false
 visible = false
 
 [node name="Shop" parent="." groups=[
-"uiUpdate",
 "uiShop",
+"uiUpdate",
 ] instance=ExtResource( 23 )]
 visible = false
 script = ExtResource( 24 )
@@ -319,5 +321,7 @@ margin_top = 68.0
 margin_bottom = 98.0
 LabelText = "Sleep"
 Stat = "sleep"
+
+[node name="GameMenu" parent="." instance=ExtResource( 30 )]
 [connection signal="mouse_entered" from="StatusBarContainer/HBoxContainer/StatusContainer" to="StatusBarContainer/HBoxContainer/StatusContainer" method="_on_StatusContainer_mouse_entered"]
 [connection signal="mouse_exited" from="StatusBarContainer/HBoxContainer/StatusContainer" to="StatusBarContainer/HBoxContainer/StatusContainer" method="_on_StatusContainer_mouse_exited"]

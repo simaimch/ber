@@ -42,3 +42,11 @@ func hideRight():
 	$MarginContainer/HBoxContainer/LogoContainer.hide()
 	$MarginContainer/HBoxContainer/ToolsContainer.hide()
 	$MarginContainer/HBoxContainer/ModOverview.hide()
+
+
+func _on_LoadGameButton_pressed():
+	$LoadGameDialog.popup_centered()
+
+
+func _on_LoadGameDialog_file_selected(path):
+	GameManager.loadGame(path)

@@ -30,6 +30,7 @@ margin_right = 1750.0
 margin_bottom = 980.0
 
 [node name="MenuVBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+editor/display_folded = true
 margin_right = 360.0
 margin_bottom = 980.0
 
@@ -41,33 +42,39 @@ custom_constants/separation = 20
 alignment = 1
 
 [node name="ContinueButton" parent="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons" instance=ExtResource( 2 )]
-margin_top = 242.0
+margin_top = 194.0
 margin_right = 360.0
-margin_bottom = 318.0
+margin_bottom = 270.0
 caption = "Continue"
 
 [node name="NewGameButton" parent="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons" instance=ExtResource( 2 )]
-margin_top = 338.0
+margin_top = 290.0
 margin_right = 360.0
-margin_bottom = 414.0
+margin_bottom = 366.0
 caption = "New Game"
 
-[node name="ModsButton" parent="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons" instance=ExtResource( 2 )]
-margin_top = 434.0
+[node name="LoadGameButton" parent="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons" instance=ExtResource( 2 )]
+margin_top = 386.0
 margin_right = 360.0
-margin_bottom = 510.0
+margin_bottom = 462.0
+caption = "Load"
+
+[node name="ModsButton" parent="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons" instance=ExtResource( 2 )]
+margin_top = 482.0
+margin_right = 360.0
+margin_bottom = 558.0
 caption = "Mods"
 
 [node name="ToolsButton" parent="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons" instance=ExtResource( 2 )]
-margin_top = 530.0
+margin_top = 578.0
 margin_right = 360.0
-margin_bottom = 606.0
+margin_bottom = 654.0
 caption = "Tools"
 
 [node name="QuitButton" parent="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons" instance=ExtResource( 2 )]
-margin_top = 626.0
+margin_top = 674.0
 margin_right = 360.0
-margin_bottom = 702.0
+margin_bottom = 750.0
 caption = "Quit"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/MenuVBoxContainer"]
@@ -87,6 +94,7 @@ margin_bottom = 32.0
 text = "Simaimch"
 
 [node name="LogoContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer"]
+editor/display_folded = true
 margin_left = 364.0
 margin_right = 1750.0
 margin_bottom = 980.0
@@ -101,6 +109,7 @@ texture = ExtResource( 3 )
 stretch_mode = 4
 
 [node name="ToolsContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+editor/display_folded = true
 visible = false
 margin_left = 364.0
 margin_right = 1750.0
@@ -116,9 +125,22 @@ caption = "ItemTag"
 
 [node name="ModOverview" parent="MarginContainer/HBoxContainer" instance=ExtResource( 4 )]
 visible = false
+
+[node name="LoadGameDialog" type="FileDialog" parent="."]
+visible = true
+margin_right = 934.0
+margin_bottom = 511.0
+window_title = "Datei öffnen"
+mode = 0
+access = 1
+filters = PoolStringArray( "*.json" )
+current_dir = "user://"
+current_path = "user://"
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons/ContinueButton" to="." method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons/NewGameButton" to="." method="_on_NewGameButton_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons/LoadGameButton" to="." method="_on_LoadGameButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons/ModsButton" to="." method="_on_ModsButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons/ToolsButton" to="." method="_on_Tools_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons/QuitButton" to="." method="_on_QuitButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/ToolsContainer/ToolsItemTag" to="." method="_on_ToolsItemTag_pressed"]
+[connection signal="file_selected" from="LoadGameDialog" to="." method="_on_LoadGameDialog_file_selected"]
