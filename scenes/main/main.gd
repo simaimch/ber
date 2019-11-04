@@ -37,6 +37,8 @@ func _process(delta):
 		action = "menu"
 	elif Input.is_action_pressed("ui_gamestatus"):
 		action = "gamestatus"
+	elif Input.is_action_pressed("ui_refresh"):
+		action = "refresh"
 	elif action == "quickload":
 		GameManager.SaveGameLoad()
 		action = ""
@@ -51,6 +53,9 @@ func _process(delta):
 		action = ""
 	elif action == "gamestatus":
 		GameManager.gameStatusToggle()
+		action = ""
+	elif action == "refresh":
+		GameManager.reload()
 		action = ""
 	
 	elif Input.is_action_pressed("ui_advancedcontrol"):

@@ -1402,6 +1402,12 @@ func recalcUI():
 	executeLocation(getLocation(CurrentUi.LocationId),true)
 	updateUI()
 
+func reload():
+	logOut("Reload")
+	locations.clear()
+	var location = getLocation(CurrentUi.LocationId)
+	executeLocation(location,true,false)
+
 func updateUI():
 	playerData2UI()
 	get_tree().call_group(CurrentUi.UIGroup,"updateUI",CurrentUi)
