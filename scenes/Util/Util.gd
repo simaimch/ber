@@ -159,7 +159,13 @@ func getHoursTilTime(now,target):
 	var targetDict= getDateTime(target)
 	
 	return int(targetDict.hour - nowDict.hour + 24*getDaysTilDate(now,target,false))
+
+func getSecondsTil(now,target):
+	var unixNow = getUnixTime(now)
+	var unixTarget = getUnixTime(target)
 	
+	return (unixTarget - unixNow)
+
 func getDateTime(dt):
 	if typeof(dt) == TYPE_DICTIONARY: return dt
 	if typeof(dt) == TYPE_STRING: return string2DateTime(dt)
@@ -443,6 +449,30 @@ func time(now,arg):
 			if daysTilTarget > 7: daysTilTarget -= 7
 			target = getUnixTime(datetimeResetTime(target))
 			target += daysTilTarget * 86400
+		_:
+			var argArr = arg.split(":")
+			var hour = 0
+			var minute = 0
+			var second = 0
+			match argArr.size():
+				2:
+					hour = int(argArr[0])
+					minute = int(argArr[1])
+				3:
+					hour = int(argArr[0])
+					minute = int(argArr[1])
+					second = int(argArr[2])
+			
+			target.hour = hour
+			target.minute = minute
+			target.second = second
+				
+			var unixNow = getUnixTime(nowDict)
+			var unixTarget = getUnixTime(target)
+			
+			if unixNow > unixTarget: 
+				unixTarget += 86400
+				target = getDateTime(unixTarget)
 		
 	return target
 	

@@ -80,7 +80,7 @@
         "actions": {
             "1000":{
                 "inherit": "sleep",
-                "sleep":{"duration": 999}
+                "sleep":{"mode": "alarm"}
             },
             "850":{
                 "inherit": "setAlarmClock"

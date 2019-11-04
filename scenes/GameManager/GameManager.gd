@@ -9,6 +9,20 @@ class SorterByIndexInt:
 	static func sortInv(a ,b):
 		return sort(b,a)
 
+class SorterByPriorityInt:
+	static func sort(a,b):
+		if typeof(a) != TYPE_DICTIONARY:
+			return true
+		if typeof(b) != TYPE_DICTIONARY:
+			return false
+		if !a.has("priority"):
+			return true
+		if !b.has("priority"):
+			return false
+		if int(a.priority) < int(b.priority):
+			return true
+		return false
+
 const mainScene = "res://scenes/main/main.tscn"
 var rng = RandomNumberGenerator.new()
 
@@ -58,15 +72,18 @@ var PlayerData = {
 	"stat":{
 		"hunger":{
 			"current":10000,
-			"decay":0.2
+			"decay":0.2,
+			"decaySleep": 0.1
 		},
 		"thirst":{
 			"current":10000,
-			"decay":0.3
+			"decay":0.3,
+			"decaySleep": 0.1
 		},
 		"sleep":{
 			"current":10000,
-			"decay":0.15
+			"decay":0.15,
+			"decaySleep": -0.35
 		}
 	},
 	"outfit":{
@@ -440,7 +457,7 @@ func getValueFromPath(path,default=""):
 		var functionId = functionArr[0].substr(1,functionArr[0].length()-1)
 		return getValueFromFunction(functionId,functionArr[1])
 	
-	if default == "": default = path
+	if str(default) == "": default = path
 	
 	var pathArr = path.split(".")
 	var i = 0
@@ -712,6 +729,54 @@ func shopUpdateItems():
 			
 	updateUI()
 
+func sleep(mode=""):
+	var sleepTime:int = 0
+	
+	var sleepRegen:float = getValueFromPath("PlayerData.stat.sleep.decaySleep",-0.1)
+	var sleepNeeded:float = 10000 - getValueFromPath("PlayerData.stat.sleep.current",0)
+	var sleepToRegen:int = sleepNeeded / -sleepRegen
+	var maxSleep:int = ceil(sleepToRegen) + 14400
+	
+	if mode == "alarm" and getValueFromPath("PlayerData.alarmclock.enabled",false) == true:
+		var alarmTimeStr = getValueFromPath("PlayerData.alarmclock.time","0:00")
+		var alarmTimeDict = Util.time(now(),alarmTimeStr)
+		sleepTime = ceil(Util.getSecondsTil(now(),alarmTimeDict))
+	else:
+		sleepTime = sleepToRegen
+		
+	
+	# Hunger
+	var sleepDecayHunger:float = getValueFromPath("PlayerData.stat.hunger.decaySleep",0.1)
+	var maxHungerIncrease:float = getValueFromPath("PlayerData.stat.hunger.current",2000) - 1000
+	var maxSleepHunger:int = ceil(maxHungerIncrease / sleepDecayHunger)
+	
+	var sleepDecayThirst = getValueFromPath("PlayerData.stat.thirst.decaySleep",0.1)
+	var maxThirstIncrease:float = getValueFromPath("PlayerData.stat.thirst.current",2000) - 1000
+	var maxSleepThirst:int = ceil(maxThirstIncrease / sleepDecayThirst)
+	
+	
+	var sleepEnd = "healthy"
+	var sleepTimeInt:int = 0
+	match int(min(min(maxSleepHunger,maxSleepThirst),min(maxSleep,sleepTime))):
+		maxSleep:
+			sleepTimeInt = sleepToRegen+rand_range(3600,10800)
+			sleepEnd = "early"
+		maxSleepHunger:
+			sleepTimeInt = maxSleepHunger
+			sleepEnd = "hunger"
+		maxSleepThirst:
+			sleepTimeInt = maxSleepThirst
+			sleepEnd = "thirst"
+		var x:
+			sleepTimeInt = sleepTime
+			sleepEnd = "healthy"
+			logOut(str(x))
+			logOut(str(maxSleep))
+	 
+	logOut("Sleeping time: "+str(sleepTimeInt))
+	timePass(sleepTimeInt,"sleep")
+	eventArgumentExecute("sleepEnd",sleepEnd,sleepTimeInt)
+
 func checkCondition(condition):
 	var conditionValue
 	
@@ -781,7 +846,31 @@ func loadEvents():
 	for itemFile in itemFiles:
 		var itemFileParts = itemFile.split(".")
 		loadEvent(itemFileParts[0])
+	# Load mods here
+	for category in events:
+		var catArray = events[category].values()
+		catArray.sort_custom(SorterByPriorityInt,"sort")
+		events[category] = catArray
 	print("Complete loading Events")
+
+func eventCategoryExecute(cat, times = 1):
+	if !events.has(cat): return
+	
+	for i in range(times):
+		for event in events[cat]:
+			execute(event.actions)
+			if getValue(event,"consume",false) == true: return
+
+func eventArgumentExecute(cat, arg, minutes):
+	if !events.has(cat): return
+	for event in events[cat]:
+		if event.arguments == "*" or Util.isInStr(arg,event.arguments):
+			var chanceToHappen = 1 # without mtth the event will happen no matter what
+			if event.has("mtth"):
+				chanceToHappen = 1-pow(1-(1/event.mtth),minutes)
+			if chanceToHappen >= rng.randf():
+				execute(event.actions)
+				if getValue(event,"consume",false) == true: return
 
 func loadFunctions():
 	print("Start loading Functions")
@@ -896,6 +985,13 @@ func loadServices():
 		print("Error loading Services: "+str(temp.error))
 
 func logOut(msg,type="NOTICE"):
+	
+	if typeof(msg) == TYPE_ARRAY:
+		var text = ""
+		for t in msg:
+			text += str(t)
+		msg = text
+	
 	get_tree().call_group("logger","logOut",msg,type)
 
 #func loadSkills():
@@ -1058,8 +1154,7 @@ func execute(commands):
 	if commands.has("drink"):
 		stateInc("thirst",commands.drink.saturation)
 	if commands.has("sleep"):
-		var duration = 10
-		if commands.sleep.has("duration"): duration = commands.sleep.duration
+		sleep(getValue(commands.sleep,"mode",""))
 		
 		
 	if commands.has("playerOutfit"):
@@ -1278,7 +1373,13 @@ func getDialogueOption(dialogueId,optionId):
 	var dialogue = getDialogue(dialogueId)
 	var option = dialogue.options[optionId]
 	return npcDialogOptionLink(option)
-	
+
+func getEvent(cat,id):
+	if !events.has(cat) or !events[cat].has(id):
+		logOut(["Event ",id," not found in ",cat],"ERROR")
+		return {}
+	return events[cat][id]
+
 func npcDialogOptionLink(option,linkSelf="DEFAULT"):
 	var targetArr = option.target.split(".")
 	if targetArr[0] == "SELF": 
@@ -1349,38 +1450,48 @@ func _deffered_gotoMain():
 func timePass(t,activity):
 	if t <= 0: return
 	
-	for eventID in events.timePass:
-		var event = events.timePass[eventID]
-		if event.arguments == "*" or Util.isInStr(activity,event.arguments):
-			var chanceToHappen = 1 # without mtth the event will happen no matter what
-			if event.has("mtth"):
-				chanceToHappen = 1-pow(1-(1/event.mtth),t/60)
-			if chanceToHappen >= rng.randf():
-				execute(event.actions)
+	eventArgumentExecute("timePass",activity,t/60)
+	#for event in events.timePass:
+	#	#var event = events.timePass[eventID]
+	#	if event.arguments == "*" or Util.isInStr(activity,event.arguments):
+	#		var chanceToHappen = 1 # without mtth the event will happen no matter what
+	#		if event.has("mtth"):
+	#			chanceToHappen = 1-pow(1-(1/event.mtth),t/60)
+	#		if chanceToHappen >= rng.randf():
+	#			execute(event.actions)
 				
-	for stat in PlayerData.stat:
-		PlayerData.stat[stat].current -= PlayerData.stat[stat].decay * t
+	
+	if activity == "sleep":
+		for stat in PlayerData.stat:
+			#PlayerData.stat[stat].current -= PlayerData.stat[stat].decaySleep * t
+			stateInc(stat,-PlayerData.stat[stat].decaySleep * t)
+	else:
+		for stat in PlayerData.stat:
+			#PlayerData.stat[stat].current -= PlayerData.stat[stat].decay * t
+			stateInc(stat,-PlayerData.stat[stat].decay * t)
 	
 	var hoursToCalc = Util.getHoursTilTime(now(),t+now())
 	var daysToCalc = Util.getDaysTilDate(now(),t+now(),false)
 	
 	if hoursToCalc > 0:
-		if events.has("timePass_HOUR"):
+		eventCategoryExecute("timePass_HOUR",hoursToCalc)
+		#if events.has("timePass_HOUR"):
 			
-			for eventID in events.timePass_HOUR: 
-				var event = events.timePass_HOUR[eventID]
-				for i in range(hoursToCalc):
-					execute(event.actions)
+			#for eventID in events.timePass_HOUR: 
+			#	var event = events.timePass_HOUR[eventID]
+			#	for i in range(hoursToCalc):
+			#		execute(event.actions)
 					
 	if daysToCalc > 0:
-		if events.has("timePass_DAY"):
-			for eventID in events.timePass_DAY: 
-				var event = events.timePass_DAY[eventID]
-				for i in range(daysToCalc):
-					execute(event.actions)
+		eventCategoryExecute("timePass_DAY",daysToCalc)
+		#if events.has("timePass_DAY"):
+		#	for eventID in events.timePass_DAY: 
+		#		var event = events.timePass_DAY[eventID]
+		#		for i in range(daysToCalc):
+		#			execute(event.actions)
 				
 	timeMove(t)
-	
+	updateLocation()
 	
 		
 func timeMove(t):

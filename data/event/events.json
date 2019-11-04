@@ -31,5 +31,27 @@
                 "body.hair.length":{"mode":"inc","value":500}
             }
         }
+    },
+    "sleepEndEarly":{
+        "listen": "sleepEnd",
+        "arguments":"early",
+        "actions":{"interrupt":"sleeping.wakeEarly"}
+    },
+    "sleepEndHealthy":{
+        "listen": "sleepEnd",
+        "arguments":"healthy",
+        "actions":{"interrupt":"sleeping.wakeHealthy"}
+    }
+    ,
+    "sleepEndHungry":{
+        "listen": "sleepEnd",
+        "arguments":"hunger",
+        "actions":{"interrupt":"sleeping.wakeHungry"}
+    }
+    ,
+    "sleepEndThirsty":{
+        "listen": "sleepEnd",
+        "arguments":"thirst",
+        "actions":{"interrupt":"sleeping.wakeThirsty"}
     }
 }

@@ -16,12 +16,36 @@
                 "condition":{
                     "var":"PlayerData.stat.sleep.current",
                     "mode":"heq",
-                    "val":9500
+                    "val":10000
                 },
                 "value":{
                     "Label": "Go to sleep",
                     "Disabled": true,
                     "Tooltip": "You are not tired enough to go to sleep."
+                }
+            },
+            "900":{
+                "condition":{
+                    "var":"PlayerData.stat.thirst.current",
+                    "mode":"leq",
+                    "val":1000
+                },
+                "value":{
+                    "Label": "Go to sleep",
+                    "Disabled": true,
+                    "Tooltip": "You are too thirsty to go to sleep."
+                }
+            },
+            "800":{
+                "condition":{
+                    "var":"PlayerData.stat.hunger.current",
+                    "mode":"leq",
+                    "val":1000
+                },
+                "value":{
+                    "Label": "Go to sleep",
+                    "Disabled": true,
+                    "Tooltip": "You are too hungry to go to sleep."
                 }
             },
             "100":{
