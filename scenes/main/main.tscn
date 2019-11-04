@@ -47,20 +47,30 @@ script = ExtResource( 2 )
 ]]
 anchor_right = 1.0
 anchor_bottom = 1.0
+split_offset = 800
 dragger_visibility = 2
 script = ExtResource( 3 )
 
-[node name="PanelContainer" type="PanelContainer" parent="VSplitContainer"]
+[node name="VSplitContainer" type="VSplitContainer" parent="VSplitContainer" groups=[
+"splitContainer",
+]]
+editor/display_folded = true
+margin_right = 1920.0
+margin_bottom = 1080.0
+dragger_visibility = 2
+script = ExtResource( 3 )
+
+[node name="PanelContainer" type="PanelContainer" parent="VSplitContainer/VSplitContainer"]
 editor/display_folded = true
 margin_right = 1920.0
 margin_bottom = 70.0
 
-[node name="StatusContainer" type="HBoxContainer" parent="VSplitContainer/PanelContainer"]
+[node name="StatusContainer" type="HBoxContainer" parent="VSplitContainer/VSplitContainer/PanelContainer"]
 editor/display_folded = true
 margin_right = 1920.0
 margin_bottom = 70.0
 
-[node name="StatusTime" type="Label" parent="VSplitContainer/PanelContainer/StatusContainer" groups=[
+[node name="StatusTime" type="Label" parent="VSplitContainer/VSplitContainer/PanelContainer/StatusContainer" groups=[
 "uiUpdate",
 ]]
 margin_right = 1765.0
@@ -71,14 +81,14 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Time"
 script = ExtResource( 5 )
 
-[node name="StatusContainer" type="HBoxContainer" parent="VSplitContainer/PanelContainer/StatusContainer"]
+[node name="StatusContainer" type="HBoxContainer" parent="VSplitContainer/VSplitContainer/PanelContainer/StatusContainer"]
 editor/display_folded = true
 margin_left = 1769.0
 margin_right = 1920.0
 margin_bottom = 70.0
 script = ExtResource( 6 )
 
-[node name="StatusMoney" type="Label" parent="VSplitContainer/PanelContainer/StatusContainer/StatusContainer" groups=[
+[node name="StatusMoney" type="Label" parent="VSplitContainer/VSplitContainer/PanelContainer/StatusContainer/StatusContainer" groups=[
 "uiUpdate",
 ]]
 margin_top = 17.0
@@ -89,7 +99,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0,00 €"
 script = ExtResource( 8 )
 
-[node name="StatusHunger" type="Label" parent="VSplitContainer/PanelContainer/StatusContainer/StatusContainer" groups=[
+[node name="StatusHunger" type="Label" parent="VSplitContainer/VSplitContainer/PanelContainer/StatusContainer/StatusContainer" groups=[
 "uiUpdate",
 ]]
 margin_left = 85.0
@@ -101,7 +111,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "100%"
 script = ExtResource( 9 )
 
-[node name="VSplitContainer" type="VSplitContainer" parent="VSplitContainer" groups=[
+[node name="VSplitContainer" type="VSplitContainer" parent="VSplitContainer/VSplitContainer" groups=[
 "splitContainer",
 ]]
 margin_top = 70.0
@@ -110,15 +120,14 @@ margin_bottom = 1080.0
 dragger_visibility = 2
 script = ExtResource( 3 )
 
-[node name="BGRLNPCContainer" type="HBoxContainer" parent="VSplitContainer/VSplitContainer"]
-editor/display_folded = true
+[node name="BGRLNPCContainer" type="HBoxContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer"]
 margin_right = 1920.0
 margin_bottom = 757.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
 custom_constants/separation = 0
 
-[node name="RLocationsContainer" type="PanelContainer" parent="VSplitContainer/VSplitContainer/BGRLNPCContainer" groups=[
+[node name="RLocationsContainer" type="PanelContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer/BGRLNPCContainer" groups=[
 "uiUpdate",
 ]]
 editor/display_folded = true
@@ -127,13 +136,13 @@ margin_bottom = 757.0
 size_flags_horizontal = 3
 script = ExtResource( 10 )
 
-[node name="RLocationsScrollContainer" type="ScrollContainer" parent="VSplitContainer/VSplitContainer/BGRLNPCContainer/RLocationsContainer"]
+[node name="RLocationsScrollContainer" type="ScrollContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer/BGRLNPCContainer/RLocationsContainer"]
 margin_right = 194.0
 margin_bottom = 757.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="RLocationsVBoxContainer" type="VBoxContainer" parent="VSplitContainer/VSplitContainer/BGRLNPCContainer/RLocationsContainer/RLocationsScrollContainer" groups=[
+[node name="RLocationsVBoxContainer" type="VBoxContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer/BGRLNPCContainer/RLocationsContainer/RLocationsScrollContainer" groups=[
 "uiUpdate",
 ]]
 margin_right = 194.0
@@ -142,11 +151,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 11 )
 
-[node name="RLocation" parent="VSplitContainer/VSplitContainer/BGRLNPCContainer/RLocationsContainer/RLocationsScrollContainer/RLocationsVBoxContainer" instance=ExtResource( 12 )]
+[node name="RLocation" parent="VSplitContainer/VSplitContainer/VSplitContainer/BGRLNPCContainer/RLocationsContainer/RLocationsScrollContainer/RLocationsVBoxContainer" instance=ExtResource( 12 )]
 margin_right = 194.0
 margin_bottom = 120.0
 
-[node name="BackgroundTexture" type="TextureRect" parent="VSplitContainer/VSplitContainer/BGRLNPCContainer" groups=[
+[node name="BackgroundTexture" type="TextureRect" parent="VSplitContainer/VSplitContainer/VSplitContainer/BGRLNPCContainer" groups=[
 "uiUpdate",
 ]]
 margin_left = 194.0
@@ -159,23 +168,22 @@ texture = ExtResource( 13 )
 expand = true
 script = ExtResource( 14 )
 
-[node name="NPCsContainer" type="PanelContainer" parent="VSplitContainer/VSplitContainer/BGRLNPCContainer" groups=[
+[node name="NPCsContainer" type="PanelContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer/BGRLNPCContainer" groups=[
 "uiUpdate",
 ]]
-editor/display_folded = true
 margin_left = 1749.0
 margin_right = 1919.0
 margin_bottom = 757.0
 script = ExtResource( 15 )
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer/VSplitContainer/BGRLNPCContainer/NPCsContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer/BGRLNPCContainer/NPCsContainer"]
 margin_right = 170.0
 margin_bottom = 757.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
-[node name="PresentNPCsVBoxContainer" type="VBoxContainer" parent="VSplitContainer/VSplitContainer/BGRLNPCContainer/NPCsContainer/ScrollContainer" groups=[
+[node name="PresentNPCsVBoxContainer" type="VBoxContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer/BGRLNPCContainer/NPCsContainer/ScrollContainer" groups=[
 "uiUpdate",
 ]]
 margin_right = 170.0
@@ -184,12 +192,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 16 )
 
-[node name="PresentNPC" parent="VSplitContainer/VSplitContainer/BGRLNPCContainer/NPCsContainer/ScrollContainer/PresentNPCsVBoxContainer" instance=ExtResource( 17 )]
+[node name="PresentNPC" parent="VSplitContainer/VSplitContainer/VSplitContainer/BGRLNPCContainer/NPCsContainer/ScrollContainer/PresentNPCsVBoxContainer" instance=ExtResource( 17 )]
 
-[node name="TextAndActionContainer" type="VSplitContainer" parent="VSplitContainer/VSplitContainer" groups=[
+[node name="TextAndActionContainer" type="VSplitContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer" groups=[
 "splitContainer",
 ]]
-editor/display_folded = true
 margin_top = 757.0
 margin_right = 1920.0
 margin_bottom = 1010.0
@@ -197,13 +204,13 @@ size_flags_vertical = 3
 dragger_visibility = 2
 script = ExtResource( 3 )
 
-[node name="TextMainBg" type="ColorRect" parent="VSplitContainer/VSplitContainer/TextAndActionContainer"]
+[node name="TextMainBg" type="ColorRect" parent="VSplitContainer/VSplitContainer/VSplitContainer/TextAndActionContainer"]
 margin_right = 1920.0
 margin_bottom = 126.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TextMain" type="RichTextLabel" parent="VSplitContainer/VSplitContainer/TextAndActionContainer/TextMainBg" groups=[
+[node name="TextMain" type="RichTextLabel" parent="VSplitContainer/VSplitContainer/VSplitContainer/TextAndActionContainer/TextMainBg" groups=[
 "uiUpdate",
 ]]
 anchor_right = 1.0
@@ -217,18 +224,18 @@ custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 script = ExtResource( 19 )
 
-[node name="ActionsBg" type="ColorRect" parent="VSplitContainer/VSplitContainer/TextAndActionContainer"]
+[node name="ActionsBg" type="ColorRect" parent="VSplitContainer/VSplitContainer/VSplitContainer/TextAndActionContainer"]
 margin_top = 126.0
 margin_right = 1920.0
 margin_bottom = 253.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer/VSplitContainer/TextAndActionContainer/ActionsBg"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer/TextAndActionContainer/ActionsBg"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="ActionsVBoxContainer" type="VBoxContainer" parent="VSplitContainer/VSplitContainer/TextAndActionContainer/ActionsBg/ScrollContainer" groups=[
+[node name="ActionsVBoxContainer" type="VBoxContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer/TextAndActionContainer/ActionsBg/ScrollContainer" groups=[
 "uiUpdate",
 ]]
 margin_right = 1920.0
@@ -237,31 +244,26 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 20 )
 
-[node name="Button" parent="VSplitContainer/VSplitContainer/TextAndActionContainer/ActionsBg/ScrollContainer/ActionsVBoxContainer" instance=ExtResource( 21 )]
+[node name="Button" parent="VSplitContainer/VSplitContainer/VSplitContainer/TextAndActionContainer/ActionsBg/ScrollContainer/ActionsVBoxContainer" instance=ExtResource( 21 )]
 margin_right = 1920.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-custom_constants/separation = 0
-
-[node name="GameStatusContainer" type="PanelContainer" parent="VBoxContainer" groups=[
+[node name="GameStatusContainer" type="PanelContainer" parent="VSplitContainer" groups=[
 "uiUpdate",
 ]]
 editor/display_folded = true
 visible = false
+margin_top = 780.0
 margin_right = 1920.0
-margin_bottom = 300.0
+margin_bottom = 1080.0
 rect_min_size = Vector2( 50, 300 )
 script = ExtResource( 22 )
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/GameStatusContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VSplitContainer/GameStatusContainer"]
 margin_right = 1920.0
 margin_bottom = 300.0
 scroll_horizontal_enabled = false
 
-[node name="LogContainer" parent="VBoxContainer/GameStatusContainer/ScrollContainer" instance=ExtResource( 23 )]
+[node name="LogContainer" parent="VSplitContainer/GameStatusContainer/ScrollContainer" instance=ExtResource( 23 )]
 margin_bottom = 0.0
 
 [node name="Dialog" parent="." instance=ExtResource( 24 )]
@@ -354,5 +356,5 @@ Stat = "sleep"
 
 [node name="GameMenu" parent="." instance=ExtResource( 33 )]
 visible = false
-[connection signal="mouse_entered" from="VSplitContainer/PanelContainer/StatusContainer/StatusContainer" to="VSplitContainer/PanelContainer/StatusContainer/StatusContainer" method="_on_StatusContainer_mouse_entered"]
-[connection signal="mouse_exited" from="VSplitContainer/PanelContainer/StatusContainer/StatusContainer" to="VSplitContainer/PanelContainer/StatusContainer/StatusContainer" method="_on_StatusContainer_mouse_exited"]
+[connection signal="mouse_entered" from="VSplitContainer/VSplitContainer/PanelContainer/StatusContainer/StatusContainer" to="VSplitContainer/VSplitContainer/PanelContainer/StatusContainer/StatusContainer" method="_on_StatusContainer_mouse_entered"]
+[connection signal="mouse_exited" from="VSplitContainer/VSplitContainer/PanelContainer/StatusContainer/StatusContainer" to="VSplitContainer/VSplitContainer/PanelContainer/StatusContainer/StatusContainer" method="_on_StatusContainer_mouse_exited"]
