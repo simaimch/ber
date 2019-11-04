@@ -244,7 +244,12 @@ func equals(a,b):
 		if a == b: return true
 	
 	if ta == TYPE_BOOL and tb != TYPE_BOOL:
-		b = bool(b)
+		#b = bool(b)
+		match tb:
+			TYPE_NIL:
+				return !a
+			_:
+				return false
 		
 	#if tb == TYPE_BOOL and ta != TYPE_BOOL:
 	#	a = bool(a)

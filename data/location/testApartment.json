@@ -1,0 +1,121 @@
+{
+    "hallway":{
+        "label":"Hallway",
+        "text":"Hallway",
+        "bg":"texture/locations/apartment/hallway.jpg",
+        "rl":[
+            {
+                "locationId":"testStreet.outside",
+                "label": "Leave",
+                "time": 180
+            },
+            {
+                "locationId":"SELF.kitchen",
+                "time": 30
+            },
+            {
+                "locationId":"SELF.bed",
+                "time": 30
+            },
+            {
+                "locationId":"SELF.bath",
+                "time": 30
+            }
+        ]
+    },
+    "kitchen":{
+        "label":"Kitchen",
+        "text":"Kitchen",
+        "bg":"texture/locations/apartment/kitchen.jpg",
+        "rl":[
+            {
+                "locationId":"SELF.hallway",
+                "time": 30
+            }
+        ]
+    },
+    "bed":{
+        "label":"Bedroom",
+        "?text":{
+            "resultMode": "stringFormat",
+            "string":"^{base}^{alarmclock}{alarmclockTime}^{alarmClockOnOff}{alarmClockOn}{alarmClockOff}^",
+            "result":{
+                "base":{
+                    "value":"this is your bedroom "
+                },
+                "alarmclock":{
+                    "value":"your alarmclok is set to "
+                },
+                "alarmclockTime":{
+                    "valueRef":"PlayerData.alarmclock.time"
+                },
+                "alarmClockOnOff":{
+                    "value":"It is currently turned "
+                },
+                "alarmClockOn":{
+                    "value":"on",
+                    "condition":{
+                        "mode":"eq",
+                        "var":"PlayerData.alarmclock.enabled",
+                        "val":true
+                    }
+                },
+                "alarmClockOff":{
+                    "value":"off",
+                    "condition":{
+                        "mode":"neq",
+                        "var":"PlayerData.alarmclock.enabled",
+                        "val":true
+                    }
+                }
+            }
+        },
+        "bg":"texture/locations/apartment/bed.jpg",
+        "rl":[
+            {
+                "locationId":"SELF.hallway",
+                "time": 30
+            }
+        ],
+        "actions": {
+            "1000":{
+                "inherit": "sleep",
+                "sleep":{"duration": 999}
+            },
+            "850":{
+                "inherit": "setAlarmClock"
+            },
+            "845":{
+                "Label": "Enable Alarm Clock",
+                "PlayerData":{"alarmclock.enabled":true},
+                "updateLocation": true,
+                "condition":{
+                    "mode":"neq",
+                    "var":"PlayerData.alarmclock.enabled",
+                    "val":true
+                }
+            },
+            "840":{
+                "Label": "Disable Alarm Clock",
+                "PlayerData":{"alarmclock.enabled":false},
+                "updateLocation": true,
+                "condition":{
+                    "mode":"eq",
+                    "var":"PlayerData.alarmclock.enabled",
+                    "val":true
+                }
+            }
+        }
+    },
+    "bath":{
+        "label":"Bathroom",
+        "text":"Bathroom",
+        "bg":"texture/locations/apartment/bath.jpg",
+        "rl":[
+            {
+                "locationId":"SELF.hallway",
+                "time": 30
+            }
+        ]
+    }
+}

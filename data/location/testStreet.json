@@ -1,11 +1,30 @@
 {
+    "outside":{
+        "label":"Görlitzer Straße",
+        "text":"Görlitzer Straße",
+        "bg":"texture/locations/testStreet.jpg",
+        "rl":[
+            {
+                "locationId":"SELF.subway",
+                "time": 180
+            },
+            {
+                "locationId":"testApartment.hallway",
+                "label": "Your apartment",
+                "time":180
+            }
+        ]
+    },
     "subway":{
         "rlTexture":"texture/locations/cityCenter/cityCenterSubway0.jpg",
         "bg":"texture/locations/cityCenter/cityCenterSubway1.jpg",
         "inherit":"subway.template",
         "label":"Subway Station",
         "+rl":[
-            
+            {
+                "locationId":"SELF.outside",
+                "time": 180
+            }
         ]
     }
 }

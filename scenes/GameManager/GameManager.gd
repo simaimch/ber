@@ -330,7 +330,8 @@ func getValue(obj, index, default = null):
 	Util.debug("Requesting "+index+" from",5)
 	Util.debug(obj,5)
 	if obj == null: return default
-	var cindex = "~"+index
+	var cindex = "~"+index # pick first entry with valid condition
+	var findex = "?"+index # compute using a function
 	if index in obj:
 		return obj[index]
 	elif cindex in obj:
@@ -342,6 +343,14 @@ func getValue(obj, index, default = null):
 					return obj[cindex][key].value
 			else:
 				return obj[cindex][key].value
+	elif obj.has(findex):
+		match typeof(obj[findex]):
+			TYPE_STRING:
+				var functionArr = obj[findex].split(":",false,1)
+				var functionId = functionArr[0].substr(1,functionArr[0].length()-1)
+				return getValueFromFunction(functionId,functionArr[1])
+			TYPE_DICTIONARY:
+				return functionExecute(obj[findex])
 	elif obj.has("persist"):
 		return getValue(obj.persist,index,default)
 	
@@ -377,6 +386,12 @@ func getValueFromList(list):
 		
 	return entries[i].value
 	
+
+func getAction(id):
+	if !misc.actions.has(id):
+		logOut("Action "+str(id)+" not found!","ERROR")
+		return {}
+	return misc.actions[id]
 
 func getActiveMods():
 	var result = []
@@ -471,104 +486,110 @@ func getValueFromFunction(functionId,functionParameter):
 	else:
 	
 		var function = functions[functionId]
-		
-		#We have to do this here because if function.has("FOBJ"): might require FOBJs to be set up
-		arguments.invert()
-		for argument in arguments:
-			functionObjects.append(argument)
-		var argumentCount = arguments.size()
-		
-		if function.has("FOBJ"):
-			for fobj in function.FOBJ:
-				arguments.push_front(getValueFromPath(fobj))
-		
-			#We have to set up FOBJs again because new FOBJs have been added
-			for i in range(argumentCount):
-				functionObjects.pop_back()
-			for argument in arguments:
-				functionObjects.append(argument)
-			argumentCount = arguments.size()	
-		
-		
-		var resultMode = "standard"
-		
-		if function.has("resultMode"): resultMode = function.resultMode
-		
-		if resultMode == "has":
-			var condition = {"mode":"has", "target":function.target, "index":""}
-			var keys = function.result.keys()
-			keys.sort_custom(SorterByIndexInt, "sortInv")
-			for key in keys:
-				var possibleResult = function.result[key]
-				if possibleResult[0] == null:
-					result = possibleResult[1]
-					break
-				condition.index = possibleResult[0]
-				if checkCondition(condition):
-					result = possibleResult[1]
-					break
-			
-		elif resultMode == "standard":
-			var keys = function.result.keys()
-			keys.sort_custom(SorterByIndexInt, "sortInv")
-			for key in keys:
-				var possibleResult = function.result[key]
-				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-					if possibleResult.has("valueCalc"):
-						result = parseText(possibleResult.valueCalc)
-					elif possibleResult.has("valueRef"):
-						result = getValueFromPath(possibleResult.valueRef)
-					else:
-						result = possibleResult.value
-					break
-		elif resultMode == "stringConcat":
-			result = ""
-			var keys = function.result.keys()
-			keys.sort_custom(SorterByIndexInt, "sort")
-			for key in keys:
-				var possibleResult = function.result[key]
-				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-					if possibleResult.has("valueCalc"):
-						result += parseText(possibleResult.valueCalc)
-					elif possibleResult.has("valueRef"):
-						result += str(getValueFromPath(possibleResult.valueRef))
-					else:
-						result += str(possibleResult.value)
-		elif resultMode == "stringFormat":
-			result = function.string
-			var resultValues = {}
-			var keys = function.result.keys()
-			for key in keys:
-				var possibleResult = function.result[key]
-				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-					if possibleResult.has("valueCalc"):
-						resultValues[key] = parseText(possibleResult.valueCalc)
-					elif possibleResult.has("valueRef"):
-						resultValues[key] = str(getValueFromPath(possibleResult.valueRef))
-					else:
-						resultValues[key] = str(possibleResult.value)
-				else:
-					resultValues[key] = ""
-			result = result.format(resultValues)
-			result = Util.stringFormat(result)
-		elif resultMode == "mathAdd":
-			result = 0
-			var keys = function.result.keys()
-			for key in keys:
-				var possibleResult = function.result[key]
-				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-					if possibleResult.has("valueCalc"):
-						result += float(parseText(possibleResult.valueCalc))
-					elif possibleResult.has("valueRef"):
-						result += getValueFromPath(possibleResult.valueRef)
-					else:
-						result += possibleResult.value
-						
-		for i in range(argumentCount):
-			functionObjects.pop_back()
+		result = functionExecute(function,arguments)
 	
 	return result
-			
+
+func functionExecute(function,arguments=[]):
+	var result = null
+	#We have to do this here because if function.has("FOBJ"): might require FOBJs to be set up
+	arguments.invert()
+	for argument in arguments:
+		functionObjects.append(argument)
+	var argumentCount = arguments.size()
+	
+	if function.has("FOBJ"):
+		for fobj in function.FOBJ:
+			arguments.push_front(getValueFromPath(fobj))
+	
+		#We have to set up FOBJs again because new FOBJs have been added
+		for i in range(argumentCount):
+			functionObjects.pop_back()
+		for argument in arguments:
+			functionObjects.append(argument)
+		argumentCount = arguments.size()	
+	
+	
+	var resultMode = "standard"
+	
+	if function.has("resultMode"): resultMode = function.resultMode
+	
+	if resultMode == "has":
+		var condition = {"mode":"has", "target":function.target, "index":""}
+		var keys = function.result.keys()
+		keys.sort_custom(SorterByIndexInt, "sortInv")
+		for key in keys:
+			var possibleResult = function.result[key]
+			if possibleResult[0] == null:
+				result = possibleResult[1]
+				break
+			condition.index = possibleResult[0]
+			if checkCondition(condition):
+				result = possibleResult[1]
+				break
+		
+	elif resultMode == "standard":
+		var keys = function.result.keys()
+		keys.sort_custom(SorterByIndexInt, "sortInv")
+		for key in keys:
+			var possibleResult = function.result[key]
+			if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+				if possibleResult.has("valueCalc"):
+					result = parseText(possibleResult.valueCalc)
+				elif possibleResult.has("valueRef"):
+					result = getValueFromPath(possibleResult.valueRef)
+				else:
+					result = possibleResult.value
+				break
+	elif resultMode == "stringConcat":
+		result = ""
+		var keys = function.result.keys()
+		keys.sort_custom(SorterByIndexInt, "sort")
+		for key in keys:
+			var possibleResult = function.result[key]
+			if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+				if possibleResult.has("valueCalc"):
+					result += parseText(possibleResult.valueCalc)
+				elif possibleResult.has("valueRef"):
+					result += str(getValueFromPath(possibleResult.valueRef))
+				else:
+					result += str(possibleResult.value)
+	elif resultMode == "stringFormat":
+		result = function.string
+		var resultValues = {}
+		var keys = function.result.keys()
+		for key in keys:
+			var possibleResult = function.result[key]
+			if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+				if possibleResult.has("valueCalc"):
+					resultValues[key] = parseText(possibleResult.valueCalc)
+				elif possibleResult.has("valueRef"):
+					resultValues[key] = str(getValueFromPath(possibleResult.valueRef))
+				else:
+					resultValues[key] = str(possibleResult.value)
+			else:
+				resultValues[key] = ""
+		result = result.format(resultValues)
+		result = Util.stringFormat(result)
+	elif resultMode == "mathAdd":
+		result = 0
+		var keys = function.result.keys()
+		for key in keys:
+			var possibleResult = function.result[key]
+			if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+				if possibleResult.has("valueCalc"):
+					result += float(parseText(possibleResult.valueCalc))
+				elif possibleResult.has("valueRef"):
+					result += getValueFromPath(possibleResult.valueRef)
+				else:
+					result += possibleResult.value
+					
+	for i in range(argumentCount):
+		functionObjects.pop_back()
+	
+	return result
+
+
 	
 func getObjectFromPath(path):
 	#if(path == "FOBJ"): return functionObjects[functionObjects.size()-1]
@@ -710,16 +731,16 @@ func checkCondition(condition):
 				return true
 		return false
 	elif condition.mode == "eq":
-		var valueFromPath = getValueFromPath(condition["var"])
+		var valueFromPath = getValueFromPath(condition["var"],null)
 		return Util.equals(conditionValue,valueFromPath)
 	elif condition.mode == "neq":
-		var valueFromPath = getValueFromPath(condition["var"])
+		var valueFromPath = getValueFromPath(condition["var"],null)
 		return !Util.equals(conditionValue,valueFromPath)
 	elif condition.mode == "leq":
-		var valueFromPath = getValueFromPath(condition["var"])
+		var valueFromPath = getValueFromPath(condition["var"],null)
 		return (Util.bigger(conditionValue,valueFromPath) or Util.equals(conditionValue,valueFromPath))
 	elif condition.mode == "heq":
-		var valueFromPath = getValueFromPath(condition["var"])
+		var valueFromPath = getValueFromPath(condition["var"],null)
 		return (Util.bigger(valueFromPath,conditionValue) or Util.equals(conditionValue,valueFromPath))
 	elif condition.mode == "has":
 		var target = getValueFromPath(condition["target"])
@@ -1012,6 +1033,8 @@ func execute(commands):
 			if execute(command): consume = true
 		return consume
 	
+	if commands.has("Disabled") and commands.Disabled == true: return consume
+	
 	if commands.has("debug"):
 		print(str(OS.get_ticks_msec())+":")
 		print(commands)
@@ -1034,6 +1057,10 @@ func execute(commands):
 		stateInc("hunger",commands.eat.saturation)
 	if commands.has("drink"):
 		stateInc("thirst",commands.drink.saturation)
+	if commands.has("sleep"):
+		var duration = 10
+		if commands.sleep.has("duration"): duration = commands.sleep.duration
+		
 		
 	if commands.has("playerOutfit"):
 		setPlayerOutfit(commands.playerOutfit)
@@ -1084,11 +1111,20 @@ func execute(commands):
 		return true
 	
 	if commands.has("showDialog"):
-		var dialog = load("res://scenes/dialog/"+commands.showDialog+".tscn").instance()
+		var dialogId = commands.showDialog
+		var dialogParam = {}
+		if typeof(dialogId) == TYPE_DICTIONARY:
+			dialogParam = dialogId
+			dialogId = dialogId.dialog
+		var dialog = load("res://scenes/dialog/"+dialogId+".tscn").instance()
+		if dialog.has_method("setParam"): dialog.setParam(dialogParam)
 		get_tree().get_root().add_child(dialog)
 		dialog.popup_centered()
 		#dialog.popup()
-		
+	
+	if getValue(commands,"updateLocation",false) == true:
+		updateLocation()
+	
 	return consume
 	
 func parseText(t):
@@ -1121,14 +1157,21 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 	if bgTemp != null:
 		CurrentUi.Bg  = bgTemp
 		
-	if location.has("text"):
-		if typeof(location["text"]) == TYPE_ARRAY:
-			CurrentUi.Text  = PoolStringArray(location["text"]).join("\n")
-		else:
-			CurrentUi.Text  = location["text"]
-		CurrentUi.Text = parseText(CurrentUi.Text)
-	else:
-		CurrentUi.Text  = ""
+	#if location.has("text"):
+	#	if typeof(location["text"]) == TYPE_ARRAY:
+	#		CurrentUi.Text  = PoolStringArray(location["text"]).join("\n")
+	#	else:
+	#		CurrentUi.Text  = location["text"]
+	#	CurrentUi.Text = parseText(CurrentUi.Text)
+	#else:
+	#	CurrentUi.Text  = ""
+	
+	match getValue(location,"text"):
+		null:
+			CurrentUi.Text  = ""
+		var text:
+			if typeof(text) == TYPE_ARRAY: text = PoolStringArray(text).join("\n")
+			CurrentUi.Text = parseText(text)
 		
 	CurrentUi.RL.clear()
 	if location.has("rl"):
@@ -1158,6 +1201,11 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 		keys.sort_custom(SorterByIndexInt, "sortInv")
 		for key in keys:
 			var action = location.actions[key].duplicate()
+			
+			if action.has("inherit"):
+				var parentAction = getAction(action.inherit)
+				parentAction = getValue(parentAction,"action",parentAction)
+				action = Util.inherit(action,parentAction)
 			
 			if action.has("goto"):
 				var actionGotoArr = action.goto.split(".")
@@ -1405,6 +1453,10 @@ func recalcUI():
 func reload():
 	logOut("Reload")
 	locations.clear()
+	var location = getLocation(CurrentUi.LocationId)
+	executeLocation(location,true,false)
+
+func updateLocation():
 	var location = getLocation(CurrentUi.LocationId)
 	executeLocation(location,true,false)
 

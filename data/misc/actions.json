@@ -1,0 +1,35 @@
+{
+    "setAlarmClock":{
+        "Label":"Set Alarm Clock",
+        "showDialog":{
+            "dialog":"InputDialog",
+            "label": "Set Alarm Clock (Format hh:mm)",
+            "target": "PlayerData.alarmclock.time",
+            "updateLocation": true,
+            "value":"00:00",
+            "validateRegex": "^\\d{1,2}:\\d{2}$"
+        }
+    },
+    "sleep":{
+        "~action":{
+            "1000":{
+                "condition":{
+                    "var":"PlayerData.stat.sleep.current",
+                    "mode":"heq",
+                    "val":9500
+                },
+                "value":{
+                    "Label": "Go to sleep",
+                    "Disabled": true,
+                    "Tooltip": "You are not tired enough to go to sleep."
+                }
+            },
+            "100":{
+                "value":{
+                    "Label": "Go to sleep",
+                    "sleep": {}
+                }
+            }
+        }
+    }
+}

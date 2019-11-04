@@ -14,3 +14,5 @@ custom_colors/font_color_hover = Color( 0.501961, 0.109804, 0.109804, 1 )
 text = "ActionButton"
 flat = true
 script = ExtResource( 2 )
+[connection signal="mouse_entered" from="." to="." method="_on_Button_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_Button_mouse_exited"]

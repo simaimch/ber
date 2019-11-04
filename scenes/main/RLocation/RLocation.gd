@@ -15,7 +15,7 @@ func setLocation(l):
 		t = transferInfo.label
 	elif "label" in targetLocation:
 		t = targetLocation.label
-	else:
+	elif targetLocation.has("text"):
 		t = targetLocation.text
 	setText(t)
 	
