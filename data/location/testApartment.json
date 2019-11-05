@@ -36,7 +36,11 @@
         "actions": {
             "1000":{
                 "Label": "Prepare Food",
-                "services": "kebab"
+                "services": "home_cook"
+            },
+            "500":{
+                "Label": "Open Fridge",
+                "services": "home_fridge"
             }
         }
     },

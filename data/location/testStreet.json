@@ -12,6 +12,10 @@
                 "locationId":"testApartment.hallway",
                 "label": "Your apartment",
                 "time":180
+            },
+            {
+                "locationId":"SELF.supermarket",
+                "time":180
             }
         ]
     },
@@ -26,5 +30,22 @@
                 "time": 180
             }
         ]
+    },
+    "supermarket":{
+        "rlTexture":"texture/locations/shop/kaedaWide.png",
+        "bg":"texture/locations/shop/kaedaWide.png",
+        "label":"Supermarket",
+        "rl":[
+            {
+                "locationId":"SELF.outside",
+                "time": 180
+            }
+        ],
+        "actions": {
+            "1000":{
+                "Label": "Go shopping",
+                "services": "sm_med"
+            }
+        }
     }
 }

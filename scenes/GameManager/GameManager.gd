@@ -1680,13 +1680,28 @@ func serviceBuy(serviceId):
 	if service.has("effects"): 
 		executeWithFOBJ(service.effects,service)
 	
-	servicesClose()
+	if service.has("availableCountRef"):
+		var decrease = getValue(service,"availableCountDec",1)
+		var current = getValueFromPath(service.availableCountRef,0)
+		var target = current - decrease
+		setValueAtPath(service.availableCountRef,target)
+		
+	if service.has("increaseRef"):
+		var increase = getValue(service,"increaseCount",1)
+		var current = getValueFromPath(service.increaseRef,0)
+		var target = current + increase
+		setValueAtPath(service.increaseRef,target)
+	
+	if getValue(service,"remainAtServices",false) == false:
+		servicesClose()
+	else:
+		servicesUpdate()
 
-func services(type):
+func services(type,category=""):
 	CurrentUi.UIGroup = "uiServices"
 	CurrentUi.ShowServices = true
 	CurrentUi.Services.type = type
-	CurrentUi.Services.category = ""
+	CurrentUi.Services.category = category
 	
 	CurrentUi.Services.available.clear()
 	CurrentUi.Services.availableCategories.clear()
@@ -1697,8 +1712,9 @@ func services(type):
 		logOut(service)
 		if type in getValue(service,"available",[]):
 			CurrentUi.Services.available.append(serviceId)
-			if !CurrentUi.Services.availableCategories.has(service.category):
-				CurrentUi.Services.availableCategories[service.category] = {"ID":service.category,"label":service.category,"texture":service.texture}
+			var serviceCategory = getValue(service,"category","Category Missing")
+			if !CurrentUi.Services.availableCategories.has(serviceCategory):
+				CurrentUi.Services.availableCategories[serviceCategory] = {"ID":serviceCategory,"label":serviceCategory,"texture":service.texture}
 	updateUI()
 
 func servicesClose():
@@ -1706,6 +1722,9 @@ func servicesClose():
 	CurrentUi.ShowServices = false
 	#CurrentUi.Wardrobe.selitems.clear()
 	updateUI()
+
+func servicesUpdate():
+	services(CurrentUi.Services.type,CurrentUi.Services.category)
 	
 func stateInc(index,value):
 	stateSet(index, PlayerData.stat[index].current + value)
@@ -1713,7 +1732,9 @@ func stateInc(index,value):
 func stateSet(index,value):
 	value = min(max(value,0),10000)
 	PlayerData.stat[index].current = value
-	
+
+
+
 func undress(slot):
 	PlayerData.outfit.CURRENT[slot] = ""
 	playerData2UI()

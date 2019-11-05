@@ -1,4 +1,5 @@
 {
+    
     "drink":{
         "isTemplate":true,
         "effects":{
@@ -27,6 +28,25 @@
             }
         }
     },
+    "home_meal_steak":{
+        "inherit": "food",
+        "category":"cook",
+        "available":["home_cook"],
+        "name":"Rumpsteak with Potatoes",
+        "description":"Rumpsteak Description",
+        "texture":"texture/services/food/steak.jpg",
+        "time": 1500,
+        "calories":760000,
+        "saturation":5000,
+        "availableCountRef": "PlayerData.fridge.ingredient_hq",
+        "availableCountHint":"high quality ingredients"
+    },
+    "home_water":{
+        "inherit": "water",
+        "§available":["home_fridge"],
+        "time": 60,
+        "price": 0
+    },
     "kebab":{
         "category":"food",
         "inherit": "food",
@@ -50,5 +70,21 @@
         "price": 100,
         "calories":0,
         "saturation":5000
+    },
+    "sm_cooking_ingr_hq_1":{
+        "category":"Cooking Ingredients",
+        "available":["sm_med"],
+        "name": "High Quality Ingredients (1x)",
+        "texture":"texture/services/sm/cooking_ingr_hq.jpg",
+        "price": 1000,
+        "increaseRef": "PlayerData.fridge.ingredient_hq",
+        "increaseCount": 1,
+        "remainAtServices": true
+    },
+    "sm_cooking_ingr_hq_10":{
+        "inherit": "sm_cooking_ingr_hq_1",
+        "name": "High Quality Ingredients (10x)",
+        "price": 10000,
+        "increaseCount": 10
     }
 }

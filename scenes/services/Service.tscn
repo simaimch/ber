@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/services/Service.gd" type="Script" id=1]
 [ext_resource path="res://media/texture/services/food/kebab.jpg" type="Texture" id=2]
+[ext_resource path="res://font/Timeless-Bold24.tres" type="DynamicFont" id=3]
 
 [node name="Service" type="Button"]
 margin_right = 12.0
@@ -23,25 +24,38 @@ stretch_mode = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 margin_left = 204.0
-margin_right = 271.0
+margin_right = 432.0
 margin_bottom = 200.0
 alignment = 1
 
 [node name="NameLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
-margin_top = 75.0
-margin_right = 67.0
-margin_bottom = 89.0
+margin_top = 50.0
+margin_right = 228.0
+margin_bottom = 78.0
+custom_fonts/font = ExtResource( 3 )
+text = "Döner"
+
+[node name="DescriptionLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_top = 82.0
+margin_right = 228.0
+margin_bottom = 96.0
 text = "Döner"
 
 [node name="PriceLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
-margin_top = 93.0
-margin_right = 67.0
-margin_bottom = 107.0
+margin_top = 100.0
+margin_right = 228.0
+margin_bottom = 114.0
 text = "5,00 Euros"
 
 [node name="TimeLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
-margin_top = 111.0
-margin_right = 67.0
-margin_bottom = 125.0
+margin_top = 118.0
+margin_right = 228.0
+margin_bottom = 132.0
 text = "5:00"
+
+[node name="UsesleftLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+margin_top = 136.0
+margin_right = 228.0
+margin_bottom = 150.0
+text = "1 use left (ingredients med. quality)"
 [connection signal="pressed" from="." to="." method="_on_Service_pressed"]
