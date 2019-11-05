@@ -88,6 +88,10 @@
             }
         ],
         "actions": {
+            "2000":{
+                "Label": "Wardrobe",
+                "showWardrobe":true
+            },
             "1000":{
                 "inherit": "sleep",
                 "sleep":{"mode": "alarm"}
@@ -126,6 +130,11 @@
                 "locationId":"SELF.hallway",
                 "time": 30
             }
-        ]
+        ],
+        "actions":{
+            "1000":{
+                "inherit":"shower"
+            }
+        }
     }
 }

@@ -10,6 +10,14 @@
             "validateRegex": "^\\d{1,2}:\\d{2}$"
         }
     },
+    "shower":{
+        "Label":"Take a shower",
+        "PlayerData": {
+            "stat.hygiene_body.current": 10000
+        },
+        "Time":{"Pass":{"Duration":300,"Activity":"shower"}}
+
+    },
     "sleep":{
         "~action":{
             "1000":{

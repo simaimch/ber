@@ -3,7 +3,9 @@
 [ext_resource path="res://font/VarsityTeam-Bold32.tres" type="DynamicFont" id=1]
 [ext_resource path="res://scenes/main/ActionButton/ActionButton.gd" type="Script" id=2]
 
-[node name="Button" type="Button"]
+[node name="Button" type="Button" groups=[
+"uiUpdate",
+]]
 margin_right = 1618.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 0, 50 )
@@ -13,6 +15,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color_hover = Color( 0.501961, 0.109804, 0.109804, 1 )
 text = "ActionButton"
 flat = true
+align = 0
 script = ExtResource( 2 )
 [connection signal="mouse_entered" from="." to="." method="_on_Button_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_Button_mouse_exited"]

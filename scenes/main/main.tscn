@@ -120,6 +120,7 @@ dragger_visibility = 2
 script = ExtResource( 3 )
 
 [node name="BGRLNPCContainer" type="HBoxContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer"]
+editor/display_folded = true
 margin_right = 1920.0
 margin_bottom = 757.0
 size_flags_vertical = 3
@@ -192,7 +193,7 @@ script = ExtResource( 16 )
 
 [node name="PresentNPC" parent="VSplitContainer/VSplitContainer/VSplitContainer/BGRLNPCContainer/NPCsContainer/ScrollContainer/PresentNPCsVBoxContainer" instance=ExtResource( 17 )]
 
-[node name="TextAndActionContainer" type="VSplitContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer" groups=[
+[node name="TextAndActionContainer" type="HSplitContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer" groups=[
 "splitContainer",
 ]]
 margin_top = 757.0
@@ -203,8 +204,9 @@ dragger_visibility = 2
 script = ExtResource( 3 )
 
 [node name="TextMainBg" type="ColorRect" parent="VSplitContainer/VSplitContainer/VSplitContainer/TextAndActionContainer"]
-margin_right = 1920.0
-margin_bottom = 126.0
+editor/display_folded = true
+margin_right = 960.0
+margin_bottom = 253.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -223,7 +225,7 @@ bbcode_enabled = true
 script = ExtResource( 19 )
 
 [node name="ActionsBg" type="ColorRect" parent="VSplitContainer/VSplitContainer/VSplitContainer/TextAndActionContainer"]
-margin_top = 126.0
+margin_left = 960.0
 margin_right = 1920.0
 margin_bottom = 253.0
 size_flags_horizontal = 3
@@ -236,14 +238,14 @@ anchor_bottom = 1.0
 [node name="ActionsVBoxContainer" type="VBoxContainer" parent="VSplitContainer/VSplitContainer/VSplitContainer/TextAndActionContainer/ActionsBg/ScrollContainer" groups=[
 "uiUpdate",
 ]]
-margin_right = 1920.0
-margin_bottom = 127.0
+margin_right = 960.0
+margin_bottom = 253.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 20 )
 
 [node name="Button" parent="VSplitContainer/VSplitContainer/VSplitContainer/TextAndActionContainer/ActionsBg/ScrollContainer/ActionsVBoxContainer" instance=ExtResource( 21 )]
-margin_right = 1920.0
+margin_right = 960.0
 
 [node name="GameStatusContainer" type="PanelContainer" parent="VSplitContainer" groups=[
 "uiUpdate",

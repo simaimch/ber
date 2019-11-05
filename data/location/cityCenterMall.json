@@ -56,7 +56,7 @@
             },
             "900":{
                 "Label": "Wardrobe",
-                "showWardrobe":"test"
+                "showWardrobe":true
             }            
         }
     }

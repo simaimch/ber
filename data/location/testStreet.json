@@ -33,8 +33,9 @@
     },
     "supermarket":{
         "rlTexture":"texture/locations/shop/kaedaWide.png",
-        "bg":"texture/locations/shop/kaedaWide.png",
+        "bg":"texture/locations/shop/kaedaInterior.jpg",
         "label":"Supermarket",
+        "text":"The Kaeda Group is one of the largest German supermarket corporations.",
         "rl":[
             {
                 "locationId":"SELF.outside",

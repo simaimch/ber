@@ -1483,44 +1483,24 @@ func timePass(t,activity):
 	if t <= 0: return
 	
 	eventArgumentExecute("timePass",activity,t/60)
-	#for event in events.timePass:
-	#	#var event = events.timePass[eventID]
-	#	if event.arguments == "*" or Util.isInStr(activity,event.arguments):
-	#		var chanceToHappen = 1 # without mtth the event will happen no matter what
-	#		if event.has("mtth"):
-	#			chanceToHappen = 1-pow(1-(1/event.mtth),t/60)
-	#		if chanceToHappen >= rng.randf():
-	#			execute(event.actions)
-				
 	
 	if activity == "sleep":
 		for stat in PlayerData.stat:
-			#PlayerData.stat[stat].current -= PlayerData.stat[stat].decaySleep * t
-			stateInc(stat,-PlayerData.stat[stat].decaySleep * t)
+			var changePerSecond = -getValue(PlayerData.stat[stat],"decaySleep",0)
+			stateInc(stat,changePerSecond * t)
 	else:
 		for stat in PlayerData.stat:
-			#PlayerData.stat[stat].current -= PlayerData.stat[stat].decay * t
-			stateInc(stat,-PlayerData.stat[stat].decay * t)
+			var changePerSecond = -getValue(PlayerData.stat[stat],"decay",0)
+			stateInc(stat,changePerSecond * t)
 	
 	var hoursToCalc = Util.getHoursTilTime(now(),t+now())
 	var daysToCalc = Util.getDaysTilDate(now(),t+now(),false)
 	
 	if hoursToCalc > 0:
 		eventCategoryExecute("timePass_HOUR",hoursToCalc)
-		#if events.has("timePass_HOUR"):
-			
-			#for eventID in events.timePass_HOUR: 
-			#	var event = events.timePass_HOUR[eventID]
-			#	for i in range(hoursToCalc):
-			#		execute(event.actions)
-					
+	
 	if daysToCalc > 0:
 		eventCategoryExecute("timePass_DAY",daysToCalc)
-		#if events.has("timePass_DAY"):
-		#	for eventID in events.timePass_DAY: 
-		#		var event = events.timePass_DAY[eventID]
-		#		for i in range(daysToCalc):
-		#			execute(event.actions)
 				
 	timeMove(t)
 	updateLocation()

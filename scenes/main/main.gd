@@ -65,6 +65,17 @@ func _process(delta):
 	elif advancedControl == true:
 		advancedControl = false
 		get_tree().call_group("splitContainer","hideControl")
+		
+	else:
+		for i in range(10):
+			if Input.is_action_pressed("ui_button_"+str(i)):
+				action = "button"+str(i)
+				return
+		for i in range(10):
+			if action == "button"+str(i):
+				get_tree().call_group(GameManager.CurrentUi.UIGroup,"buttonPressed",i)
+				action = ""
+				return
 func _ready():
 	GameManager.updateUI()
 	

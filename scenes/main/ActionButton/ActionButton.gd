@@ -1,13 +1,25 @@
 extends Button
 
 var action
+var button = -1
 
-func _pressed():
+func activate():
 	get_tree().call_group("gameCommand","executeAction",action)
 	
-func setAction(a):
+func _pressed():
+	activate()
+
+func buttonPressed(buttonIndex):
+	if buttonIndex == button: activate()
+
+func setAction(a,b = -1):
 	action = a
+	button = b
 	text = action.get("Label","ERROR: Label missing")
+	
+	if(button >= 0 and button <= 9):
+		text = ""+str(button)+" "+text
+	
 	if action.has("Disabled") and action.Disabled == true:
 		disabled = true
 	
