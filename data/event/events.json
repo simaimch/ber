@@ -32,6 +32,13 @@
             }
         }
     },
+    "shower":{
+        "listen": "timePass",
+        "arguments":"shower",
+        "actions":{
+            "interrupt":"bath.shower"
+        }
+    },
     "sleepEndEarly":{
         "listen": "sleepEnd",
         "arguments":"early",
