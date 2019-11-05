@@ -1,5 +1,43 @@
 {
-    
+    "cook_gulasch":{
+        "inherit": "food",
+        "category":"Cook",
+        "available":["home_cook"],
+        "name":"Gulaschsuppe",
+        "description":"Gulaschsuppe Description",
+        "texture":"texture/services/food/gulaschsuppe.jpg",
+        "time": 1500,
+        "calories":760000,
+        "saturation":5000,
+        "availableCountRef": "PlayerData.fridge.ingredient_med",
+        "availableCountHint":"medium quality ingredients"
+    },
+    "cook_pizza_frozen":{
+        "inherit": "food",
+        "category":"Cook",
+        "available":["home_cook"],
+        "name":"Frozen Pizza",
+        "description":"Frozen Pizza Description",
+        "texture":"texture/services/food/pizza_fr.jpg",
+        "time": 720,
+        "calories":760000,
+        "saturation":5000,
+        "availableCountRef": "PlayerData.fridge.ingredient_low",
+        "availableCountHint":"low quality ingredients"
+    },
+    "cook_steak":{
+        "inherit": "food",
+        "category":"Cook",
+        "available":["home_cook"],
+        "name":"Rumpsteak with Potatoes",
+        "description":"Rumpsteak Description",
+        "texture":"texture/services/food/steak.jpg",
+        "time": 1800,
+        "calories":760000,
+        "saturation":5000,
+        "availableCountRef": "PlayerData.fridge.ingredient_hq",
+        "availableCountHint":"high quality ingredients"
+    },
     "drink":{
         "isTemplate":true,
         "effects":{
@@ -27,19 +65,6 @@
                 "inherit": "interrupt"
             }
         }
-    },
-    "home_meal_steak":{
-        "inherit": "food",
-        "category":"cook",
-        "available":["home_cook"],
-        "name":"Rumpsteak with Potatoes",
-        "description":"Rumpsteak Description",
-        "texture":"texture/services/food/steak.jpg",
-        "time": 1500,
-        "calories":760000,
-        "saturation":5000,
-        "availableCountRef": "PlayerData.fridge.ingredient_hq",
-        "availableCountHint":"high quality ingredients"
     },
     "home_water":{
         "inherit": "water",
@@ -76,7 +101,7 @@
         "available":["sm_med"],
         "name": "High Quality Ingredients (1x)",
         "texture":"texture/services/sm/cooking_ingr_hq.jpg",
-        "price": 1000,
+        "price": 1500,
         "increaseRef": "PlayerData.fridge.ingredient_hq",
         "increaseCount": 1,
         "remainAtServices": true
@@ -84,7 +109,39 @@
     "sm_cooking_ingr_hq_10":{
         "inherit": "sm_cooking_ingr_hq_1",
         "name": "High Quality Ingredients (10x)",
-        "price": 10000,
+        "price": 15000,
+        "increaseCount": 10
+    },
+    "sm_cooking_ingr_med_1":{
+        "category":"Cooking Ingredients",
+        "available":["sm_med"],
+        "name": "Medium Quality Ingredients (1x)",
+        "texture":"texture/services/sm/cooking_ingr_med.jpg",
+        "price": 800,
+        "increaseRef": "PlayerData.fridge.ingredient_med",
+        "increaseCount": 1,
+        "remainAtServices": true
+    },
+    "sm_cooking_ingr_med_10":{
+        "inherit": "sm_cooking_ingr_med_1",
+        "name": "Medium Quality Ingredients (10x)",
+        "price": 8000,
+        "increaseCount": 10
+    },
+    "sm_cooking_ingr_low_1":{
+        "category":"Cooking Ingredients",
+        "available":["sm_med"],
+        "name": "Low Quality Ingredients (1x)",
+        "texture":"texture/services/sm/cooking_ingr_low.jpg",
+        "price": 400,
+        "increaseRef": "PlayerData.fridge.ingredient_low",
+        "increaseCount": 1,
+        "remainAtServices": true
+    },
+    "sm_cooking_ingr_low_10":{
+        "inherit": "sm_cooking_ingr_low_1",
+        "name": "Low Quality Ingredients (10x)",
+        "price": 4000,
         "increaseCount": 10
     }
 }
