@@ -235,10 +235,7 @@ func getLocation(locationId):
 	l["SELF"] = locationArr[0]
 	l["ID"] = locationId
 	
-	if l.has("inherit"):
-		var parent = getLocation(l.inherit)
-		#l = Util.mergeInto(parent,l)
-		l = Util.inherit(l,parent)
+	l = locationInherit(l)
 	
 	return l
 	
@@ -348,7 +345,8 @@ func getValue(obj, index, default = null):
 	Util.debug(obj,5)
 	if obj == null: return default
 	var cindex = "~"+index # pick first entry with valid condition
-	var findex = "?"+index # compute using a function
+	var findex = "%"+index # compute using a function
+	var rindex = "#"+index # the value is a reference, look it up
 	if index in obj:
 		return obj[index]
 	elif cindex in obj:
@@ -368,6 +366,8 @@ func getValue(obj, index, default = null):
 				return getValueFromFunction(functionId,functionArr[1])
 			TYPE_DICTIONARY:
 				return functionExecute(obj[findex])
+	elif obj.has(rindex):
+		return getValueFromPath(obj[rindex])
 	elif obj.has("persist"):
 		return getValue(obj.persist,index,default)
 	
@@ -588,6 +588,9 @@ func functionExecute(function,arguments=[]):
 				resultValues[key] = ""
 		result = result.format(resultValues)
 		result = Util.stringFormat(result)
+	elif resultMode == "stringParse":
+		result = parseText(function.string)
+		result = Util.stringFormat(result)
 	elif resultMode == "mathAdd":
 		result = 0
 		var keys = function.result.keys()
@@ -634,8 +637,17 @@ func getRootFolder():
 	return Util.folderFromPath(path)
 
 func getServiceById(serviceId):
+	if !services.has(serviceId):
+		logOut(["Service ",serviceId," not found"],"ERROR")
+		return {"ID":serviceId}
+	
 	var result = services[serviceId]
 	result.ID = serviceId
+	
+	if result.has("inherit"):
+		var parent = getServiceById(result.inherit)
+		result = Util.inherit(result,parent)
+		
 	return result
 
 func getSkill(id):
@@ -984,6 +996,12 @@ func loadServices():
 	else:
 		print("Error loading Services: "+str(temp.error))
 
+func locationInherit(l):
+	if l.has("inherit"):
+		var parent = getLocation(l.inherit)
+		l = Util.inherit(l,parent)
+	return l
+
 func logOut(msg,type="NOTICE"):
 	
 	if typeof(msg) == TYPE_ARRAY:
@@ -991,6 +1009,8 @@ func logOut(msg,type="NOTICE"):
 		for t in msg:
 			text += str(t)
 		msg = text
+	else:
+		msg = str(msg)
 	
 	get_tree().call_group("logger","logOut",msg,type)
 
@@ -1150,9 +1170,11 @@ func execute(commands):
 					setValueAtPath(dataContainer+"."+key,command[key])
 			
 	if commands.has("eat"):
-		stateInc("hunger",commands.eat.saturation)
+		var saturation = getValue(commands.eat,"saturation",0)
+		stateInc("hunger",saturation)
 	if commands.has("drink"):
-		stateInc("thirst",commands.drink.saturation)
+		var saturation = getValue(commands.drink,"saturation",0)
+		stateInc("thirst",saturation)
 	if commands.has("sleep"):
 		sleep(getValue(commands.sleep,"mode",""))
 		
@@ -1180,9 +1202,14 @@ func execute(commands):
 		
 		
 	if commands.has("goto"):
-		MiscData.currentLocationID = commands["goto"]
-		var gotoLocation = getLocation(commands["goto"])
-		executeLocation(gotoLocation)
+		match typeof(commands.goto):
+			TYPE_STRING:
+				MiscData.currentLocationID = commands["goto"]
+				var gotoLocation = getLocation(commands["goto"])
+				executeLocation(gotoLocation)
+			TYPE_DICTIONARY:
+				var location = locationInherit(commands.goto)
+				executeLocation(location,false,false)
 		return true
 	
 	if commands.has("gotoLocationPop"):
@@ -1321,6 +1348,11 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 	if updateLocationId:
 		CurrentUi.LocationId = location.ID
 	updateUI()
+
+func executeWithFOBJ(commands,fobj):
+	functionObjects.append(fobj)
+	execute(commands)
+	functionObjects.pop_back()
 
 func gameMenuHide():
 	CurrentUi.ShowGameMenu = false
@@ -1643,9 +1675,12 @@ func serviceBuy(serviceId):
 	var duration = 0
 	var activity = "idle"
 	if service.has("time"): duration = service.time
-	timePass(duration,activity)
+	if duration > 0 : timePass(duration,activity)
 	if service.has("price"): moneySpend(service.price)
-	if service.has("effects"): execute(service.effects)
+	if service.has("effects"): 
+		executeWithFOBJ(service.effects,service)
+	
+	servicesClose()
 
 func services(type):
 	CurrentUi.UIGroup = "uiServices"
@@ -1657,8 +1692,10 @@ func services(type):
 	CurrentUi.Services.availableCategories.clear()
 	
 	for serviceId in services:
-		var service = services[serviceId]
-		if type in service.available:
+		var service = getServiceById(serviceId)
+		if getValue(service,"isTemplate",false) == true: continue
+		logOut(service)
+		if type in getValue(service,"available",[]):
 			CurrentUi.Services.available.append(serviceId)
 			if !CurrentUi.Services.availableCategories.has(service.category):
 				CurrentUi.Services.availableCategories[service.category] = {"ID":service.category,"label":service.category,"texture":service.texture}

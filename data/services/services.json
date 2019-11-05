@@ -1,26 +1,54 @@
 {
+    "drink":{
+        "isTemplate":true,
+        "effects":{
+            "drink":{"#calories":"FOBJ.calories","#saturation":"FOBJ.saturation"},
+            "interrupt":{
+                "#bg":"FOBJ.texture",
+                "%text":{
+                    "resultMode": "stringParse",
+                    "string":"^You sit down to drink your #FOBJ.name#^"
+                },
+                "inherit": "interrupt"
+            }
+        }
+    },
+    "food":{
+        "isTemplate":true,
+        "effects":{
+            "eat":{"#calories":"FOBJ.calories","#saturation":"FOBJ.saturation"},
+            "interrupt":{
+                "#bg":"FOBJ.texture",
+                "%text":{
+                    "resultMode": "stringParse",
+                    "string":"^You sit down to eat your #FOBJ.name#^"
+                },
+                "inherit": "interrupt"
+            }
+        }
+    },
     "kebab":{
         "category":"food",
+        "inherit": "food",
         "available":["kebab"],
         "name":"Döner Kebab",
         "description":"Döner Kebab Description",
         "texture":"texture/services/food/kebab.jpg",
         "time": 600,
         "price": 400,
-        "effects":[
-            {"eat":{"calories":760000,"saturation":5000}}
-        ]
+        "calories":760000,
+        "saturation":5000
     },
     "water":{
         "category":"drink",
+        "inherit": "drink",
         "available":["kebab"],
         "name":"Water",
         "description":"Water Description",
         "texture":"texture/services/drink/water.jpg",
         "time": 600,
         "price": 100,
-        "effects":[
-            {"drink":{"calories":0,"saturation":5000}}
-        ]
+        "calories":0,
+        "saturation":5000
     }
 }

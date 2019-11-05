@@ -32,11 +32,17 @@
                 "locationId":"SELF.hallway",
                 "time": 30
             }
-        ]
+        ],
+        "actions": {
+            "1000":{
+                "Label": "Prepare Food",
+                "services": "kebab"
+            }
+        }
     },
     "bed":{
         "label":"Bedroom",
-        "?text":{
+        "%text":{
             "resultMode": "stringFormat",
             "string":"^{base}^{alarmclock}{alarmclockTime}^{alarmClockOnOff}{alarmClockOn}{alarmClockOff}^",
             "result":{

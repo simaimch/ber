@@ -127,7 +127,6 @@ caption = "ItemTag"
 visible = false
 
 [node name="LoadGameDialog" type="FileDialog" parent="."]
-visible = true
 margin_right = 934.0
 margin_bottom = 511.0
 window_title = "Datei öffnen"

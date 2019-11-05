@@ -1,0 +1,4 @@
+{
+    "isTemplate": true,
+    "actions":{"1000":{"Label": "Continue","gotoLocationPop":true}}
+}

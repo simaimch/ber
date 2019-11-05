@@ -1,4 +1,4 @@
-extends ColorRect
+extends CanvasItem
 
 func updateUI(CurrentUi):
 	if CurrentUi.get("ShowGameMenu",false) == true:
