@@ -31,9 +31,9 @@ anchor_bottom = 1.0
 alignment = 1
 
 [node name="SaveButton" type="Button" parent="MarginContainer/ColorRect/VBoxContainer"]
-margin_top = 154.0
+margin_top = 114.0
 margin_right = 667.0
-margin_bottom = 230.0
+margin_bottom = 190.0
 rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
@@ -42,9 +42,9 @@ text = "Save"
 flat = true
 
 [node name="LoadButton" type="Button" parent="MarginContainer/ColorRect/VBoxContainer"]
-margin_top = 234.0
+margin_top = 194.0
 margin_right = 667.0
-margin_bottom = 310.0
+margin_bottom = 270.0
 rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
@@ -52,10 +52,21 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Load"
 flat = true
 
-[node name="QuitButton" type="Button" parent="MarginContainer/ColorRect/VBoxContainer"]
-margin_top = 314.0
+[node name="MainMenuButton" type="Button" parent="MarginContainer/ColorRect/VBoxContainer"]
+margin_top = 274.0
 margin_right = 667.0
-margin_bottom = 390.0
+margin_bottom = 350.0
+rect_min_size = Vector2( 0, 50 )
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Main Menu"
+flat = true
+
+[node name="QuitButton" type="Button" parent="MarginContainer/ColorRect/VBoxContainer"]
+margin_top = 354.0
+margin_right = 667.0
+margin_bottom = 430.0
 rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
@@ -64,9 +75,9 @@ text = "Quit"
 flat = true
 
 [node name="CancelButton" type="Button" parent="MarginContainer/ColorRect/VBoxContainer"]
-margin_top = 394.0
+margin_top = 434.0
 margin_right = 667.0
-margin_bottom = 470.0
+margin_bottom = 510.0
 rect_min_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
@@ -93,6 +104,7 @@ current_dir = "user://"
 current_path = "user://"
 [connection signal="pressed" from="MarginContainer/ColorRect/VBoxContainer/SaveButton" to="." method="_on_SaveButton_pressed"]
 [connection signal="pressed" from="MarginContainer/ColorRect/VBoxContainer/LoadButton" to="." method="_on_LoadButton_pressed"]
+[connection signal="pressed" from="MarginContainer/ColorRect/VBoxContainer/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
 [connection signal="pressed" from="MarginContainer/ColorRect/VBoxContainer/QuitButton" to="." method="_on_QuitButton_pressed"]
 [connection signal="pressed" from="MarginContainer/ColorRect/VBoxContainer/CancelButton" to="." method="_on_CancelButton_pressed"]
 [connection signal="file_selected" from="SaveGameDialog" to="." method="_on_FileDialog_file_selected"]

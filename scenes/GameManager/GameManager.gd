@@ -1029,6 +1029,9 @@ func logOut(msg,type="NOTICE"):
 #	else:
 #		print("Error loading Skills: "+str(temp.error))
 
+func mainMenu():
+	return get_tree().change_scene("res://scenes/titleScreen/titleScreen.tscn")
+
 func reachableLocationLink(rl,linkSelf="DEFAULT"):
 	var targetArr = rl.locationId.split(".")
 	if targetArr[0] == "SELF": 

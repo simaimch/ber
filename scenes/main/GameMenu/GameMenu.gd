@@ -29,3 +29,8 @@ func _on_LoadGameDialog_file_selected(path):
 
 func _on_LoadButton_pressed():
 	$LoadGameDialog.popup_centered()
+
+
+func _on_MainMenuButton_pressed():
+	GameManager.gameMenuHide()
+	GameManager.mainMenu()
