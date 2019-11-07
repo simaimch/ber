@@ -14,6 +14,21 @@
                     }
                 ]
             }
+        },
+        "smell_-1":{
+            "label":"Smelly",
+            "description":"#?usedName:NPC3# #?langIsAre:NPC3# smelly.",
+            "modifier": 1,
+            "condition":{
+                "mode":"AND",
+                "conditions":[
+                    {
+                        "var":"NPC3.stat.hunger.current",
+                        "mode":"eq",
+                        "val":10000
+                    }
+                ]
+            }
         }
     }
 }

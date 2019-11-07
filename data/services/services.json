@@ -96,15 +96,21 @@
         "calories":0,
         "saturation":5000
     },
+    "supermarket":{
+        "remainAtServices": true
+    },
+    "sm_cooking":{
+        "inherit": "supermarket",
+        "category":"Cooking Ingredients"
+    },
     "sm_cooking_ingr_hq_1":{
-        "category":"Cooking Ingredients",
+        "inherit": "sm_cooking",
         "available":["sm_med"],
         "name": "High Quality Ingredients (1x)",
         "texture":"texture/services/sm/cooking_ingr_hq.jpg",
         "price": 1500,
         "increaseRef": "PlayerData.fridge.ingredient_hq",
-        "increaseCount": 1,
-        "remainAtServices": true
+        "increaseCount": 1
     },
     "sm_cooking_ingr_hq_10":{
         "inherit": "sm_cooking_ingr_hq_1",
@@ -113,14 +119,13 @@
         "increaseCount": 10
     },
     "sm_cooking_ingr_med_1":{
-        "category":"Cooking Ingredients",
+        "inherit": "sm_cooking",
         "available":["sm_med"],
         "name": "Medium Quality Ingredients (1x)",
         "texture":"texture/services/sm/cooking_ingr_med.jpg",
         "price": 800,
         "increaseRef": "PlayerData.fridge.ingredient_med",
-        "increaseCount": 1,
-        "remainAtServices": true
+        "increaseCount": 1
     },
     "sm_cooking_ingr_med_10":{
         "inherit": "sm_cooking_ingr_med_1",
@@ -129,19 +134,40 @@
         "increaseCount": 10
     },
     "sm_cooking_ingr_low_1":{
-        "category":"Cooking Ingredients",
+        "inherit": "sm_cooking",
         "available":["sm_med"],
         "name": "Low Quality Ingredients (1x)",
         "texture":"texture/services/sm/cooking_ingr_low.jpg",
         "price": 400,
         "increaseRef": "PlayerData.fridge.ingredient_low",
-        "increaseCount": 1,
-        "remainAtServices": true
+        "increaseCount": 1
     },
     "sm_cooking_ingr_low_10":{
         "inherit": "sm_cooking_ingr_low_1",
         "name": "Low Quality Ingredients (10x)",
         "price": 4000,
         "increaseCount": 10
+    },
+    "sm_hygiene":{
+        "inherit":"supermarket",
+        "category":"Hygiene"
+    },
+    "sm_hygiene_razor_10":{
+        "inherit":"sm_hygiene",
+        "available":["sm_med"],
+        "name": "Razor (10x)",
+        "description": "10 pink razors, perfectly suited to shave any part of your body",
+        "texture":"texture/services/sm/razor.jpg",
+        "price": 999,
+        "increaseRef": "PlayerData.bath.razor",
+        "increaseCount": 10,
+        "remainAtServices": true
+    },
+    "sm_hygiene_razor_50":{
+        "inherit": "sm_hygiene_razor_10",
+        "name": "Razor (50x)",
+        "description": "50 pink razors, perfectly suited to shave any part of your body (you save 20% value pack)",
+        "price": 3990,
+        "increaseCount": 50
     }
 }

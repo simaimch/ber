@@ -10,6 +10,27 @@
             "validateRegex": "^\\d{1,2}:\\d{2}$"
         }
     },
+    "shaveBody":{
+        "Label":"Shave your body",
+        "~action":{
+            "1000":{
+                "condition":{
+                    "var":"PlayerData.bath.razor",
+                    "mode":"leq",
+                    "val":0
+                },
+                "value":{
+                    "Disabled": true,
+                    "Tooltip": "You don't have any razors left."
+                }
+            },
+            "100":{
+                "value":{
+                    "sleep": {}
+                }
+            }
+        }
+    },
     "shower":{
         "Label":"Take a shower",
         "PlayerData": {

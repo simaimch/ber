@@ -8,7 +8,7 @@ func updateUI(CurrentUi):
 
 
 func _on_HairTexture_mouse_entered():
-	get_tree().call_group("tooltip","showTooltip",{"text":"Current Hair Length: "+str(int(GameManager.getValueFromPath("PlayerData.body.hair.length")/10000))+" cm","followMouse":true})
+	get_tree().call_group("tooltip","showTooltip",{"text":"Current Hair Length: "+str(int(GameManager.getValueFromPath("PlayerData.body.hair.head.length",0)/10000))+" cm","followMouse":true})
 
 
 func _on_HairTexture_mouse_exited():

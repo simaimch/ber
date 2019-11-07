@@ -134,6 +134,9 @@
         "actions":{
             "1000":{
                 "inherit":"shower"
+            },
+            "800":{
+                "inherit":"shaveBody"
             }
         }
     }

@@ -6,7 +6,10 @@
             "body.feet.texture":"texture/body/female/feet/feet_1.jpg",
             "body.hand.texture":"texture/body/female/hand/hand1.jpg",
             "body.lap.texture":"texture/body/female/lap/lap1.jpg",
-            "body.hair.length":510000,
+            "body.hair.head.length":510000,
+            "body.hair.head.growth":500,
+            "body.hair.legs.length": 0,
+            "body.hair.legs.growth": 250,
             "skill.heels": 3,
             "trait.genes.appearance":2
         },

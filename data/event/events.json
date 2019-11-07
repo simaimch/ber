@@ -27,8 +27,12 @@
     "hairGrowth":{
         "listen":"timePass_DAY",
         "actions":{
-            "PlayerData":{
-                "body.hair.length":{"mode":"inc","value":500}
+            "foreach":{
+                "iterate": "PlayerData.body.hair",
+                "FOBJ":{
+                    "length":{"mode":"inc","#value":"FOBJ.growth"}
+                }
+
             }
         }
     },
