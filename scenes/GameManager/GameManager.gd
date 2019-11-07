@@ -1080,12 +1080,12 @@ func detailsShow():
 	
 	for modifierGroupId in PlayerData.modifier:
 		CurrentUi.ActiveModfiers[modifierGroupId] = []
-		var modifierGroup = modifiers[modifierGroupId]
+		var modifierGroup = PlayerData.modifier[modifierGroupId]
 		for modifierId in modifierGroup:
 			var modifier = getModifier(modifierGroupId,modifierId)
 			modifier.description = parseText(modifier.description)
 			CurrentUi.ActiveModfiers[modifierGroupId].append(modifier)
-			
+		
 	updateUI()
 	
 func getModifier(modifierGroupId,modifierID):
@@ -1106,6 +1106,7 @@ func modifiersCalculate(npcId):
 			var modifier = modifierGroup[modifierId]
 			if checkCondition(modifier.condition):
 				npc.modifier[modifierGroupId].append(modifierId)
+		
 		
 
 func loadModInfo(modId):
@@ -1144,15 +1145,25 @@ func newGame():
 	gotoMain()
 	
 func execute(commands):
+	var results = executeCommands(commands)
+	if results.get("modifiersRecalc",false) == true: modifiersCalculate(PlayerData.ID)
+	return results.get("consume",false)
 	
-	var consume = false
+func executeCommands(commands):
+	
+	# low level, don't call directly
+	
+	#var consume = false
+	var result = {}
 	
 	if typeof(commands) == TYPE_ARRAY:
+		
 		for command in commands:
-			if execute(command): consume = true
-		return consume
+			#if execute(command): consume = true
+			result = Util.mergeDictBoolOr(execute(command),result)
+		return result #consume
 	
-	if commands.has("Disabled") and commands.Disabled == true: return consume
+	if commands.get("Disabled",false) == true: return result
 	
 	if commands.has("debug"):
 		print(str(OS.get_ticks_msec())+":")
@@ -1161,9 +1172,8 @@ func execute(commands):
 	if commands.has("bg"):
 		CurrentUi.Bg = commands["bg"]
 		
-	
-	
 	for dataContainer in ["PlayerData","MiscData"]:
+		result.modifiersRecalc = true
 		if commands.has(dataContainer):
 			var command = commands[dataContainer]
 			for key in command:
@@ -1175,15 +1185,19 @@ func execute(commands):
 	if commands.has("eat"):
 		var saturation = getValue(commands.eat,"saturation",0)
 		stateInc("hunger",saturation)
+		result.modifiersRecalc = true
 	if commands.has("drink"):
 		var saturation = getValue(commands.drink,"saturation",0)
 		stateInc("thirst",saturation)
+		result.modifiersRecalc = true
 	if commands.has("sleep"):
 		sleep(getValue(commands.sleep,"mode",""))
+		result.modifiersRecalc = true
 		
 		
 	if commands.has("playerOutfit"):
 		setPlayerOutfit(commands.playerOutfit)
+		result.modifiersRecalc = true
 		
 	if commands.has("NPCData"):
 		for key in commands.NPCData:
@@ -1202,7 +1216,7 @@ func execute(commands):
 			if commands.Time.Pass.has("Duration"):
 				Duration = commands.Time.Pass.Duration
 			timePass(Duration,Activity)
-		
+			result.modifiersRecalc = true
 		
 	if commands.has("goto"):
 		match typeof(commands.goto):
@@ -1213,27 +1227,32 @@ func execute(commands):
 			TYPE_DICTIONARY:
 				var location = locationInherit(commands.goto)
 				executeLocation(location,false,false)
-		return true
+		result.modifiersRecalc = true
+		result.consume = true
+		return result
 	
 	if commands.has("gotoLocationPop"):
 		var locationId = MiscData.locationStack.pop_back()
-		return execute({"goto":locationId})
-	
+		return executeCommands({"goto":locationId})
+		
 	if commands.has("interrupt"):
 		MiscData.locationStack.append(MiscData.currentLocationID)
-		return execute({"goto":commands.interrupt})
+		return executeCommands({"goto":commands.interrupt})
 		
 	if commands.has("gotoShop"):
 		shop(commands.gotoShop)
-		return true
+		result.consume = true
+		return result
 		
 	if commands.has("services"):
 		services(commands.services)
-		return true
+		result.consume = true
+		return result
 		
 	if commands.has("showWardrobe"):
 		wardrobe()
-		return true
+		result.consume = true
+		return result
 	
 	if commands.has("showDialog"):
 		var dialogId = commands.showDialog
@@ -1245,12 +1264,11 @@ func execute(commands):
 		if dialog.has_method("setParam"): dialog.setParam(dialogParam)
 		get_tree().get_root().add_child(dialog)
 		dialog.popup_centered()
-		#dialog.popup()
 	
 	if getValue(commands,"updateLocation",false) == true:
 		updateLocation()
 	
-	return consume
+	return result
 	
 func parseText(t):
 	var textArr = t.split("#")

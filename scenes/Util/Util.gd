@@ -326,7 +326,15 @@ func inherit(child, parent):
 		result.erase("isTemplate")
 	
 	return result
+
+func mergeDictBoolOr(source,target):
 	
+	for key in source:
+		var entry = source[key]
+		target[key] = target.get(key,false) or entry
+	
+	return target
+
 func mergeInto(source,target,inplace = true):
 	var commandSigns = {
 		"ignoreNonexistent": "?",
