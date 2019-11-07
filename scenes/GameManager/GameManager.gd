@@ -139,6 +139,9 @@ func _ready():
 	rng.randomize()
 	randomize()
 	
+func commandLine(c):
+	logOut(getValueFromPath(c))
+
 func QUIT():
 	print("QUIT")
 	savePreferences()
@@ -1484,7 +1487,7 @@ func npcDialogUpdate(dialogue):
 	
 	
 
-func gotoLocation(transferInfo):#locationId,time,mode):
+func gotoLocation(transferInfo):
 	var locationId = getValue(transferInfo,"locationId","start")
 	var time = getValue(transferInfo,"time",0)
 	var mode = getValue(transferInfo,"mode","walk")
