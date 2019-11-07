@@ -527,7 +527,7 @@ func functionExecute(function,arguments=[]):
 			functionObjects.pop_back()
 		for argument in arguments:
 			functionObjects.append(argument)
-		argumentCount = arguments.size()	
+		argumentCount = arguments.size()
 	
 	
 	var resultMode = "standard"
@@ -817,10 +817,10 @@ func checkCondition(condition):
 		var valueFromPath = getValueFromPath(condition["var"],null)
 		return !Util.equals(conditionValue,valueFromPath)
 	elif condition.mode == "leq":
-		var valueFromPath = getValueFromPath(condition["var"],null)
+		var valueFromPath = getValueFromPath(condition["var"],0)
 		return (Util.bigger(conditionValue,valueFromPath) or Util.equals(conditionValue,valueFromPath))
 	elif condition.mode == "heq":
-		var valueFromPath = getValueFromPath(condition["var"],null)
+		var valueFromPath = getValueFromPath(condition["var"],0)
 		return (Util.bigger(valueFromPath,conditionValue) or Util.equals(conditionValue,valueFromPath))
 	elif condition.mode == "has":
 		var target = getValueFromPath(condition["target"])
@@ -1076,6 +1076,8 @@ func detailsHide():
 func detailsShow():
 	MiscData.currentNpcId[3] = PlayerData.ID
 	
+	modifiersCalculate(PlayerData.ID)
+	
 	CurrentUi.UIGroup = "uiDetails"
 	CurrentUi.ShowDetailsPC = true
 	
@@ -1095,6 +1097,7 @@ func getModifier(modifierGroupId,modifierID):
 	return modifiers[modifierGroupId][modifierID]
 
 func modifiersCalculate(npcId):
+	
 	var npc = getNPC(npcId)
 	
 	if !npc.has("modifier"): npc.modifier = {}
@@ -1110,7 +1113,7 @@ func modifiersCalculate(npcId):
 			if checkCondition(modifier.condition):
 				npc.modifier[modifierGroupId].append(modifierId)
 		
-		
+	MiscData.modifiersRecalc = false	
 
 func loadModInfo(modId):
 	var result = {"name":modId,"description":"","version":0}
@@ -1149,7 +1152,7 @@ func newGame():
 	
 func execute(commands):
 	var results = executeCommands(commands)
-	if results.get("modifiersRecalc",false) == true: modifiersCalculate(PlayerData.ID)
+	#if results.get("modifiersRecalc",false) == true: MiscData.modifiersRecalc = true #modifiersCalculate(PlayerData.ID)
 	return results.get("consume",false)
 	
 func executeCommands(commands):
@@ -1168,6 +1171,21 @@ func executeCommands(commands):
 	
 	if commands.get("Disabled",false) == true: return result
 	
+	if commands.has("foreach"):
+		var subcommand = commands.foreach.duplicate()
+		subcommand.erase("iterate")
+		var target = getValueFromPath(commands.foreach.iterate)
+		match typeof(target):
+			TYPE_DICTIONARY:
+				for key in target:
+					var entry = target[key]
+					functionObjects.append(entry)
+					logOut(subcommand)
+					executeCommands(subcommand)
+					functionObjects.pop_back()
+		return result
+					
+	
 	if commands.has("debug"):
 		print(str(OS.get_ticks_msec())+":")
 		print(commands)
@@ -1175,32 +1193,32 @@ func executeCommands(commands):
 	if commands.has("bg"):
 		CurrentUi.Bg = commands["bg"]
 		
-	for dataContainer in ["PlayerData","MiscData"]:
+	for dataContainer in ["PlayerData","MiscData","FOBJ"]:
 		result.modifiersRecalc = true
 		if commands.has(dataContainer):
 			var command = commands[dataContainer]
 			for key in command:
 				if typeof(command[key]) == TYPE_DICTIONARY and command[key].has("mode"):
-					modValueAtPath(dataContainer+"."+key,command[key].mode,command[key].value)
+					modValueAtPath(dataContainer+"."+key,command[key].mode,getValue(command[key],"value",0))
 				else:
 					setValueAtPath(dataContainer+"."+key,command[key])
 			
 	if commands.has("eat"):
 		var saturation = getValue(commands.eat,"saturation",0)
 		stateInc("hunger",saturation)
-		result.modifiersRecalc = true
+		#result.modifiersRecalc = true
 	if commands.has("drink"):
 		var saturation = getValue(commands.drink,"saturation",0)
 		stateInc("thirst",saturation)
-		result.modifiersRecalc = true
+		#result.modifiersRecalc = true
 	if commands.has("sleep"):
 		sleep(getValue(commands.sleep,"mode",""))
-		result.modifiersRecalc = true
+		#result.modifiersRecalc = true
 		
 		
 	if commands.has("playerOutfit"):
 		setPlayerOutfit(commands.playerOutfit)
-		result.modifiersRecalc = true
+		#result.modifiersRecalc = true
 		
 	if commands.has("NPCData"):
 		for key in commands.NPCData:
@@ -1219,7 +1237,7 @@ func executeCommands(commands):
 			if commands.Time.Pass.has("Duration"):
 				Duration = commands.Time.Pass.Duration
 			timePass(Duration,Activity)
-			result.modifiersRecalc = true
+			#result.modifiersRecalc = true
 		
 	if commands.has("goto"):
 		match typeof(commands.goto):
@@ -1230,7 +1248,7 @@ func executeCommands(commands):
 			TYPE_DICTIONARY:
 				var location = locationInherit(commands.goto)
 				executeLocation(location,false,false)
-		result.modifiersRecalc = true
+		#result.modifiersRecalc = true
 		result.consume = true
 		return result
 	
@@ -1525,7 +1543,8 @@ func timePass(t,activity):
 	
 	if daysToCalc > 0:
 		eventCategoryExecute("timePass_DAY",daysToCalc)
-				
+	
+	MiscData.modifiersRecalc = true
 	timeMove(t)
 	updateLocation()
 	
@@ -1667,7 +1686,7 @@ func setPlayerOutfit(playerOutfit):
 				setItemWorn(item)
 				break
 			
-		pass
+	MiscData.modifiersRecalc = true	
 	
 func setItemWorn(item):
 	PlayerData.outfit.CURRENT[item.type] = item.ID
@@ -1736,6 +1755,7 @@ func stateInc(index,value):
 func stateSet(index,value):
 	value = min(max(value,0),10000)
 	PlayerData.stat[index].current = value
+	MiscData.modifiersRecalc = true
 
 
 

@@ -15,8 +15,8 @@
 [ext_resource path="res://scenes/detailsMenu/Modifier.tscn" type="PackedScene" id=13]
 
 [node name="pcDetails" type="Control" groups=[
-"uiUpdate",
 "uiDetails",
+"uiUpdate",
 ]]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -273,7 +273,6 @@ align = 1
 [node name="AppearanceModifiersContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/ModifiersContainer" groups=[
 "uiDetails",
 ]]
-editor/display_folded = true
 margin_top = 32.0
 margin_right = 638.0
 margin_bottom = 646.0
