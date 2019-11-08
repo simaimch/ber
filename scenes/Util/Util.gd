@@ -440,6 +440,13 @@ func texture(path):
 	if fileExists("res://media/"+path):
 		return load("res://media/"+path)
 	
+	if fileExists(path):
+		var image = Image.new()
+		image.load(path)
+		var texture = ImageTexture.new()
+		texture.create_from_image(image)
+		return texture
+	
 	return preload("res://media/texture/missingTexture.jpg")
 	
 func time(now,arg):
