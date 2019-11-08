@@ -209,12 +209,15 @@ func getItemCoveredBodyParts(item):
 	var result = []
 	for partId in item.parts:
 		var part = getItempart(partId)
-		for cover in part.covers:
+		for cover in getValue(part,"covers",[]):
 			if !result.has(cover): result.append(cover)
 	return result
 
 func getItempart(id):
 	if !misc.has("itemparts"): loadMisc()
+	if !misc.itemparts.has(id): 
+		logOut("Error loading itempart: "+id)
+		return {}
 	return misc.itemparts[id]
 	
 func getLocation(locationId):
@@ -230,7 +233,7 @@ func getLocation(locationId):
 	while i < locationArr.size():
 		if !l.has(locationArr[i]): 
 			l["ID"] = locationId
-			print("Error loading location: "+locationId)
+			logOut("Error loading location: "+locationId)
 			return l
 		l = l[locationArr[i]]
 		i += 1
@@ -1180,7 +1183,6 @@ func executeCommands(commands):
 				for key in target:
 					var entry = target[key]
 					functionObjects.append(entry)
-					logOut(subcommand)
 					executeCommands(subcommand)
 					functionObjects.pop_back()
 		return result

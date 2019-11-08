@@ -27,39 +27,6 @@
                 "price": [0,40]
             }
         },
-        "MiscData":{
-            "bodyparts":{
-                "hair":{"tattoo":false,"pain":false,"pierce":false},
-                "eyes":{"tattoo":false,"dirt":false},
-                "nose":{},
-                "lips":{},
-                "face":{},
-                "head":{},
-                "neck":{},
-                "upperfront":{},
-                "breast":{},
-                "nipples":{},
-                "tummy":{},
-                "genitals":{},
-                "upperback":{},
-                "lowerback":{},
-                "buttocks":{},
-                "leftshoulder":{},
-                "rightshoulder":{},
-                "upperleftarm":{},
-                "lowerleftarm":{},
-                "upperrightarm":{},
-                "lowerrightarm":{},
-                "lefthand":{},
-                "righthand":{},
-                "upperleftleg":{},
-                "lowerleftleg":{},
-                "upperrightleg":{},
-                "lowerrightleg":{},
-                "leftfoot":{},
-                "rightfoot":{}
-            }
-        },
         "Time":{"Offset":1537430400},
         "goto":  "intro.start"
     }
