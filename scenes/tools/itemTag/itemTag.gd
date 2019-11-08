@@ -174,7 +174,13 @@ func showCCategory():
 			else:
 				tbs[pos].setLabel("")
 			if ccategory[ind].has("color"):
-				tbs[pos].setColor(GameManager.getColor(ccategory[ind].color).rgb)
+				if typeof(ccategory[ind].color) == TYPE_ARRAY:
+					var colors = []
+					for color in ccategory[ind].color:
+						colors.append(GameManager.getColor(color).rgb)
+					tbs[pos].setGradient(colors)
+				else:
+					tbs[pos].setColor(GameManager.getColor(ccategory[ind].color).rgb)
 			else:
 				tbs[pos].setColor(null)
 		else:
@@ -247,8 +253,7 @@ func _process(delta):
 		cbutton = -1
 		
 func _ready():
-	$SaveFileDialog.current_dir = GameManager.folderMod
-	$SaveFileDialog.current_path= GameManager.folderMod
+
 	tbs  = [
 		$VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/TB_7,
 		$VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/TB_8,
@@ -267,13 +272,6 @@ func _ready():
 func _on_OpenFolderButton_pressed():
 	$SelectFolderDialog.popup_centered()
 
-
-func _on_SaveFileDialog_file_selected(path):
-	var saveFile = File.new()
-	saveFile.open(path, File.WRITE)
-	saveFile.store_line(to_json(items))
-	saveFile.close()
-	print("Saved at "+path)
 
 
 func _on_SaveButton_pressed():

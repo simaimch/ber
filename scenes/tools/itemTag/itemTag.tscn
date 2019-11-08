@@ -90,7 +90,6 @@ text = "Label"
 align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-editor/display_folded = true
 margin_top = 40.0
 margin_right = 1278.0
 margin_bottom = 366.0
@@ -176,18 +175,8 @@ access = 2
 current_dir = "I:/ownCloud/Development/Godot/Ber"
 current_path = "I:/ownCloud/Development/Godot/Ber/"
 
-[node name="SaveFileDialog" type="FileDialog" parent="."]
-margin_right = 901.0
-margin_bottom = 413.0
-popup_exclusive = true
-resizable = true
-access = 1
-current_dir = "user://"
-current_path = "user://"
-
 [node name="InputDialog" parent="." instance=ExtResource( 6 )]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/OpenFolderButton" to="." method="_on_OpenFolderButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/SaveButton" to="." method="_on_SaveButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/MenuContainer/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
 [connection signal="dir_selected" from="SelectFolderDialog" to="." method="_on_SelectFolderDialog_dir_selected"]
-[connection signal="file_selected" from="SaveFileDialog" to="." method="_on_SaveFileDialog_file_selected"]

@@ -164,9 +164,9 @@
     ],
     "color":[
         {
-            "color":"black",
-            "result":{"color1":"black"},
-            "text":"black"
+            "color":["black","white"],
+            "jump":"colorBlackAndWhite",
+            "text":"black, white, grey"
         },
         {
             "color":"blue",
@@ -174,10 +174,6 @@
             "text":"blue"
         },
         {
-            "color":"white",
-            "result":{"color1":"white"},
-            "text":"white"
-        },{
             "color":"pink",
             "result":{"color1":"pink"},
             "text":"pink"
@@ -197,16 +193,33 @@
             "color":"green",
             "result":{"color1":"green"},
             "text":"green"
+        },
+        {
+            "color":"white",
+            "jump":"colorOther",
+            "text":"other"
+        }
+    ],
+    "colorBlackAndWhite":[
+        {
+            "color":"black",
+            "result":{"color1":"black"},
+            "text":"black"
+        },
+        {
+            "color":"white",
+            "result":{"color1":"white"},
+            "text":"white"
         }
     ],
     "extras":[
         {
             "text":"Hosiery",
-            "jump":"etraHosiery"
+            "jump":"extraHosiery"
         },
         {
             "text":"Choker",
-            "jump":"etraChoker"
+            "jump":"extraChoker"
         },
         "",
         "",
@@ -218,7 +231,7 @@
             "next":"COMPLETE"
         }
     ],
-    "etraHosiery":[
+    "extraHosiery":[
         {
             "text":"123",
             "result":{"hosiery":"green"},
@@ -436,7 +449,7 @@
         {
             "texture":"texture/misc/itemtype/shoe/slingbackwedge.png",
             "result":{"parts":["shoe_slingbackwedge"]}
-        },
+        }
     ],
     "shoeHeight":[
         {
