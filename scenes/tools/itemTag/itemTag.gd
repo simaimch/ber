@@ -48,12 +48,16 @@ func execute(button):
 		cpage += 1
 		showCCategory()
 		return OK
+		
+	var ccategoryItems = getCategoryItems(ccategory)
+	var ccategorySize = ccategoryItems.size()
 	
-	if ccategory.size() <= index or typeof(ccategory[index]) != TYPE_DICTIONARY:
+	
+	if ccategorySize <= index or typeof(ccategoryItems[index]) != TYPE_DICTIONARY:
 		return
 	
-	if ccategory[index].has("result"):
-		var result = ccategory[index].result
+	if ccategoryItems[index].has("result"):
+		var result = ccategoryItems[index].result
 		for key in result:
 			var entry = result[key]
 			var currentTarget = key
@@ -72,11 +76,11 @@ func execute(button):
 					print("Unexpected Value Type ",entryType," for entry ",key)
 					
 	
-	if ccategory[index].has("categories"):
+	if ccategoryItems[index].has("categories"):
 		ccategories = ccategory[index].categories
 		ccategoryIndex = 0
-	elif ccategory[index].has("jump"):
-		ccategory = categories[ccategory[index].jump]
+	elif ccategoryItems[index].has("jump"):
+		ccategory = categories[ccategoryItems[index].jump]
 		showCCategory()
 		return
 	else:
@@ -115,6 +119,22 @@ func finalizeCItem():
 	var id = pathArr[pathArr.size()-1]
 	items[id] = citem
 	
+
+func getCategoryItems(category):
+	var categoryItems = []
+	
+	match typeof(category):
+		TYPE_ARRAY:
+			categoryItems = category
+		TYPE_DICTIONARY:
+			var order = category.get("order",[])
+			var items = category.get("items",{})
+			for itemId in order:
+				if typeof(itemId) == TYPE_STRING and items.has(itemId):
+					categoryItems.append(items[itemId])
+				else:
+					categoryItems.append(null)
+	return categoryItems
 
 func loadCategoires():
 	var file = File.new()
@@ -165,22 +185,22 @@ func showCCategory():
 			tbs[pos].setLabel("-->")
 			tbs[pos].setColor(null)
 		
-		var ccategorySize = 0
-		var ccategoryItems = []
-		
-		match typeof(ccategory):
-			TYPE_ARRAY:
-				ccategorySize = ccategory.size()
-				ccategoryItems = ccategory
-			TYPE_DICTIONARY:
-				var order = ccategory.get("order",[])
-				var items = ccategory.get("items",{})
-				ccategorySize = order.size()
-				for itemId in order:
-					if typeof(itemId) == TYPE_STRING and items.has(itemId):
-						ccategoryItems.append(items[itemId])
-					else:
-						ccategoryItems.append(null)
+		#var ccategorySize = 0
+		var ccategoryItems = getCategoryItems(ccategory)
+		var ccategorySize = ccategoryItems.size()
+		#match typeof(ccategory):
+		#	TYPE_ARRAY:
+		#		ccategorySize = ccategory.size()
+		#		ccategoryItems = ccategory
+		#	TYPE_DICTIONARY:
+		#		var order = ccategory.get("order",[])
+		#		var items = ccategory.get("items",{})
+		#		ccategorySize = order.size()
+		#		for itemId in order:
+		#			if typeof(itemId) == TYPE_STRING and items.has(itemId):
+		#				ccategoryItems.append(items[itemId])
+		#			else:
+		#				ccategoryItems.append(null)
 		
 		if ccategorySize > ind and typeof(ccategoryItems[ind]) == TYPE_DICTIONARY:
 			if ccategoryItems[ind].has("texture"):
