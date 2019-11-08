@@ -162,44 +162,46 @@
             "result":{"parts":["sleeve_lo"]}
         },""
     ],
-    "color":[
-        {
-            "color":["black","white"],
-            "jump":"colorBlackAndWhite",
-            "text":"black, white, grey"
-        },
-        {
-            "color":"blue",
-            "result":{"color1":"blue"},
-            "text":"blue"
-        },
-        {
-            "color":"pink",
-            "result":{"color1":"pink"},
-            "text":"pink"
-        },
-        "",
-        {
-            "color":"violet",
-            "result":{"color1":"violet"},
-            "text":"violet"
-        },
-        {
-            "color":"red",
-            "result":{"color1":"red"},
-            "text":"red"
-        },
-        {
-            "color":"green",
-            "result":{"color1":"green"},
-            "text":"green"
-        },
-        {
-            "color":"white",
-            "jump":"colorOther",
-            "text":"other"
+    "color":{
+        "order":["blackwhite","red","pinkviolet","orangeyellow","green","blue","brown","other"],
+        "items":{
+            "blackwhite":{
+                "color":["black","white"],
+                "jump":"colorBlackAndWhite",
+                "text":"black, white, grey"
+            },
+            "blue":{
+                "color":"blue",
+                "result":{"color1":"blue"},
+                "text":"blue"
+            },
+            "pink":{
+                "color":"pink",
+                "result":{"color1":"pink"},
+                "text":"pink"
+            },
+            "violet":{
+                "color":"violet",
+                "result":{"color1":"violet"},
+                "text":"violet"
+            },
+            "red":{
+                "color":"red",
+                "result":{"color1":"red"},
+                "text":"red"
+            },
+            "green":{
+                "color":"green",
+                "result":{"color1":"green"},
+                "text":"green"
+            },
+            "other":{
+                "color":"white",
+                "jump":"colorOther",
+                "text":"other"
+            }
         }
-    ],
+    },
     "colorBlackAndWhite":[
         {
             "color":"black",

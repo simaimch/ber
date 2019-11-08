@@ -164,23 +164,41 @@ func showCCategory():
 			tbs[pos].setTexture(null)
 			tbs[pos].setLabel("-->")
 			tbs[pos].setColor(null)
-		elif ccategory.size() > ind and typeof(ccategory[ind]) == TYPE_DICTIONARY:
-			if ccategory[ind].has("texture"):
+		
+		var ccategorySize = 0
+		var ccategoryItems = []
+		
+		match typeof(ccategory):
+			TYPE_ARRAY:
+				ccategorySize = ccategory.size()
+				ccategoryItems = ccategory
+			TYPE_DICTIONARY:
+				var order = ccategory.get("order",[])
+				var items = ccategory.get("items",{})
+				ccategorySize = order.size()
+				for itemId in order:
+					if typeof(itemId) == TYPE_STRING and items.has(itemId):
+						ccategoryItems.append(items[itemId])
+					else:
+						ccategoryItems.append(null)
+		
+		if ccategorySize > ind and typeof(ccategoryItems[ind]) == TYPE_DICTIONARY:
+			if ccategoryItems[ind].has("texture"):
 				tbs[pos].setTexture(Util.texture(ccategory[ind].texture))
 			else:
 				tbs[pos].setTexture(null)
-			if ccategory[ind].has("text"):
-				tbs[pos].setLabel(ccategory[ind].text)
+			if ccategoryItems[ind].has("text"):
+				tbs[pos].setLabel(ccategoryItems[ind].text)
 			else:
 				tbs[pos].setLabel("")
-			if ccategory[ind].has("color"):
-				if typeof(ccategory[ind].color) == TYPE_ARRAY:
+			if ccategoryItems[ind].has("color"):
+				if typeof(ccategoryItems[ind].color) == TYPE_ARRAY:
 					var colors = []
-					for color in ccategory[ind].color:
+					for color in ccategoryItems[ind].color:
 						colors.append(GameManager.getColor(color).rgb)
 					tbs[pos].setGradient(colors)
 				else:
-					tbs[pos].setColor(GameManager.getColor(ccategory[ind].color).rgb)
+					tbs[pos].setColor(GameManager.getColor(ccategoryItems[ind].color).rgb)
 			else:
 				tbs[pos].setColor(null)
 		else:
