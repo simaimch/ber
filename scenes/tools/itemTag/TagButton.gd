@@ -13,7 +13,6 @@ func setColor(c):
 	$TextureRect.hide()
 
 func setGradient(colors):
-	print("Called with",colors)
 	if colors.empty(): return setColor(null)
 	if colors.size() == 1: return setColor(colors[0])
 	

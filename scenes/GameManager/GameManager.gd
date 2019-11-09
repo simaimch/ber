@@ -724,6 +724,7 @@ func shop(arguments):
 	
 	CurrentUi.UIGroup = "uiShop"
 	CurrentUi.ShowShop = true
+	CurrentUi.ShowWearInformation = true
 	CurrentUi.ShopID = arguments.ID
 	shopUpdateItems()
 	

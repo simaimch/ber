@@ -68,9 +68,9 @@
             "heels":{
                 "valueCalc":"with #FOBJ.height# cm high heels ",
                 "condition":{
-                    "mode":"has",
-                    "target":"FOBJ",
-                    "index":"height"
+                    "mode":"heq",
+                    "var":"FOBJ.type",
+                    "val":1
                 }
             },
             "shoeDifficultyDiscriptionPC":{
