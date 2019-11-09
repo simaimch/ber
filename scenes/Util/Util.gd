@@ -277,7 +277,7 @@ func fileExists(path):
 func folderCreate(parent, name):
 	var dir = Directory.new()
 	dir.open(parent)
-	dir.make_dir(name)
+	dir.make_dir_recursive(name)
 
 func folderExists(path):
 	var directory = Directory.new();
@@ -446,6 +446,8 @@ func texture(path):
 		var texture = ImageTexture.new()
 		texture.create_from_image(image)
 		return texture
+		
+	GameManager.logOut(["Error loading texture: ",path])
 	
 	return preload("res://media/texture/missingTexture.jpg")
 	

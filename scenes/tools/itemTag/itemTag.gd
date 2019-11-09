@@ -286,9 +286,13 @@ func _process(delta):
 		cbutton = 2
 	elif Input.is_action_pressed("ui_downright"):
 		cbutton = 3
+	elif Input.is_action_pressed("ui_back"):
+		cbutton = 0
 	elif cbutton > 0:
 		execute(cbutton)
 		cbutton = -1
+	elif cbutton == 0:
+		startItem(cimage)
 		
 func _ready():
 
@@ -349,10 +353,10 @@ func saveMod(modId):
 	
 	var itemFolder = modFolder + "/item"
 	var itemFile = itemFolder + "/items.json"
-	var mediaFolder = modFolder + "/media"
+	var mediaFolder = modFolder + "/media/mods/"+modId
 	
 	Util.folderCreate(modFolder,"item")
-	Util.folderCreate(modFolder,"media")
+	Util.folderCreate(modFolder,"media/mods/"+modId)
 	
 	var dir = Directory.new()
 
@@ -361,7 +365,7 @@ func saveMod(modId):
 	for key in items:
 		var fileName = Util.getFilename(items[key].texture)
 		dir.copy(items[key].texture, mediaFolder+"/"+fileName)
-		items[key].texture = "mods://"+modId+"/media/"+fileName
+		items[key].texture = "mods/"+modId+"/"+fileName
 		items[key].covers = GameManager.getItemCoveredBodyParts(items[key])
 		itemToSave[modId+"_"+key] = items[key]
 		
