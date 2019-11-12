@@ -42,6 +42,19 @@
             "0":{"valueRef":"FOBJ.ID"}
         }
     },
+    "outfitType":{
+        "result":{
+            "10000":{
+                "value":"naked",
+                "condition":{
+                    "mode":"in",
+                    "var":"FOBJ.CURRENT.clothes",
+                    "val":["","naked",null]
+                }
+            },
+            "0":{"value":"casual"}
+        }
+    },
     "shoeDescription":{
         "resultMode": "stringFormat",
         "string":"^{lockable}{color}{shoetype}{heels}^{shoeDifficultyDiscriptionPC}",

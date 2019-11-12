@@ -6,8 +6,8 @@
         "rl":[
             {
                 "locationId":"testStreet.outside",
-                "label": "Leave",
-                "time": 180
+                "time": 180,
+                "inherit": "privateLeave"
             },
             {
                 "locationId":"SELF.kitchen",

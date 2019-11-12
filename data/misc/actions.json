@@ -45,7 +45,7 @@
                 "condition":{
                     "var":"PlayerData.stat.sleep.current",
                     "mode":"heq",
-                    "val":10000
+                    "val":7000
                 },
                 "value":{
                     "Label": "Go to sleep",

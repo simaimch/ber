@@ -36,6 +36,15 @@
             }
         }
     },
+    "outfitUpdate":{
+        "listen": "outfitUpdate",
+        "arguments":"*",
+        "actions":{
+            "PlayerData":{
+                "outfit.CURRENT_TYPE":{"mode":"set","%value":"?outfitType:PlayerData.outfit"}
+            }
+        }
+    },
     "shower":{
         "listen": "timePass",
         "arguments":"shower",

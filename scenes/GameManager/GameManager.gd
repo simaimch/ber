@@ -839,6 +839,14 @@ func checkCondition(condition):
 	elif condition.mode == "has":
 		var target = getValueFromPath(condition["target"])
 		return target.has(condition["index"])
+	elif condition.mode == "in":
+		var valueFromPath = getValueFromPath(condition["var"],null)
+		match typeof(conditionValue):
+			TYPE_ARRAY:
+				return conditionValue.has(valueFromPath)
+			var conType:
+				logOut(["Unexpected type of condition.val ",conType," in ",condition],"ERROR")
+				return false
 	
 	return false
 
@@ -883,7 +891,9 @@ func loadEvents():
 	print("Complete loading Events")
 
 func eventCategoryExecute(cat, times = 1):
-	if !events.has(cat): return
+	if !events.has(cat): 
+		logOut(["Event category not found: ",cat],"ERROR")
+		return
 	
 	for i in range(times):
 		for event in events[cat]:
@@ -1707,7 +1717,15 @@ func setPlayerOutfit(playerOutfit):
 	MiscData.modifiersRecalc = true	
 	
 func setItemWorn(item):
-	PlayerData.outfit.CURRENT[item.type] = item.ID
+	#PlayerData.outfit.CURRENT[item.type] = item.ID
+	#eventCategoryExecute("outfitUpdate")
+	#playerData2UI()
+	#updateUI()
+	setItemWornAtSlot(item.type,item.ID)
+
+func setItemWornAtSlot(slot,itemID):
+	PlayerData.outfit.CURRENT[slot] = itemID
+	eventCategoryExecute("outfitUpdate")
 	playerData2UI()
 	updateUI()
 
@@ -1778,6 +1796,7 @@ func stateSet(index,value):
 
 
 func undress(slot):
-	PlayerData.outfit.CURRENT[slot] = ""
-	playerData2UI()
-	updateUI()
+	setItemWornAtSlot(slot,"")
+	#PlayerData.outfit.CURRENT[slot] = ""
+	#playerData2UI()
+	#updateUI()
