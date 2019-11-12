@@ -343,9 +343,11 @@ func hasValue(obj, index):
 	if obj.has(index): return true
 	var cindex = "~"+index
 	var findex = "%"+index
+	var lindex = ">"+index
 	var rindex = "#"+index
 	if obj.has(cindex): return true
 	if obj.has(findex): return true
+	if obj.has(lindex): return true
 	if obj.has(rindex): return true
 	if obj.has("persist"): return hasValue(obj.persist, index)
 	return false
@@ -356,6 +358,7 @@ func getValue(obj, index, default = null):
 	if obj == null: return default
 	var cindex = "~"+index # pick first entry with valid condition
 	var findex = "%"+index # compute using a function
+	var lindex = ">"+index # use a list
 	var rindex = "#"+index # the value is a reference, look it up
 	if index in obj:
 		return obj[index]
@@ -376,6 +379,8 @@ func getValue(obj, index, default = null):
 				return getValueFromFunction(functionId,functionArr[1])
 			TYPE_DICTIONARY:
 				return functionExecute(obj[findex])
+	elif obj.has(lindex):
+		return getValueFromList(obj[lindex])
 	elif obj.has(rindex):
 		return getValueFromPath(obj[rindex])
 	elif obj.has("persist"):
@@ -390,9 +395,15 @@ func getValue(obj, index, default = null):
 		
 	return default
 
-func getValueFromList(list):
+func getValueFromList(list,default = null):
+	var filePath = "res://data/list/"+list+".txt"
+	
+	if !Util.fileExists(filePath):
+		logOut(["List not found: ",list],"ERROR")
+		return default
+	
 	var file = File.new()
-	file.open("res://data/list/"+list+".txt", file.READ)
+	file.open(filePath, file.READ)
 	var entries = []
 	var weightTotal = 0
 	while !file.eof_reached():
