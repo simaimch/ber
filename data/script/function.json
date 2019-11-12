@@ -44,11 +44,19 @@
     },
     "outfitType":{
         "result":{
-            "10000":{
+            "10010":{
                 "value":"naked",
                 "condition":{
                     "mode":"in",
                     "var":"FOBJ.CURRENT.clothes",
+                    "val":["","naked",null]
+                }
+            },
+            "10000":{
+                "value":"barefoot",
+                "condition":{
+                    "mode":"in",
+                    "var":"FOBJ.CURRENT.shoes",
                     "val":["","naked",null]
                 }
             },

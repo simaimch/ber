@@ -2,7 +2,7 @@
     "privateLeave":{
         "label":"Leave",
         "~values":{
-            "10000": {
+            "10010": {
                 "value":{
                     "disabled":true,
                     "tooltip": "You can't leave while being naked."
@@ -11,6 +11,17 @@
                     "mode":"eq",
                     "var":"PlayerData.outfit.CURRENT_TYPE",
                     "val":"naked"
+                }
+            },
+            "10000": {
+                "value":{
+                    "disabled":true,
+                    "tooltip": "You can't leave while being barefoot."
+                },
+                "condition":{
+                    "mode":"eq",
+                    "var":"PlayerData.outfit.CURRENT_TYPE",
+                    "val":"barefoot"
                 }
             },
             "0":{
