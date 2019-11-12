@@ -1216,7 +1216,7 @@ func executeCommands(commands):
 	if commands.has("bg"):
 		CurrentUi.Bg = commands["bg"]
 		
-	for dataContainer in ["PlayerData","MiscData","FOBJ"]:
+	for dataContainer in ["PlayerData","MiscData","FOBJ","WorldData"]:
 		result.modifiersRecalc = true
 		if commands.has(dataContainer):
 			var command = commands[dataContainer]
