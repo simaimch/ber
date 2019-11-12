@@ -342,7 +342,11 @@ func itemslot2bodypart(itemslot):
 func hasValue(obj, index):
 	if obj.has(index): return true
 	var cindex = "~"+index
+	var findex = "%"+index
+	var rindex = "#"+index
 	if obj.has(cindex): return true
+	if obj.has(findex): return true
+	if obj.has(rindex): return true
 	if obj.has("persist"): return hasValue(obj.persist, index)
 	return false
 
