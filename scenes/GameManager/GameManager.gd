@@ -638,6 +638,12 @@ func getModFolder(modID=""):
 		return getRootFolder()+"/mods"
 	return getRootFolder()+"/mods"+"/"+modID
 
+func getRL(id):
+	if !misc.has("rl"): loadMisc()
+	if misc.rl.has(id):
+		return misc.rl[id]
+	return {}
+
 func getRootFolder():
 	var path
 	if OS.is_debug_build ( ):
@@ -1320,6 +1326,16 @@ func path(p):
 		return getModFolder() + "/" + p.substr(7,p.length()-7)
 	return p
 
+func currentUIAppendRL(rl):
+	if !rl.has("condition") or checkCondition(rl.condition):
+		if rl.has("inherit"):
+			var parent = getRL(rl.inherit)
+			rl = Util.inherit(rl, parent)
+		if hasValue(rl,"values"):
+			var values = getValue(rl,"values",{})
+			rl = Util.inherit(rl, values)
+		CurrentUi.RL.append(reachableLocationLink(rl))
+
 func executeLocation(location,omitStart=false,updateLocationId=true):
 	if !omitStart and location.has("onStart"):
 		if execute(location.onStart): return
@@ -1327,15 +1343,6 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 	var bgTemp = getValue(location,"bg")
 	if bgTemp != null:
 		CurrentUi.Bg  = bgTemp
-		
-	#if location.has("text"):
-	#	if typeof(location["text"]) == TYPE_ARRAY:
-	#		CurrentUi.Text  = PoolStringArray(location["text"]).join("\n")
-	#	else:
-	#		CurrentUi.Text  = location["text"]
-	#	CurrentUi.Text = parseText(CurrentUi.Text)
-	#else:
-	#	CurrentUi.Text  = ""
 	
 	match getValue(location,"text"):
 		null:
@@ -1347,14 +1354,18 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 	CurrentUi.RL.clear()
 	if location.has("rl"):
 		CurrentUi.ShowRL = true
-		for rl in location.rl:
-			if !rl.has("condition") or checkCondition(rl.condition):
-				CurrentUi.RL.append(reachableLocationLink(rl))
+		match typeof(location.rl):
+			TYPE_ARRAY:
+				for rl in location.rl:
+					currentUIAppendRL(rl)
+			TYPE_DICTIONARY:
+				for rlId in location.rl:
+					currentUIAppendRL(location.rl[rlId])
+			var rlType:
+				logOut(["Unexpected type of location.rl: ",rlType],"ERROR")
 	else:
 		CurrentUi.ShowRL = false
-	
-	
-	
+
 	CurrentUi.NPCs.clear()
 	if location.has("npcs") and location.npcs == true:
 		for npcId in npcs:
