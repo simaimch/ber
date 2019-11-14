@@ -1,11 +1,37 @@
 {
-    "1":{"inherit":"8"},
-    "2":{"inherit":"8"},
-    "3":{"inherit":"8"},
+    "1":{"inherit":"11"},
+    "2":{"inherit":"10"},
+    "3":{"inherit":"9"},
     "4":{"inherit":"8"},
-    "5":{"inherit":"8"},
-    "6":{"inherit":"8"},
-    "7":{"inherit":"8"},
+    "5":{
+        "inherit":"8",
+        "sun":{
+            "2":"dawn1",
+            "3":"dawn2",
+            "4":"dawn3",
+            "5":"day",
+            "20":"day",
+            "21":"dusk1",
+            "22":"dusk2",
+            "23":"dusk3"
+        }
+    },
+    "6":{
+        "inherit":"8",
+        "sun":{
+            "0":"dusk3",
+            "1":"dawn1",
+            "2":"dawn2",
+            "3":"dawn3",
+            "4":"day",
+            "5":"day",
+            "20":"day",
+            "21":"day",
+            "22":"dusk1",
+            "23":"dusk2"
+        }
+    },
+    "7":{"inherit":"5"},
     "8":{
         "sun":{
             "0":"night",
@@ -40,8 +66,50 @@
             "mild": 30
         }
     },
-    "9":{"inherit":"8"},
-    "10":{"inherit":"8"},
-    "11":{"inherit":"8"},
-    "12":{"inherit":"8"}
+    "9":{
+        "inherit":"8",
+        "sun":{
+            "3":"night",
+            "4":"dawn1",
+            "5":"dawn2",
+            "6":"dawn3",
+            "19":"dusk1",
+            "20":"dusk2",
+            "21":"dusk3",
+            "22":"night"
+        }
+    },
+    "10":{
+        "inherit":"8",
+        "sun":{
+            "3":"night",
+            "4":"night",
+            "5":"dawn1",
+            "6":"dawn2",
+            "7":"dawn3",
+            "18":"dusk1",
+            "19":"dusk2",
+            "20":"dusk3",
+            "21":"night",
+            "22":"night"
+        }
+    },
+    "11":{
+        "inherit":"8",
+        "sun":{
+            "3":"night",
+            "4":"night",
+            "5":"night",
+            "6":"dawn1",
+            "7":"dawn2",
+            "8":"dawn3",
+            "17":"dusk1",
+            "18":"dusk2",
+            "19":"dusk3",
+            "20":"night",
+            "21":"night",
+            "22":"night"
+        }
+    },
+    "12":{"inherit":"11"}
 }

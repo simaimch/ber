@@ -1927,6 +1927,25 @@ func weatherForecastSet(targetTimeDict:Dictionary,forecast):
 	var forecastIndex = weatherForecastIndex(targetTimeDict)
 	setValueAtPath("WorldData.weather.forecast."+forecastIndex,forecast)
 	
+func weatherSky(weather:Dictionary) -> String:
+	
+	var possibleSkies = getValue(weather,"sky",{})
+	
+	var weightTotal = 0
+	
+	for sky in possibleSkies:
+		var weight = possibleSkies[sky]
+		weightTotal += weight
+		
+	var rand = rng.randi_range(1,weightTotal)
+	
+	for sky in possibleSkies:
+		var weight = possibleSkies[sky]
+		if weight >= rand:
+			return sky
+		rand -= weight
+	
+	return "rain"
 
 func weatherUpdate(targetTime):
 	var targetTimeDict = Util.getDateTime(targetTime)
@@ -1954,5 +1973,7 @@ func weatherUpdate(targetTime):
 		"night":
 			temperature = Util.intRandom(getValue(weather,"temperature.night",0))
 			
-		
+	var sky = weatherSky(weather)
+	
+	WorldData.weather.sky = sky	
 	WorldData.weather.temperature = temperature
