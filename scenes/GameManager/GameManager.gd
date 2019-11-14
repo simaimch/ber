@@ -1975,5 +1975,6 @@ func weatherUpdate(targetTime):
 			
 	var sky = weatherSky(weather)
 	
-	WorldData.weather.sky = sky	
+	WorldData.weather.sky = sky
 	WorldData.weather.temperature = temperature
+	WorldData.weather.timeOfDay = timeOfDay
