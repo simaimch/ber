@@ -1,0 +1,19 @@
+{
+    "hot":{
+        "sky":{
+            "clear": 100
+        },
+        "temperature":{
+            "night": 25,
+            "dawn": 25,
+            "day": [32,36],
+            "dusk": 30
+        }
+    },
+    "warm":{
+        "inherit":"hot"
+    },
+    "mild":{
+        "inherit":"warm"
+    }
+}

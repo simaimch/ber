@@ -1,5 +1,7 @@
 extends Control
 
+var rng = RandomNumberGenerator.new()
+
 func folderFromPath(path):
 	var pathArr = path.split("/")
 	var fileName = pathArr[pathArr.size()-1]
@@ -320,12 +322,39 @@ func isNumber(val):
 	return false
 	
 func inherit(child, parent):
-	var result = mergeInto(child, parent, false)
 	
-	if parent.has("isTemplate") and parent.isTemplate == true and (!child.has("isTemplate") or child.isTemplate != true):
-		result.erase("isTemplate")
-	
-	return result
+	match typeof(parent):
+		TYPE_DICTIONARY:
+			var result = mergeInto(child, parent, false)
+			
+			if parent.has("isTemplate") and parent.isTemplate == true and (!child.has("isTemplate") or child.isTemplate != true):
+				result.erase("isTemplate")
+			
+			return result
+		TYPE_ARRAY:
+			var result = child.duplicate()
+			
+			for p in parent:
+				result = mergeInto(result, p, false)
+				
+			return result
+				
+		var parentType:
+			GameManager.logOut(["inherit: unexpected type of parent:",parentType],"ERROR")
+			
+func intRandom(v):
+	match typeof(v):
+		TYPE_INT:
+			return v
+		TYPE_REAL,TYPE_STRING:
+			return int(v)
+		TYPE_ARRAY:
+			if v.size() >= 2:
+				return rng.randi_range(intRandom(v[0]),intRandom(v[1]))
+			return intRandom(v[0])
+		var vType:
+			GameManager.logOut(["intRandom: unexpected type of v: ",vType],"ERROR")
+	return 0
 
 func mergeDictBoolOr(source,target):
 	

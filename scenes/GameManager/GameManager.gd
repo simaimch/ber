@@ -94,8 +94,6 @@ var PlayerData = {
 var WorldData = {
 	"Time": 0,
 	"TimeOffset":0,
-	"Weather":"clear",
-	"SunPosition":"dawn",
 	"Shops":{}
 }
 
@@ -108,7 +106,8 @@ var MiscData = {
 
 var Preferences = {
 	"modsAutoactivate":false,
-	"mods":{}
+	"mods":{},
+	"weatherForecastSize":5
 }
 
 var dialogues = {}
@@ -345,6 +344,7 @@ func hasValue(obj, index):
 	var findex = "%"+index
 	var lindex = ">"+index
 	var rindex = "#"+index
+	var ranindex="|"+index
 	if obj.has(cindex): return true
 	if obj.has(findex): return true
 	if obj.has(lindex): return true
@@ -360,6 +360,7 @@ func getValue(obj, index, default = null):
 	var findex = "%"+index # compute using a function
 	var lindex = ">"+index # use a list
 	var rindex = "#"+index # the value is a reference, look it up
+	var ranindex="|"+index # the value is taken from a random list
 	if index in obj:
 		return obj[index]
 	elif cindex in obj:
@@ -376,13 +377,19 @@ func getValue(obj, index, default = null):
 			TYPE_STRING:
 				var functionArr = obj[findex].split(":",false,1)
 				var functionId = functionArr[0].substr(1,functionArr[0].length()-1)
-				return getValueFromFunction(functionId,functionArr[1])
+				if functionArr.size() > 1:
+					return getValueFromFunction(functionId,functionArr[1])
+				else:
+					var result = getValueFromFunction(functionId)
+					return result
 			TYPE_DICTIONARY:
 				return functionExecute(obj[findex])
 	elif obj.has(lindex):
 		return getValueFromList(obj[lindex])
 	elif obj.has(rindex):
 		return getValueFromPath(obj[rindex])
+	elif obj.has(ranindex):
+		pass
 	elif obj.has("persist"):
 		return getValue(obj.persist,index,default)
 	
@@ -424,6 +431,25 @@ func getValueFromList(list,default = null):
 		
 	return entries[i].value
 	
+func getWeather(id):
+	if !misc.has("weather"): loadMisc()
+	match typeof(id):
+		TYPE_STRING:
+			if misc.weather.has(id):
+				var weather = misc.weather[id]
+				if weather.has("inherit"):
+					var parent = getWeather(weather.inherit)
+					weather = Util.inherit(weather,parent)
+				return weather
+		TYPE_ARRAY, TYPE_STRING_ARRAY:
+			var result = []
+			for subid in id:
+				result.append(getWeather(subid))
+			return result
+		var idtype:
+			logOut(["getWeather: unexpected type of id:",idtype],"ERROR")
+	return {}
+
 
 func getAction(id):
 	if !misc.actions.has(id):
@@ -476,7 +502,10 @@ func getValueFromPath(path,default=""):
 		#Call a function
 		var functionArr = path.split(":",false,1)
 		var functionId = functionArr[0].substr(1,functionArr[0].length()-1)
-		return getValueFromFunction(functionId,functionArr[1])
+		if functionArr.size()>1:
+			return getValueFromFunction(functionId,functionArr[1])
+		else:
+			return getValueFromFunction(functionId)
 	
 	if str(default) == "": default = path
 	
@@ -499,7 +528,7 @@ func getFOBJ(index):
 	return functionObjects[functionObjects.size()-index]
 
 #func getValueFromFunction(functionId,functionObj):
-func getValueFromFunction(functionId,functionParameter):
+func getValueFromFunction(functionId,functionParameter=""):
 	var result = null
 	if functionId == "INT":
 		return int(functionParameter)
@@ -512,19 +541,19 @@ func getValueFromFunction(functionId,functionParameter):
 	else:
 		arguments.append(functionParameter)
 	
-	if functionId == "COLORNAME":
-		var color = getColor(arguments[0])
-		result = color.name
-	elif functionId == "SUB":
-		var a = float(arguments[0])
-		var b = float(arguments[1])
-		result = a - b
-	elif functionId == "TIME":
-		result = Util.time(now(),arguments[0])
-	else:
-	
-		var function = functions[functionId]
-		result = functionExecute(function,arguments)
+	match functionId:
+		"COLORNAME":
+			var color = getColor(arguments[0])
+			result = color.name
+		"SUB":
+			var a = float(arguments[0])
+			var b = float(arguments[1])
+			result = a - b
+		"TIME":
+			result = Util.time(now(),arguments[0])
+		_:
+			var function = functions[functionId]
+			result = functionExecute(function,arguments)
 	
 	return result
 
@@ -1131,6 +1160,16 @@ func detailsShow():
 func getModifier(modifierGroupId,modifierID):
 	return modifiers[modifierGroupId][modifierID]
 
+func getMonthData(id):
+	if !misc.has("month"): loadMisc()
+	if misc.month.has(id):
+		var month = misc.month[id]
+		if month.has("inherit"):
+			var parent = getMonthData(month.inherit)
+			month = Util.inherit(month,parent)
+		return month
+	return {}
+
 func modifiersCalculate(npcId):
 	
 	var npc = getNPC(npcId)
@@ -1563,6 +1602,8 @@ func _deffered_gotoMain():
 func timePass(t,activity):
 	if t <= 0: return
 	
+	var targetTime = t+now()
+	
 	eventArgumentExecute("timePass",activity,t/60)
 	
 	if activity == "sleep":
@@ -1574,11 +1615,12 @@ func timePass(t,activity):
 			var changePerSecond = -getValue(PlayerData.stat[stat],"decay",0)
 			stateInc(stat,changePerSecond * t)
 	
-	var hoursToCalc = Util.getHoursTilTime(now(),t+now())
-	var daysToCalc = Util.getDaysTilDate(now(),t+now(),false)
+	var hoursToCalc = Util.getHoursTilTime(now(),targetTime)
+	var daysToCalc = Util.getDaysTilDate(now(),targetTime,false)
 	
 	if hoursToCalc > 0:
 		eventCategoryExecute("timePass_HOUR",hoursToCalc)
+		weatherUpdate(targetTime)
 	
 	if daysToCalc > 0:
 		eventCategoryExecute("timePass_DAY",daysToCalc)
@@ -1808,6 +1850,109 @@ func stateSet(index,value):
 
 func undress(slot):
 	setItemWornAtSlot(slot,"")
-	#PlayerData.outfit.CURRENT[slot] = ""
-	#playerData2UI()
-	#updateUI()
+
+func weatherForecast(targetTimeDict:Dictionary,allowMeta = true):
+	var forecastIndex = weatherForecastIndex(targetTimeDict)
+	var forecast = getValueFromPath("WorldData.weather.forecast."+forecastIndex,null)
+	if typeof(forecast) == TYPE_NIL:
+		forecast = weatherForecastGenerate(targetTimeDict,allowMeta)
+	return forecast
+
+func weatherForecastGenerate(targetTimeDict:Dictionary,allowMeta = true):
+	var forecast = "mild"
+	
+	var forecastIndex = weatherForecastIndex(targetTimeDict)
+	var forecastKeysFIFO = getValueFromPath("WorldData.weather.forecast.KeysFIFO",[])
+	
+	var monthId = str(targetTimeDict.month)
+	
+	var monthData = getMonthData(monthId)
+	
+	
+	### Random Pick
+	var weightTotal = 0
+	
+	var metaCommands = ["repeat"]
+	
+	for weatherId in monthData.weather:
+		if !allowMeta and weatherId in metaCommands: continue
+		var weight = monthData.weather[weatherId]
+		weightTotal += weight
+		
+	var rand = rng.randi_range(1,weightTotal)
+	
+	for weatherId in monthData.weather:
+		if !allowMeta and weatherId in metaCommands: continue
+		var weight = monthData.weather[weatherId]
+		if weight >= rand:
+			forecast = weatherId
+			break
+		rand -= weight
+	### Random Pick End
+	
+	
+	forecastKeysFIFO.append(forecastIndex)
+	setValueAtPath("WorldData.weather.forecast."+forecastIndex,forecast)
+	
+	var forecastSize = max(getValue(Preferences,"weatherForecastSize",5),1)
+	while(forecastKeysFIFO.size() > forecastSize):
+		WorldData.weather.forecast.erase(forecastKeysFIFO.pop_front())
+	
+	setValueAtPath("WorldData.weather.forecast.KeysFIFO",forecastKeysFIFO)
+	
+	return forecast
+
+func weatherForecastGenerateForNextDays(targetTime,currentForecast:String):
+	var targetTimeInt = Util.getUnixTime(targetTime)
+	var forecastSize = max(getValue(Preferences,"weatherForecastSize",5),1)
+	for i in range(forecastSize-1):
+		var targetTimeNext = targetTimeInt + (i+1) * 86400
+		var targetTimeNextDict = Util.getDateTime(targetTimeNext)
+		#var forecastNextIndex = weatherForecastIndex(targetTimeNextDict)
+		#var forecast = getValueFromPath("WorldData.weather.forecast."+forecastNextIndex,null)
+		#if typeof(forecast) == TYPE_NIL:
+		#	weatherForecastGenerate(targetTimeNextDict)
+		var forecast = weatherForecast(targetTimeNextDict)
+		if forecast == "repeat":
+			forecast = currentForecast
+			weatherForecastSet(targetTimeNextDict,forecast)
+		else:
+			currentForecast = forecast
+		
+
+func weatherForecastIndex(targetTimeDict:Dictionary):
+	return str(targetTimeDict.month * 100 + targetTimeDict.day)
+	
+func weatherForecastSet(targetTimeDict:Dictionary,forecast):
+	var forecastIndex = weatherForecastIndex(targetTimeDict)
+	setValueAtPath("WorldData.weather.forecast."+forecastIndex,forecast)
+	
+
+func weatherUpdate(targetTime):
+	var targetTimeDict = Util.getDateTime(targetTime)
+		
+	var forecastIndex = weatherForecastIndex(targetTimeDict)
+
+	var weatherId:String = weatherForecast(targetTimeDict,false)
+	weatherForecastGenerateForNextDays(targetTime,weatherId)
+	
+	var weather:Dictionary = getWeather(weatherId)
+	
+	var monthData = getMonthData(str(targetTimeDict.month))
+	
+	var timeOfDay:String = getValue(monthData,"sun."+str(targetTimeDict.hour),"night")
+	
+	var temperature:int
+	
+	match timeOfDay:
+		"dawn","dawn1","dawn2","dawn3":
+			temperature = Util.intRandom(getValue(weather,"temperature.dawn",0))
+		"day":
+			temperature = Util.intRandom(getValue(weather,"temperature.day",0))
+		"dusk","dusk1","dusk2","dusk3":
+			temperature = Util.intRandom(getValue(weather,"temperature.dusk",0))
+		"night":
+			temperature = Util.intRandom(getValue(weather,"temperature.night",0))
+			
+		
+	WorldData.weather.temperature = temperature
