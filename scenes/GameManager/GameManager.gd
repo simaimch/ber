@@ -119,6 +119,7 @@ var misc = {}
 var modifiers = {}
 var npcs = {}
 var services = {}
+var themes = {}
 #var skills = {}
 
 var functionObjects = []
@@ -709,6 +710,11 @@ func getServiceById(serviceId):
 func getSkill(id):
 	return misc.skills[id]
 
+func getTheme(id,subId="main"):
+	if themes.has(id) and themes[id].has(subId): return themes[id][subId]
+	logOut(["Theme not found: ",id,"/",subId],"ERROR")
+	return Theme.new()
+
 func modValueAtPath(path,mode,value):
 	
 	
@@ -1063,6 +1069,65 @@ func loadServices():
 	else:
 		print("Error loading Services: "+str(temp.error))
 
+func loadThemes():
+	
+	var boxes = [
+		["Panel","panel"],
+		["PanelContainer","panel"],
+		["RichTextLabel","normal"]
+	]
+	
+	var colors = [
+		["Button","font_color"],
+		["Label","font_color"],
+		["RichTextLabel","default_color"]
+	]
+	
+	var file = File.new()
+	file.open("res://data/themes/themes.json", file.READ)
+	var text = file.get_as_text()
+	file.close()
+	var temp = JSON.parse(text)
+	if temp.error != OK: return
+		
+	var themesFromFile = temp.result
+	for themeId in themesFromFile:
+		var themeData = themesFromFile[themeId]
+
+		if typeof(themeData) != TYPE_DICTIONARY or themeData.empty(): continue
+		
+		themes[themeId] = {}
+		
+		for subThemeId in themeData:
+			
+			var subThemeData = themeData[subThemeId]
+			if typeof(subThemeData) != TYPE_DICTIONARY or subThemeData.empty(): continue
+
+			var color_bg = null
+			var color_font=null
+			
+			if subThemeData.has("color_bg"):
+				color_bg = Color(subThemeData.color_bg)
+			if subThemeData.has("color_font"):
+				color_font=Color(subThemeData.color_font)
+			
+			
+			var styleBoxFlat = StyleBoxFlat.new()
+			styleBoxFlat.bg_color = color_bg
+			
+			
+			
+			var theme = Theme.new()
+			
+			for box in boxes:
+				if color_bg != null: theme.set_stylebox(box[1],box[0],styleBoxFlat)
+		
+			for color in colors:
+				if color_font != null: theme.set_color(color[1],color[0],color_font)
+				
+			themes[themeId][subThemeId] = theme
+	
+
 func locationInherit(l):
 	if l.has("inherit"):
 		var parent = getLocation(l.inherit)
@@ -1131,6 +1196,7 @@ func loadConstantData():
 	loadServices()
 	#loadSkills()
 	loadMods()
+	loadThemes()
 
 func detailsHide():
 	CurrentUi.UIGroup = "uiUpdate"
@@ -1963,15 +2029,11 @@ func weatherUpdate(targetTime):
 	
 	var temperature:int
 	
-	match timeOfDay:
-		"dawn","dawn1","dawn2","dawn3":
-			temperature = Util.intRandom(getValue(weather,"temperature.dawn",0))
-		"day":
-			temperature = Util.intRandom(getValue(weather,"temperature.day",0))
-		"dusk","dusk1","dusk2","dusk3":
-			temperature = Util.intRandom(getValue(weather,"temperature.dusk",0))
-		"night":
-			temperature = Util.intRandom(getValue(weather,"temperature.night",0))
+	if hasValue(weather,"temperature."+timeOfDay):
+		temperature = Util.intRandom(getValue(weather,"temperature."+timeOfDay,0))
+	else:
+		var topTimeOfDay = timeOfDay.substr(0,timeOfDay.length()-1)
+		temperature = Util.intRandom(getValue(weather,"temperature."+topTimeOfDay,0))
 			
 	var sky = weatherSky(weather)
 	

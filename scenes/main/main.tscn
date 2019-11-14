@@ -85,7 +85,6 @@ margin_right = 1651.0
 margin_bottom = 70.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 5 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Time"
 script = ExtResource( 6 )
 
@@ -102,7 +101,6 @@ margin_top = 17.0
 margin_right = 81.0
 margin_bottom = 53.0
 custom_fonts/font = ExtResource( 8 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0,00 €"
 script = ExtResource( 9 )
 
@@ -114,7 +112,6 @@ margin_top = 17.0
 margin_right = 151.0
 margin_bottom = 53.0
 custom_fonts/font = ExtResource( 8 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "100%"
 script = ExtResource( 10 )
 
@@ -130,7 +127,6 @@ margin_top = 17.0
 margin_right = 53.0
 margin_bottom = 53.0
 custom_fonts/font = ExtResource( 8 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "10°C"
 script = ExtResource( 11 )
 
@@ -142,7 +138,6 @@ margin_top = 17.0
 margin_right = 110.0
 margin_bottom = 53.0
 custom_fonts/font = ExtResource( 8 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "10°C"
 script = ExtResource( 12 )
 
@@ -156,7 +151,6 @@ dragger_visibility = 2
 script = ExtResource( 4 )
 
 [node name="BGRLNPCContainer" type="HBoxContainer" parent="defaultView/VSplitContainer/VSplitContainer/VSplitContainer"]
-editor/display_folded = true
 margin_right = 1920.0
 margin_bottom = 757.0
 size_flags_vertical = 3
@@ -249,7 +243,6 @@ size_flags_vertical = 3
 custom_fonts/mono_font = ExtResource( 21 )
 custom_fonts/bold_font = ExtResource( 21 )
 custom_fonts/normal_font = ExtResource( 21 )
-custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 script = ExtResource( 22 )
 
