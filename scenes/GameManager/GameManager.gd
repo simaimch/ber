@@ -139,8 +139,12 @@ func _ready():
 	rng.randomize()
 	randomize()
 	
-func commandLine(c):
-	logOut(getValueFromPath(c))
+func commandLine(c:String):
+	var cParts = c.split("=")
+	if cParts.size() == 1:
+		logOut(getValueFromPath(c))
+	elif cParts.size() == 2:
+		setValueAtPath(c[0],JSON.parse(c[1]))
 
 func QUIT():
 	print("QUIT")
@@ -1285,16 +1289,23 @@ func modifiersCalculate(npcId):
 	
 	if !npc.has("modifier"): npc.modifier = {}
 	npc.modifier.clear()
+	if !npc.has("property"): npc.property = {}
+	npc.property.clear()
 	
 	MiscData.currentNpcId[3] = npcId
 	
 	for modifierGroupId in modifiers:
 		var modifierGroup = modifiers[modifierGroupId]
 		npc.modifier[modifierGroupId] = []
+		var modSum = 0
+		var modMult= 1
 		for modifierId in modifierGroup:
 			var modifier = modifierGroup[modifierId]
 			if checkCondition(modifier.condition):
 				npc.modifier[modifierGroupId].append(modifierId)
+				if modifier.has("modifier"): modSum += modifier.modifier
+				if modifier.has("modifierMult"): modMult*= modifier.modifierMult
+		npc.property[modifierGroupId] = modSum*modMult
 		
 	MiscData.modifiersRecalc = false	
 

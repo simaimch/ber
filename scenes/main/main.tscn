@@ -272,7 +272,6 @@ margin_right = 960.0
 [node name="GameStatusContainer" type="PanelContainer" parent="defaultView/VSplitContainer" groups=[
 "uiUpdate",
 ]]
-editor/display_folded = true
 visible = false
 margin_top = 780.0
 margin_right = 1920.0
@@ -296,6 +295,8 @@ margin_bottom = 0.0
 margin_top = 279.0
 margin_right = 1920.0
 margin_bottom = 300.0
+focus_mode = 1
+focus_mode = 1
 script = ExtResource( 27 )
 
 [node name="Dialog" parent="." instance=ExtResource( 28 )]
@@ -390,4 +391,5 @@ Stat = "sleep"
 visible = false
 [connection signal="mouse_entered" from="defaultView/VSplitContainer/VSplitContainer/PanelContainer/StatusContainer/StatusContainer" to="defaultView/VSplitContainer/VSplitContainer/PanelContainer/StatusContainer/StatusContainer" method="_on_StatusContainer_mouse_entered"]
 [connection signal="mouse_exited" from="defaultView/VSplitContainer/VSplitContainer/PanelContainer/StatusContainer/StatusContainer" to="defaultView/VSplitContainer/VSplitContainer/PanelContainer/StatusContainer/StatusContainer" method="_on_StatusContainer_mouse_exited"]
+[connection signal="gui_input" from="defaultView/VSplitContainer/GameStatusContainer/VBoxContainer/CommandLine" to="defaultView/VSplitContainer/GameStatusContainer/VBoxContainer/CommandLine" method="_on_CommandLine_gui_input"]
 [connection signal="text_entered" from="defaultView/VSplitContainer/GameStatusContainer/VBoxContainer/CommandLine" to="defaultView/VSplitContainer/GameStatusContainer/VBoxContainer/CommandLine" method="_on_CommandLine_text_entered"]
