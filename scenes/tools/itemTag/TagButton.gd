@@ -2,6 +2,13 @@ extends TextureButton
 
 export var Number:String
 
+var textureRect
+var textlabel
+
+func _ready():
+	textureRect = $VBoxContainer/TextureRect
+	textlabel = $VBoxContainer/Label
+
 func setColor(c):
 	if c == null:
 		#$ColorRect.color = Color(0,0,0,0)
@@ -10,7 +17,7 @@ func setColor(c):
 		$ColorRect.color = Color(c)
 		
 		$ColorRect.show()
-	$TextureRect.hide()
+	textureRect.hide()
 
 func setGradient(colors):
 	if colors.empty(): return setColor(null)
@@ -21,8 +28,8 @@ func setGradient(colors):
 	var texture = GradientTexture.new()
 	texture.gradient = gradient
 	
-	$TextureRect.texture = texture
-	$TextureRect.show()
+	textureRect.texture = texture
+	textureRect.show()
 	$ColorRect.hide()
 	
 func setTexture(t):
@@ -30,7 +37,7 @@ func setTexture(t):
 	
 func setLabel(s:String):
 	if s.empty():
-		$CenterContainer/Label.hide()
+		textlabel.hide()
 	else:
-		$CenterContainer/Label.show()
-		$CenterContainer/Label.text = s
+		textlabel.show()
+		textlabel.text = s

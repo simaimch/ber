@@ -41,6 +41,18 @@
     "neck_v":{
         "covers":["breast","nipples","leftshoulder","rightshoulder","lowerback","tummy"]
     },
+    "shoe_boot_ankle":{
+        "covers":["leftfoot","rightfoot"]
+    },
+    "shoe_boot_knee":{
+        "covers":["leftfoot","rightfoot","lowerleftleg","lowerrightleg"]
+    },
+    "shoe_boot_overknee":{
+        "covers":["leftfoot","rightfoot","lowerleftleg","lowerrightleg"]
+    },
+    "shoe_toe_closed":{
+        "covers":["lefttoe","righttoe"]
+    },
     "skirt_ak":{
         "covers":["buttocks","genitals","upperleftleg","upperrightleg","lowerback","tummy"]
     },

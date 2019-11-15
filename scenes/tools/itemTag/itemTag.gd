@@ -52,7 +52,6 @@ func execute(button):
 	var ccategoryItems = getCategoryItems(ccategory)
 	var ccategorySize = ccategoryItems.size()
 	
-	
 	if ccategorySize <= index or typeof(ccategoryItems[index]) != TYPE_DICTIONARY:
 		return
 	
@@ -77,7 +76,7 @@ func execute(button):
 					
 	
 	if ccategoryItems[index].has("categories"):
-		ccategories = ccategory[index].categories
+		ccategories = ccategoryItems[index].categories
 		ccategoryIndex = 0
 	elif ccategoryItems[index].has("jump"):
 		ccategory = categories[ccategoryItems[index].jump]
@@ -204,7 +203,7 @@ func showCCategory():
 		
 		if ccategorySize > ind and typeof(ccategoryItems[ind]) == TYPE_DICTIONARY:
 			if ccategoryItems[ind].has("texture"):
-				tbs[pos].setTexture(Util.texture(ccategory[ind].texture))
+				tbs[pos].setTexture(Util.texture(ccategoryItems[ind].texture))
 			else:
 				tbs[pos].setTexture(null)
 			if ccategoryItems[ind].has("text"):
@@ -221,6 +220,10 @@ func showCCategory():
 					tbs[pos].setColor(GameManager.getColor(ccategoryItems[ind].color).rgb)
 			else:
 				tbs[pos].setColor(null)
+			if ccategoryItems[ind].has("tooltip"):
+				tbs[pos].hint_tooltip = ccategoryItems[ind].tooltip
+			else:
+				tbs[pos].hint_tooltip = ""
 		else:
 			tbs[pos].setTexture(null)
 			tbs[pos].setLabel("")
@@ -288,6 +291,9 @@ func _process(delta):
 		cbutton = 3
 	elif Input.is_action_pressed("ui_back"):
 		cbutton = 0
+	elif Input.is_action_pressed("ui_refresh"):
+		loadCategoires()
+		startItem(cimage)
 	elif cbutton > 0:
 		execute(cbutton)
 		cbutton = -1

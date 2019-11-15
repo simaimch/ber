@@ -516,201 +516,281 @@
             "jump":"extras"
         }
     ],
-    "shoeType":[
-        {
-            "texture":"texture/misc/itemtype/shoe/pump.png",
-            "categories":[
-                "shoeTypePump",
-                "shoeHeight",
-                {"category":"color","target":"color","label":"Shoe Color"},
-                "priceShoes"
-            ]
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/wedgepump.png",
-            "categories":[
-                "shoeTypeWedge",
-                "shoeHeight",
-                {"category":"color","target":"color","label":"Shoe Color"},
-                "priceShoes"
-            ]
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/anklebootie.png",
-            "categories":[
-                "shoeTypeBootie",
-                "shoeHeight",
-                {"category":"color","target":"color","label":"Shoe Color"},
-                "priceShoes"
-            ]
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/sneaker.png",
-            "categories":[
-                "shoeTypeFlatClosed",
-                {"category":"color","target":"color","label":"Shoe Color"},
-                "priceShoes"
-            ]
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/fkipflop.png",
-            "categories":[
-                "shoeTypeFlatOpen",
-                {"category":"color","target":"color","label":"Shoe Color"},
-                "priceShoes"
-            ]
+    "shoeType":{
+        "order":["boot","pump","wedge",null,null,null,"flat"],
+        "items":{
+            "boot":{
+                "texture":"texture/misc/itemtype/shoe/boot.png",
+                "text":"Boots",
+                "tooltip": "With heels (wedge or no wedge), covers upper side of feet, at least ankle high",
+                "categories":[
+                    "shoe_boot",
+                    "shoeHeight",
+                    {"category":"color","target":"color","label":"Shoe Color"},
+                    "priceShoes"
+                ]
+            },
+            "flat":{
+                "texture":"texture/misc/itemtype/shoe/flat_sneaker.png",
+                "text":"Flats",
+                "tooltip": "Without heels",
+                "categories":[
+                    "shoe_flat",
+                    {"category":"color","target":"color","label":"Shoe Color"},
+                    "priceShoes"
+                ]
+            },
+            "pump":{
+                "texture":"texture/misc/itemtype/shoe/pump.png",
+                "text":"Pumps",
+                "tooltip": "With heels (no wedge), do not cover upper side of feet",
+                "categories":[
+                    "shoe_pump",
+                    "shoeHeight",
+                    {"category":"color","target":"color","label":"Shoe Color"},
+                    "priceShoes"
+                ]
+            },
+            "wedge":{
+                "texture":"texture/misc/itemtype/shoe/wedge.png",
+                "text":"Wedges",
+                "tooltip": "Wedge heels",
+                "result":{"parts":["shoe_wedge"]},
+                "categories":[
+                    "shoe_wedge",
+                    "shoeHeight",
+                    {"category":"color","target":"color","label":"Shoe Color"},
+                    "priceShoes"
+                ]
+            }
         }
-    ],
-    "shoeTypeBootie":[
-        {
-            "texture":"texture/misc/itemtype/shoe/anklebootie.png",
-            "result":{"parts":["shoe_anklebootie"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/mule.png",
-            "result":{"parts":["shoe_mule"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/litaboot.png",
-            "result":{"parts":["shoe_litaboot"]}
+    },
+    "shoe_boot":{
+        "order":["shoe_boot_ankle","shoe_boot_knee","shoe_boot_overknee"],
+        "items":{
+            "shoe_boot_ankle":{
+                "texture":"texture/misc/itemtype/shoe/boot_ankle2.png",
+                "jump":"shoe_boot_ankle",
+                "text":"Ankle-high",
+                "result":{"parts":["shoe_boot_ankle"]}
+            },
+            "shoe_boot_knee":{
+                "texture":"texture/misc/itemtype/shoe/boot_knee.png",
+                "jump":"shoe_boot_knee",
+                "text":"Knee-high",
+                "result":{"parts":["shoe_boot_knee"]}
+            },
+            "shoe_boot_overknee":{
+                "texture":"texture/misc/itemtype/shoe/boot_overknee.png",
+                "jump":"shoe_boot_overknee",
+                "text":"Overknee",
+                "result":{"parts":["shoe_boot_overknee"]}
+            }
         }
-    ],
-    "shoeTypeFlatClosed":[
-        {
-            "texture":"texture/misc/itemtype/shoe/sneaker.png",
-            "result":{"parts":["shoe_sneaker"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/highhopsneaker.png",
-            "result":{"parts":["shoe_highhopsneaker"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/hiking.png",
-            "result":{"parts":["shoe_hiking"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/saddle.png",
-            "result":{"parts":["shoe_saddle"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/chelsea.png",
-            "result":{"parts":["shoe_chelsea"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/wingtip.png",
-            "result":{"parts":["shoe_wingtip"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/oxford.png",
-            "result":{"parts":["shoe_oxford"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/pennyloafer.png",
-            "result":{"parts":["shoe_pennyloafer"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/boatshoe.png",
-            "result":{"parts":["shoe_boatshoe"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/moccasin.png",
-            "result":{"parts":["shoe_moccasin"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/slipon.png",
-            "result":{"parts":["shoe_slipon"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/clog.png",
-            "result":{"parts":["shoe_clog"]}
+    },
+    "shoe_boot_ankle":{
+        "order":["boot","boot_ankle2",null,"boot_ankle_wedge",null,"boot_ankleblock","boot_ankleblock_peeptoe"],
+        "items":{
+            "boot":{
+                "texture":"texture/misc/itemtype/shoe/boot.png",
+                "text":"Laced Boot",
+                "result":{"parts":["shoe_toe_closed"]}
+            },
+            "boot_ankle2":{
+                "texture":"texture/misc/itemtype/shoe/boot_ankle2.png",
+                "text":"Boot",
+                "result":{"parts":["shoe_toe_closed"]}
+            },
+            "boot_ankle_wedge":{
+                "texture":"texture/misc/itemtype/shoe/boot_ankle_wedge.png",
+                "text":"Wedge Ankle Boot",
+                "result":{"parts":["shoe_toe_closed"]}
+            },
+            "boot_ankleblock":{
+                "texture":"texture/misc/itemtype/shoe/boot_ankleblock.png",
+                "text":"Block Boot",
+                "result":{"parts":["shoe_toe_closed"]}
+            },
+            "boot_ankleblock_peeptoe":{
+                "texture":"texture/misc/itemtype/shoe/boot_ankleblock_peeptoe.png",
+                "text":"Block Boot PT",
+                "result":{"parts":["shoe_toe_open"]}
+            }
         }
-    ],
-    "shoeTypeFlatOpen":[
-        {
-            "texture":"texture/misc/itemtype/shoe/fkipflop.png",
-            "result":{"parts":["shoe_flipflop"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/thong.png",
-            "result":{"parts":["shoe_thong"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/gldaiator.png",
-            "result":{"parts":["shoe_gladiator"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/dorsayflat.png",
-            "result":{"parts":["shoe_dorsayflat"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/balletflat.png",
-            "result":{"parts":["shoe_balletflat"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/espadrille.png",
-            "result":{"parts":["shoe_espadrille"]}
+    },
+    "shoe_boot_knee":{
+        "order":[null,null,null,"boot_knee","boot_knee_wedge"],
+        "items":{
+            "boot_knee":{
+                "texture":"texture/misc/itemtype/shoe/boot_knee.png",
+                "text":"Overknee",
+                "result":{"parts":["shoe_toe_closed"]}
+            },
+            "boot_knee_wedge":{
+                "texture":"texture/misc/itemtype/shoe/boot_knee_wedge.png",
+                "text":"Wedge Knee-high",
+                "result":{"parts":["shoe_toe_closed"]}
+            }
         }
-    ],
-    "shoeTypePump":[
-        {
-            "texture":"texture/misc/itemtype/shoe/pump.png",
-            "result":{"parts":["shoe_pump"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/stiletto.png",
-            "result":{"parts":["shoe_stiletto"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/anklestrap.png",
-            "result":{"parts":["shoe_anklestrap"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/platformpump.png",
-            "result":{"parts":["shoe_platformpump"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/peeptoe.png",
-            "result":{"parts":["shoe_peeptoe"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/slingbackpump.png",
-            "result":{"parts":["shoe_slingbackpump"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/dorsaypump.png",
-            "result":{"parts":["shoe_dorsaypump"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/kitten.png",
-            "result":{"parts":["shoe_kitten"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/maryjane.png",
-            "result":{"parts":["shoe_maryjane"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/tstrapplatform.png",
-            "result":{"parts":["shoe_tstrapplatform"]}
+    },
+    "shoe_boot_overknee":{
+        "order":[null,null,null,"boot_overknee","boot_overknee_wedge"],
+        "items":{
+            "boot_overknee":{
+                "texture":"texture/misc/itemtype/shoe/boot_overknee.png",
+                "text":"Overknee",
+                "result":{"parts":["shoe_toe_closed"]}
+            },
+            "boot_overknee_wedge":{
+                "texture":"texture/misc/itemtype/shoe/boot_overknee_wedge.png",
+                "text":"Wedge Overknee",
+                "result":{"parts":["shoe_toe_closed"]}
+            }
         }
-    ],
-    "shoeTypeWedge":[
-        {
-            "texture":"texture/misc/itemtype/shoe/wedgepump.png",
-            "result":{"parts":["shoe_wedgepump"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/wedgesandal.png",
-            "result":{"parts":["shoe_wedgesandal"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/wedgebootie.png",
-            "result":{"parts":["shoe_wedgebootie"]}
-        },
-        {
-            "texture":"texture/misc/itemtype/shoe/slingbackwedge.png",
-            "result":{"parts":["shoe_slingbackwedge"]}
+    },
+    "shoe_pump":{
+        "order":[null,null,null,"nopeeptoe","peeptoe"],
+        "items":{
+            "nopeeptoe":{
+                "texture":"texture/misc/itemtype/shoe/pump.png",
+                "jump":"shoe_pump_nopeeptoe",
+                "text":"No Peeptoe",
+                "result":{"parts":["shoe_pump","shoe_toe_closed"]}
+            },
+            "peeptoe":{
+                "texture":"texture/misc/itemtype/shoe/pump_peeptoe.png",
+                "jump":"shoe_pump_peeptoe",
+                "text":"Peeptoe",
+                "result":{"parts":["shoe_pump","shoe_toe_open"]}
+            }
         }
-    ],
+    },
+    "shoe_pump_nopeeptoe":{
+        "order":["pump_slingback","simple","pump_dorsay","pump_tstrap","pump_dorsay_slingback","anklestrap","anlestrap_maryjane","maryjane"],
+        "items":{
+            "anklestrap":{
+                "texture":"texture/misc/itemtype/shoe/pump_anklestrap.png",
+                "text":"Ankle Straps",
+                "result":{"parts":["shoe_anklestrap"]}
+            },
+            "anlestrap_maryjane":{
+                "texture":"texture/misc/itemtype/shoe/pump_anklestrap_maryjane.png",
+                "text":"MJ with AS",
+                "result":{"parts":["shoe_anklestrap","shoe_maryjane"]}
+            },
+            "maryjane":{
+                "texture":"texture/misc/itemtype/shoe/pump_maryjane.png",
+                "text":"Mary Janes",
+                "result":{"parts":["shoe_maryjane"]}
+            },
+            "pump_slingback":{
+                "texture":"texture/misc/itemtype/shoe/pump_slingback.png",
+                "text":"Slingback",
+                "result":{"parts":["shoe_slingback"]}
+            },
+            "pump_dorsay":{
+                "texture":"texture/misc/itemtype/shoe/pump_dorsay.png",
+                "text":"D'Orsay",
+                "result":{"parts":["shoe_dorsay"]}
+            },
+            "pump_tstrap":{
+                "texture":"texture/misc/itemtype/shoe/pump_tstrap.png",
+                "text":"T-Strap",
+                "result":{"parts":["shoe_tstrap"]}
+            },
+            "pump_dorsay_slingback":{
+                "texture":"texture/misc/itemtype/shoe/pump_dorsay_slingback.png",
+                "text":"D'Orsay Slingback",
+                "result":{"parts":["shoe_dorsay","shoe_slingback"]}
+            },
+            "simple":{
+                "texture":"texture/misc/itemtype/shoe/pump.png",
+                "text":"No Straps"
+            }
+            
+        }
+    },
+    "shoe_pump_peeptoe":{
+        "order":["pump_peeptoe_slingback","simple","pump_peepttoe_dorsay","pump_peeptoe_tstrap",null,"pump_peeptoe_dorsay_anklestrap","pump_peeptoe_maryjane","pump_peeptoe_stackedheelsandal"],
+        "items":{
+            "pump_peepttoe_dorsay":{
+                "texture":"texture/misc/itemtype/shoe/pump_peepttoe_dorsay.png",
+                "text":"D'Orsay",
+                "result":{"parts":["shoe_dorsay"]}
+            },
+            "pump_peeptoe_dorsay_anklestrap":{
+                "texture":"texture/misc/itemtype/shoe/pump_peeptoe_dorsay_anklestrap.png",
+                "text":"D'Orsay AS",
+                "tooltip": "D'Orsay with ankle straps.",
+                "result":{"parts":["shoe_dorsay","shoe_anklestrap"]}
+            },
+            "pump_peeptoe_maryjane":{
+                "texture":"texture/misc/itemtype/shoe/pump_peeptoe_maryjane.png",
+                "text":"Mary Janes",
+                "tooltip": "The strap runs below the ankle.",
+                "result":{"parts":["shoe_maryjane"]}
+            },
+            "pump_peeptoe_slingback":{
+                "texture":"texture/misc/itemtype/shoe/pump_peeptoe_slingback.png",
+                "text":"Slingback",
+                "result":{"parts":["shoe_slingback"]}
+            },
+            "pump_peeptoe_stackedheelsandal":{
+                "texture":"texture/misc/itemtype/shoe/pump_peeptoe_stackedheelsandal.png",
+                "text":"Stacked heel sandal",
+                "tooltip":"One or two straps instead of open toed shoe.",
+                "result":{"parts":["shoe_stackedheelsandal"]}
+            },
+            "pump_peeptoe_tstrap":{
+                "texture":"texture/misc/itemtype/shoe/pump_peeptoe_tstrap.png",
+                "text":"T-Strap",
+                "result":{"parts":["shoe_tstrap"]}
+            },
+            "simple":{
+                "texture":"texture/misc/itemtype/shoe/pump_peeptoe.png",
+                "text":"No Straps"
+            }
+        }
+    },
+    "shoe_wedge":{
+        "order":["wedge_slingback","wedge","wedge_sneaker","wedge_sandal",null,"wedge_peeptoe_anklestrap","wedge_peeptoe_slingback","wedge_peeptoe"],
+        "items":{
+            "wedge":{
+                "texture":"texture/misc/itemtype/shoe/wedge.png",
+                "text":"Wedge Pump"
+            },
+            "wedge_peeptoe":{
+                "texture":"texture/misc/itemtype/shoe/wedge_peeptoe.png",
+                "text":"Peeptoe",
+                "result":{"parts":["shoe_toe_open"]}
+            },
+            "wedge_peeptoe_anklestrap":{
+                "texture":"texture/misc/itemtype/shoe/wedge_peeptoe_anklestrap.png",
+                "text":"PT Anklestrap",
+                "result":{"parts":["shoe_toe_open","shoe_anklestrap"]}
+            },
+            "wedge_peeptoe_slingback":{
+                "texture":"texture/misc/itemtype/shoe/wedge_peeptoe_slingback.png",
+                "text":"PT Slingback",
+                "result":{"parts":["shoe_toe_open","shoe_slingback"]}
+            },
+            "wedge_sandal":{
+                "texture":"texture/misc/itemtype/shoe/wedge_sandal.png",
+                "text":"Wedge Sandal",
+                "result":{"parts":["shoe_sandal","shoe_toe_open"]}
+            },
+            "wedge_slingback":{
+                "texture":"texture/misc/itemtype/shoe/wedge_slingback.png",
+                "text":"Slingback",
+                "result":{"parts":["shoe_slingback"]}
+            },
+            "wedge_sneaker":{
+                "texture":"texture/misc/itemtype/shoe/wedge_sneaker.png",
+                "text":"Wedge Sneaker",
+                "result":{"parts":["shoe_sneaker"]}
+            }
+        }
+    },
     "shoeHeight":[
         {
             "text":"Flat",
