@@ -351,6 +351,14 @@ func hasValue(obj, index):
 	if obj.has(lindex): return true
 	if obj.has(rindex): return true
 	if obj.has("persist"): return hasValue(obj.persist, index)
+	
+	var indexArr = index.split(".")
+	if indexArr.size() > 1:
+		
+		var topObject = getValue(obj,indexArr[0])
+		indexArr.remove(0)
+		return hasValue(topObject,PoolStringArray(indexArr).join("."))
+		
 	return false
 
 func getValue(obj, index, default = null):

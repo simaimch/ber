@@ -17,6 +17,12 @@
             "color_font":"black"
         }
     },
+    "day":{
+        "main":{
+            "color_bg":"ffffff",
+            "color_font":"black"
+        }
+    },
     "dusk1":{
         "main":{
             "color_bg":"fab940",

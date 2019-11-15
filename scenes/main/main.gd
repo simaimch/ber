@@ -5,6 +5,7 @@ var advancedControl = false
 
 func executeAction(action):
 	GameManager.execute(action)
+	GameManager.updateUI()
 
 func gotoLocation(transferInfo):#targetLocation,time,mode):
 	GameManager.gotoLocation(transferInfo)#targetLocation,time,mode)
