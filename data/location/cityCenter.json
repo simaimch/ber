@@ -32,6 +32,7 @@
             "time": 180
         },
         {
+            "inherit":"shopEnter",
             "locationId":"SELF.kebabhouse",
             "time": 180
         },
@@ -45,6 +46,7 @@
         "rlTexture":"texture/locations/kebab/kebabHouse.jpg",
         "text":"Kabab House",
         "label":"Kabab House",
+        "timeOpen":{"start":"10:00","end":"02:00"},
         "rl":[
             {
                 "locationId":"SELF",

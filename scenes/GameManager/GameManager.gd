@@ -1472,6 +1472,7 @@ func path(p):
 
 func currentUIAppendRL(rl):
 	if !rl.has("condition") or checkCondition(rl.condition):
+		rl = reachableLocationLink(rl)
 		if rl.has("inherit"):
 			var parent = getRL(rl.inherit)
 			rl = Util.inherit(rl, parent)
@@ -1483,7 +1484,8 @@ func currentUIAppendRL(rl):
 			rl = Util.inherit(rl, values)
 			functionObjects.pop_back()
 			functionObjects.pop_back()
-		CurrentUi.RL.append(reachableLocationLink(rl))
+		#CurrentUi.RL.append(reachableLocationLink(rl))
+		CurrentUi.RL.append(rl)
 
 func executeLocation(location,omitStart=false,updateLocationId=true):
 	functionObjects.append(location)
