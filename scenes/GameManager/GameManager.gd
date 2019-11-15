@@ -893,7 +893,25 @@ func checkCondition(condition):
 			var conType:
 				logOut(["Unexpected type of condition.val ",conType," in ",condition],"ERROR")
 				return false
-	
+	elif condition.mode == "timeBetween":
+		var timeFromPath = getValueFromPath(condition["var"],null) # most likely now aka WorldData.TimeDict
+		match typeof(conditionValue):
+			TYPE_DICTIONARY:
+				var timeStart = getValue(conditionValue,"start",0)
+				var timeEnd = getValue(conditionValue,"end",0)
+				
+				timeStart = Util.string2DateTime(timeStart)
+				timeEnd = Util.string2DateTime(timeEnd)
+				return Util.isBetweenTimes(timeFromPath,timeStart,timeEnd)
+			TYPE_ARRAY:
+				logOut("Multiple Times for condition timeBetween currently not supported")
+			var conType:
+				logOut(["Unexpected type of condition.val ",conType," in ",condition],"ERROR")
+				return false
+	elif condition.mode[0] == "¬":
+		var invertedCondition = condition.duplicate()
+		invertedCondition.mode = condition.mode.substr(1,condition.mode.length()-1)
+		return !checkCondition(invertedCondition)
 	return false
 
 func loadDialogue(dialogueId):
@@ -1458,11 +1476,21 @@ func currentUIAppendRL(rl):
 			var parent = getRL(rl.inherit)
 			rl = Util.inherit(rl, parent)
 		if hasValue(rl,"values"):
+			var targetLocation = getLocation(getValue(rl,"locationId"))
+			functionObjects.append(targetLocation) #appending target of RL as FOBJ2
+			functionObjects.append(rl) #appending RL as FOBJ
 			var values = getValue(rl,"values",{})
 			rl = Util.inherit(rl, values)
+			functionObjects.pop_back()
+			functionObjects.pop_back()
 		CurrentUi.RL.append(reachableLocationLink(rl))
 
 func executeLocation(location,omitStart=false,updateLocationId=true):
+	functionObjects.append(location)
+	executeLocationCommands(location,omitStart,updateLocationId)
+	functionObjects.pop_back()
+		
+func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 	if !omitStart and location.has("onStart"):
 		if execute(location.onStart): return
 	

@@ -2,14 +2,14 @@ extends Control
 
 var rng = RandomNumberGenerator.new()
 
-func folderFromPath(path):
+func folderFromPath(path:String)->String:
 	var pathArr = path.split("/")
 	var fileName = pathArr[pathArr.size()-1]
 	var fileNameParts = fileName.split(".")
 	if fileNameParts.size() == 1: return path #path already was a folder
 	return path.substr(0,path.length()-fileName.length()-1)
 
-func formatDuration(d):
+func formatDuration(d)->String:
 	if d > 7200:
 		return str(d/3600)+" hours"
 	elif d > 120:
@@ -17,7 +17,7 @@ func formatDuration(d):
 	else:
 		return str(d)+" seconds"
 
-func formatInt(i,format="00"):
+func formatInt(i,format="00")->String:
 	var result = ""
 	if format == "00":
 		if i < 10 and i >= 0:
@@ -26,12 +26,12 @@ func formatInt(i,format="00"):
 			result = str(i)
 	return result
 	
-func formatMoney(money):
+func formatMoney(money)->String:
 	money = int(money)
 	var text = str(money/100) + ","+formatInt(money%100,"00")+" €"
 	return text
 		
-func formtTime(time,timeFormat="{day}.{month}.{year} {hour}:{minute}"):
+func formtTime(time,timeFormat="{day}.{month}.{year} {hour}:{minute}")->String:
 	var dateTime = OS.get_datetime_from_unix_time (time)
 	var day = formatInt(dateTime.day,"00")
 	var month = formatInt(dateTime.month,"00")
@@ -43,7 +43,7 @@ func formtTime(time,timeFormat="{day}.{month}.{year} {hour}:{minute}"):
 
 	return timeFormat.format({"day": day,"month": month,"year": year,"hour": hour,"minute": minute,"second":second})
 
-func formatTimeHHMMSS(t):
+func formatTimeHHMMSS(t)->String:
 	t = int(t)
 	var seconds = t % 60
 	var minutes = (t % 3600)/60
@@ -55,7 +55,7 @@ func formatTimeHHMMSS(t):
 	result += formatInt(minutes,"00")+":"+formatInt(seconds,"00")
 	return result
 
-func formatVersion(v):
+func formatVersion(v)->String:
 	if typeof(v) != TYPE_INT: v = int(v)
 	var v1 = v/10000
 	var v2 = (v%10000)/100
@@ -63,11 +63,11 @@ func formatVersion(v):
 	var result = str(v1)+"."+str(v2)+"."+str(v3)
 	return result
 
-func getFilename(path):
+func getFilename(path)->String:
 	var pathArr = path.split("/")
 	return pathArr[pathArr.size()-1]
 
-func getFilesInFolder(path):
+func getFilesInFolder(path)->Array:
 	#https://godotengine.org/qa/5175/how-to-get-all-the-files-inside-a-folder
 	var files = []
 	var dir = Directory.new()
@@ -85,7 +85,7 @@ func getFilesInFolder(path):
 	
 	return files
 	
-func getFoldersInFolder(path):
+func getFoldersInFolder(path)->Array:
 	var folders = []
 	var dir = Directory.new()
 	dir.open(path)
@@ -102,7 +102,7 @@ func getFoldersInFolder(path):
 	
 	return folders
 	
-func string2DateTime(s):
+func string2DateTime(s)->Dictionary:
 	#DD.MM.YYYY
 	#hh:mm:ss or hh:mm
 	#combine date and time with a single space in between, example:DD.MM.YYYY hh:mm:ss
@@ -133,7 +133,7 @@ func string2DateTime(s):
 			result.second = int(time[2])
 	return result
 	
-func getAge(now, bday):
+func getAge(now, bday)->int:
 	var nowDict = getDateTime(now)
 	var bdayDict= getDateTime(bday)
 	
@@ -142,7 +142,7 @@ func getAge(now, bday):
 	else:
 		return nowDict.year - bdayDict.year - 1
 		
-func getDaysTilDate(now,target,anyyear = true):
+func getDaysTilDate(now,target,anyyear = true)->int:
 	var nowDict = datetimeResetTime(getDateTime(now))
 	var targetDict= datetimeResetTime(getDateTime(target))
 	
@@ -156,19 +156,23 @@ func getDaysTilDate(now,target,anyyear = true):
 	var daysTilDate = int(secondsTilDate/86400)
 	return daysTilDate
 	
-func getHoursTilTime(now,target):
+func getHoursTilTime(now,target)->int:
 	var nowDict = getDateTime(now)
 	var targetDict= getDateTime(target)
 	
 	return int(targetDict.hour - nowDict.hour + 24*getDaysTilDate(now,target,false))
 
-func getSecondsTil(now,target):
+func getSecondsTil(now,target)->int:
 	var unixNow = getUnixTime(now)
 	var unixTarget = getUnixTime(target)
 	
 	return (unixTarget - unixNow)
 
-func getDateTime(dt):
+func getSecondsTilMidnight(t) -> int:
+	var tdict = getDateTime(t)
+	return (t.get("hour",0) * 3600 + t.get("minute",0) * 60 + t.get("second",0))
+
+func getDateTime(dt) -> Dictionary:
 	if typeof(dt) == TYPE_DICTIONARY: return dt
 	if typeof(dt) == TYPE_STRING: return string2DateTime(dt)
 	if typeof(dt) == TYPE_INT: return OS.get_datetime_from_unix_time(dt)
@@ -176,15 +180,15 @@ func getDateTime(dt):
 	print("Unexpected Parameter of Type "+str(typeof(dt))+" in Util.getDateTime():"+str(dt))
 	return OS.get_datetime_from_unix_time(0)
 	
-func getUnixTime(time):
+func getUnixTime(time)->int:
 	if typeof(time) == TYPE_DICTIONARY: return OS.get_unix_time_from_datetime(time)
 	if typeof(time) == TYPE_STRING: return OS.get_unix_time_from_datetime(string2DateTime(time))
 	if typeof(time) == TYPE_INT: return time
 	if typeof(time) == TYPE_REAL: return int(time)
-	return "Unexpected Parameter of Type "+str(typeof(time))+" in Util.getUnixTime()"
+	#return "Unexpected Parameter of Type "+str(typeof(time))+" in Util.getUnixTime()"
 	return 0
 
-func loadJSONfromFile(path):
+func loadJSONfromFile(path:String)->Dictionary:
 	var file = File.new()
 	file.open(path, file.READ)
 	var text = file.get_as_text()
@@ -291,6 +295,20 @@ func isArray(a):
 		TYPE_INT_ARRAY: return true
 		TYPE_STRING_ARRAY: return true
 	return false
+
+func isBetweenTimes(now,timeStart,timeEnd) -> bool:
+	var timeStartNorm = getSecondsTilMidnight(timeStart)
+	var timeEndNorm   = getSecondsTilMidnight(timeEnd)
+	var timeNowNorm   = getSecondsTilMidnight(now)
+	
+	if timeStartNorm <= timeEndNorm: # midnight not included
+		if timeNowNorm >= timeStartNorm and timeNowNorm <= timeEndNorm:
+			return true
+	else: #midnight included
+		if timeNowNorm >= timeStartNorm or timeNowNorm <= timeEndNorm:
+			return true
+	return false
+	
 
 func isImageFile(path):
 	if typeof(path) != TYPE_STRING: return false
@@ -521,4 +539,5 @@ func time(now,arg):
 				target = getDateTime(unixTarget)
 		
 	return target
+	
 	

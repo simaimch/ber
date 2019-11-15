@@ -27,6 +27,7 @@
     "label":"City Center",
     "rl":[
         {
+            "inherit":"shopEnter",
             "locationId":"cityCenterMall",
             "time": 180
         },

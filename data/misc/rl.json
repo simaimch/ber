@@ -28,5 +28,20 @@
                 "value":{}
             }
         }
+    },
+    "shopEnter":{
+        "~values":{
+            "10000":{
+                "value":{
+                    "disabled":true,
+                    "tooltip": "This place is closed."
+                },
+                "condition":{
+                    "mode":"¬timeBetween",
+                    "var":"WorldData.TimeDict",
+                    "valRef":"FOBJ2.timeOpen"
+                }
+            }
+        }
     }
 }
