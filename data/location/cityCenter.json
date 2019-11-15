@@ -25,6 +25,14 @@
     "npcs": true,
     "text":"Alexanderplatz",
     "label":"City Center",
+    "actions":{
+
+        "1000":{
+            "Label": "Debug: Wait 30 Minutes",
+            "Time":{"Pass":{"Duration":1800,"Activity":"debug"}}
+        }
+    
+    },
     "rl":[
         {
             "inherit":"shopEnter",

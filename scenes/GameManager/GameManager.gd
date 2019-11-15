@@ -460,11 +460,26 @@ func getWeather(id):
 	return {}
 
 
-func getAction(id):
+func getAction(id:String)->Dictionary:
 	if !misc.actions.has(id):
 		logOut("Action "+str(id)+" not found!","ERROR")
 		return {}
-	return misc.actions[id]
+	var action = misc.actions[id]
+	return linkAction(action)
+
+func linkAction(action:Dictionary)->Dictionary:
+	var parentActionId = getValue(action,"inherit",null)
+	
+	if parentActionId != null: 
+		var parentAction = getAction(parentActionId)
+		action = Util.inherit(action,parentAction)
+	
+	return linkObject(action)
+
+func linkObject(object:Dictionary)->Dictionary:
+	var conditionalObject = getValue(object,"value",null)
+	if conditionalObject != null: object = Util.inherit(conditionalObject,object)
+	return object
 
 func getActiveMods():
 	var result = []
@@ -735,6 +750,8 @@ func modValueAtPath(path,mode,value):
 	
 	if mode == "inc": 
 		newValue = oldValue + value
+	elif mode == "dec": 
+		newValue = oldValue - value
 		
 	setValueAtPath(path,newValue)
 
@@ -1358,6 +1375,13 @@ func executeCommands(commands):
 	if commands.has("bg"):
 		CurrentUi.Bg = commands["bg"]
 		
+	match getValue(commands,"text",null):
+		null:
+			CurrentUi.Text  = ""
+		var text:
+			if typeof(text) == TYPE_ARRAY: text = PoolStringArray(text).join("\n")
+			CurrentUi.Text = parseText(text)
+		
 	for dataContainer in ["PlayerData","MiscData","FOBJ","WorldData"]:
 		result.modifiersRecalc = true
 		if commands.has(dataContainer):
@@ -1456,7 +1480,7 @@ func executeCommands(commands):
 	
 	return result
 	
-func parseText(t):
+func parseText(t:String)->String:
 	var textArr = t.split("#")
 	if textArr.size() == 1: return t
 	
@@ -1469,7 +1493,7 @@ func parseText(t):
 			if textArr[i] == "": #this is an escaped #
 				textReturn += "#"
 			else:
-				textReturn += getValueFromPath(textArr[i])
+				textReturn += str(getValueFromPath(textArr[i]))
 		i += 1
 	return textReturn
 
@@ -1508,7 +1532,7 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 	if bgTemp != null:
 		CurrentUi.Bg  = bgTemp
 	
-	match getValue(location,"text"):
+	match getValue(location,"text",null):
 		null:
 			CurrentUi.Text  = ""
 		var text:
@@ -1542,16 +1566,20 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 		CurrentUi.ShowNPCs = false
 	
 	CurrentUi.Actions.clear()
-	if location.has("actions"):
-		var keys = location.actions.keys()
+	if hasValue(location,"actions"):
+		var actions = getValue(location,"actions")
+		var keys = actions.keys()
 		keys.sort_custom(SorterByIndexInt, "sortInv")
 		for key in keys:
-			var action = location.actions[key].duplicate()
+			var action = actions[key].duplicate()
+			action = linkAction(action)
+			#if hasValue(action,"action"): action = Util.inherit(action,getValue(action,"action",action))
 			
-			if action.has("inherit"):
-				var parentAction = getAction(action.inherit)
-				parentAction = getValue(parentAction,"action",parentAction)
-				action = Util.inherit(action,parentAction)
+			#if action.has("inherit"):
+			#	var parentAction = getAction(action.inherit)
+				
+			#	action = Util.inherit(action,parentAction)
+
 			
 			if action.has("goto"):
 				var actionGotoArr = action.goto.split(".")
@@ -1568,6 +1596,7 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 					CurrentUi.Actions.append(action)
 			else:
 				CurrentUi.Actions.append(action)
+
 		#CurrentUi.Actions = location.actions.duplicate()
 	if updateLocationId:
 		CurrentUi.LocationId = location.ID

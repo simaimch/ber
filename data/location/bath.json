@@ -1,4 +1,95 @@
 {
+    "shave":{
+        "inherit":"interrupt",
+        
+        "text":"You have #PlayerData.bath.razor# razor#?langPluralS:PlayerData.bath.razor# left.",
+        "actions":{
+            "4000":{
+                "Label": "Shave your legs.",
+                "~value":{
+                    "1000":{
+                        "condition":{
+                            "var":"PlayerData.bath.razor",
+                            "mode":"leq",
+                            "val":0
+                        },
+                        "value":{
+                            "Disabled": true,
+                            "Tooltip": "You don't have any razors left."
+                        }
+                    },
+                    "100":{
+                        "value":{
+                            "PlayerData":{"bath.razor":{"mode":"dec","value":1}},
+                            "Time":{"Pass":{"Duration":900,"Activity":"bath"}},
+                            "goto": "bath.shave_legs"
+                        }
+                    }
+                }
+            },
+            "3000":{
+                "Label": "Shave your armpits.",
+                "~value":{
+                    "1000":{
+                        "condition":{
+                            "var":"PlayerData.bath.razor",
+                            "mode":"leq",
+                            "val":0
+                        },
+                        "value":{
+                            "Disabled": true,
+                            "Tooltip": "You don't have any razors left."
+                        }
+                    },
+                    "100":{
+                        "value":{
+                            "PlayerData":{"bath.razor":{"mode":"dec","value":1}},
+                            "Time":{"Pass":{"Duration":600,"Activity":"bath"}},
+                            "goto": "bath.shave_armpit"
+                        }
+                    }
+                }
+            },
+            "2000":{
+                "Label": "Shave your pubic area.",
+                "~value":{
+                    "1000":{
+                        "condition":{
+                            "var":"PlayerData.bath.razor",
+                            "mode":"leq",
+                            "val":0
+                        },
+                        "value":{
+                            "Disabled": true,
+                            "Tooltip": "You don't have any razors left."
+                        }
+                    },
+                    "100":{
+                        "value":{
+                            "PlayerData":{"bath.razor":{"mode":"dec","value":1}},
+                            "Time":{"Pass":{"Duration":600,"Activity":"bath"}},
+                            "goto": "bath.shave_pubic"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "shave_armpit":{
+        "inherit":"bath.shave",
+        "*text": "You carefully shave your armpits.\n",
+        "bg": "texture/actions/bath/shave_armpit.jpg"
+    },
+    "shave_legs":{
+        "inherit":"bath.shave",
+        "*text": "You carefully shave your legs.\n",
+        "bg": "texture/actions/bath/shave_leg.jpg"
+    },
+    "shave_pubic":{
+        "inherit":"bath.shave",
+        "*text": "You carefully shave your pubic area.\n",
+        "bg": "texture/actions/bath/shave_pubic.jpg"
+    },
     "shower":{
         "inherit":"interrupt",
         "text": "You shower.",
