@@ -139,12 +139,16 @@ func _ready():
 	rng.randomize()
 	randomize()
 	
-func commandLine(c:String):
+func commandLine(c:String)->void:
+	if c[0] == "°":
+		logOut([checkConditionString(c.substr(1,c.length()-1))])
+		return
+	
 	var cParts = c.split("=")
 	if cParts.size() == 1:
 		logOut(getValueFromPath(c))
 	elif cParts.size() == 2:
-		setValueAtPath(c[0],JSON.parse(c[1]))
+		setValueAtPath(cParts[0],JSON.parse(cParts[1]).result)
 
 func QUIT():
 	print("QUIT")
@@ -523,8 +527,16 @@ func getArgumentsFromString(s):
 	return result
 
 func getValueFromPath(path,default=""):
-	if path[0] == "'" and path[path.length()-1] == "'":
+	if path[0] == "'" and path[path.length()-1] == "'": #it's a literal string
 		return path.substr(1,path.length()-2)
+		
+	if path[1] == "'" and path[0] == "i" and path[path.length()-1] == "'": #it's a literal integer
+		return int(path.substr(2,path.length()-3))
+		
+	if path[1] == "'" and path[0] == "f" and path[path.length()-1] == "'": #it's a literal float
+		return float(path.substr(2,path.length()-3))
+		
+			
 	
 	if path[0] == "?":
 		#Call a function
@@ -881,7 +893,26 @@ func sleep(mode=""):
 	timePass(sleepTimeInt,"sleep")
 	eventArgumentExecute("sleepEnd",sleepEnd,sleepTimeInt)
 
-func checkCondition(condition):
+func checkCondition(condition) -> bool:
+	
+	match typeof(condition):
+		TYPE_STRING:
+			return checkConditionString(condition)
+		TYPE_ARRAY, TYPE_STRING_ARRAY:
+			for subCondition in condition:
+				if !checkCondition(subCondition): return false
+			return true
+		TYPE_DICTIONARY:
+			pass
+		TYPE_BOOL:
+			return condition
+		TYPE_NIL:
+			return false
+		var typeCondition:
+			logOut(["Unsuported condition of type ",typeCondition,":",condition],"ERROR")
+			return false
+	
+	
 	var conditionValue
 	
 	if condition.has("val"):
@@ -942,6 +973,119 @@ func checkCondition(condition):
 		invertedCondition.mode = condition.mode.substr(1,condition.mode.length()-1)
 		return !checkCondition(invertedCondition)
 	return false
+	
+func checkConditionString(condition:String) -> bool:
+	var result
+	
+	var regex_whitespace = "\\s*"
+	
+	var regex_anything = ".+"
+	var regex_logic = "AND|X?OR"
+	
+	var regex_string_logic = "{ws}\\(({anything})\\){ws}({logic}){ws}\\(({anything})\\){ws}"
+	regex_string_logic = regex_string_logic.format({"anything":regex_anything,"logic":regex_logic,"ws":regex_whitespace})
+	
+	var regex_logical = Util.regex(regex_string_logic)
+	result = regex_logical.search(condition)
+	
+	
+	
+	if result:
+		# String has form "(anything) AND (anything)"
+		var resultString = result.get_strings()
+		var c1 = resultString[1]
+		var c2 = resultString[3]
+		
+		var logic = resultString[2]
+		
+		match logic:
+			"AND":
+				if checkConditionString(c1):
+					return checkConditionString(c2)
+				return false
+			"OR":
+				if !checkConditionString(c1):
+					return checkConditionString(c2)
+				return true
+			"XOR":
+				if checkConditionString(c1):
+					return !checkConditionString(c2)
+				return checkConditionString(c2)
+			_:
+				logOut(["Unsupported logical operator in checkConditionString:",logic],"ERROR")
+				return false
+	
+	var regex_identifier = "[a-zA-Z0-9'\\._\\-\\(\\)\\[\\],]+"
+	var regex_operator = "[><=]{1,2}|!=|€"
+	
+	
+	var regex_string_operator = "{ws}({identifier}){ws}({operator}){ws}({identifier}){ws}"
+	regex_string_operator = regex_string_operator.format({"identifier":regex_identifier,"operator":regex_operator,"ws":regex_whitespace})
+	
+	var regex_compare = Util.regex(regex_string_operator)
+	result = regex_compare.search(condition)
+	
+	if result:
+		var resultString = result.get_strings()
+		var id1 = resultString[1]
+		var id2 = resultString[3]
+		var val1 = getValueFromPath(id1)
+		var operator = resultString[2]
+		
+		if operator == "€":
+			var lowMode = id2[0]
+			var highMode= id2[id2.length()-1]
+			
+			var setArr = id2.split(",")
+			
+			if setArr.size() != 2:
+				logOut("Invalid set format in checkConditionString","ERROR")
+				return false
+			
+			var lowVal = getValueFromPath(setArr[0].substr(1,setArr[0].length()-1))
+			var highVal= getValueFromPath(setArr[1].substr(0,setArr[1].length()-1))
+			
+			match lowMode:
+				"(":
+					if Util.bigger(lowVal,val1) or Util.equals(lowVal,val1): return false
+				"[":
+					if Util.bigger(lowVal,val1): return false
+				_:
+					logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+					return false
+					
+			match highMode:
+				")":
+					if Util.bigger(val1,highVal) or Util.equals(highVal,val1): return false
+				"]":
+					if Util.bigger(val1,highVal): return false
+				_:
+					logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+					return false
+			
+			return true
+			
+		var val2 = getValueFromPath(id2)
+		
+		match operator:
+			"=","==":
+				return Util.equals(val1,val2)
+			">":
+				return Util.bigger(val1,val2)
+			"<":
+				return Util.bigger(val2,val1)
+			">=":
+				return (Util.bigger(val1,val2) or Util.equals(val1,val2))
+			"<=":
+				return (Util.bigger(val2,val1) or Util.equals(val1,val2))
+			"!=","<>":
+				return !Util.equals(val1,val2)
+			_:
+				logOut(["Unsupported operator in checkConditionString:",operator],"ERROR")
+				return false
+	
+	return false
+	
 
 func loadDialogue(dialogueId):
 	var file = File.new()
@@ -1303,8 +1447,12 @@ func modifiersCalculate(npcId):
 			var modifier = modifierGroup[modifierId]
 			if checkCondition(modifier.condition):
 				npc.modifier[modifierGroupId].append(modifierId)
-				if modifier.has("modifier"): modSum += modifier.modifier
-				if modifier.has("modifierMult"): modMult*= modifier.modifierMult
+				var add = getValue(modifier,"modifier",0)
+				var mult = getValue(modifier,"modifierMult",1)
+				modSum += add
+				modMult*= mult
+			else:
+				logOut(["Con failed:",modifier.condition])
 		npc.property[modifierGroupId] = modSum*modMult
 		
 	MiscData.modifiersRecalc = false	

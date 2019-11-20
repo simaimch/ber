@@ -10,9 +10,11 @@
             "body.hair.head.growth":500,
             "body.hair.legs.length": 0,
             "body.hair.legs.growth": 250,
+            "gender":"f",
             "skill.heels": 3,
-            "trait.genes.appearance":2
+            "trait.genes.appearance":7
         },
+        
         "playerOutfit":{
             "clothes":{
                 "price": [0,100]

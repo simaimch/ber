@@ -457,6 +457,11 @@ func mergeInto(source,target,inplace = true):
 	
 	return target
 
+func regex(s):
+	var reg = RegEx.new()
+	reg.compile(s)
+	return reg
+
 func stringFormat(string):
 	var result = ""
 	var stringArr = string.split("^")

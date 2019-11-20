@@ -3,6 +3,11 @@
     "playerVersion": "000001",
     "startLocation":"start",
     "onLoad":{
-       
+        "MiscData":{
+            "modifier.apperance.malusSmall.modMult": 0.9,
+            "modifier.apperance.malusAverage.modMult": 0.7,
+            "modifier.apperance.malusBig.modMult": 0.5,
+            "modifier.apperance.malusSevere.modMult": 0.2
+        }
     }
 }
