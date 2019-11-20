@@ -2,7 +2,7 @@
     "dawn1":{
         "main":{
             "color_bg":"b22900",
-            "color_font":"white"
+            "color_font":"ffffff"
         }
     },
     "dawn2":{
@@ -32,19 +32,19 @@
     "dusk2":{
         "main":{
             "color_bg":"760a3b",
-            "color_font":"white"
+            "color_font":"ffffff"
         }
     },
     "dusk3":{
         "main":{
             "color_bg":"300126",
-            "color_font":"white"
+            "color_font":"ffffff"
         }
     },
     "night":{
         "main":{
             "color_bg":"060014",
-            "color_font":"white"
+            "color_font":"ffffff"
         }
     }
 }

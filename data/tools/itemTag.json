@@ -4,11 +4,11 @@
             "texture":"texture/misc/itemtype/dress.png",
             "result":{"type":"clothes","inherit":"dress"},
             "categories":[
-                "neck",
-                "sleeve",
+                "dekoltee",
+                "coveredArm",
                 "skirtlength",
                 {"category":"color","target":"color","label":"Dress Color"},
-                "extras"
+                "priceDress"
             ]
         },
         {
@@ -49,6 +49,73 @@
             "jump":"shoeType"
         },
         ""
+    ],
+    "coveredArm":{
+        "order":["none","shoulder","shoulderUarm","shoulderUarmLarm","Uarm","UarmLarm","Larm","shoulderLarm"],
+        "items":{
+            "none":{
+                "texture":"texture/misc/itemtype/coveredBodyPart/shoulderUarmLarm/none.png",
+                "result":{"parts":["coveredArm_none"]},
+                "text":"none"
+            },
+            "shoulder":{
+                "texture":"texture/misc/itemtype/coveredBodyPart/shoulderUarmLarm/shoulder.png",
+                "result":{"parts":["coveredArm_shoulder"]},
+                "text":"shoulder"
+            },
+            "shoulderUarm":{
+                "texture":"texture/misc/itemtype/coveredBodyPart/shoulderUarmLarm/shoulderUarm.png",
+                "result":{"parts":["coveredArm_shoulderUarm"]},
+                "text":"shoulderUarm"
+            },
+            "shoulderUarmLarm":{
+                "texture":"texture/misc/itemtype/coveredBodyPart/shoulderUarmLarm/shoulderUarmLarm.png",
+                "result":{"parts":["coveredArm_shoulderUarmLarm"]},
+                "text":"shoulderUarmLarm"
+            },
+            "Uarm":{
+                "texture":"texture/misc/itemtype/coveredBodyPart/shoulderUarmLarm/Uarm.png",
+                "result":{"parts":["coveredArm_Uarm"]},
+                "text":"Uarm"
+            },
+            "UarmLarm":{
+                "texture":"texture/misc/itemtype/coveredBodyPart/shoulderUarmLarm/UarmLarm.png",
+                "result":{"parts":["coveredArm_UarmLarm"]},
+                "text":"UarmLarm"
+            },
+            "Larm":{
+                "texture":"texture/misc/itemtype/coveredBodyPart/shoulderUarmLarm/Larm.png",
+                "result":{"parts":["coveredArm_Larm"]},
+                "text":"Larm"
+            },
+            "shoulderLarm":{
+                "texture":"texture/misc/itemtype/coveredBodyPart/shoulderUarmLarm/shoulderLarm.png",
+                "result":{"parts":["coveredArm_shoulderLarm"]},
+                "text":"shoulderLarm"
+            }
+        }
+    },
+    "dekoltee":[
+        {
+            "texture":"texture/misc/itemtype/dekoltee/veryHigh.png",
+            "result":{"parts":["dekoltee_vhigh"]}
+        },
+        {
+            "texture":"texture/misc/itemtype/dekoltee/high.png",
+            "result":{"parts":["dekoltee_high"]}
+        },
+        {
+            "texture":"texture/misc/itemtype/dekoltee/medium.png",
+            "result":{"parts":["dekoltee_medium"]}
+        },
+        {
+            "texture":"texture/misc/itemtype/dekoltee/deep.png",
+            "result":{"parts":["dekoltee_deep"]}
+        },
+        {
+            "texture":"texture/misc/itemtype/dekoltee/veryDeep.png",
+            "result":{"parts":["dekoltee_vdeep"]}
+        }
     ],
     "neck":[
         {
@@ -336,17 +403,17 @@
         "order":["yellow","gold","lemon","honey","orange","carrot","apricot","ginger"],
         "items":{
             "apricot":{
-                "color":"apricot",
+                "color":"orange_apricot",
                 "result":{"color1":"orange_apricot"},
                 "text":"orange_apricot"
             },
             "carrot":{
-                "color":"carrot",
+                "color":"orange_carrot",
                 "result":{"color1":"orange_carrot"},
                 "text":"orange_carrot"
             },
             "ginger":{
-                "color":"ginger",
+                "color":"orange_ginger",
                 "result":{"color1":"orange_ginger"},
                 "text":"orange_ginger"
             },
@@ -356,12 +423,12 @@
                 "text":"gold"
             },
             "honey":{
-                "color":"honey",
+                "color":"yellow_honey",
                 "result":{"color1":"yellow_honey"},
                 "text":"yellow_honey"
             },
             "lemon":{
-                "color":"lemon",
+                "color":"yellow_lemon",
                 "result":{"color1":"yellow_lemon"},
                 "text":"yellow_lemon"
             },
@@ -832,11 +899,7 @@
             "next":"COMPLETE"
         }
     ],
-    "priceShoes":[
-        {
-            "text":"9,99 €",
-            "result":{"price":999}
-        },
+    "priceDress":[
         {
             "text":"19,99 €",
             "result":{"price":1999}
@@ -864,6 +927,44 @@
         {
             "text":"199,99 €",
             "result":{"price":1999}
+        },
+        {
+            "text":"499,99 €",
+            "result":{"price":49999}
+        }
+    ],
+    "priceShoes":[
+        {
+            "text":"9,99 €",
+            "result":{"price":999}
+        },
+        {
+            "text":"19,99 €",
+            "result":{"price":1999}
+        },
+        {
+            "text":"29,99 €",
+            "result":{"price":2999}
+        },
+        {
+            "text":"49,99 €",
+            "result":{"price":4999}
+        },
+        {
+            "text":"69,99 €",
+            "result":{"price":6999}
+        },
+        {
+            "text":"99,99 €",
+            "result":{"price":9999}
+        },
+        {
+            "text":"149,99 €",
+            "result":{"price":14999}
+        },
+        {
+            "text":"199,99 €",
+            "result":{"price":19999}
         }
     ]
 }
