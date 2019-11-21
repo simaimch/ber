@@ -141,6 +141,8 @@ func _ready():
 	rng.randomize()
 	randomize()
 	
+	print(getValueFromEquation("19*2+3"))
+	
 func commandLine(c:String)->void:
 	if c[0] == "°":
 		logOut([checkConditionString(c.substr(1,c.length()-1))])
@@ -378,6 +380,7 @@ func getValue(obj, index, default = null):
 	var cindex = "~"+index # pick first entry with valid condition
 	var findex = "%"+index # compute using a function
 	var lindex = ">"+index # use a list
+	var mindex = "&"+index # it's math
 	var rindex = "#"+index # the value is a reference, look it up
 	var ranindex="|"+index # the value is taken from a random list
 	var sindex = "^"+index # the value is a string that needs to be parsed
@@ -407,6 +410,8 @@ func getValue(obj, index, default = null):
 				return functionExecute(obj[findex])
 	elif obj.has(lindex):
 		return getValueFromList(obj[lindex])
+	elif obj.has(mindex):
+		return getValueFromEquation(obj[mindex])
 	elif obj.has(rindex):
 		return getValueFromPath(obj[rindex])
 	elif obj.has(ranindex):
@@ -533,15 +538,26 @@ func getArgumentsFromString(s):
 	return result
 
 func getValueFromPath(path,default=""):
-	if path[0] == "'" and path[path.length()-1] == "'": #it's a literal string
+	if str(default) == "": default = path
+	
+	if path.length() == 0: return default
+	
+	if path.length() >= 2 and path[0] == "'" and path[path.length()-1] == "'": #it's a literal string
 		return path.substr(1,path.length()-2)
-		
-	if path[1] == "'" and path[0] == "i" and path[path.length()-1] == "'": #it's a literal integer
-		return int(path.substr(2,path.length()-3))
-		
-	if path[1] == "'" and path[0] == "f" and path[path.length()-1] == "'": #it's a literal float
-		return float(path.substr(2,path.length()-3))
-		
+	
+	if path.length() >= 3:
+		if path[1] == "'" and path[0] == "i" and path[path.length()-1] == "'": #it's a literal integer
+			return int(path.substr(2,path.length()-3))
+			
+		if path[1] == "'" and path[0] == "f" and path[path.length()-1] == "'": #it's a literal float
+			return float(path.substr(2,path.length()-3))
+	
+	if path[0] in ["0","1","2","3","4","5","6","7","8","9"]:
+		if path.find(".") == -1:
+			return int(path)
+		else:
+			return float(path)
+	
 	if path[path.length()-1] == ")":
 		var paramStart = path.find("(")
 		if paramStart == -1:
@@ -554,7 +570,7 @@ func getValueFromPath(path,default=""):
 			var params = path.substr(paramStart+1,path.length()-paramStart-2)
 			return getValueFromFunction(functionId,params)
 	
-	if str(default) == "": default = path
+	
 	
 	var pathArr = path.split(".")
 	var i = 0
@@ -565,7 +581,7 @@ func getValueFromPath(path,default=""):
 	while(i < pathArr.size()):
 		cObj = getValue(cObj,pathArr[i])
 		if cObj == null:
-			logOut("ERROR loading "+path,"ERROR")
+			logOut("ERROR loading "+path+" in "+str(tObj),"ERROR")
 			return default
 		i+=1
 		
@@ -573,6 +589,103 @@ func getValueFromPath(path,default=""):
 	
 #func getFOBJ(index):
 	#return functionObjects[functionObjects.size()-index]
+
+func getValueFromEquation(equation:String):
+	var result
+	#var rNumber = "\\d+(.\\d+)?"
+	
+	var rBrackets = "\\s*\\(\\s*([^\\)\\(]+)\\s*\\)\\s*" # \s*\(\s*([^\)\(]+)\s*\)\s*
+	
+	var regex_brakcets = Util.regex(rBrackets)
+	
+	result = regex_brakcets.search(equation)
+	
+	if result:
+		print("Brackets:"+equation)
+		var result_start = result.get_start()
+		var result_end = result.get_end()
+		
+		var result_strings = result.get_strings()
+		var result_string = result_strings[1]
+		
+		var valueInBrackets = str(getValueFromEquation(result_string))
+		
+		equation = Util.stringEraseFromTo(equation,result_start,result_end)
+		equation = equation.insert(result_start,valueInBrackets)
+		return getValueFromEquation(equation)
+	
+	var rAddition = "([^\\(\\)]+)([+-])([^\\(\\)]+)" # .*([\w^+]+)\s*([+-])\s*([\w^+]+).*
+	
+	var regex_addition = Util.regex(rAddition)
+	result = regex_addition.search(equation)
+	
+	if result:
+		print("Addition:"+equation)
+		var result_start = result.get_start()
+		var result_end = result.get_end()
+		
+		var result_strings = result.get_strings()
+		var result_ns1 = result_strings[1]
+		var result_ns2 = result_strings[3]
+		
+		var n1 = float(getValueFromEquation(result_ns1))
+		var n2 = float(getValueFromEquation(result_ns2))
+		
+		var result_op = result_strings[2]
+		
+		var mathResult = 0
+		
+		match result_op:
+			"+": mathResult = n1+n2
+			"-": mathResult = n1-n2
+		
+		print("Add Result:"+str(mathResult))
+		
+		equation = Util.stringEraseFromTo(equation,result_start,result_end)
+		equation = equation.insert(result_start,str(mathResult))
+		
+		print("New Eq:"+equation)
+		
+		return getValueFromEquation(equation)
+	
+	var rMult = "([^\\(\\)]+)([*\\/])([^\\(\\)]+)" # .*([\w^+]+)\s*([*\/])\s*([\w^+]+).*
+	
+	var regex_mult = Util.regex(rMult)
+	result = regex_mult.search(equation)
+	
+	if result:
+		print("Mult:"+equation)
+		var result_start = result.get_start()
+		var result_end = result.get_end()
+		
+		var result_strings = result.get_strings()
+		var result_ns1 = result_strings[1]
+		var result_ns2 = result_strings[3]
+		
+		var n1 = float(getValueFromEquation(result_ns1))
+		var n2 = float(getValueFromEquation(result_ns2))
+		
+		var result_op = result_strings[2]
+		
+		var mathResult = 0
+		
+		match result_op:
+			"*": mathResult = n1*n2
+			"/": mathResult = n1/n2
+		
+		print("Mult Result:"+str(mathResult))
+		
+		equation = Util.stringEraseFromTo(equation,result_start,result_end)
+		equation = equation.insert(result_start,str(mathResult))
+		
+		print("New Eq:"+equation)
+		
+		return getValueFromEquation(equation)
+			
+	print("Not found:"+equation)
+	result = getValueFromPath(equation)
+	print("Result:"+str(result))
+	return result
 
 func getValueFromFunction(functionId,functionParameter:String = ""):
 	var currentParameters = []
@@ -624,42 +737,48 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 	var result = null
 	functionParameters.append(currentParameters)
 	
-	var resultMode = getValue(function,"resultMode","standard")
-	var results = getValue(function,"result",{})
+	var value = getValue(function,"value",null)
 	
-	match resultMode:
-		"standard":
-			var keys = results.keys()
-			keys.sort_custom(SorterByIndexInt, "sortInv")
-			for key in keys:
-				var possibleResult = results[key]
-				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-					#if possibleResult.has("valueCalc"):
-					#	result = parseText(possibleResult.valueCalc)
-					#elif possibleResult.has("valueRef"):
-					#	result = getValueFromPath(possibleResult.valueRef)
-					#else:
-					#	result = possibleResult.value
-					result = getValue(possibleResult,"value")
-					break
-		"stringConcat":
-			result = ""
-			var keys = results.keys()
-			keys.sort_custom(SorterByIndexInt, "sort")
-			for key in keys:
-				var possibleResult = results[key]
-				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-					#if possibleResult.has("valueCalc"):
-					#	result += parseText(possibleResult.valueCalc)
-					#elif possibleResult.has("valueRef"):
-					#	result += str(getValueFromPath(possibleResult.valueRef))
-					#else:
-					#	result += str(possibleResult.value)
-					result += str(getValue(possibleResult,"value",""))
-					#TODO: parse?
-		_:
-			logOut(["ResultMode ",resultMode," not supported in functionExecute"],"ERROR")
+	if value:
+		result = value
+	else:
 	
+		var resultMode = getValue(function,"resultMode","standard")
+		var results = getValue(function,"result",{})
+		
+		match resultMode:
+			"standard":
+				var keys = results.keys()
+				keys.sort_custom(SorterByIndexInt, "sortInv")
+				for key in keys:
+					var possibleResult = results[key]
+					if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+						#if possibleResult.has("valueCalc"):
+						#	result = parseText(possibleResult.valueCalc)
+						#elif possibleResult.has("valueRef"):
+						#	result = getValueFromPath(possibleResult.valueRef)
+						#else:
+						#	result = possibleResult.value
+						result = getValue(possibleResult,"value")
+						break
+			"stringConcat":
+				result = ""
+				var keys = results.keys()
+				keys.sort_custom(SorterByIndexInt, "sort")
+				for key in keys:
+					var possibleResult = results[key]
+					if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+						#if possibleResult.has("valueCalc"):
+						#	result += parseText(possibleResult.valueCalc)
+						#elif possibleResult.has("valueRef"):
+						#	result += str(getValueFromPath(possibleResult.valueRef))
+						#else:
+						#	result += str(possibleResult.value)
+						result += str(getValue(possibleResult,"value",""))
+						#TODO: parse?
+			_:
+				logOut(["ResultMode ",resultMode," not supported in functionExecute"],"ERROR")
+		
 	functionParameters.pop_back()
 	return result
 
@@ -1053,6 +1172,11 @@ func checkCondition(condition) -> bool:
 	return false
 	
 func checkConditionString(condition:String) -> bool:
+	
+	if condition[0] == "¬" and condition[1] == "(" and condition[condition.length()-1] == ")":
+		return !checkConditionString(condition.substr(2,condition.length()-3))
+	
+	
 	var result
 	
 	var regex_whitespace = "\\s*"
@@ -1123,25 +1247,46 @@ func checkConditionString(condition:String) -> bool:
 			var lowVal = getValueFromPath(setArr[0].substr(1,setArr[0].length()-1))
 			var highVal= getValueFromPath(setArr[1].substr(0,setArr[1].length()-1))
 			
-			match lowMode:
-				"(":
-					if Util.bigger(lowVal,val1) or Util.equals(lowVal,val1): return false
-				"[":
-					if Util.bigger(lowVal,val1): return false
-				_:
-					logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
-					return false
-					
-			match highMode:
-				")":
-					if Util.bigger(val1,highVal) or Util.equals(highVal,val1): return false
-				"]":
-					if Util.bigger(val1,highVal): return false
-				_:
-					logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
-					return false
+			if lowVal <= highVal:
+				match lowMode:
+					"(":
+						if Util.bigger(lowVal,val1) or Util.equals(lowVal,val1): return false
+					"[":
+						if Util.bigger(lowVal,val1): return false
+					_:
+						logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+						return false
+						
+				match highMode:
+					")":
+						if Util.bigger(val1,highVal) or Util.equals(highVal,val1): return false
+					"]":
+						if Util.bigger(val1,highVal): return false
+					_:
+						logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+						return false
+				return true
+			else:
+				#Example (10,5] means all values higher than 10 or lower or equal 5 are true
+				match lowMode:
+					"(":
+						if Util.bigger(val1,lowVal): return true
+					"[":
+						if Util.bigger(val1,lowVal) or Util.equals(lowVal,val1): return true
+					_:
+						logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+						return false
+						
+				match highMode:
+					")":
+						if Util.bigger(highVal,val1): return true
+					"]":
+						if Util.bigger(highVal,val1) or Util.equals(highVal,val1): return true
+					_:
+						logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+						return false
 			
-			return true
+				return false
 			
 		var val2 = getValueFromPath(id2)
 		
@@ -1757,8 +1902,10 @@ func currentUIAppendRL(rl):
 			var targetLocation = getLocation(getValue(rl,"locationId"))
 			#functionObjects.append(targetLocation) #appending target of RL as FOBJ2
 			#functionObjects.append(rl) #appending RL as FOBJ
+			functionParameters.append([rl,targetLocation])
 			var values = getValue(rl,"values",{})
 			rl = Util.inherit(rl, values)
+			functionParameters.pop_back()
 			#functionObjects.pop_back()
 			#functionObjects.pop_back()
 		#CurrentUi.RL.append(reachableLocationLink(rl))

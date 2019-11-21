@@ -255,5 +255,8 @@
                 "value": "You have no problem walking in these shoes."
             }
         }
+    },
+    "timeofday":{
+        "&value":"PARAM1.hour*100+PARAM1.minute"
     }
 }

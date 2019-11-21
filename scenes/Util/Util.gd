@@ -476,6 +476,35 @@ func stringFormat(string):
 	
 	return result
 	
+func stringEraseFromTo(s:String,from:int,to:int)->String:
+	var result = s
+	var length
+	if to == -1:
+		length = s.length() - from
+	elif to >= from:
+		length = to - from + 1
+	else:
+		result = stringEraseFromTo(s,from,-1)
+		result = stringEraseFromTo(result,0,to)
+		return result
+	
+	result.erase(from,length)
+		
+	return result
+	
+func stringSubstrFromTo(s:String,from:int,to:int)->String:
+	var result = s
+	var length
+	if to == -1:
+		length = s.length() - from
+	elif to >= from:
+		length = to - from + 1
+	else:
+		var r1 = stringSubstrFromTo(s,from,-1)
+		var r2 = stringSubstrFromTo(s,0,to)
+		return r2+r1
+		
+	return result.substr(from,length)
 		
 func texture(path):
 	var mods = GameManager.getActiveMods()
