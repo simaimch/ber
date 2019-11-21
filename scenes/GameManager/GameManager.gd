@@ -536,16 +536,17 @@ func getValueFromPath(path,default=""):
 	if path[1] == "'" and path[0] == "f" and path[path.length()-1] == "'": #it's a literal float
 		return float(path.substr(2,path.length()-3))
 		
-			
-	
-	if path[0] == "?":
-		#Call a function
-		var functionArr = path.split(":",false,1)
-		var functionId = functionArr[0].substr(1,functionArr[0].length()-1)
-		if functionArr.size()>1:
-			return getValueFromFunction(functionId,functionArr[1])
+	if path[path.length()-1] == ")":
+		var paramStart = part.find("(")
+		if paramStart == -1:
+			logOut(["Path malformed:",path],"ERROR")
+			return default
+		elif paramStart == 0:
+			return getValueFromPath(path.substr(1,path.length()-2),default)
 		else:
-			return getValueFromFunction(functionId)
+			var functionId = path.substr(0,paramStart)
+			var params = path.substr(paramStart+1,path.size()-paramStart-1)
+			return getValueFromFunction(functionId,params)
 	
 	if str(default) == "": default = path
 	
@@ -567,8 +568,23 @@ func getValueFromPath(path,default=""):
 func getFOBJ(index):
 	return functionObjects[functionObjects.size()-index]
 
-#func getValueFromFunction(functionId,functionObj):
-func getValueFromFunction(functionId,functionParameter=""):
+func getValueFromFunction(functionId,functionParameter:String = ""):
+	var currentParameters = []
+	if functionParameter.empty():
+		var parameters = functionParameter.split(",")
+		for parameter in parameters:
+			var parameterValue = getValueFromPath(parameter)
+			currentParameters.append(parameterValue)
+	functionParameters.append(currentParameters)
+	
+	#TODO
+	var result
+
+	functionParameters.pop_back()
+	return result
+	
+
+func getValueFromFunctionOld(functionId,functionParameter=""):
 	var result = null
 	if functionId == "INT":
 		return int(functionParameter)

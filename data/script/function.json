@@ -1,13 +1,10 @@
 {
     "langIsAre":{
+        "param":["OBJECT"],
         "result":{
             "1000":{
                 "value": "are",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ.ID",
-                    "valRef":"PlayerData.ID"
-                }
+                "condition":"P1.ID=PlayerData.ID"
             },
             "0":{
                 "value": "is"
@@ -15,14 +12,11 @@
         }
     },
     "langPluralS":{
+        "param":["INT"],
         "result":{
             "1000":{
                 "value": "",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ",
-                    "val":1
-                }
+                "condition":"P1=i'1'"
             },
             "0":{
                 "value": "s"
@@ -32,15 +26,11 @@
     "usedName":{
         "result":{
             "1000":{
-                "value": "you",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ.ID",
-                    "valRef":"PlayerData.ID"
-                }
+                "value":"you",
+                "condition":"P1.ID=PlayerData.ID"
             },
             "0":{
-                "valueRef": "FOBJ.name.first"
+                "#value":"P1.name.first"
             }
         }
     },
@@ -48,13 +38,9 @@
         "result":{
             "1000":{
                 "valueCalc":"#?shoeDescription:FOBJ#",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ.type",
-                    "val":"shoes"
-                }
+                "condition":"P1.type='shoes'"
             },
-            "0":{"valueRef":"FOBJ.ID"}
+            "0":{"#value":"P1.ID"}
         }
     },
     "outfitType":{
