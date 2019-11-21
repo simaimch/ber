@@ -2,108 +2,108 @@
     "appearance":{
         "gene_0":{
             "label":"Natural 0/10",
-            "description":"#?usedName:NPC3# #?langIsAre:NPC3# extremely bad looking. People call her a monster behind her back. Some children start to cry when seeing her.",
+            "^description":"#usedName(PARAM1)# #langIsAre(PARAM1)# extremely bad looking. People call her a monster behind her back. Some children start to cry when seeing her.",
             "modifier": 0,
-            "condition":"NPC3.trait.genes.appearance = 0"
+            "condition":"PARAM1.trait.genes.appearance = i'0'"
         },
         "gene_1":{
             "label":"Natural 1/10",
-            "description":"Some people get burned or deformed by an accident. Unfortunately #?usedName:NPC3# looks this way naturally.",
+            "^description":"Some people get burned or deformed by an accident. Unfortunately #usedName(PARAM1)# looks this way naturally.",
             "modifier": 5,
-            "condition":"NPC3.trait.genes.appearance = 1"
+            "condition":"PARAM1.trait.genes.appearance = i'1'"
         },
         "gene_2":{
             "label":"Natural 2/10",
-            "description":"#?usedName:NPC3# #?langIsAre:NPC3# is noticeably ugly.",
+            "^description":"#usedName(PARAM1)# #langIsAre(PARAM1)# noticeably ugly.",
             "modifier": 10,
-            "condition":"NPC3.trait.genes.appearance = 2"
+            "condition":"PARAM1.trait.genes.appearance = i'2'"
         },
         "gene_3":{
             "label":"Natural 3/10",
-            "description":"#?usedName:NPC3# #?langIsAre:NPC3# is noticeably unattractive.",
+            "^description":"#usedName(PARAM1)# #langIsAre(PARAM1)# noticeably unattractive.",
             "modifier": 20,
-            "condition":"NPC3.trait.genes.appearance = 3"
+            "condition":"PARAM1.trait.genes.appearance = i'3'"
         },
         "gene_4":{
             "label":"Natural 4/10",
-            "description":"#?usedName:NPC3# #?langIsAre:NPC3# is somewhat unattractive.",
+            "^description":"#usedName(PARAM1)# #langIsAre(PARAM1)# somewhat unattractive.",
             "modifier": 30,
-            "condition":"NPC3.trait.genes.appearance = 4"
+            "condition":"PARAM1.trait.genes.appearance = i'4'"
         },
         "gene_5":{
             "label":"Natural 5/10",
-            "description":"#?usedName:NPC3# #?langIsAre:NPC3# is average-looking, not noticeably ugly but not noticeably attractive either.",
+            "^description":"#usedName(PARAM1)# #langIsAre(PARAM1)# average-looking, not noticeably ugly but not noticeably attractive either.",
             "modifier": 50,
-            "condition":"NPC3.trait.genes.appearance = 5"
+            "condition":"PARAM1.trait.genes.appearance = i'5'"
         },
         "gene_6":{
             "label":"Natural 6/10",
-            "description":"#?usedName:NPC3# #?langIsAre:NPC3# is somewhat attractive.",
+            "^description":"#usedName(PARAM1)# #langIsAre(PARAM1)# somewhat attractive.",
             "modifier": 60,
-            "condition":"NPC3.trait.genes.appearance = 6"
+            "condition":"PARAM1.trait.genes.appearance = i'6'"
         },
         "gene_7":{
             "label":"Natural 7/10",
-            "description":"#?usedName:NPC3# #?langIsAre:NPC3# noticable attractive.",
+            "^description":"#usedName(PARAM1)# #langIsAre(PARAM1)# noticable attractive.",
             "modifier": 70,
-            "condition":"NPC3.trait.genes.appearance = 7"
+            "condition":"PARAM1.trait.genes.appearance = i'7'"
         },
         "gene_8":{
             "label":"Natural 8/10",
-            "description":"#?usedName:NPC3# #?langIsAre:NPC3# beautiful.",
+            "^description":"#usedName(PARAM1)# #langIsAre(PARAM1)# beautiful.",
             "modifier": 80,
-            "condition":"NPC3.trait.genes.appearance = 8"
+            "condition":"PARAM1.trait.genes.appearance = i'8'"
         },
         "gene_9":{
             "label":"Natural 9/10",
-            "description":"#?usedName:NPC3# #?langIsAre:NPC3# very beautiful.",
+            "^description":"#usedName(PARAM1)# #langIsAre(PARAM1)# very beautiful.",
             "modifier": 100,
-            "condition":"NPC3.trait.genes.appearance = 9"
+            "condition":"PARAM1.trait.genes.appearance = i'9'"
         },
         "gene_10":{
             "label":"Natural 10/10",
-            "description":"#?usedName:NPC3# #?langIsAre:NPC3# extremely beautiful, like a movie star or a supermodel.",
+            "^description":"#usedName(PARAM1)# #langIsAre(PARAM1)# extremely beautiful, like a movie star or a supermodel.",
             "modifier": 150,
-            "condition":"NPC3.trait.genes.appearance = 10"
+            "condition":"PARAM1.trait.genes.appearance = i'10'"
         },
         "hair_leg_1":{
             "label":"Leg hairs (short)",
             "playeronly":true,
             "description":"You have noticable short hairs on your legs.",
             "modifierMult": 0.8,
-            "condition": "(NPC3.gender = 'f') AND (NPC3.body.hair.legs.length € [i'3500',i'5250') )"
+            "condition": "(PARAM1.gender = 'f') AND (PARAM1.body.hair.legs.length € [i'3500',i'5250') )"
         },
         "hair_leg_2":{
             "label":"Leg hairs (medium)",
             "playeronly":true,
             "description":"You have noticable hairs on your legs.",
             "modifierMult": 0.5,
-            "condition":"(NPC3.gender = 'f') AND (NPC3.body.hair.legs.length € [i'5250',i'7000') )"
+            "condition":"(PARAM1.gender = 'f') AND (PARAM1.body.hair.legs.length € [i'5250',i'7000') )"
         },
         "hair_leg_3":{
             "label":"Leg hairs (long)",
             "playeronly":true,
             "description":"The hairs on your legs have grown pretty long.",
             "modifierMult": 0.2,
-            "condition":"(NPC3.gender = 'f') AND (NPC3.body.hair.legs.length >= i'7000' )"
+            "condition":"(PARAM1.gender = 'f') AND (PARAM1.body.hair.legs.length >= i'7000' )"
         },
         "smell_1":{
             "label":"Smelly",
-            "description":"#?usedName:NPC3# #?langIsAre:NPC3# smelly.",
+            "^description":"#usedName(PARAM1)# #langIsAre(PARAM1)# smelly.",
             "#modifierMult": "MiscData.modifier.apperance.malusSmall.modMult",
-            "condition":"NPC3.stat.hygiene_body.current € [i'5000',i'8000')"
+            "condition":"PARAM1.stat.hygiene_body.current € [i'5000',i'8000')"
         },
         "smell_2":{
             "label":"Bad smell",
-            "description":"#?usedName:NPC3# smells badly.",
+            "^description":"#usedName(PARAM1)# smells badly.",
             "#modifierMult": "MiscData.modifier.apperance.malusAverage.modMult",
-            "condition":"NPC3.stat.hygiene_body.current € [i'2000',i'5000')"
+            "condition":"PARAM1.stat.hygiene_body.current € [i'2000',i'5000')"
         },
         "smell_3":{
             "label":"Extremely bad smell",
-            "description":"#?usedName:NPC3# smells like a sewer.",
+            "^description":"#usedName(PARAM1)# smells like a sewer.",
             "#modifierMult": "MiscData.modifier.apperance.malusSevere.modMult",
-            "condition":"NPC3.stat.hygiene_body.current < i'2000'"
+            "condition":"PARAM1.stat.hygiene_body.current < i'2000'"
         }
     }
 }

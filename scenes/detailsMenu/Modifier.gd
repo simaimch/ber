@@ -7,7 +7,9 @@ func setModifer(m):
 	text = modifier.label
 
 func _on_Modifier_mouse_entered():
-	get_tree().call_group("tooltip","showTooltip",{"text":modifier.description,"followMouse":true})
+	var t = GameManager.getValue(modifier,"description",null)
+	if t:
+		get_tree().call_group("tooltip","showTooltip",{"text":t,"followMouse":true})
 
 
 func _on_Modifier_mouse_exited():

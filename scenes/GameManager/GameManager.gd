@@ -113,6 +113,7 @@ var Preferences = {
 var dialogues = {}
 var events = {}
 var functions = {}
+
 var items = {}
 var locations = {}
 var misc = {}
@@ -122,7 +123,8 @@ var services = {}
 var themes = {}
 #var skills = {}
 
-var functionObjects = []
+var functionParameters = []
+#var functionObjects = []
 
 var folderRoot:String setget , getRootFolder
 var folderMod:String setget , getModFolder
@@ -378,6 +380,8 @@ func getValue(obj, index, default = null):
 	var lindex = ">"+index # use a list
 	var rindex = "#"+index # the value is a reference, look it up
 	var ranindex="|"+index # the value is taken from a random list
+	var sindex = "^"+index # the value is a string that needs to be parsed
+	
 	if index in obj:
 		return obj[index]
 	elif cindex in obj:
@@ -407,6 +411,8 @@ func getValue(obj, index, default = null):
 		return getValueFromPath(obj[rindex])
 	elif obj.has(ranindex):
 		pass
+	elif obj.has(sindex):
+		return parseText(obj[sindex])
 	elif obj.has("persist"):
 		return getValue(obj.persist,index,default)
 	
@@ -537,7 +543,7 @@ func getValueFromPath(path,default=""):
 		return float(path.substr(2,path.length()-3))
 		
 	if path[path.length()-1] == ")":
-		var paramStart = part.find("(")
+		var paramStart = path.find("(")
 		if paramStart == -1:
 			logOut(["Path malformed:",path],"ERROR")
 			return default
@@ -545,7 +551,7 @@ func getValueFromPath(path,default=""):
 			return getValueFromPath(path.substr(1,path.length()-2),default)
 		else:
 			var functionId = path.substr(0,paramStart)
-			var params = path.substr(paramStart+1,path.size()-paramStart-1)
+			var params = path.substr(paramStart+1,path.length()-paramStart-2)
 			return getValueFromFunction(functionId,params)
 	
 	if str(default) == "": default = path
@@ -565,22 +571,23 @@ func getValueFromPath(path,default=""):
 		
 	return cObj
 	
-func getFOBJ(index):
-	return functionObjects[functionObjects.size()-index]
+#func getFOBJ(index):
+	#return functionObjects[functionObjects.size()-index]
 
 func getValueFromFunction(functionId,functionParameter:String = ""):
 	var currentParameters = []
-	if functionParameter.empty():
+	if !functionParameter.empty():
 		var parameters = functionParameter.split(",")
 		for parameter in parameters:
 			var parameterValue = getValueFromPath(parameter)
 			currentParameters.append(parameterValue)
-	functionParameters.append(currentParameters)
 	
-	#TODO
+		
 	var result
-
-	functionParameters.pop_back()
+	
+	var function = getFunction(functionId)
+	result = functionExecute(function,currentParameters)
+	
 	return result
 	
 
@@ -613,12 +620,57 @@ func getValueFromFunctionOld(functionId,functionParameter=""):
 	
 	return result
 
-func functionExecute(function,arguments=[]):
+func functionExecute(function:Dictionary,currentParameters=[]):
+	var result = null
+	functionParameters.append(currentParameters)
+	
+	var resultMode = getValue(function,"resultMode","standard")
+	var results = getValue(function,"result",{})
+	
+	match resultMode:
+		"standard":
+			var keys = results.keys()
+			keys.sort_custom(SorterByIndexInt, "sortInv")
+			for key in keys:
+				var possibleResult = results[key]
+				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+					#if possibleResult.has("valueCalc"):
+					#	result = parseText(possibleResult.valueCalc)
+					#elif possibleResult.has("valueRef"):
+					#	result = getValueFromPath(possibleResult.valueRef)
+					#else:
+					#	result = possibleResult.value
+					result = getValue(possibleResult,"value")
+					break
+		"stringConcat":
+			result = ""
+			var keys = results.keys()
+			keys.sort_custom(SorterByIndexInt, "sort")
+			for key in keys:
+				var possibleResult = results[key]
+				if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+					#if possibleResult.has("valueCalc"):
+					#	result += parseText(possibleResult.valueCalc)
+					#elif possibleResult.has("valueRef"):
+					#	result += str(getValueFromPath(possibleResult.valueRef))
+					#else:
+					#	result += str(possibleResult.value)
+					result += str(getValue(possibleResult,"value",""))
+					#TODO: parse?
+		_:
+			logOut(["ResultMode ",resultMode," not supported in functionExecute"],"ERROR")
+	
+	functionParameters.pop_back()
+	return result
+
+func functionExecuteOld(function,arguments=[]):
+	logOut("Use of functionExecute is deprecated")
 	var result = null
 	#We have to do this here because if function.has("FOBJ"): might require FOBJs to be set up
 	arguments.invert()
 	for argument in arguments:
-		functionObjects.append(argument)
+		pass
+		#functionObjects.append(argument)
 	var argumentCount = arguments.size()
 	
 	if function.has("FOBJ"):
@@ -627,9 +679,11 @@ func functionExecute(function,arguments=[]):
 	
 		#We have to set up FOBJs again because new FOBJs have been added
 		for i in range(argumentCount):
-			functionObjects.pop_back()
+			#functionObjects.pop_back()
+			pass
 		for argument in arguments:
-			functionObjects.append(argument)
+			#functionObjects.append(argument)
+			pass
 		argumentCount = arguments.size()
 	
 	
@@ -711,22 +765,30 @@ func functionExecute(function,arguments=[]):
 					result += possibleResult.value
 					
 	for i in range(argumentCount):
-		functionObjects.pop_back()
+		#functionObjects.pop_back()
+		pass
 	
 	return result
 
-
+func functionParameter(pID:int):
+	var currentParameterSet = functionParameters.back()
+	if pID >= currentParameterSet.size():
+		logOut(["Invalid Function Parameter ID:",pID],"ERROR")
+		return null
+	return currentParameterSet[pID]
+	
 	
 func getObjectFromPath(path):
 	#if(path == "FOBJ"): return functionObjects[functionObjects.size()-1]
-	if(path == "FOBJ"): return getFOBJ(1)
+	#if(path == "FOBJ"): return getFOBJ(1)
 	if(path == "MiscData"): return MiscData
 	elif(path == "PlayerData"): return PlayerData
 	elif(path == "WorldData"): return WorldData
 	elif(path == "CurrentUi"): return CurrentUi
 	elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
 	#elif(path.begins_with("FOBJ")): return functionObjects[functionObjects.size()-int(path.substr(4,path.length()-4))]
-	elif(path.begins_with("FOBJ")): return getFOBJ(int(path.substr(4,path.length()-4)))
+	#elif(path.begins_with("FOBJ")): return getFOBJ(int(path.substr(4,path.length()-4)))
+	elif(path.begins_with("PARAM")): return functionParameter(int(path.substr(5,path.length()-5))-1)
 	return null
 
 func getModFolder(modID=""):
@@ -1408,6 +1470,9 @@ func loadConstantData():
 func detailsHide():
 	CurrentUi.UIGroup = "uiUpdate"
 	CurrentUi.ShowDetailsPC = false
+	
+	functionParameters.pop_back()
+	
 	updateUI()
 
 func detailsShow():
@@ -1425,8 +1490,10 @@ func detailsShow():
 		var modifierGroup = PlayerData.modifier[modifierGroupId]
 		for modifierId in modifierGroup:
 			var modifier = getModifier(modifierGroupId,modifierId)
-			modifier.description = parseText(modifier.description)
+			#modifier.description = parseText(modifier.description)
 			CurrentUi.ActiveModfiers[modifierGroupId].append(modifier)
+	
+	functionParameters.append([PlayerData])
 		
 	updateUI()
 	
@@ -1445,6 +1512,7 @@ func getMonthData(id):
 
 func modifiersCalculate(npcId):
 	
+	functionParameters.append([PlayerData])
 	var npc = getNPC(npcId)
 	
 	if !npc.has("modifier"): npc.modifier = {}
@@ -1471,7 +1539,9 @@ func modifiersCalculate(npcId):
 				logOut(["Con failed:",modifier.condition])
 		npc.property[modifierGroupId] = modSum*modMult
 		
-	MiscData.modifiersRecalc = false	
+	MiscData.modifiersRecalc = false
+	
+	functionParameters.pop_back()
 
 func loadModInfo(modId):
 	var result = {"name":modId,"description":"","version":0}
@@ -1537,9 +1607,9 @@ func executeCommands(commands):
 			TYPE_DICTIONARY:
 				for key in target:
 					var entry = target[key]
-					functionObjects.append(entry)
+					#functionObjects.append(entry)
 					executeCommands(subcommand)
-					functionObjects.pop_back()
+					#functionObjects.pop_back()
 		return result
 					
 	
@@ -1685,19 +1755,19 @@ func currentUIAppendRL(rl):
 			rl = Util.inherit(rl, parent)
 		if hasValue(rl,"values"):
 			var targetLocation = getLocation(getValue(rl,"locationId"))
-			functionObjects.append(targetLocation) #appending target of RL as FOBJ2
-			functionObjects.append(rl) #appending RL as FOBJ
+			#functionObjects.append(targetLocation) #appending target of RL as FOBJ2
+			#functionObjects.append(rl) #appending RL as FOBJ
 			var values = getValue(rl,"values",{})
 			rl = Util.inherit(rl, values)
-			functionObjects.pop_back()
-			functionObjects.pop_back()
+			#functionObjects.pop_back()
+			#functionObjects.pop_back()
 		#CurrentUi.RL.append(reachableLocationLink(rl))
 		CurrentUi.RL.append(rl)
 
 func executeLocation(location,omitStart=false,updateLocationId=true):
-	functionObjects.append(location)
+	#functionObjects.append(location)
 	executeLocationCommands(location,omitStart,updateLocationId)
-	functionObjects.pop_back()
+	#functionObjects.pop_back()
 		
 func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 	if !omitStart and location.has("onStart"):
@@ -1778,9 +1848,9 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 	updateUI()
 
 func executeWithFOBJ(commands,fobj):
-	functionObjects.append(fobj)
+	#functionObjects.append(fobj)
 	execute(commands)
-	functionObjects.pop_back()
+	#functionObjects.pop_back()
 
 func gameMenuHide():
 	CurrentUi.ShowGameMenu = false
@@ -1839,6 +1909,12 @@ func getEvent(cat,id):
 		logOut(["Event ",id," not found in ",cat],"ERROR")
 		return {}
 	return events[cat][id]
+	
+func getFunction(id):
+	if !functions.has(id):
+		logOut(["Function ",id," not found"],"ERROR")
+		return {}
+	return functions[id]
 
 func npcDialogOptionLink(option,linkSelf="DEFAULT"):
 	var targetArr = option.target.split(".")
