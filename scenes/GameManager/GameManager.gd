@@ -537,8 +537,46 @@ func getArgumentsFromString(s):
 		result.append(s.substr(start,end-start))
 	return result
 
+func pathArrayParase(path):
+	var arraySignOpenPos = path.find("[")
+	
+	if arraySignOpenPos >= 0:
+		var currentPos = arraySignOpenPos + 1
+		var nextArrayOpen
+		var nextArrayClose
+		var arraySignClosePos
+		
+		var counter = 0
+		
+		while counter < 50:
+			nextArrayOpen = path.find("[",currentPos)
+			nextArrayClose = path.find("]",currentPos)
+			
+			if nextArrayOpen == -1:
+				arraySignClosePos = nextArrayClose
+				break
+			elif nextArrayClose == -1:
+				logOut("Path Array malformed","ERROR")
+				return path
+			elif nextArrayOpen < nextArrayClose:
+				arraySignOpenPos = nextArrayOpen
+				currentPos = nextArrayOpen + 1
+			else:
+				arraySignClosePos = nextArrayClose
+				break
+			counter+= 1
+				
+		var innerString = Util.stringSubstrFromTo(path,arraySignOpenPos+1,arraySignClosePos-1)
+		var innerValue = getValueFromPath(innerString)
+		
+		path = Util.stringReplace(path,arraySignOpenPos,arraySignClosePos,"."+innerValue)
+				
+		return pathArrayParase(path)
+	return path
+
 func getValueFromPath(path,default=""):
-	if str(default) == "": default = path
+	var result = default
+	if str(default) == "": result = path
 	
 	if path.length() == 0: return default
 	
@@ -557,12 +595,17 @@ func getValueFromPath(path,default=""):
 			return int(path)
 		else:
 			return float(path)
+			
+			
+			
+	path = pathArrayParase(path)
+		
 	
 	if path[path.length()-1] == ")":
 		var paramStart = path.find("(")
 		if paramStart == -1:
 			logOut(["Path malformed:",path],"ERROR")
-			return default
+			return result
 		elif paramStart == 0:
 			return getValueFromPath(path.substr(1,path.length()-2),default)
 		else:
@@ -581,8 +624,8 @@ func getValueFromPath(path,default=""):
 	while(i < pathArr.size()):
 		cObj = getValue(cObj,pathArr[i])
 		if cObj == null:
-			logOut("ERROR loading "+path+" in "+str(tObj),"ERROR")
-			return default
+			if str(default) == "": logOut("ERROR loading "+path+" in "+str(tObj),"ERROR")
+			return result
 		i+=1
 		
 	return cObj
@@ -687,13 +730,21 @@ func getValueFromEquation(equation:String):
 	print("Result:"+str(result))
 	return result
 
-func getValueFromFunction(functionId,functionParameter:String = ""):
+func getValueFromFunction(functionId,functionParameter=null):
 	var currentParameters = []
-	if !functionParameter.empty():
-		var parameters = functionParameter.split(",")
-		for parameter in parameters:
-			var parameterValue = getValueFromPath(parameter)
-			currentParameters.append(parameterValue)
+	
+	match typeof(functionParameter):
+		TYPE_STRING:
+			var parameters = functionParameter.split(",")
+			for parameter in parameters:
+				var parameterValue = getValueFromPath(parameter)
+				currentParameters.append(parameterValue)
+		TYPE_ARRAY, TYPE_STRING_ARRAY, TYPE_INT_ARRAY:
+			currentParameters = functionParameter
+		TYPE_NIL:
+			pass
+		_:
+			currentParameters.append(functionParameter)
 	
 		
 	var result
@@ -753,12 +804,6 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 				for key in keys:
 					var possibleResult = results[key]
 					if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-						#if possibleResult.has("valueCalc"):
-						#	result = parseText(possibleResult.valueCalc)
-						#elif possibleResult.has("valueRef"):
-						#	result = getValueFromPath(possibleResult.valueRef)
-						#else:
-						#	result = possibleResult.value
 						result = getValue(possibleResult,"value")
 						break
 			"stringConcat":
@@ -768,18 +813,16 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 				for key in keys:
 					var possibleResult = results[key]
 					if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-						#if possibleResult.has("valueCalc"):
-						#	result += parseText(possibleResult.valueCalc)
-						#elif possibleResult.has("valueRef"):
-						#	result += str(getValueFromPath(possibleResult.valueRef))
-						#else:
-						#	result += str(possibleResult.value)
 						result += str(getValue(possibleResult,"value",""))
 						#TODO: parse?
 			_:
 				logOut(["ResultMode ",resultMode," not supported in functionExecute"],"ERROR")
 		
 	functionParameters.pop_back()
+	
+	if getValue(function,"stringFormat",false) == true:
+		result = Util.stringFormat(result)
+	
 	return result
 
 func functionExecuteOld(function,arguments=[]):
@@ -898,15 +941,12 @@ func functionParameter(pID:int):
 	
 	
 func getObjectFromPath(path):
-	#if(path == "FOBJ"): return functionObjects[functionObjects.size()-1]
-	#if(path == "FOBJ"): return getFOBJ(1)
 	if(path == "MiscData"): return MiscData
+	elif(path == "Misc"): return misc
 	elif(path == "PlayerData"): return PlayerData
 	elif(path == "WorldData"): return WorldData
 	elif(path == "CurrentUi"): return CurrentUi
 	elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
-	#elif(path.begins_with("FOBJ")): return functionObjects[functionObjects.size()-int(path.substr(4,path.length()-4))]
-	#elif(path.begins_with("FOBJ")): return getFOBJ(int(path.substr(4,path.length()-4)))
 	elif(path.begins_with("PARAM")): return functionParameter(int(path.substr(5,path.length()-5))-1)
 	return null
 
@@ -1013,7 +1053,7 @@ func shop(arguments):
 		
 		WorldData.shops[arguments.ID].items = possibleItems
 		
-		WorldData.shops[arguments.ID].validTil = GameManager.getValueFromPath(arguments.validTil)
+		WorldData.shops[arguments.ID].validTil = WorldData.Time+180#todo
 		print(WorldData.shops[arguments.ID].validTil)
 	
 	CurrentUi.UIGroup = "uiShop"

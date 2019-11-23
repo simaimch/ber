@@ -462,18 +462,18 @@ func regex(s):
 	reg.compile(s)
 	return reg
 
-func stringFormat(string):
+func stringFormat(string:String)->String:
 	var result = ""
-	var stringArr = string.split("^")
+	
+	var stringArr = string.split(".")
 	
 	for stringPart in stringArr:
 		var s = stringPart.strip_edges()
 		if !s.empty():
 			s[0] = s[0].to_upper()
-			if s[s.length()-1] != ".": s += "."
 			result += s
-		
-	
+			result += ". "
+			
 	return result
 	
 func stringEraseFromTo(s:String,from:int,to:int)->String:
@@ -490,6 +490,11 @@ func stringEraseFromTo(s:String,from:int,to:int)->String:
 	
 	result.erase(from,length)
 		
+	return result
+	
+func stringReplace(s:String,from:int,to:int,replaceWith:String)->String:
+	var result = stringEraseFromTo(s,from,to)
+	result = result.insert(from,replaceWith)
 	return result
 	
 func stringSubstrFromTo(s:String,from:int,to:int)->String:
