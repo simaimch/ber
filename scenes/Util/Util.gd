@@ -2,6 +2,14 @@ extends Control
 
 var rng = RandomNumberGenerator.new()
 
+var cache_regex
+var cache_texture
+
+func _ready():
+	cache_texture = Cache.new(funcref(self,"textureLoad"),200)
+	cache_regex = Cache.new(funcref(self,"regexLoad"),20)
+	
+
 func folderFromPath(path:String)->String:
 	var pathArr = path.split("/")
 	var fileName = pathArr[pathArr.size()-1]
@@ -234,6 +242,14 @@ func debug(msg,level):
 	
 func setDebugLevel(lvl):
 	debugLvl = lvl
+
+func arraySetAtIndex(array,index,value):
+	var entriesToAdd = index - array.size() +1
+	if entriesToAdd > 0:
+		for i in range(entriesToAdd):
+			array.append(null)
+	array[index]= value
+	return array
 	
 func bigger(a,b):
 	var ta = typeof(a)
@@ -467,6 +483,10 @@ func mergeInto(source,target,inplace = true):
 	return target
 
 func regex(s):
+	return cache_regex.get(s)
+
+func regexLoad(s):
+	print("REGEX ",s)
 	var reg = RegEx.new()
 	reg.compile(s)
 	return reg
@@ -519,8 +539,11 @@ func stringSubstrFromTo(s:String,from:int,to:int)->String:
 		return r2+r1
 		
 	return result.substr(from,length)
-		
+
 func texture(path):
+	return cache_texture.get(path)
+
+func textureLoad(path):	
 	var mods = GameManager.getActiveMods()
 	
 	for modId in mods:
@@ -533,9 +556,10 @@ func texture(path):
 			return texture
 			
 	if fileExists("res://media/"+path):
-		return load("res://media/"+path)
+		var texture = load("res://media/"+path)
+		return texture
 	
-	if fileExists(path):
+	elif fileExists(path):
 		var image = Image.new()
 		image.load(path)
 		var texture = ImageTexture.new()
@@ -544,7 +568,9 @@ func texture(path):
 		
 	GameManager.logOut(["Error loading texture: ",path])
 	
-	return preload("res://media/texture/missingTexture.jpg")
+	var texture = preload("res://media/texture/missingTexture.jpg")
+	return texture
+	 
 	
 func time(now,arg):
 	var nowDict = getDateTime(now)
