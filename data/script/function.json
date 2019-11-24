@@ -37,8 +37,8 @@
     "itemDescription":{
         "result":{
             "1000":{
-                "#value":"shoeDescription(Param1)",
-                "condition":"Param1.type='shoes'"
+                "#value":"shoeDescription(PARAM1)",
+                "condition":"PARAM1.type='shoes'"
             },
             "0":{"#value":"PARAM1.ID"}
         }
@@ -65,44 +65,34 @@
         }
     },
     "shoeDescription":{
-        "resultMode": "stringFormat",
-        "string":"^{lockable}{color}{shoetype}{heels}^{shoeDifficultyDiscriptionPC}",
+        "resultMode": "stringConcat",
+        "stringFormat": true,
         "result":{
-            "lockable":{
-                "value":"lockable ",
-                "condition":{
-                    "mode":"has",
-                    "target":"FOBJ",
-                    "index":"lockable"
-                }
+            "1000":{
+                "#value":"Misc.colors[PARAM1.color].name"
             },
-            "color":{
-                "valueCalc":"#?COLORNAME:FOBJ.color# ",
-                "condition":{
-                    "mode":"has",
-                    "target":"FOBJ",
-                    "index":"color"
-                }
+            "2000":{
+                "condition":"'shoe_pump' ⊆ PARAM1.parts",
+                "value":" high heels"
             },
-            "shoetype":{
-                "valueCalc":"#?shoeType:FOBJ# "
+            "2010":{
+                "condition":"'shoe_boot_overknee' ⊆ PARAM1.parts",
+                "value":" overknee boots"
             },
-            "heels":{
-                "valueCalc":"with #FOBJ.height# cm high heels ",
-                "condition":{
-                    "mode":"heq",
-                    "var":"FOBJ.type",
-                    "val":1
-                }
+            "2020":{
+                "condition":"'shoe_boot_ankle' ⊆ PARAM1.parts",
+                "value":" ankle boots"
             },
-            "shoeDifficultyDiscriptionPC":{
-                "valueCalc":"\n#?shoeDifficultyDiscriptionPC:FOBJ#",
-                "condition":{
-                    "mode":"eq",
-                    "var":"CurrentUi.ShowWearInformation",
-                    "val":true
-                }
+            "2030":{
+                "condition":"'shoe_boot_knee' ⊆ PARAM1.parts",
+                "value":" knee high boots"
+            },
+            "3000":{
+                "condition":"PARAM1.height>0",
+                "^value":" with #PARAM1.height# cm high heels."
             }
+
+            
         }
     },
     "shoeType":{

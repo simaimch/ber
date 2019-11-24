@@ -1258,7 +1258,7 @@ func checkConditionString(condition:String) -> bool:
 				return false
 	
 	var regex_identifier = "[a-zA-Z0-9'\\._\\-\\(\\)\\[\\],]+"
-	var regex_operator = "[><=]{1,2}|!=|€"
+	var regex_operator = "[><=]{1,2}|!=|€|⊆"
 	
 	
 	var regex_string_operator = "{ws}({identifier}){ws}({operator}){ws}({identifier}){ws}"
@@ -1343,6 +1343,8 @@ func checkConditionString(condition:String) -> bool:
 				return (Util.bigger(val2,val1) or Util.equals(val1,val2))
 			"!=","<>":
 				return !Util.equals(val1,val2)
+			"⊆":
+				return Util.isInArray(val1,val2)
 			_:
 				logOut(["Unsupported operator in checkConditionString:",operator],"ERROR")
 				return false

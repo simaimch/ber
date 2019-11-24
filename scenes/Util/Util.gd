@@ -323,6 +323,15 @@ func isImageFile(path):
 	return false
 		
 
+func isInArray(val,arr):
+	match typeof(arr):
+		TYPE_ARRAY:
+			pass
+		var typeArr:
+			return false
+	
+	return arr.has(val)
+
 func isInStr(a,b):
 	if typeof(a) != TYPE_STRING: return false
 	if typeof(b) == TYPE_STRING:
