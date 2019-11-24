@@ -68,19 +68,11 @@
         "result":{
             "10010":{
                 "value":"naked",
-                "condition":{
-                    "mode":"in",
-                    "var":"FOBJ.CURRENT.clothes",
-                    "val":["","naked",null]
-                }
+                "condition":"PARAM1.clothes=''"
             },
             "10000":{
                 "value":"barefoot",
-                "condition":{
-                    "mode":"in",
-                    "var":"FOBJ.CURRENT.shoes",
-                    "val":["","naked",null]
-                }
+                "condition":"PARAM1.shoes=''"
             },
             "0":{"value":"casual"}
         }

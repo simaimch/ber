@@ -29,8 +29,8 @@
         "actions":{
             "foreach":{
                 "iterate": "PlayerData.body.hair",
-                "FOBJ":{
-                    "length":{"mode":"inc","#value":"FOBJ.growth"}
+                "PARAM1":{
+                    "length":{"mode":"inc","#value":"PARAM1.growth"}
                 }
 
             }
@@ -41,7 +41,7 @@
         "arguments":"*",
         "actions":{
             "PlayerData":{
-                "outfit.CURRENT_TYPE":{"mode":"set","%value":"?outfitType:PlayerData.outfit"}
+                "outfit.CURRENT_TYPE":{"mode":"set","#value":"outfitType(PlayerData.outfit.CURRENT)"}
             }
         }
     },

@@ -652,7 +652,7 @@ func getValueFromEquation(equation:String):
 	result = regex_brakcets.search(equation)
 	
 	if result:
-		print("Brackets:"+equation)
+		#print("Brackets:"+equation)
 		var result_start = result.get_start()
 		var result_end = result.get_end()
 		
@@ -677,7 +677,7 @@ func getValueFromEquation(equation:String):
 	result = regex_addition.search(equation)
 	
 	if result:
-		print("Addition:"+equation)
+		#print("Addition:"+equation)
 		var result_start = result.get_start()
 		var result_end = result.get_end()
 		
@@ -696,12 +696,12 @@ func getValueFromEquation(equation:String):
 			"+": mathResult = n1+n2
 			"-": mathResult = n1-n2
 		
-		print("Add Result:"+str(mathResult))
+		#print("Add Result:"+str(mathResult))
 		
 		equation = Util.stringEraseFromTo(equation,result_start,result_end)
 		equation = equation.insert(result_start,str(mathResult))
 		
-		print("New Eq:"+equation)
+		#print("New Eq:"+equation)
 		
 		return getValueFromEquation(equation)
 	
@@ -714,7 +714,7 @@ func getValueFromEquation(equation:String):
 	result = regex_mult.search(equation)
 	
 	if result:
-		print("Mult:"+equation)
+		#print("Mult:"+equation)
 		var result_start = result.get_start()
 		var result_end = result.get_end()
 		
@@ -733,18 +733,18 @@ func getValueFromEquation(equation:String):
 			"*": mathResult = n1*n2
 			"/": mathResult = n1/n2
 		
-		print("Mult Result:"+str(mathResult))
+		#print("Mult Result:"+str(mathResult))
 		
 		equation = Util.stringEraseFromTo(equation,result_start,result_end)
 		equation = equation.insert(result_start,str(mathResult))
 		
-		print("New Eq:"+equation)
+		#print("New Eq:"+equation)
 		
 		return getValueFromEquation(equation)
 			
-	print("Not found:"+equation)
+	#print("Not found:"+equation)
 	result = getValueFromPath(equation)
-	print("Result:"+str(result))
+	#print("Result:"+str(result))
 	return result
 
 func getValueFromFunction(functionId,functionParameter=null):
@@ -1781,8 +1781,6 @@ func modifiersCalculate(npcId):
 				var mult = getValue(modifier,"modifierMult",1)
 				modSum += add
 				modMult*= mult
-			else:
-				logOut(["Con failed:",modifier.condition])
 		npc.property[modifierGroupId] = modSum*modMult
 		
 	MiscData.modifiersRecalc = false
@@ -1854,7 +1852,9 @@ func executeCommands(commands):
 				for key in target:
 					var entry = target[key]
 					#functionObjects.append(entry)
+					functionParameters.append([entry])
 					executeCommands(subcommand)
+					functionParameters.pop_back()
 					#functionObjects.pop_back()
 		return result
 					
@@ -1873,7 +1873,7 @@ func executeCommands(commands):
 			if typeof(text) == TYPE_ARRAY: text = PoolStringArray(text).join("\n")
 			CurrentUi.Text = parseText(text)
 		
-	for dataContainer in ["PlayerData","MiscData","FOBJ","WorldData"]:
+	for dataContainer in ["PlayerData","MiscData","PARAM1","WorldData"]:
 		result.modifiersRecalc = true
 		if commands.has(dataContainer):
 			var command = commands[dataContainer]
@@ -2095,10 +2095,16 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 		CurrentUi.LocationId = location.ID
 	updateUI()
 
-func executeWithFOBJ(commands,fobj):
+func executeWithParameter(commands,parameter):
+	match typeof(parameter):
+		TYPE_ARRAY:
+			functionParameters.append(parameter)
+		_:
+			functionParameters.append([parameter])
 	#functionObjects.append(fobj)
 	execute(commands)
 	#functionObjects.pop_back()
+	functionParameters.pop_back()
 
 func gameMenuHide():
 	CurrentUi.ShowGameMenu = false
@@ -2422,7 +2428,7 @@ func serviceBuy(serviceId):
 	if duration > 0 : timePass(duration,activity)
 	if service.has("price"): moneySpend(service.price)
 	if service.has("effects"): 
-		executeWithFOBJ(service.effects,service)
+		executeWithParameter(service.effects,service)
 	
 	if service.has("availableCountRef"):
 		var decrease = getValue(service,"availableCountDec",1)

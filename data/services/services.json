@@ -41,13 +41,10 @@
     "drink":{
         "isTemplate":true,
         "effects":{
-            "drink":{"#calories":"FOBJ.calories","#saturation":"FOBJ.saturation"},
+            "drink":{"#calories":"PARAM1.calories","#saturation":"PARAM1.saturation"},
             "interrupt":{
-                "#bg":"FOBJ.texture",
-                "%text":{
-                    "resultMode": "stringParse",
-                    "string":"^You sit down to drink your #FOBJ.name#^"
-                },
+                "#bg":"PARAM1.texture",
+                "^text":"You sit down to drink your #PARAM1.name#.",
                 "inherit": "interrupt"
             }
         }
@@ -55,13 +52,10 @@
     "food":{
         "isTemplate":true,
         "effects":{
-            "eat":{"#calories":"FOBJ.calories","#saturation":"FOBJ.saturation"},
+            "eat":{"#calories":"PARAM1.calories","#saturation":"PARAM1.saturation"},
             "interrupt":{
-                "#bg":"FOBJ.texture",
-                "%text":{
-                    "resultMode": "stringParse",
-                    "string":"^You sit down to eat your #FOBJ.name#^"
-                },
+                "#bg":"PARAM1.texture",
+                "^text":"You sit down to eat your #PARAM1.name#.",
                 "inherit": "interrupt"
             }
         }
