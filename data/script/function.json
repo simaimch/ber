@@ -1,13 +1,10 @@
 {
     "langIsAre":{
+        "param":["OBJECT"],
         "result":{
             "1000":{
                 "value": "are",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ.ID",
-                    "valRef":"PlayerData.ID"
-                }
+                "condition":"PARAM1.ID=PlayerData.ID"
             },
             "0":{
                 "value": "is"
@@ -15,14 +12,11 @@
         }
     },
     "langPluralS":{
+        "param":["INT"],
         "result":{
             "1000":{
                 "value": "",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ",
-                    "val":1
-                }
+                "condition":"PARAM1=i'1'"
             },
             "0":{
                 "value": "s"
@@ -32,133 +26,88 @@
     "usedName":{
         "result":{
             "1000":{
-                "value": "you",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ.ID",
-                    "valRef":"PlayerData.ID"
-                }
+                "value":"you",
+                "condition":"PARAM1.ID=PlayerData.ID"
             },
             "0":{
-                "valueRef": "FOBJ.name.first"
+                "#value":"PARAM1.name.first"
             }
         }
     },
     "itemDescription":{
         "result":{
             "1000":{
-                "valueCalc":"#?shoeDescription:FOBJ#",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ.type",
-                    "val":"shoes"
-                }
+                "#value":"shoeDescription(PARAM1)",
+                "condition":"PARAM1.type='shoes'"
             },
-            "0":{"valueRef":"FOBJ.ID"}
+            "0":{"#value":"PARAM1.ID"}
+        }
+    },
+    "itemDescriptionWear":{
+        "resultMode": "stringConcat",
+        "stringFormat": true,
+        "result":{
+            "1000":{
+                "#value":"itemDescription(PARAM1)"
+            },
+            "2000":{
+                "#value":"wearDescription(PARAM1,PARAM2)"
+            }
+        }
+    },
+    "wearDescription":{
+        "result":{
+            "1000":{
+                "#value":"shoeWearDescription(PARAM1,PARAM2)",
+                "condition":"PARAM1.type='shoes'"
+            },
+            "0":{"#value":"PARAM1.ID"}
         }
     },
     "outfitType":{
         "result":{
             "10010":{
                 "value":"naked",
-                "condition":{
-                    "mode":"in",
-                    "var":"FOBJ.CURRENT.clothes",
-                    "val":["","naked",null]
-                }
+                "condition":"PARAM1.clothes=''"
             },
             "10000":{
                 "value":"barefoot",
-                "condition":{
-                    "mode":"in",
-                    "var":"FOBJ.CURRENT.shoes",
-                    "val":["","naked",null]
-                }
+                "condition":"PARAM1.shoes=''"
             },
             "0":{"value":"casual"}
         }
     },
     "shoeDescription":{
-        "resultMode": "stringFormat",
-        "string":"^{lockable}{color}{shoetype}{heels}^{shoeDifficultyDiscriptionPC}",
+        "resultMode": "stringConcat",
+        "stringFormat": true,
         "result":{
-            "lockable":{
-                "value":"lockable ",
-                "condition":{
-                    "mode":"has",
-                    "target":"FOBJ",
-                    "index":"lockable"
-                }
+            "1000":{
+                "#value":"Misc.colors[PARAM1.color].name"
             },
-            "color":{
-                "valueCalc":"#?COLORNAME:FOBJ.color# ",
-                "condition":{
-                    "mode":"has",
-                    "target":"FOBJ",
-                    "index":"color"
-                }
+            "2000":{
+                "condition":"'shoe_pump' ⊆ PARAM1.parts",
+                "value":" high heels"
             },
-            "shoetype":{
-                "valueCalc":"#?shoeType:FOBJ# "
+            "2010":{
+                "condition":"'shoe_boot_overknee' ⊆ PARAM1.parts",
+                "value":" overknee boots"
             },
-            "heels":{
-                "valueCalc":"with #FOBJ.height# cm high heels ",
-                "condition":{
-                    "mode":"heq",
-                    "var":"FOBJ.type",
-                    "val":1
-                }
+            "2020":{
+                "condition":"'shoe_boot_ankle' ⊆ PARAM1.parts",
+                "value":" ankle boots"
             },
-            "shoeDifficultyDiscriptionPC":{
-                "valueCalc":"\n#?shoeDifficultyDiscriptionPC:FOBJ#",
-                "condition":{
-                    "mode":"eq",
-                    "var":"CurrentUi.ShowWearInformation",
-                    "val":true
-                }
+            "2030":{
+                "condition":"'shoe_boot_knee' ⊆ PARAM1.parts",
+                "value":" knee high boots"
+            },
+            "3000":{
+                "condition":"PARAM1.height>0",
+                "^value":" with #PARAM1.height# cm high heels"
+            },
+            "10000":{
+                "value":"."
             }
-        }
-    },
-    "shoeType":{
-        "resultMode": "has",
-        "target": "FOBJ.parts",
-        "result":{
-            "5000":["shoe_pump",        "pumps"],
-            "4900":["shoe_stiletto",    "stilettos"],
-            "4800":["shoe_anklestrap",  "ankle strap pumps"],
-            "4700":["shoe_platformpump","platform pumps"],
-            "4600":["shoe_peeptoe",     "peeptoe pumps"],
-            "4500":["shoe_slingbackpump","slingback pumps"],
-            "4400":["shoe_dorsaypump",  "d'Orsay pumps"],
-            "4300":["shoe_kitten",      "kitten heels"],
-            "4200":["shoe_maryjane",    "mary janes"],
-            "4100":["shoe_tstrapplatform","T-Strap platforms"],
-            "4000":["shoe_wedgepump",   "wedge pumps"],
-            "3900":["shoe_wedgesandal", "wedge sandals"],
-            "3800":["shoe_wedgebootie", "wedge booties"],
-            "3700":["shoe_slingbackwedge","slingback wedges"],
-            "3600":["shoe_anklebootie", "ankle booties"],
-            "3500":["shoe_mule",        "mules"],
-            "3400":["shoe_litaboot",    "lita boots"],
-            "3300":["shoe_saddle",      "saddle shoes"],
-            "3200":["shoe_sneaker",     "sneakers"],
-            "3100":["shoe_highhopsneaker","high-hop sneakers"],
-            "3000":["shoe_hiking",      "hiking boots"],
-            "2900":["shoe_chelsea",     "chelsea boots"],
-            "2800":["shoe_wingtip",     "wingtips"],
-            "2700":["shoe_oxford",      "oxfords"],
-            "2600":["shoe_pennyloafer", "penny loafers"],
-            "2500":["shoe_boatshoe",    "boat shoes"],
-            "2400":["shoe_slipon",      "slipons"],
-            "2300":["shoe_moccasin",    "moccasins"],
-            "2200":["shoe_clog",        "clogs"],
-            "2100":["shoe_flipflop",    "flip-flops"],
-            "2000":["shoe_thong",       "thongs"],
-            "1900":["shoe_gladiator",   "gladiator sandals"],
-            "1800":["shoe_dorsayflat",  "d'Orsay flats"],
-            "1700":["shoe_balletflat",  "ballet flats"],
-            "1600":["shoe_espadrille",  "espadrilles"],
-            "0":[null,"shoes"]
+            
         }
     },
     "shoeDifficulty":{
@@ -166,108 +115,73 @@
         "result":{
             "3":{
                 "value":1,
-                "condition":{
-                    "mode":"heq",
-                    "var":"FOBJ.height",
-                    "val":"3"
-                }
+                "condition":"PARAM1.height>=3"
             },
             "6":{
                 "value":1,
-                "condition":{
-                    "mode":"heq",
-                    "var":"FOBJ.height",
-                    "val":"6"
-                }
+                "condition":"PARAM1.height>=6"
             },
             "9":{
                 "value":1,
-                "condition":{
-                    "mode":"heq",
-                    "var":"FOBJ.height",
-                    "val":"9"
-                }
+                "condition":"PARAM1.height>=9"
             },
             "12":{
                 "value":1,
-                "condition":{
-                    "mode":"heq",
-                    "var":"FOBJ.height",
-                    "val":"12"
-                }
+                "condition":"PARAM1.height>=12"
             },
             "15":{
                 "value":1,
-                "condition":{
-                    "mode":"heq",
-                    "var":"FOBJ.height",
-                    "val":"15"
-                }
+                "condition":"PARAM1.height>=15"
             },
             "18":{
                 "value":1,
-                "condition":{
-                    "mode":"heq",
-                    "var":"FOBJ.height",
-                    "val":"18"
-                }
+                "condition":"PARAM1.height>=18"
+            }
+        }
+    },
+    "shoeWearDescription":{
+        "params":{
+            "3":{"&value":"shoeDifficulty(PARAM1)-PARAM2.skill.heels"}
+        },
+        "resultMode": "stringConcat",
+        "result":{
+            "1000":{
+                "#value":"shoeDifficultyDiscriptionPC(PARAM3)"
             }
         }
     },
     "shoeDifficultyDiscriptionPC":{
-        "FOBJ":["?SUB:(?shoeDifficulty:FOBJ):PlayerData.skill.heels"],
         "result":{
             "600":{
                 "value": "You can't walk in these shoes. If you put them on you have to crawl.",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ2",
-                    "val":6
-                }
+                "condition":"PARAM1>=6"
             },
             "500":{
                 "value": "You can merely stand in this shoes. Walking will be extremely difficult.",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ2",
-                    "val":5
-                }
+                "condition":"PARAM1=5"
             },
             "400":{
                 "value": "You can only walk very slowly in these shoes and the risk of stumbling is high.",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ2",
-                    "val":4
-                }
+                "condition":"PARAM1=4"
             },
             "300":{
                 "value": "You can walk slowly in these shoes.",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ2",
-                    "val":3
-                }
+                "condition":"PARAM1=3"
             },
             "200":{
                 "value": "You can walk at a slightly slower than normal pace in these shoes.",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ2",
-                    "val":2
-                }
+                "condition":"PARAM1=2"
             },
             "100":{
                 "value": "You can walk normally in these shoes.",
-                "condition":{
-                    "mode":"eq",
-                    "var":"FOBJ2",
-                    "val":1
-                }
+                "condition":"PARAM1=1"
             },
             "0":{
                 "value": "You have no problem walking in these shoes."
             }
         }
+    },
+    "timeofday":{
+        "&value":"PARAM1.hour*100+PARAM1.minute"
     }
 }

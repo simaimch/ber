@@ -54,7 +54,7 @@
         "rlTexture":"texture/locations/kebab/kebabHouse.jpg",
         "text":"Kabab House",
         "label":"Kabab House",
-        "timeOpen":{"start":"10:00","end":"02:00"},
+        "timeOpen":{"start":1000,"end":200},
         "rl":[
             {
                 "locationId":"SELF",

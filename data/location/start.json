@@ -12,6 +12,7 @@
             "body.hair.legs.growth": 250,
             "gender":"f",
             "skill.heels": 3,
+            "stat.hygiene_body.current": 0,
             "trait.genes.appearance":7
         },
         

@@ -2,6 +2,14 @@ extends Control
 
 var rng = RandomNumberGenerator.new()
 
+var cache_regex
+var cache_texture
+
+func _ready():
+	cache_texture = Cache.new(funcref(self,"textureLoad"),200)
+	cache_regex = Cache.new(funcref(self,"regexLoad"),20)
+	
+
 func folderFromPath(path:String)->String:
 	var pathArr = path.split("/")
 	var fileName = pathArr[pathArr.size()-1]
@@ -234,6 +242,14 @@ func debug(msg,level):
 	
 func setDebugLevel(lvl):
 	debugLvl = lvl
+
+func arraySetAtIndex(array,index,value):
+	var entriesToAdd = index - array.size() +1
+	if entriesToAdd > 0:
+		for i in range(entriesToAdd):
+			array.append(null)
+	array[index]= value
+	return array
 	
 func bigger(a,b):
 	var ta = typeof(a)
@@ -322,6 +338,15 @@ func isImageFile(path):
 		"png": return true
 	return false
 		
+
+func isInArray(val,arr):
+	match typeof(arr):
+		TYPE_ARRAY:
+			pass
+		var typeArr:
+			return false
+	
+	return arr.has(val)
 
 func isInStr(a,b):
 	if typeof(a) != TYPE_STRING: return false
@@ -458,26 +483,67 @@ func mergeInto(source,target,inplace = true):
 	return target
 
 func regex(s):
+	return cache_regex.get(s)
+
+func regexLoad(s):
+	print("REGEX ",s)
 	var reg = RegEx.new()
 	reg.compile(s)
 	return reg
 
-func stringFormat(string):
+func stringFormat(string:String)->String:
 	var result = ""
-	var stringArr = string.split("^")
+	
+	var stringArr = string.split(".")
 	
 	for stringPart in stringArr:
 		var s = stringPart.strip_edges()
 		if !s.empty():
 			s[0] = s[0].to_upper()
-			if s[s.length()-1] != ".": s += "."
 			result += s
-		
-	
+			result += ". "
+			
 	return result
 	
+func stringEraseFromTo(s:String,from:int,to:int)->String:
+	var result = s
+	var length
+	if to == -1:
+		length = s.length() - from
+	elif to >= from:
+		length = to - from + 1
+	else:
+		result = stringEraseFromTo(s,from,-1)
+		result = stringEraseFromTo(result,0,to)
+		return result
+	
+	result.erase(from,length)
 		
+	return result
+	
+func stringReplace(s:String,from:int,to:int,replaceWith:String)->String:
+	var result = stringEraseFromTo(s,from,to)
+	result = result.insert(from,replaceWith)
+	return result
+	
+func stringSubstrFromTo(s:String,from:int,to:int)->String:
+	var result = s
+	var length
+	if to == -1:
+		length = s.length() - from
+	elif to >= from:
+		length = to - from + 1
+	else:
+		var r1 = stringSubstrFromTo(s,from,-1)
+		var r2 = stringSubstrFromTo(s,0,to)
+		return r2+r1
+		
+	return result.substr(from,length)
+
 func texture(path):
+	return cache_texture.get(path)
+
+func textureLoad(path):	
 	var mods = GameManager.getActiveMods()
 	
 	for modId in mods:
@@ -490,9 +556,10 @@ func texture(path):
 			return texture
 			
 	if fileExists("res://media/"+path):
-		return load("res://media/"+path)
+		var texture = load("res://media/"+path)
+		return texture
 	
-	if fileExists(path):
+	elif fileExists(path):
 		var image = Image.new()
 		image.load(path)
 		var texture = ImageTexture.new()
@@ -501,7 +568,9 @@ func texture(path):
 		
 	GameManager.logOut(["Error loading texture: ",path])
 	
-	return preload("res://media/texture/missingTexture.jpg")
+	var texture = preload("res://media/texture/missingTexture.jpg")
+	return texture
+	 
 	
 func time(now,arg):
 	var nowDict = getDateTime(now)

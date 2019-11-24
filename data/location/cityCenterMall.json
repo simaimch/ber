@@ -3,7 +3,7 @@
     "label":"Mall (exterior)",
     "npcs": true,
     "text":"The exterior of a mall.",
-    "timeOpen":{"start":"9:30","end":"21:30"},
+    "timeOpen":{"start":930,"end":2130},
     "rl":[
         {
             "locationId":"cityCenter",

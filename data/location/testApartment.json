@@ -47,8 +47,7 @@
     "bed":{
         "label":"Bedroom",
         "%text":{
-            "resultMode": "stringFormat",
-            "string":"^{base}^{alarmclock}{alarmclockTime}^{alarmClockOnOff}{alarmClockOn}{alarmClockOff}^",
+            "resultMode": "stringConcat",
             "result":{
                 "base":{
                     "value":"this is your bedroom "

@@ -113,6 +113,7 @@ var Preferences = {
 var dialogues = {}
 var events = {}
 var functions = {}
+
 var items = {}
 var locations = {}
 var misc = {}
@@ -122,7 +123,8 @@ var services = {}
 var themes = {}
 #var skills = {}
 
-var functionObjects = []
+var functionParameters = []
+#var functionObjects = []
 
 var folderRoot:String setget , getRootFolder
 var folderMod:String setget , getModFolder
@@ -376,8 +378,11 @@ func getValue(obj, index, default = null):
 	var cindex = "~"+index # pick first entry with valid condition
 	var findex = "%"+index # compute using a function
 	var lindex = ">"+index # use a list
+	var mindex = "&"+index # it's math
 	var rindex = "#"+index # the value is a reference, look it up
 	var ranindex="|"+index # the value is taken from a random list
+	var sindex = "^"+index # the value is a string that needs to be parsed
+	
 	if index in obj:
 		return obj[index]
 	elif cindex in obj:
@@ -403,10 +408,14 @@ func getValue(obj, index, default = null):
 				return functionExecute(obj[findex])
 	elif obj.has(lindex):
 		return getValueFromList(obj[lindex])
+	elif obj.has(mindex):
+		return getValueFromEquation(obj[mindex])
 	elif obj.has(rindex):
 		return getValueFromPath(obj[rindex])
 	elif obj.has(ranindex):
 		pass
+	elif obj.has(sindex):
+		return parseText(obj[sindex])
 	elif obj.has("persist"):
 		return getValue(obj.persist,index,default)
 	
@@ -526,28 +535,83 @@ func getArgumentsFromString(s):
 		result.append(s.substr(start,end-start))
 	return result
 
-func getValueFromPath(path,default=""):
-	if path[0] == "'" and path[path.length()-1] == "'": #it's a literal string
-		return path.substr(1,path.length()-2)
+func pathArrayParase(path):
+	var arraySignOpenPos = path.find("[")
+	
+	if arraySignOpenPos >= 0:
+		var currentPos = arraySignOpenPos + 1
+		var nextArrayOpen
+		var nextArrayClose
+		var arraySignClosePos
 		
-	if path[1] == "'" and path[0] == "i" and path[path.length()-1] == "'": #it's a literal integer
-		return int(path.substr(2,path.length()-3))
+		var counter = 0
 		
-	if path[1] == "'" and path[0] == "f" and path[path.length()-1] == "'": #it's a literal float
-		return float(path.substr(2,path.length()-3))
-		
+		while counter < 50:
+			nextArrayOpen = path.find("[",currentPos)
+			nextArrayClose = path.find("]",currentPos)
 			
+			if nextArrayOpen == -1:
+				arraySignClosePos = nextArrayClose
+				break
+			elif nextArrayClose == -1:
+				logOut("Path Array malformed","ERROR")
+				return path
+			elif nextArrayOpen < nextArrayClose:
+				arraySignOpenPos = nextArrayOpen
+				currentPos = nextArrayOpen + 1
+			else:
+				arraySignClosePos = nextArrayClose
+				break
+			counter+= 1
+				
+		var innerString = Util.stringSubstrFromTo(path,arraySignOpenPos+1,arraySignClosePos-1)
+		var innerValue = getValueFromPath(innerString)
+		
+		path = Util.stringReplace(path,arraySignOpenPos,arraySignClosePos,"."+innerValue)
+				
+		return pathArrayParase(path)
+	return path
+
+func getValueFromPath(path,default=""):
+	var result = default
+	if str(default) == "": result = path
 	
-	if path[0] == "?":
-		#Call a function
-		var functionArr = path.split(":",false,1)
-		var functionId = functionArr[0].substr(1,functionArr[0].length()-1)
-		if functionArr.size()>1:
-			return getValueFromFunction(functionId,functionArr[1])
+	if path.length() == 0: return default
+	
+	if path.length() >= 2 and path[0] == "'" and path[path.length()-1] == "'": #it's a literal string
+		return path.substr(1,path.length()-2)
+	
+	if path.length() >= 3:
+		if path[1] == "'" and path[0] == "i" and path[path.length()-1] == "'": #it's a literal integer
+			return int(path.substr(2,path.length()-3))
+			
+		if path[1] == "'" and path[0] == "f" and path[path.length()-1] == "'": #it's a literal float
+			return float(path.substr(2,path.length()-3))
+	
+	if path[0] in ["0","1","2","3","4","5","6","7","8","9"]:
+		if path.find(".") == -1:
+			return int(path)
 		else:
-			return getValueFromFunction(functionId)
+			return float(path)
+			
+			
+			
+	path = pathArrayParase(path)
+		
 	
-	if str(default) == "": default = path
+	if path[path.length()-1] == ")":
+		var paramStart = path.find("(")
+		if paramStart == -1:
+			logOut(["Path malformed:",path],"ERROR")
+			return result
+		elif paramStart == 0:
+			return getValueFromPath(path.substr(1,path.length()-2),default)
+		else:
+			var functionId = path.substr(0,paramStart)
+			var params = path.substr(paramStart+1,path.length()-paramStart-2)
+			return getValueFromFunction(functionId,params)
+	
+	
 	
 	var pathArr = path.split(".")
 	var i = 0
@@ -558,17 +622,157 @@ func getValueFromPath(path,default=""):
 	while(i < pathArr.size()):
 		cObj = getValue(cObj,pathArr[i])
 		if cObj == null:
-			logOut("ERROR loading "+path,"ERROR")
-			return default
+			if str(default) == "": logOut("ERROR loading "+path+" in "+str(tObj),"ERROR")
+			return result
 		i+=1
 		
 	return cObj
 	
-func getFOBJ(index):
-	return functionObjects[functionObjects.size()-index]
+#func getFOBJ(index):
+	#return functionObjects[functionObjects.size()-index]
 
-#func getValueFromFunction(functionId,functionObj):
-func getValueFromFunction(functionId,functionParameter=""):
+func getValueFromEquation(equation:String):
+	var result
+	
+	var regex_dict = {}
+	
+	#var regex_whitespace = "\\s*"
+	regex_dict["ws"] = "\\s*"
+	#var regex_bracket_open = "\\("
+	regex_dict["bo"] = "\\("
+	var regex_bracket_close = "\\)"
+	regex_dict["bc"] = "\\)"
+	var regex_operator = "[\\-\\+\\*\\/]"
+	regex_dict["op"] = "[\\-\\+\\*\\/]"
+	var rBrackets = "{ws}{bo}{ws}{op}{ws}([^{bc}{bo}]+){ws}{bc}{ws}" # \s*\(\s*([^\)\(]+)\s*\)\s*
+	rBrackets = rBrackets.format(regex_dict)
+	
+	var regex_brakcets = Util.regex(rBrackets)
+	
+	result = regex_brakcets.search(equation)
+	
+	if result:
+		#print("Brackets:"+equation)
+		var result_start = result.get_start()
+		var result_end = result.get_end()
+		
+		var result_strings = result.get_strings()
+		var result_string = result_strings[1]
+		
+		var valueInBrackets = str(getValueFromEquation(result_string))
+		
+		equation = Util.stringEraseFromTo(equation,result_start,result_end)
+		equation = equation.insert(result_start,valueInBrackets)
+		return getValueFromEquation(equation)
+	
+	#var regex_addsub = "+-"
+	regex_dict["opAS"] = "[+-]"
+	regex_dict["ref"] =  "[^{bc}{bo}]+|\\w+{bo}.*{bc}".format(regex_dict)
+	
+	var rAddition = "{ws}({ref}){ws}({opAS}){ws}({ref}){ws}" 
+	rAddition = rAddition.format(regex_dict)
+	
+	
+	var regex_addition = Util.regex(rAddition)
+	result = regex_addition.search(equation)
+	
+	if result:
+		#print("Addition:"+equation)
+		var result_start = result.get_start()
+		var result_end = result.get_end()
+		
+		var result_strings = result.get_strings()
+		var result_ns1 = result_strings[1]
+		var result_ns2 = result_strings[3]
+		
+		var n1 = float(getValueFromEquation(result_ns1))
+		var n2 = float(getValueFromEquation(result_ns2))
+		
+		var result_op = result_strings[2]
+		
+		var mathResult = 0
+		
+		match result_op:
+			"+": mathResult = n1+n2
+			"-": mathResult = n1-n2
+		
+		#print("Add Result:"+str(mathResult))
+		
+		equation = Util.stringEraseFromTo(equation,result_start,result_end)
+		equation = equation.insert(result_start,str(mathResult))
+		
+		#print("New Eq:"+equation)
+		
+		return getValueFromEquation(equation)
+	
+	regex_dict["opMD"] = "[*\\/]"
+	
+	var rMult = "{ws}({ref}){ws}({opMD}){ws}({ref}){ws}" 
+	rMult = rMult.format(regex_dict)
+	
+	var regex_mult = Util.regex(rMult)
+	result = regex_mult.search(equation)
+	
+	if result:
+		#print("Mult:"+equation)
+		var result_start = result.get_start()
+		var result_end = result.get_end()
+		
+		var result_strings = result.get_strings()
+		var result_ns1 = result_strings[1]
+		var result_ns2 = result_strings[3]
+		
+		var n1 = float(getValueFromEquation(result_ns1))
+		var n2 = float(getValueFromEquation(result_ns2))
+		
+		var result_op = result_strings[2]
+		
+		var mathResult = 0
+		
+		match result_op:
+			"*": mathResult = n1*n2
+			"/": mathResult = n1/n2
+		
+		#print("Mult Result:"+str(mathResult))
+		
+		equation = Util.stringEraseFromTo(equation,result_start,result_end)
+		equation = equation.insert(result_start,str(mathResult))
+		
+		#print("New Eq:"+equation)
+		
+		return getValueFromEquation(equation)
+			
+	#print("Not found:"+equation)
+	result = getValueFromPath(equation)
+	#print("Result:"+str(result))
+	return result
+
+func getValueFromFunction(functionId,functionParameter=null):
+	var currentParameters = []
+	
+	match typeof(functionParameter):
+		TYPE_STRING:
+			var parameters = functionParameter.split(",")
+			for parameter in parameters:
+				var parameterValue = getValueFromPath(parameter)
+				currentParameters.append(parameterValue)
+		TYPE_ARRAY, TYPE_STRING_ARRAY, TYPE_INT_ARRAY:
+			currentParameters = functionParameter
+		TYPE_NIL:
+			pass
+		_:
+			currentParameters.append(functionParameter)
+	
+		
+	var result
+	
+	var function = getFunction(functionId)
+	result = functionExecute(function,currentParameters)
+	
+	return result
+	
+
+func getValueFromFunctionOld(functionId,functionParameter=""):
 	var result = null
 	if functionId == "INT":
 		return int(functionParameter)
@@ -597,12 +801,97 @@ func getValueFromFunction(functionId,functionParameter=""):
 	
 	return result
 
-func functionExecute(function,arguments=[]):
+func functionExecute(function:Dictionary,currentParameters=[]):
+	var result = null
+	
+	var paramTypes = getValue(function,"paramTypes",null)
+	if paramTypes:
+		match typeof(paramTypes):
+			TYPE_ARRAY:
+				for i in range(paramTypes.size()):
+					if i >= currentParameters.size():
+						match paramTypes[i]:
+							"BOOL":
+								currentParameters[i] = false
+							"FLOAT":
+								currentParameters[i] = 0.0
+							"INT":
+								currentParameters[i] = 0
+							"STRING":
+								currentParameters[i] = ""
+			var typeParamTypes:
+				logOut(["Unknown type of paramTypes ",typeParamTypes, " in ",function],"ERROR")
+			
+	functionParameters.append(currentParameters)		
+	
+	var paramsInFunction = getValue(function,"params",null)
+	if paramsInFunction:
+		match typeof(paramsInFunction):
+			TYPE_DICTIONARY:
+				var paramKeys = paramsInFunction.keys()
+				for paramKey in paramKeys:
+					var index = int(paramKey)-1
+					var value = getValue(paramsInFunction[paramKey],"value")
+					#currentParameters = Util.arraySetAtIndex(currentParameters,index,value)
+					functionParameters[functionParameters.size()-1] = Util.arraySetAtIndex(functionParameters[functionParameters.size()-1],index,value)
+			var typeParams:
+				logOut(["Unknown type of params ",typeParams, " in ",function],"ERROR")
+	
+	
+	
+	
+	var value = getValue(function,"value",null)
+	
+	if value:
+		result = value
+	else:
+	
+		var resultMode = getValue(function,"resultMode","standard")
+		var results = getValue(function,"result",{})
+		
+		match resultMode:
+			"mathAdd":
+				result = 0
+				var keys = results.keys()
+				for key in keys:
+					var possibleResult = results[key]
+					if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+						result += getValue(possibleResult,"value")
+			"standard":
+				var keys = results.keys()
+				keys.sort_custom(SorterByIndexInt, "sortInv")
+				for key in keys:
+					var possibleResult = results[key]
+					if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+						result = getValue(possibleResult,"value")
+						break
+			"stringConcat":
+				result = ""
+				var keys = results.keys()
+				keys.sort_custom(SorterByIndexInt, "sort")
+				for key in keys:
+					var possibleResult = results[key]
+					if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+						result += str(getValue(possibleResult,"value",""))
+						#TODO: parse?
+			_:
+				logOut(["ResultMode ",resultMode," not supported in functionExecute"],"ERROR")
+		
+	functionParameters.pop_back()
+	
+	if getValue(function,"stringFormat",false) == true:
+		result = Util.stringFormat(result)
+	
+	return result
+
+func functionExecuteOld(function,arguments=[]):
+	logOut("Use of functionExecute is deprecated")
 	var result = null
 	#We have to do this here because if function.has("FOBJ"): might require FOBJs to be set up
 	arguments.invert()
 	for argument in arguments:
-		functionObjects.append(argument)
+		pass
+		#functionObjects.append(argument)
 	var argumentCount = arguments.size()
 	
 	if function.has("FOBJ"):
@@ -611,9 +900,11 @@ func functionExecute(function,arguments=[]):
 	
 		#We have to set up FOBJs again because new FOBJs have been added
 		for i in range(argumentCount):
-			functionObjects.pop_back()
+			#functionObjects.pop_back()
+			pass
 		for argument in arguments:
-			functionObjects.append(argument)
+			#functionObjects.append(argument)
+			pass
 		argumentCount = arguments.size()
 	
 	
@@ -695,22 +986,27 @@ func functionExecute(function,arguments=[]):
 					result += possibleResult.value
 					
 	for i in range(argumentCount):
-		functionObjects.pop_back()
+		#functionObjects.pop_back()
+		pass
 	
 	return result
 
-
+func functionParameter(pID:int):
+	var currentParameterSet = functionParameters.back()
+	if pID >= currentParameterSet.size():
+		logOut(["Invalid Function Parameter ID:",pID],"ERROR")
+		return null
+	return currentParameterSet[pID]
+	
 	
 func getObjectFromPath(path):
-	#if(path == "FOBJ"): return functionObjects[functionObjects.size()-1]
-	if(path == "FOBJ"): return getFOBJ(1)
 	if(path == "MiscData"): return MiscData
+	elif(path == "Misc"): return misc
 	elif(path == "PlayerData"): return PlayerData
 	elif(path == "WorldData"): return WorldData
 	elif(path == "CurrentUi"): return CurrentUi
 	elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
-	#elif(path.begins_with("FOBJ")): return functionObjects[functionObjects.size()-int(path.substr(4,path.length()-4))]
-	elif(path.begins_with("FOBJ")): return getFOBJ(int(path.substr(4,path.length()-4)))
+	elif(path.begins_with("PARAM")): return functionParameter(int(path.substr(5,path.length()-5))-1)
 	return null
 
 func getModFolder(modID=""):
@@ -816,7 +1112,7 @@ func shop(arguments):
 		
 		WorldData.shops[arguments.ID].items = possibleItems
 		
-		WorldData.shops[arguments.ID].validTil = GameManager.getValueFromPath(arguments.validTil)
+		WorldData.shops[arguments.ID].validTil = WorldData.Time+180#todo
 		print(WorldData.shops[arguments.ID].validTil)
 	
 	CurrentUi.UIGroup = "uiShop"
@@ -975,6 +1271,11 @@ func checkCondition(condition) -> bool:
 	return false
 	
 func checkConditionString(condition:String) -> bool:
+	
+	if condition[0] == "¬" and condition[1] == "(" and condition[condition.length()-1] == ")":
+		return !checkConditionString(condition.substr(2,condition.length()-3))
+	
+	
 	var result
 	
 	var regex_whitespace = "\\s*"
@@ -1016,7 +1317,7 @@ func checkConditionString(condition:String) -> bool:
 				return false
 	
 	var regex_identifier = "[a-zA-Z0-9'\\._\\-\\(\\)\\[\\],]+"
-	var regex_operator = "[><=]{1,2}|!=|€"
+	var regex_operator = "[><=]{1,2}|!=|€|⊆"
 	
 	
 	var regex_string_operator = "{ws}({identifier}){ws}({operator}){ws}({identifier}){ws}"
@@ -1045,25 +1346,46 @@ func checkConditionString(condition:String) -> bool:
 			var lowVal = getValueFromPath(setArr[0].substr(1,setArr[0].length()-1))
 			var highVal= getValueFromPath(setArr[1].substr(0,setArr[1].length()-1))
 			
-			match lowMode:
-				"(":
-					if Util.bigger(lowVal,val1) or Util.equals(lowVal,val1): return false
-				"[":
-					if Util.bigger(lowVal,val1): return false
-				_:
-					logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
-					return false
-					
-			match highMode:
-				")":
-					if Util.bigger(val1,highVal) or Util.equals(highVal,val1): return false
-				"]":
-					if Util.bigger(val1,highVal): return false
-				_:
-					logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
-					return false
+			if lowVal <= highVal:
+				match lowMode:
+					"(":
+						if Util.bigger(lowVal,val1) or Util.equals(lowVal,val1): return false
+					"[":
+						if Util.bigger(lowVal,val1): return false
+					_:
+						logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+						return false
+						
+				match highMode:
+					")":
+						if Util.bigger(val1,highVal) or Util.equals(highVal,val1): return false
+					"]":
+						if Util.bigger(val1,highVal): return false
+					_:
+						logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+						return false
+				return true
+			else:
+				#Example (10,5] means all values higher than 10 or lower or equal 5 are true
+				match lowMode:
+					"(":
+						if Util.bigger(val1,lowVal): return true
+					"[":
+						if Util.bigger(val1,lowVal) or Util.equals(lowVal,val1): return true
+					_:
+						logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+						return false
+						
+				match highMode:
+					")":
+						if Util.bigger(highVal,val1): return true
+					"]":
+						if Util.bigger(highVal,val1) or Util.equals(highVal,val1): return true
+					_:
+						logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+						return false
 			
-			return true
+				return false
 			
 		var val2 = getValueFromPath(id2)
 		
@@ -1080,6 +1402,8 @@ func checkConditionString(condition:String) -> bool:
 				return (Util.bigger(val2,val1) or Util.equals(val1,val2))
 			"!=","<>":
 				return !Util.equals(val1,val2)
+			"⊆":
+				return Util.isInArray(val1,val2)
 			_:
 				logOut(["Unsupported operator in checkConditionString:",operator],"ERROR")
 				return false
@@ -1392,6 +1716,9 @@ func loadConstantData():
 func detailsHide():
 	CurrentUi.UIGroup = "uiUpdate"
 	CurrentUi.ShowDetailsPC = false
+	
+	functionParameters.pop_back()
+	
 	updateUI()
 
 func detailsShow():
@@ -1409,8 +1736,10 @@ func detailsShow():
 		var modifierGroup = PlayerData.modifier[modifierGroupId]
 		for modifierId in modifierGroup:
 			var modifier = getModifier(modifierGroupId,modifierId)
-			modifier.description = parseText(modifier.description)
+			#modifier.description = parseText(modifier.description)
 			CurrentUi.ActiveModfiers[modifierGroupId].append(modifier)
+	
+	functionParameters.append([PlayerData])
 		
 	updateUI()
 	
@@ -1429,6 +1758,7 @@ func getMonthData(id):
 
 func modifiersCalculate(npcId):
 	
+	functionParameters.append([PlayerData])
 	var npc = getNPC(npcId)
 	
 	if !npc.has("modifier"): npc.modifier = {}
@@ -1451,11 +1781,11 @@ func modifiersCalculate(npcId):
 				var mult = getValue(modifier,"modifierMult",1)
 				modSum += add
 				modMult*= mult
-			else:
-				logOut(["Con failed:",modifier.condition])
 		npc.property[modifierGroupId] = modSum*modMult
 		
-	MiscData.modifiersRecalc = false	
+	MiscData.modifiersRecalc = false
+	
+	functionParameters.pop_back()
 
 func loadModInfo(modId):
 	var result = {"name":modId,"description":"","version":0}
@@ -1521,9 +1851,11 @@ func executeCommands(commands):
 			TYPE_DICTIONARY:
 				for key in target:
 					var entry = target[key]
-					functionObjects.append(entry)
+					#functionObjects.append(entry)
+					functionParameters.append([entry])
 					executeCommands(subcommand)
-					functionObjects.pop_back()
+					functionParameters.pop_back()
+					#functionObjects.pop_back()
 		return result
 					
 	
@@ -1541,7 +1873,7 @@ func executeCommands(commands):
 			if typeof(text) == TYPE_ARRAY: text = PoolStringArray(text).join("\n")
 			CurrentUi.Text = parseText(text)
 		
-	for dataContainer in ["PlayerData","MiscData","FOBJ","WorldData"]:
+	for dataContainer in ["PlayerData","MiscData","PARAM1","WorldData"]:
 		result.modifiersRecalc = true
 		if commands.has(dataContainer):
 			var command = commands[dataContainer]
@@ -1669,19 +2001,21 @@ func currentUIAppendRL(rl):
 			rl = Util.inherit(rl, parent)
 		if hasValue(rl,"values"):
 			var targetLocation = getLocation(getValue(rl,"locationId"))
-			functionObjects.append(targetLocation) #appending target of RL as FOBJ2
-			functionObjects.append(rl) #appending RL as FOBJ
+			#functionObjects.append(targetLocation) #appending target of RL as FOBJ2
+			#functionObjects.append(rl) #appending RL as FOBJ
+			functionParameters.append([rl,targetLocation])
 			var values = getValue(rl,"values",{})
 			rl = Util.inherit(rl, values)
-			functionObjects.pop_back()
-			functionObjects.pop_back()
+			functionParameters.pop_back()
+			#functionObjects.pop_back()
+			#functionObjects.pop_back()
 		#CurrentUi.RL.append(reachableLocationLink(rl))
 		CurrentUi.RL.append(rl)
 
 func executeLocation(location,omitStart=false,updateLocationId=true):
-	functionObjects.append(location)
+	#functionObjects.append(location)
 	executeLocationCommands(location,omitStart,updateLocationId)
-	functionObjects.pop_back()
+	#functionObjects.pop_back()
 		
 func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 	if !omitStart and location.has("onStart"):
@@ -1761,10 +2095,16 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 		CurrentUi.LocationId = location.ID
 	updateUI()
 
-func executeWithFOBJ(commands,fobj):
-	functionObjects.append(fobj)
+func executeWithParameter(commands,parameter):
+	match typeof(parameter):
+		TYPE_ARRAY:
+			functionParameters.append(parameter)
+		_:
+			functionParameters.append([parameter])
+	#functionObjects.append(fobj)
 	execute(commands)
-	functionObjects.pop_back()
+	#functionObjects.pop_back()
+	functionParameters.pop_back()
 
 func gameMenuHide():
 	CurrentUi.ShowGameMenu = false
@@ -1823,6 +2163,12 @@ func getEvent(cat,id):
 		logOut(["Event ",id," not found in ",cat],"ERROR")
 		return {}
 	return events[cat][id]
+	
+func getFunction(id):
+	if !functions.has(id):
+		logOut(["Function ",id," not found"],"ERROR")
+		return {}
+	return functions[id]
 
 func npcDialogOptionLink(option,linkSelf="DEFAULT"):
 	var targetArr = option.target.split(".")
@@ -2082,7 +2428,7 @@ func serviceBuy(serviceId):
 	if duration > 0 : timePass(duration,activity)
 	if service.has("price"): moneySpend(service.price)
 	if service.has("effects"): 
-		executeWithFOBJ(service.effects,service)
+		executeWithParameter(service.effects,service)
 	
 	if service.has("availableCountRef"):
 		var decrease = getValue(service,"availableCountDec",1)
@@ -2130,17 +2476,17 @@ func servicesClose():
 func servicesUpdate():
 	services(CurrentUi.Services.type,CurrentUi.Services.category)
 	
-func stateInc(index,value):
+func stateInc(index:String,value:int):
 	stateSet(index, PlayerData.stat[index].current + value)
 	
-func stateSet(index,value):
+func stateSet(index:String,value:int):
 	value = min(max(value,0),10000)
 	PlayerData.stat[index].current = value
 	MiscData.modifiersRecalc = true
 
 
 
-func undress(slot):
+func undress(slot:String):
 	setItemWornAtSlot(slot,"")
 
 func weatherForecast(targetTimeDict:Dictionary,allowMeta = true):

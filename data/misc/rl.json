@@ -36,11 +36,7 @@
                     "disabled":true,
                     "tooltip": "This place is closed."
                 },
-                "condition":{
-                    "mode":"¬timeBetween",
-                    "var":"WorldData.TimeDict",
-                    "valRef":"FOBJ2.timeOpen"
-                }
+                "condition": "¬(timeofday(WorldData.TimeDict) € [PARAM2.timeOpen.start,PARAM2.timeOpen.end) )"
             }
         }
     }
