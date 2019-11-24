@@ -6,7 +6,7 @@ func showBuyDialogue(i):
 	item = i
 	$CenterContainer/VBoxContainer/ItemInfoContainer/TextureRect.texture = Util.texture(item.texture)
 	
-	$CenterContainer/VBoxContainer/ItemInfoContainer/DescriptionLabel.text = GameManager.getValueFromFunction("itemDescription",item)
+	$CenterContainer/VBoxContainer/ItemInfoContainer/DescriptionLabel.text = GameManager.getValueFromFunction("itemDescriptionWear",[item,GameManager.PlayerData])
 	
 	$CenterContainer/VBoxContainer/PriceLabel.text = Util.formatMoney(item.price)
 	

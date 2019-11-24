@@ -141,8 +141,6 @@ func _ready():
 	rng.randomize()
 	randomize()
 	
-	print(getValueFromEquation("19*2+3"))
-	
 func commandLine(c:String)->void:
 	if c[0] == "°":
 		logOut([checkConditionString(c.substr(1,c.length()-1))])
@@ -635,9 +633,19 @@ func getValueFromPath(path,default=""):
 
 func getValueFromEquation(equation:String):
 	var result
-	#var rNumber = "\\d+(.\\d+)?"
 	
-	var rBrackets = "\\s*\\(\\s*([^\\)\\(]+)\\s*\\)\\s*" # \s*\(\s*([^\)\(]+)\s*\)\s*
+	var regex_dict = {}
+	
+	#var regex_whitespace = "\\s*"
+	regex_dict["ws"] = "\\s*"
+	#var regex_bracket_open = "\\("
+	regex_dict["bo"] = "\\("
+	var regex_bracket_close = "\\)"
+	regex_dict["bc"] = "\\)"
+	var regex_operator = "[\\-\\+\\*\\/]"
+	regex_dict["op"] = "[\\-\\+\\*\\/]"
+	var rBrackets = "{ws}{bo}{ws}{op}{ws}([^{bc}{bo}]+){ws}{bc}{ws}" # \s*\(\s*([^\)\(]+)\s*\)\s*
+	rBrackets = rBrackets.format(regex_dict)
 	
 	var regex_brakcets = Util.regex(rBrackets)
 	
@@ -657,7 +665,13 @@ func getValueFromEquation(equation:String):
 		equation = equation.insert(result_start,valueInBrackets)
 		return getValueFromEquation(equation)
 	
-	var rAddition = "([^\\(\\)]+)([+-])([^\\(\\)]+)" # .*([\w^+]+)\s*([+-])\s*([\w^+]+).*
+	#var regex_addsub = "+-"
+	regex_dict["opAS"] = "[+-]"
+	regex_dict["ref"] =  "[^{bc}{bo}]+|\\w+{bo}.*{bc}".format(regex_dict)
+	
+	var rAddition = "{ws}({ref}){ws}({opAS}){ws}({ref}){ws}" 
+	rAddition = rAddition.format(regex_dict)
+	
 	
 	var regex_addition = Util.regex(rAddition)
 	result = regex_addition.search(equation)
@@ -691,7 +705,10 @@ func getValueFromEquation(equation:String):
 		
 		return getValueFromEquation(equation)
 	
-	var rMult = "([^\\(\\)]+)([*\\/])([^\\(\\)]+)" # .*([\w^+]+)\s*([*\/])\s*([\w^+]+).*
+	regex_dict["opMD"] = "[*\\/]"
+	
+	var rMult = "{ws}({ref}){ws}({opMD}){ws}({ref}){ws}" 
+	rMult = rMult.format(regex_dict)
 	
 	var regex_mult = Util.regex(rMult)
 	result = regex_mult.search(equation)
@@ -786,7 +803,42 @@ func getValueFromFunctionOld(functionId,functionParameter=""):
 
 func functionExecute(function:Dictionary,currentParameters=[]):
 	var result = null
-	functionParameters.append(currentParameters)
+	
+	var paramTypes = getValue(function,"paramTypes",null)
+	if paramTypes:
+		match typeof(paramTypes):
+			TYPE_ARRAY:
+				for i in range(paramTypes.size()):
+					if i >= currentParameters.size():
+						match paramTypes[i]:
+							"BOOL":
+								currentParameters[i] = false
+							"FLOAT":
+								currentParameters[i] = 0.0
+							"INT":
+								currentParameters[i] = 0
+							"STRING":
+								currentParameters[i] = ""
+			var typeParamTypes:
+				logOut(["Unknown type of paramTypes ",typeParamTypes, " in ",function],"ERROR")
+			
+	functionParameters.append(currentParameters)		
+	
+	var paramsInFunction = getValue(function,"params",null)
+	if paramsInFunction:
+		match typeof(paramsInFunction):
+			TYPE_DICTIONARY:
+				var paramKeys = paramsInFunction.keys()
+				for paramKey in paramKeys:
+					var index = int(paramKey)-1
+					var value = getValue(paramsInFunction[paramKey],"value")
+					#currentParameters = Util.arraySetAtIndex(currentParameters,index,value)
+					functionParameters[functionParameters.size()-1] = Util.arraySetAtIndex(functionParameters[functionParameters.size()-1],index,value)
+			var typeParams:
+				logOut(["Unknown type of params ",typeParams, " in ",function],"ERROR")
+	
+	
+	
 	
 	var value = getValue(function,"value",null)
 	
@@ -798,6 +850,13 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 		var results = getValue(function,"result",{})
 		
 		match resultMode:
+			"mathAdd":
+				result = 0
+				var keys = results.keys()
+				for key in keys:
+					var possibleResult = results[key]
+					if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+						result += getValue(possibleResult,"value")
 			"standard":
 				var keys = results.keys()
 				keys.sort_custom(SorterByIndexInt, "sortInv")
@@ -2411,17 +2470,17 @@ func servicesClose():
 func servicesUpdate():
 	services(CurrentUi.Services.type,CurrentUi.Services.category)
 	
-func stateInc(index,value):
+func stateInc(index:String,value:int):
 	stateSet(index, PlayerData.stat[index].current + value)
 	
-func stateSet(index,value):
+func stateSet(index:String,value:int):
 	value = min(max(value,0),10000)
 	PlayerData.stat[index].current = value
 	MiscData.modifiersRecalc = true
 
 
 
-func undress(slot):
+func undress(slot:String):
 	setItemWornAtSlot(slot,"")
 
 func weatherForecast(targetTimeDict:Dictionary,allowMeta = true):
