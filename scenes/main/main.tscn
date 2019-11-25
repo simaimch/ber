@@ -66,6 +66,7 @@ script = ExtResource( 4 )
 [node name="VSplitContainer" type="VSplitContainer" parent="defaultView/VSplitContainer" groups=[
 "splitContainer",
 ]]
+editor/display_folded = true
 margin_right = 1920.0
 margin_bottom = 1080.0
 dragger_visibility = 2
@@ -279,29 +280,31 @@ margin_right = 960.0
 [node name="GameStatusContainer" type="PanelContainer" parent="defaultView/VSplitContainer" groups=[
 "uiUpdate",
 ]]
+editor/display_folded = true
 visible = false
-margin_top = 780.0
+margin_top = 870.0
 margin_right = 1920.0
 margin_bottom = 1080.0
-rect_min_size = Vector2( 50, 300 )
+rect_min_size = Vector2( 50, 0 )
 script = ExtResource( 26 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="defaultView/VSplitContainer/GameStatusContainer"]
+editor/display_folded = true
 margin_right = 1920.0
-margin_bottom = 300.0
+margin_bottom = 210.0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="defaultView/VSplitContainer/GameStatusContainer/VBoxContainer"]
 margin_right = 1920.0
-margin_bottom = 275.0
+margin_bottom = 185.0
 size_flags_vertical = 3
 
 [node name="LogContainer" parent="defaultView/VSplitContainer/GameStatusContainer/VBoxContainer/ScrollContainer" instance=ExtResource( 27 )]
 margin_bottom = 0.0
 
 [node name="CommandLine" type="LineEdit" parent="defaultView/VSplitContainer/GameStatusContainer/VBoxContainer"]
-margin_top = 279.0
+margin_top = 189.0
 margin_right = 1920.0
-margin_bottom = 300.0
+margin_bottom = 210.0
 focus_mode = 1
 focus_mode = 1
 script = ExtResource( 28 )

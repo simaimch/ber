@@ -2470,7 +2470,7 @@ func services(type,category=""):
 	for serviceId in services:
 		var service = getServiceById(serviceId)
 		if getValue(service,"isTemplate",false) == true: continue
-		logOut(service)
+		#logOut(service)
 		if type in getValue(service,"available",[]):
 			CurrentUi.Services.available.append(serviceId)
 			var serviceCategory = getValue(service,"category","Category Missing")
