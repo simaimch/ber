@@ -9,6 +9,13 @@
                 "condition":"currentLocationID() != 'cityCenter.subway'"
             },
             {
+                "locationId":"dahlem.subway",
+                "time": 1200,
+                "label":"Dahlem-Dorf",
+                "mode":"subway",
+                "condition":"currentLocationID() != 'dahlem.subway'"
+            },
+            {
                 "locationId":"testStreet.subway",
                 "time": 1200,
                 "label":"Görlitzer Straße",

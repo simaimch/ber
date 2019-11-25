@@ -1,0 +1,35 @@
+{
+    "actions": {
+        "2000":{
+            "Label": "Wardrobe",
+            "showWardrobe":true
+        },
+        "1000":{
+            "inherit": "sleep",
+            "sleep":{"mode": "alarm"}
+        },
+        "850":{
+            "inherit": "setAlarmClock"
+        },
+        "845":{
+            "Label": "Enable Alarm Clock",
+            "PlayerData":{"alarmclock.enabled":true},
+            "updateLocation": true,
+            "condition":{
+                "mode":"neq",
+                "var":"PlayerData.alarmclock.enabled",
+                "val":true
+            }
+        },
+        "840":{
+            "Label": "Disable Alarm Clock",
+            "PlayerData":{"alarmclock.enabled":false},
+            "updateLocation": true,
+            "condition":{
+                "mode":"eq",
+                "var":"PlayerData.alarmclock.enabled",
+                "val":true
+            }
+        }
+    }
+}

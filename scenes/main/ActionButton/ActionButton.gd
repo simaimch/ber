@@ -15,7 +15,8 @@ func buttonPressed(buttonIndex):
 func setAction(a,b = -1):
 	action = a
 	button = b
-	text = action.get("Label","ERROR: Label missing")
+	#text = action.get("Label","ERROR: Label missing")
+	text = GameManager.getValue(action,"Label","ERROR: Label missing")
 	
 	if(button >= 0 and button <= 9):
 		text = ""+str(button)+" "+text

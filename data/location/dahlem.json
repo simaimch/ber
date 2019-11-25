@@ -1,0 +1,59 @@
+{
+    "main":{
+        "text":"Dahlem-Dorf",
+        "label":"Dahlem-Dorf",
+        "bg":"texture/locations/dahlem/dahlem.jpg",
+        "rl":[
+            {
+                "locationId":"SELF.subway",
+                "time": 180
+            },
+            {
+                "locationId":"dahlemSchool.exterior",
+                "time": 300
+            },
+            {
+                "locationId":"SELF.church",
+                "time": 300
+            },
+            {
+                "locationId":"SELF.park",
+                "time": 300
+            }
+        ]
+    },
+    "church":{
+        "bg":"texture/locations/dahlem/church.jpg",
+        "label":"Church",
+        "text":"The church is currently closed for restauration.",
+        "rl":[
+            {
+                "locationId":"SELF.main",
+                "time": 300
+            }
+        ]
+    },
+    "park":{
+        "bg":"texture/locations/dahlem/park.jpg",
+        "label":"Park",
+        "text":"Park.",
+        "rl":[
+            {
+                "locationId":"SELF.main",
+                "time": 300
+            }
+        ]
+    },
+    "subway":{
+        "rlTexture":"texture/locations/dahlem/subwayExterior.jpg",
+        "bg":"texture/locations/dahlem/subway.jpg",
+        "inherit":"subway.template",
+        "label":"Subway Station",
+        "*rl":[
+            {
+                "locationId":"SELF.main",
+                "time": 180
+            }
+        ]
+    }
+}

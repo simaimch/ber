@@ -1,0 +1,22 @@
+{
+    "persist":{
+        "known": false
+    },
+    "name":{
+        "first":"Janine",
+        "last":"Krüger"
+    },
+    "texture": "texture/npc/portrait/MistyRhodes.jpg",
+    "schedule":{
+        "dahlemDorm.room311":[
+            {"days":[1,2,3,4,5],"timeStart":0,"timeEnd":615},
+            {"days":[1,2,3,4,5],"timeStart":646,"timeEnd":700}
+        ],
+        "dahlemDorm.bath3":[
+            {"days":[1,2,3,4,5],"timeStart":616,"timeEnd":645}
+        ]
+    },
+    "bday":"21.09.1999",
+    "gender":"f",
+    "dialogue":"testDialogue"    
+}

@@ -1,16 +1,17 @@
 extends Button
 
 var npc
-var id
-var tooltipText
+var id:String
+var tooltipText:String
 
 func linkNpc():
 	npc = GameManager.getNPC(id)
 
-func setNPC(npcId):
+func setNPC(npcId:String):
 	id = npcId
 	linkNpc()
-	tooltipText = GameManager.getNPCDescription(npc) +"\n"+ GameManager.getValue(npc,"name.first")+"\n"+str(Util.getAge(GameManager.now(),GameManager.getValue(npc,"bday")))
+	var npcDescription = GameManager.getNPCDescription(npc)
+	tooltipText =  npcDescription +"\n"+ GameManager.getValue(npc,"name.first","No name")+"\n"+str(Util.getAge(GameManager.now(),GameManager.getValue(npc,"bday")))
 	$TextureRect.texture = Util.texture(GameManager.getValue(npc,"texture"))
 
 func _on_PresentNPC_mouse_entered():

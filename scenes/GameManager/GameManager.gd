@@ -65,6 +65,7 @@ var MetaData = {} #does not get saved in savegame
 
 var PlayerData = {
 	"ID":"PC",
+	"groups":[],
 	"inventory":{},
 	"modifier":{},
 	"money":10000,
@@ -1649,6 +1650,7 @@ func loadThemes():
 	
 
 func locationInherit(l):
+	l = linkObject(l)
 	if l.has("inherit"):
 		var parent = getLocation(l.inherit)
 		l = Util.inherit(l,parent)

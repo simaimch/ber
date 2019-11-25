@@ -1,0 +1,240 @@
+{
+    "bath3":{
+        "label":"Bathroom",
+        "text":"Bathroom",
+        "bg":"texture/locations/dahlem/dormBath3.jpg",
+        "npcs": true,
+        "rl":[
+            {
+                "locationId":"SELF.floor3",
+                "time": 30,
+                "label":"Hallway"
+            }
+        ],
+        "actions":{
+            "1000":{
+                "inherit":"shower"
+            },
+            "800":{
+                "inherit":"shaveBody"
+            }
+        }
+    },
+    "entry":{
+        "bg":"texture/locations/dahlem/dormEntry.jpg",
+        "label":"Dorm",
+        "text":"Dorm.",
+        "rl":[
+            {
+                "locationId":"SELF.exterior",
+                "time": 60,
+                "label":"Outside"
+            },
+            {
+                "locationId":"SELF.floor2",
+                "time": 20,
+                "label":"2nd Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor3",
+                "time": 40,
+                "label":"3rd Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor4",
+                "time": 60,
+                "label":"4th Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor5",
+                "time": 80,
+                "label":"5th Floor",
+                "textureDisabled":true
+            }
+        ]
+    },
+    "exterior":{
+        "bg":"texture/locations/dahlem/dorm.jpg",
+        "label":"Dorm",
+        "text":"Dorm.",
+        "rl":[
+            {
+                "locationId":"dahlemSchool.exterior",
+                "time": 120
+            },
+            {
+                "locationId":"SELF.entry",
+                "time": 60,
+                "label":"Inside",
+                "~values":{
+                    "10000":{
+                        "value":{
+                            "disabled":true,
+                            "tooltip": "You don't have permission to enter the dorm."
+                        },
+                        "condition": "¬('dahlemSchoolStudent' ⊆ PlayerData.groups)"
+                    }
+                }
+            }
+        ]
+    },
+    "floor2":{
+        "bg":"texture/locations/dahlem/dormHallway.jpg",
+        "label":"2nd Floor",
+        "text":"2nd Floor.",
+        "rl":[
+            {
+                "locationId":"SELF.entry",
+                "time": 20,
+                "label":"1st Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor3",
+                "time": 20,
+                "label":"3rd Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor4",
+                "time": 40,
+                "label":"4th Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor5",
+                "time": 60,
+                "label":"5th Floor",
+                "textureDisabled":true
+            }
+        ]
+    },
+    "floor3":{
+        "bg":"texture/locations/dahlem/dormHallway.jpg",
+        "label":"3nd Floor",
+        "text":"3nd Floor.",
+        "rl":[
+            {
+                "locationId":"SELF.entry",
+                "time": 40,
+                "label":"1st Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor2",
+                "time": 20,
+                "label":"2nd Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor4",
+                "time": 20,
+                "label":"4th Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor5",
+                "time": 40,
+                "label":"5th Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.room311",
+                "time": 30,
+                "condition":"PlayerData.QUEST.school.dormRoom=311"
+            },
+            {
+                "locationId":"SELF.bath3",
+                "time": 30,
+                "condition":"PlayerData.QUEST.school.dormRoom=311"
+            }
+        ]
+    },
+    "floor4":{
+        "bg":"texture/locations/dahlem/dormHallway.jpg",
+        "label":"4th Floor",
+        "text":"4th Floor.",
+        "rl":[
+            {
+                "locationId":"SELF.entry",
+                "time": 60,
+                "label":"1st Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor2",
+                "time": 40,
+                "label":"2nd Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor3",
+                "time": 20,
+                "label":"3rd Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor5",
+                "time": 20,
+                "label":"5th Floor",
+                "textureDisabled":true
+            }
+        ]
+    },
+    "floor5":{
+        "bg":"texture/locations/dahlem/dormHallway.jpg",
+        "label":"5th Floor",
+        "text":"5th Floor.",
+        "rl":[
+            {
+                "locationId":"SELF.entry",
+                "time": 80,
+                "label":"1st Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor2",
+                "time": 60,
+                "label":"2nd Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor3",
+                "time": 40,
+                "label":"3rd Floor",
+                "textureDisabled":true
+            },
+            {
+                "locationId":"SELF.floor4",
+                "time": 20,
+                "label":"4th Floor",
+                "textureDisabled":true
+            }
+        ]
+    },
+    "room311":{
+        "~value":{
+            "1000":{
+                "condition":"PlayerData.QUEST.school.dormRoom=311",
+                "value":{
+                    "label":"Room 311 (your room)",
+                    "text":"Room 311",
+                    "inherit":"bedroom"
+                }
+            }
+        },
+        "bg":"texture/locations/dahlem/dorm311.jpg",
+        "npcs": true,
+        "rl":[
+            {
+                "locationId":"SELF.floor3",
+                "time": 30,
+                "label":"Hallway"
+            }
+        ]
+    }
+
+}

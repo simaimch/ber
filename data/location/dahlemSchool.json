@@ -1,0 +1,32 @@
+{
+    "exterior":{
+        "bg":"texture/locations/dahlem/schoolExterior.jpg",
+        "label":"School",
+        "text":"The school is currently closed for restauration.",
+        "rl":[
+            {
+                "locationId":"dahlem.main",
+                "time": 300
+            },
+            {
+                "locationId":"dahlemDorm.exterior",
+                "time": 120
+            },
+            {
+                "locationId":"SELF.sportsfield",
+                "time": 120
+            }
+        ]
+    },
+    "sportsfield":{
+        "bg":"texture/locations/dahlem/sportsfield.png",
+        "label":"Sportsfield",
+        "text":"Sportsfield.",
+        "rl":[
+            {
+                "locationId":"SELF.exterior",
+                "time": 120
+            }
+        ]
+    }
+}

@@ -1,6 +1,6 @@
 {
     "setAlarmClock":{
-        "Label":"Set Alarm Clock",
+        "^Label":"Set Alarm Clock (#PlayerData.alarmclock.time#)",
         "showDialog":{
             "dialog":"InputDialog",
             "label": "Set Alarm Clock (Format hh:mm)",
