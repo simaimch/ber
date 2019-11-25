@@ -418,7 +418,8 @@ func getValue(obj, index, default = null):
 	elif obj.has(sindex):
 		return parseText(obj[sindex])
 	elif obj.has("persist"):
-		return getValue(obj.persist,index,default)
+		var persistValue = getValue(obj.persist,index)
+		if persistValue: return persistValue
 	
 	var indexArr = index.split(".")
 	if indexArr.size() > 1:
