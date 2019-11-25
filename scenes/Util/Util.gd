@@ -459,8 +459,8 @@ func mergeInto(source,target,inplace = true):
 				target[skey] = valueSource
 			elif commands.has(commandSigns.prepend):
 				var values = valueTarget
-				target[skey] = valueSource #.duplicate()?
-				for i in range(valueSource.size()): target[skey].append(values[i])
+				target[skey] = valueSource.duplicate()
+				for i in range(values.size()): target[skey].append(values[i])
 			else:
 				for i in range(valueSource.size()): target[skey].append(valueSource[i])
 				
