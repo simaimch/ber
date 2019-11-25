@@ -24,7 +24,7 @@
         "bg":"texture/locations/cityCenter/cityCenterSubway1.jpg",
         "inherit":"subway.template",
         "label":"Subway Station",
-        "+rl":[
+        "*rl":[
             {
                 "locationId":"SELF.outside",
                 "time": 180

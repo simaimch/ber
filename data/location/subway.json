@@ -6,22 +6,14 @@
                 "time": 1200,
                 "label":"Alexanderplatz",
                 "mode":"subway",
-                "condition":{
-                    "var":"MiscData.currentLocationID",
-                    "mode":"neq",
-                    "val":"cityCenter.subway"
-                }
+                "condition":"currentLocationID() != 'cityCenter.subway'"
             },
             {
                 "locationId":"testStreet.subway",
                 "time": 1200,
                 "label":"Görlitzer Straße",
                 "mode":"subway",
-                "condition":{
-                    "var":"MiscData.currentLocationID",
-                    "mode":"neq",
-                    "val":"testStreet.subway"
-                }
+                "condition":"currentLocationID() != 'testStreet.subway'"
             }
         ]
     },

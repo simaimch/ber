@@ -1,4 +1,7 @@
 {
+    "currentLocationID":{
+        "#value":"MiscData.currentLocationID"
+    },
     "langIsAre":{
         "param":["OBJECT"],
         "result":{

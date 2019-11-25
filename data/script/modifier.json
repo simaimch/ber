@@ -105,5 +105,61 @@
             "#modifierMult": "MiscData.modifier.apperance.malusSevere.modMult",
             "condition":"PARAM1.stat.hygiene_body.current < i'2000'"
         }
+    },
+    "mood":{
+        "hunger_1":{
+            "label": "You feel like you could have a bite.",
+            "statBar":true,
+            "statBarTexture":"texture/states/state_hunger_1.png",
+            "condition":"PARAM1.stat.hunger.current € [5000,7000)"
+        },
+        "hunger_2":{
+            "label": "You feel a little hungry.",
+            "modifier": -10,
+            "statBar":true,
+            "statBarTexture":"texture/states/state_hunger_2.png",
+            "condition":"PARAM1.stat.hunger.current € [3000,5000)"
+        },
+        "hunger_3":{
+            "label": "You are hungry.",
+            "modifier": -40,
+            "statBar":true,
+            "statBarTexture":"texture/states/state_hunger_3.png",
+            "condition":"PARAM1.stat.hunger.current € [1000,3000)"
+        },
+        "hunger_4":{
+            "label": "You feel like starving. You need to eat something right now.",
+            "modifier": -100,
+            "statBar":true,
+            "statBarTexture":"texture/states/state_hunger_4.png",
+            "condition":"PARAM1.stat.hunger.current < 1000"
+        },
+        "thirst_1":{
+            "label": "You feel like you could have a sip.",
+            "statBar":true,
+            "statBarTexture":"texture/states/state_hunger_1.png",
+            "condition":"PARAM1.stat.thirst.current € [5000,7000)"
+        },
+        "thirst_2":{
+            "label": "You feel a little thirsty.",
+            "modifier": -10,
+            "statBar":true,
+            "statBarTexture":"texture/states/state_hunger_2.png",
+            "condition":"PARAM1.stat.thirst.current € [3000,5000)"
+        },
+        "thirst_3":{
+            "label": "You are thirsty.",
+            "modifier": -40,
+            "statBar":true,
+            "statBarTexture":"texture/states/state_hunger_3.png",
+            "condition":"PARAM1.stat.thirst.current € [1000,3000)"
+        },
+        "thirst_4":{
+            "label": "You are extremely thirsty.",
+            "modifier": -100,
+            "statBar":true,
+            "statBarTexture":"texture/states/state_hunger_4.png",
+            "condition":"PARAM1.stat.thirst.current < 1000"
+        }
     }
 }

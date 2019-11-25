@@ -51,6 +51,7 @@ var CurrentUi={
 	"ShowWardrobe":false,
 	"ShowWearInformation":false,
 	"RL":[],
+	"StatusMods":[],
 	"Time":0,
 	"UIGroup":"uiUpdate",
 	"Services":{"type":"","available":[],"availableCategories":{}},
@@ -1724,7 +1725,8 @@ func detailsHide():
 func detailsShow():
 	MiscData.currentNpcId[3] = PlayerData.ID
 	
-	modifiersCalculate(PlayerData.ID)
+	#modifiersCalculate(PlayerData.ID)
+	#modifiersCalculate()
 	
 	CurrentUi.UIGroup = "uiDetails"
 	CurrentUi.ShowDetailsPC = true
@@ -1756,32 +1758,36 @@ func getMonthData(id):
 		return month
 	return {}
 
-func modifiersCalculate(npcId):
+func modifiersCalculate():
 	
 	functionParameters.append([PlayerData])
-	var npc = getNPC(npcId)
+	#var npc = getNPC(npcId)
 	
-	if !npc.has("modifier"): npc.modifier = {}
-	npc.modifier.clear()
-	if !npc.has("property"): npc.property = {}
-	npc.property.clear()
+	if !PlayerData.has("modifier"): PlayerData.modifier = {}
+	PlayerData.modifier.clear()
+	if !PlayerData.has("property"): PlayerData.property = {}
+	PlayerData.property.clear()
 	
-	MiscData.currentNpcId[3] = npcId
+	CurrentUi.StatusMods = []
+	
+	#MiscData.currentNpcId[3] = npcId
 	
 	for modifierGroupId in modifiers:
 		var modifierGroup = modifiers[modifierGroupId]
-		npc.modifier[modifierGroupId] = []
+		PlayerData.modifier[modifierGroupId] = []
 		var modSum = 0
 		var modMult= 1
 		for modifierId in modifierGroup:
 			var modifier = modifierGroup[modifierId]
 			if checkCondition(modifier.condition):
-				npc.modifier[modifierGroupId].append(modifierId)
+				PlayerData.modifier[modifierGroupId].append(modifierId)
 				var add = getValue(modifier,"modifier",0)
 				var mult = getValue(modifier,"modifierMult",1)
 				modSum += add
 				modMult*= mult
-		npc.property[modifierGroupId] = modSum*modMult
+				if getValue(modifier,"statBar",false) == true: CurrentUi.StatusMods.append(modifier)
+				
+		PlayerData.property[modifierGroupId] = modSum*modMult
 		
 	MiscData.modifiersRecalc = false
 	
@@ -1818,7 +1824,8 @@ func newGame():
 	
 	loadConstantData()
 	executeLocation(getLocation(MetaData.startLocation))
-	modifiersCalculate(PlayerData.ID)
+	#modifiersCalculate(PlayerData.ID)
+	modifiersCalculate()
 
 	gotoMain()
 	
@@ -2001,15 +2008,10 @@ func currentUIAppendRL(rl):
 			rl = Util.inherit(rl, parent)
 		if hasValue(rl,"values"):
 			var targetLocation = getLocation(getValue(rl,"locationId"))
-			#functionObjects.append(targetLocation) #appending target of RL as FOBJ2
-			#functionObjects.append(rl) #appending RL as FOBJ
 			functionParameters.append([rl,targetLocation])
 			var values = getValue(rl,"values",{})
 			rl = Util.inherit(rl, values)
 			functionParameters.pop_back()
-			#functionObjects.pop_back()
-			#functionObjects.pop_back()
-		#CurrentUi.RL.append(reachableLocationLink(rl))
 		CurrentUi.RL.append(rl)
 
 func executeLocation(location,omitStart=false,updateLocationId=true):
@@ -2237,10 +2239,10 @@ func gotoMain():
 func _deffered_gotoMain():
 	return get_tree().change_scene(mainScene)
 	
-func timePass(t,activity):
+func timePass(t:int,activity):
 	if t <= 0: return
 	
-	var targetTime = t+now()
+	var targetTime:int = t+now()
 	
 	eventArgumentExecute("timePass",activity,t/60)
 	
@@ -2256,8 +2258,12 @@ func timePass(t,activity):
 	var hoursToCalc = Util.getHoursTilTime(now(),targetTime)
 	var daysToCalc = Util.getDaysTilDate(now(),targetTime,false)
 	
+	#quick and dirty calc modifiers every 10 minutes
+	if int(targetTime/600) > int(now()/600):modifiersCalculate()
+	
 	if hoursToCalc > 0:
 		eventCategoryExecute("timePass_HOUR",hoursToCalc)
+		#modifiersCalculate()
 		weatherUpdate(targetTime)
 	
 	if daysToCalc > 0:
@@ -2441,6 +2447,8 @@ func serviceBuy(serviceId):
 		var current = getValueFromPath(service.increaseRef,0)
 		var target = current + increase
 		setValueAtPath(service.increaseRef,target)
+	
+	modifiersCalculate()
 	
 	if getValue(service,"remainAtServices",false) == false:
 		servicesClose()
