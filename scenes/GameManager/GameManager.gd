@@ -1473,18 +1473,23 @@ func eventArgumentExecute(cat, arg, minutes):
 				execute(event.actions)
 				if getValue(event,"consume",false) == true: return
 
-func loadFunctions():
-	print("Start loading Functions")
+func loadFunctionFile(filePath):
 	var file = File.new()
-	file.open("res://data/script/function.json", file.READ)
+	file.open(filePath, file.READ)
 	var text = file.get_as_text()
 	file.close()
 	var temp = JSON.parse(text)
 	if temp.error == OK:
-		functions = temp.result
+		var ffunctions = temp.result
+		for functionId in ffunctions:
+			functions[functionId] = ffunctions[functionId]
 	else:
 		print("Error loading Functions :"+str(temp.error))
-	print("Complete loading Functions")
+
+func loadFunctions(path="res://data"):
+	var functionFiles = Util.getFilesInFolder(path+"/script/functions")
+	for functionFile in functionFiles:
+		loadFunctionFile(path+"/script/functions/"+functionFile)
 
 func loadItem(filePath):
 	var file = File.new()
@@ -1505,8 +1510,6 @@ func loadItem(filePath):
 func loadItems(path="res://data"):
 	var itemFiles = Util.getFilesInFolder(path+"/item")
 	for itemFile in itemFiles:
-		#var itemFileParts = itemFile.split(".")
-		#loadItem(itemFileParts[0])
 		loadItem(path+"/item/"+itemFile)
 
 func loadLocation(locationId):
