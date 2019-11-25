@@ -34,10 +34,15 @@ func setLocation(l):
 	
 	$VBoxContainer/TimeLabel.text = "("+Util.formatDuration(transferInfo.time)+")"
 	
-	if GameManager.hasValue(targetLocation,"rlTexture"):
-		setTexture(GameManager.getValue(targetLocation,"rlTexture"))
-	elif GameManager.hasValue(targetLocation,"bg"):
-		setTexture(GameManager.getValue(targetLocation,"bg"))
+	if GameManager.getValue(transferInfo,"textureDisabled",false) == true:
+		$VBoxContainer/TextureRect.hide()
+		$VBoxContainer/TimeLabel.hide()
+		rect_min_size.y = 0
+	else:
+		if GameManager.hasValue(targetLocation,"rlTexture"):
+			setTexture(GameManager.getValue(targetLocation,"rlTexture"))
+		elif GameManager.hasValue(targetLocation,"bg"):
+			setTexture(GameManager.getValue(targetLocation,"bg"))
 	
 	
 
