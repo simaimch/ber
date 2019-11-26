@@ -3,7 +3,8 @@ extends Control
 var npc:Dictionary
 
 func _on_TalkButton_pressed():
-	pass # Replace with function body.
+	close()
+	GameManager.npcDialogShow(npc)
 
 
 func _on_LeaveButton_pressed():
@@ -14,7 +15,7 @@ func _process(delta):
 		close()
 		
 func close():
-	GameManager.detailsHide()
+	GameManager.npcDetailsHide()
 
 func setNPC(n:Dictionary):
 	npc = n

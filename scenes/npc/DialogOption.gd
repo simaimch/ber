@@ -1,10 +1,12 @@
 extends Button
 
-var id
+#var message:String=""
+#var topic:String=""
+var reply:Dictionary
 
 func _pressed():
-	get_tree().call_group("gameCommand","npcDialogOption",id)
+	GameManager.npcDialogReply(reply)
 
-func setContent(option):
-	text = option.text
-	id = option.ID
+func setContent(r):
+	reply = r
+	text = GameManager.getValue(reply,"label","No Label")

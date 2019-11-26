@@ -48,8 +48,18 @@ func formtTime(time,timeFormat="{day}.{month}.{year} {hour}:{minute}")->String:
 	var hour = formatInt(dateTime.hour,"00")
 	var minute = formatInt(dateTime.minute,"00")
 	var second = formatInt(dateTime.second,"00")
-
-	return timeFormat.format({"day": day,"month": month,"year": year,"hour": hour,"minute": minute,"second":second})
+	
+	var weekday = ""
+	match dateTime.weekday:
+		0: weekday = "Sunday"
+		1: weekday = "Monday"
+		2: weekday = "Tuesday"
+		3: weekday = "Wednesday"
+		4: weekday = "Thursday"
+		5: weekday = "Friday"
+		6: weekday = "Saturday"
+	
+	return timeFormat.format({"day": day,"month": month,"year": year,"hour": hour,"minute": minute,"second":second,"weekday":weekday})
 
 func formatTimeHHMMSS(t)->String:
 	t = int(t)
@@ -276,6 +286,14 @@ func equals(a,b):
 		match tb:
 			TYPE_NIL:
 				return !a
+			_:
+				return false
+				
+	if tb == TYPE_BOOL and ta != TYPE_BOOL:
+		#b = bool(b)
+		match ta:
+			TYPE_NIL:
+				return !b
 			_:
 				return false
 		

@@ -1,0 +1,39 @@
+{
+    "greetings":{
+        "1":{
+            "priority":1000,
+            "condition": "PARAM1.nameKnown=false",
+            "topic":"introduction"
+        }
+    },
+    "topics":{
+        "introduction":{
+            "1":{
+                "text":"Hello. You are the new one, right?",
+                "replies":{
+                    "0":{
+                        "label":"Introduce yourself",
+                        "onSelect":{
+                            "PARAM1":{"nameKnown":true}
+                        },
+                        "text":"Yes, I am the player. Nice to meet you.",
+                        "topic": "TOP"
+                    }
+                }
+            }
+        },
+        "school":{
+            "TOP":"School",
+            "TOP_text":"About the school...",
+            "1":{
+                "text":"Yes? What do you want to talk about?",
+                "replies":{
+                    "0":{
+                        "label":"Never mind",
+                        "topic": "TOP"
+                    }
+                }
+            }
+        }
+    }
+}

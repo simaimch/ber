@@ -190,21 +190,11 @@ func getColor(id):
 	return {"name":id,"rgb":"000000"}
 
 func getDialogue(dialogueId):
-	var dialogueArr = dialogueId.split(".")
-	
-	if !dialogues.has(dialogueArr[0]):
-		loadDialogue(dialogueArr[0])
-	var d = dialogues[dialogueArr[0]] 
-		
-	var i = 1
-	while i < dialogueArr.size():
-		if !d.has(dialogueArr[i]): return d
-		d = d[dialogueArr[i]]
-		i += 1
-	
-	d["SELF"] = dialogueArr[0]
-	d["ID"] = dialogueId
-	return d
+
+	if !dialogues.has(dialogueId):
+		loadDialogue(dialogueId)
+	return dialogues[dialogueId]
+
 
 func getItem(itemId):
 	#all items get loaded at startup, no need to load them here
@@ -333,9 +323,12 @@ func hasValue(obj, index):
 	return false
 
 func getValue(obj, index, default = null):
-	Util.debug("Requesting "+index+" from",5)
-	Util.debug(obj,5)
+
 	if obj == null: return default
+	
+	if index in obj:
+		return obj[index]
+	
 	var cindex = "~"+index # pick first entry with valid condition
 	var findex = "%"+index # compute using a function
 	var lindex = ">"+index # use a list
@@ -344,17 +337,18 @@ func getValue(obj, index, default = null):
 	var ranindex="|"+index # the value is taken from a random list
 	var sindex = "^"+index # the value is a string that needs to be parsed
 	
-	if index in obj:
-		return obj[index]
-	elif cindex in obj:
+	
+	if cindex in obj:
 		var keys = obj[cindex].keys()#.sort_custom(SorterByIndexInt, "sort")
 		keys.sort_custom(SorterByIndexInt, "sortInv")
 		for key in keys:
 			if "condition" in obj[cindex][key]:
 				if checkCondition(obj[cindex][key]["condition"]) == true:
-					return obj[cindex][key].value
+					#return obj[cindex][key].value
+					return getValue(obj[cindex][key],"value")
 			else:
-				return obj[cindex][key].value
+				#return obj[cindex][key].value
+				return getValue(obj[cindex][key],"value")
 	elif obj.has(findex):
 		match typeof(obj[findex]):
 			TYPE_STRING:
@@ -556,6 +550,8 @@ func getValueFromPath(path,default=""):
 		else:
 			return float(path)
 			
+	if path == "false": return false
+	if path == "true": return true
 			
 			
 	path = pathArrayParase(path)
@@ -1296,7 +1292,7 @@ func checkConditionString(condition:String) -> bool:
 		var resultString = result.get_strings()
 		var id1 = resultString[1]
 		var id2 = resultString[3]
-		var val1 = getValueFromPath(id1)
+		var val1 = getValueFromPath(id1,null)
 		var operator = resultString[2]
 		
 		if operator == "€":
@@ -1353,7 +1349,7 @@ func checkConditionString(condition:String) -> bool:
 			
 				return false
 			
-		var val2 = getValueFromPath(id2)
+		var val2 = getValueFromPath(id2,null)
 		
 		match operator:
 			"=","==":
@@ -2128,24 +2124,116 @@ func npcDetailsShow(npc):
 	CurrentUi.UIGroup = "uiNpcDetails"
 	get_tree().call_group(CurrentUi.UIGroup,"setNPC",npc)
 	updateUI()
-	
 
-func npcDialog(npc):
-	#Util.setDebugLevel(5)
-	MiscData.currentNpcId[0] = npc.ID
+func npcDialogHide():
+	functionParameters.pop_back()
+	CurrentUi.ShowNPCDialog = false
+	CurrentUi.UIGroup = "uiUpdate"
+	updateUI()	
+
+func npcDialogShow(npc):
+	CurrentUi.NPCDialog = []
+	functionParameters.append([npc])
 	
 	CurrentUi.ShowNPCDialog = true
+	CurrentUi.UIGroup = "uiNpcDialog"
 	
-	var dialogueId = getValue(npc,"dialogue")+".start"
-	npcDialogShow(dialogueId)
+	var greetingUsed = {"priority":-1,"topic":"TOP","dialogueId":""}
 	
+	var npcDialogues = getValue(npc,"dialogue",[])
+	for npcDialogue in npcDialogues:
+		var dialogue:Dictionary = getDialogue(npcDialogue)
+		var greetings = getValue(dialogue,"greetings",{})
+		for greetingId in greetings:
+			var greeting = greetings[greetingId]
+			if getValue(greeting,"priority",0) > greetingUsed.priority and (!greeting.has("condition") or checkCondition(greeting.condition)):
+				greetingUsed = greeting
+				greetingUsed.dialogueId = npcDialogue
+				
+	var greetingTopicId = getValue(greetingUsed,"topic")
+	if greetingTopicId:
+		npcDialogTopic(greetingTopicId,greetingUsed.dialogueId)
+				
 	updateUI()
 
+func npcDialogReply(reply:Dictionary):
+	var msg = getValue(reply,"text","")
+	var onSelect = getValue(reply,"onSelect",{})
+	var topic = getValue(reply,"topic","TOP")
+	
+	if msg != "": npcDialogSay(PlayerData.ID,msg)
+	
+	execute(onSelect)
+	
+	npcDialogTopic(topic)
 
-func getDialogueOption(dialogueId,optionId):
+func npcDialogSay(charId:String,text:String):
+	var statement = {"charId":charId,"text":text}
+	CurrentUi.NPCDialog.append(statement)
+	updateUI()
+
+func npcDialogSetReplies(replies):
+	match typeof(replies):
+		TYPE_DICTIONARY:
+			CurrentUi.NPCDialogOption = replies.values()
+		TYPE_ARRAY:
+			CurrentUi.NPCDialogOption = replies
+
+func npcDialogTopTopics(npc:Dictionary)->Array:
+	var result = []
+	var npcDialogues = getValue(npc,"dialogue",[])
+	for npcDialogue in npcDialogues:
+		var dialogue:Dictionary = getDialogue(npcDialogue)
+		var topics = getValue(dialogue,"topics",{})
+		for topicId in topics:
+			var topic = topics[topicId]
+			topic.dialogueId = npcDialogue
+			topic.ID = topicId
+			if getValue(topic,"TOP"):
+				result.append(topic)
+	return result
+
+func npcDialogTopic(topicId:String,dialogueId:String="",subtopic:int=1):
+	if topicId == "LEAVE":
+		npcDialogHide()
+		return
+		
+	if topicId == "TOP":
+		var topTopics = npcDialogTopTopics(functionParameters.back()[0])
+		var topTopicOptions = []
+		for topTopic in topTopics:
+			var reply = {"topic":topTopic.dialogueId+"."+topTopic.ID,"label":getValue(topTopic,"TOP",topTopic.ID),"text":getValue(topTopic,"TOP_text","")}
+			topTopicOptions.append(reply)
+		topTopicOptions.append({"topic":"LEAVE","label":"Leave"})
+		npcDialogSetReplies(topTopicOptions)
+		updateUI()
+		return
+			
+	var topicArr = topicId.split(".")
+	
+	match topicArr.size():
+		2:
+			dialogueId = topicArr[0]
+			topicId = topicArr[1]
+		3: 
+			dialogueId = topicArr[0]
+			topicId = topicArr[1]
+			subtopic = topicArr[2]
+
 	var dialogue = getDialogue(dialogueId)
-	var option = dialogue.options[optionId]
-	return npcDialogOptionLink(option)
+	var topics = getValue(dialogue,"topics",{})
+	var topic = getValue(topics,topicId,{})
+	var subTopic = getValue(topic,str(subtopic),{})
+	var text = getValue(subTopic,"text","")
+	var replies = getValue(subTopic,"replies",[])
+	npcDialogSay(functionParameters.back()[0].ID,text)
+	if replies.empty():
+		var nextTopic=getValue(subTopic,"topic","")
+		if nextTopic:npcDialogTopic(nextTopic,dialogueId)
+	else:
+		npcDialogSetReplies(replies)
+		updateUI()
+
 
 func getEvent(cat,id):
 	if !events.has(cat) or !events[cat].has(id):
@@ -2159,54 +2247,8 @@ func getFunction(id):
 		return {}
 	return functions[id]
 
-func npcDialogOptionLink(option,linkSelf="DEFAULT"):
-	var targetArr = option.target.split(".")
-	if targetArr[0] == "SELF": 
-		if linkSelf=="DEFAULT": linkSelf=MiscData.currentDialogueID.split(".")[0]
-		targetArr[0] = linkSelf
-		option.target = targetArr.join(".")
-	return option
 	
-func npcDialogOption(optionId):
-	var option = getDialogueOption(MiscData.currentDialogueID,optionId)
-	if option.target == "LEAVE": 
-		CurrentUi.ShowNPCDialog = false
-		updateUI()
-		return
-		
-	npcDialogShow(option.target)
-	updateUI()
 
-func npcDialogOptionsUpdate(options):
-	var keys = options.keys()
-	keys.sort_custom(SorterByIndexInt, "sortInv")
-	for key in keys:
-		var option = npcDialogOptionLink(options[key])
-		if option.has("conditionShow"):
-			if !checkCondition(option.conditionShow):
-				Util.debug("Condition not valid:",5)
-				Util.debug(option.conditionShow,5)
-				continue
-		var o = {"text":option.text,"ID":key}
-		CurrentUi.NPCDialogOption.append(o)
-
-func npcDialogShow(dialogueId):
-	MiscData.currentDialogueID = dialogueId
-	var dialogue = getDialogue(dialogueId)
-	if dialogue.has("onShow"):
-		execute(dialogue.onShow)
-	npcDialogUpdate(dialogue)
-
-func npcDialogUpdate(dialogue):
-		
-	CurrentUi.NPCDialog.clear()
-	CurrentUi.NPCDialogOption.clear()
-	
-	var statement = {"charId":MiscData.currentNpcId[0],"text":parseText(dialogue.text)}
-	
-	CurrentUi.NPCDialog.append(statement)
-	
-	npcDialogOptionsUpdate(dialogue.options)
 	
 
 

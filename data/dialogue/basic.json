@@ -1,0 +1,24 @@
+{
+    "greetings":{
+        "1":{
+            "priority":10,
+            "topic":"hello"
+        }
+    },
+    "topics":{
+        "hello":{
+            "1":{
+                "~text":{
+                    "1000":{
+                        "condition": "PARAM1.nameKnown=true",
+                        "^value": "Hello #PlayerData.name.first#"
+                    },
+                    "0":{
+                        "value": "Hello"
+                    }
+                },
+                "topic":"TOP"
+            }
+        }
+    }
+}

@@ -8,6 +8,7 @@
 
 [node name="Dialog" type="Control" groups=[
 "uiUpdate",
+"uiNpcDialog",
 ]]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -29,7 +30,7 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 2.5
 
 [node name="DialogStatementContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" groups=[
-"uiUpdate",
+"uiNpcDialog",
 ]]
 margin_right = 1920.0
 margin_bottom = 768.0
@@ -47,7 +48,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="DialogOptionContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer2" groups=[
-"uiUpdate",
+"uiNpcDialog",
 ]]
 margin_right = 1920.0
 margin_bottom = 308.0

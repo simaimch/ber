@@ -146,7 +146,7 @@
         "result":{
             "1000":{
                 "condition":"PARAM1.nameKnown = true",
-                "value":"KNOWN NAME"
+                "^value":"#PARAM1.name.first# #PARAM1.name.last#"
             },
             "0":{
                 "#value":"npcDescriptionAgeGender(PARAM1)"
