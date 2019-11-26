@@ -54,6 +54,7 @@ var CurrentUi={
 	"StatusMods":[],
 	"Time":0,
 	"UIGroup":"uiUpdate",
+	"UIGroupStack":[],
 	"Services":{"type":"","available":[],"availableCategories":{}},
 	"Wardrobe":{
 		"seltype":"",
@@ -1751,6 +1752,10 @@ func detailsShow():
 		
 	updateUI()
 	
+func UIGroupStackPop():
+	CurrentUi.UIGroupStack
+	CurrentUi.UIGroup = CurrentUi.UIGroupStack.pop_back()
+	
 func getModifier(modifierGroupId,modifierID):
 	return modifiers[modifierGroupId][modifierID]
 
@@ -1978,6 +1983,9 @@ func executeCommands(commands):
 		if dialog.has_method("setParam"): dialog.setParam(dialogParam)
 		get_tree().get_root().add_child(dialog)
 		dialog.popup_centered()
+		
+		CurrentUi.UIGroupStack.append(CurrentUi.UIGroup)
+		CurrentUi.UIGroup = "uiDialog"
 	
 	if getValue(commands,"updateLocation",false) == true:
 		updateLocation()

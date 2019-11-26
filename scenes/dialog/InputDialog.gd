@@ -13,6 +13,7 @@ func _on_ConfirmButton_pressed():
 			else: error("Input needs to match regex: "+param.validateRegex)
 			return
 	GameManager.setValueAtPath(param.target,value)
+	GameManager.UIGroupStackPop()
 	if GameManager.getValue(param,"updateLocation",false) == true: GameManager.updateLocation()
 	queue_free()
 
