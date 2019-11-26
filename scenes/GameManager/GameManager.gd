@@ -40,6 +40,7 @@ var CurrentUi={
 	"ShowGameMenu": false,
 	"ShowGameStatus":false,
 	"ShowPlayerMoney":true,
+	"ShowDetailsNPC":false,
 	"ShowNPCDialog":false,
 	"ShowNPCs":false,
 	"ShowPlayerStat":true,
@@ -268,49 +269,6 @@ func getNPC(npcId):
 		initNpc(npc)
 	return npc
 
-func getNPCDescription(npc):
-	var result = ""
-	var gender = getValue(npc,"gender")
-	var bday = getValue(npc,"bday")
-	var age = Util.getAge(now(),bday)
-	
-	if(age < 2):
-		result = "An infant"
-	elif(age < 5):
-		result = "A toddler"
-		if gender == "f": result += " girl"
-		elif gender == "m": result += " boy"
-	elif(age < 10):
-		result = "A little"
-		if gender == "f": result += " girl"
-		elif gender == "m": result += " boy"
-		else: result += " child"
-	elif(age < 13):
-		result = "A preadolescent "
-		if gender == "f": result += " girl"
-		elif gender == "m": result += " boy"
-		else: result += " tween"
-	elif(age < 18):
-		result = "A teenage"
-		if gender == "f": result += " girl"
-		elif gender == "m": result += " boy"
-		else: result += "r"
-	elif(age < 40):
-		result = "A young adult"
-		if gender == "f": result += " woman"
-		elif gender == "m": result += " man"
-	elif(age < 65):
-		result = "A middle-aged"
-		if gender == "f": result += " woman"
-		elif gender == "m": result += " man"
-		else: result += " person"
-	else:
-		result = "An old"
-		if gender == "f": result += " woman"
-		elif gender == "m": result += " man"
-		else: result += " person"
-	return result
-
 func initNpc(npc):
 	if npc.has("persist"):
 		npc.persist = initEntry(npc.persist)
@@ -408,7 +366,7 @@ func getValue(obj, index, default = null):
 					var result = getValueFromFunction(functionId)
 					return result
 			TYPE_DICTIONARY:
-				return functionExecute(obj[findex])
+				return functionExecute(obj[findex],functionParameters.back())
 	elif obj.has(lindex):
 		return getValueFromList(obj[lindex])
 	elif obj.has(mindex):
@@ -770,8 +728,12 @@ func getValueFromFunction(functionId,functionParameter=null):
 		
 	var result
 	
-	var function = getFunction(functionId)
-	result = functionExecute(function,currentParameters)
+	match functionId:
+		"AGE":
+			result = Util.getAge(now(),currentParameters[0])
+		_:
+			var function = getFunction(functionId)
+			result = functionExecute(function,currentParameters)
 	
 	return result
 	
@@ -2155,6 +2117,17 @@ func npcIsPresent(npc,locationId,time = -1):
 			var timeBase100 = timeDict.hour * 100 + timeDict.minute
 			if timeBase100 >= presence.timeStart and timeBase100 <= presence.timeEnd: return true
 	return false
+
+func npcDetailsHide():
+	CurrentUi.ShowDetailsNPC = false
+	CurrentUi.UIGroup = "uiUpdate"
+	updateUI()
+
+func npcDetailsShow(npc):
+	CurrentUi.ShowDetailsNPC = true
+	CurrentUi.UIGroup = "uiNpcDetails"
+	get_tree().call_group(CurrentUi.UIGroup,"setNPC",npc)
+	updateUI()
 	
 
 func npcDialog(npc):
@@ -2235,7 +2208,7 @@ func npcDialogUpdate(dialogue):
 	
 	npcDialogOptionsUpdate(dialogue.options)
 	
-	
+
 
 func gotoLocation(transferInfo):
 	var locationId = getValue(transferInfo,"locationId","start")

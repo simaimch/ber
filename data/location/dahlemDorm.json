@@ -234,7 +234,16 @@
                 "time": 30,
                 "label":"Hallway"
             }
-        ]
+        ],
+        "actions":{
+
+            "5000":{
+                "Label": "Debug: Wait 30 Minutes",
+                "Time":{"Pass":{"Duration":1800,"Activity":"debug"}}
+            }
+        
+        }
+
     }
 
 }

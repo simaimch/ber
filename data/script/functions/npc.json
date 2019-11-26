@@ -1,0 +1,156 @@
+{
+    "npcDescriptionAgeGender":{
+        "params":{
+            "2":{"#value":"AGE(PARAM1.bday)"}
+        },
+        "result":{
+            "9000":{
+                "condition":"PARAM2<2",
+                "value":"An infant"
+            },
+            "8000":{
+                "condition":"PARAM2<5",
+                "%value":{
+                    "resultMode": "stringConcat",
+                    "result":{
+                        "0":{
+                            "value":"A toddler"
+                        },
+                        "100":{
+                            "value":" girl",
+                            "condition":"PARAM1.gender='f'"
+                        },
+                        "200":{
+                            "value":" boy",
+                            "condition":"PARAM1.gender='m'"
+                        }
+                    }
+                }
+            },
+            "7000":{
+                "condition":"PARAM2<10",
+                "%value":{
+                    "resultMode": "stringConcat",
+                    "result":{
+                        "0":{
+                            "value":"A little"
+                        },
+                        "100":{
+                            "value":" girl",
+                            "condition":"PARAM1.gender='f'"
+                        },
+                        "200":{
+                            "value":" boy",
+                            "condition":"PARAM1.gender='m'"
+                        }
+                    }
+                }
+            },
+            "6000":{
+                "condition":"PARAM2<13",
+                "%value":{
+                    "resultMode": "stringConcat",
+                    "result":{
+                        "0":{
+                            "value":"A preadolescent"
+                        },
+                        "100":{
+                            "value":" girl",
+                            "condition":"PARAM1.gender='f'"
+                        },
+                        "200":{
+                            "value":" boy",
+                            "condition":"PARAM1.gender='m'"
+                        }
+                    }
+                }
+            },
+            "5000":{
+                "condition":"PARAM2<20",
+                "%value":{
+                    "resultMode": "stringConcat",
+                    "result":{
+                        "0":{
+                            "value":"A teenage"
+                        },
+                        "100":{
+                            "value":" girl",
+                            "condition":"PARAM1.gender='f'"
+                        },
+                        "200":{
+                            "value":" boy",
+                            "condition":"PARAM1.gender='m'"
+                        }
+                    }
+                }
+            },
+            "4000":{
+                "condition":"PARAM2<40",
+                "%value":{
+                    "resultMode": "stringConcat",
+                    "result":{
+                        "0":{
+                            "value":"A young adult"
+                        },
+                        "100":{
+                            "value":" woman",
+                            "condition":"PARAM1.gender='f'"
+                        },
+                        "200":{
+                            "value":" man",
+                            "condition":"PARAM1.gender='m'"
+                        }
+                    }
+                }
+            },
+            "3000":{
+                "condition":"PARAM2<65",
+                "%value":{
+                    "resultMode": "stringConcat",
+                    "result":{
+                        "0":{
+                            "value":"A middle-aged"
+                        },
+                        "100":{
+                            "value":" woman",
+                            "condition":"PARAM1.gender='f'"
+                        },
+                        "200":{
+                            "value":" man",
+                            "condition":"PARAM1.gender='m'"
+                        }
+                    }
+                }
+            },
+            "2000":{
+                "%value":{
+                    "resultMode": "stringConcat",
+                    "result":{
+                        "0":{
+                            "value":"An old"
+                        },
+                        "100":{
+                            "value":" woman",
+                            "condition":"PARAM1.gender='f'"
+                        },
+                        "200":{
+                            "value":" man",
+                            "condition":"PARAM1.gender='m'"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "npcKnownName":{
+        "result":{
+            "1000":{
+                "condition":"PARAM1.nameKnown = true",
+                "value":"KNOWN NAME"
+            },
+            "0":{
+                "#value":"npcDescriptionAgeGender(PARAM1)"
+            }
+        }
+    }
+}
