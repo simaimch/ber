@@ -15,7 +15,7 @@
     "cook_pizza_frozen":{
         "inherit": "food",
         "category":"Cook",
-        "available":["home_cook"],
+        "available":["home_cook","dorm_cook"],
         "name":"Frozen Pizza",
         "description":"Frozen Pizza Description",
         "texture":"texture/services/food/pizza_fr.jpg",
@@ -62,7 +62,7 @@
     },
     "home_water":{
         "inherit": "water",
-        "§available":["home_fridge"],
+        "§available":["home_fridge","dorm_fridge"],
         "time": 60,
         "price": 0
     },

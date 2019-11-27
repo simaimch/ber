@@ -18,10 +18,10 @@ func folderFromPath(path:String)->String:
 	return path.substr(0,path.length()-fileName.length()-1)
 
 func formatDuration(d)->String:
-	if d > 7200:
-		return str(d/3600)+" hours"
-	elif d > 120:
-		return str(d/60)+" minutes"
+	if d >= 7200:
+		return str(int(d/3600))+" hours"
+	elif d >= 120:
+		return str(int(d/60))+" minutes"
 	else:
 		return str(d)+" seconds"
 
@@ -265,10 +265,12 @@ func bigger(a,b):
 	var ta = typeof(a)
 	var tb = typeof(b)
 	
-	if ta == TYPE_STRING: a = int(a)
+	if ta == TYPE_NIL: a = 0	
+	elif ta == TYPE_STRING: a = int(a)
 	elif ta != TYPE_INT and ta != TYPE_REAL: return false
 	
-	if tb == TYPE_STRING: b = int(b)
+	if tb == TYPE_NIL: b = 0	
+	elif tb == TYPE_STRING: b = int(b)
 	elif tb != TYPE_INT and tb != TYPE_REAL: return false
 	
 	return (a > b)
