@@ -11,6 +11,7 @@ func _on_Confirm_pressed():
 	
 	GameManager.PlayerData.name.first = fname
 	GameManager.PlayerData.name.last = lname
+	GameManager.UIGroupStackPop()
 	GameManager.recalcUI()
 	queue_free()
 	

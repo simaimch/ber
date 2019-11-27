@@ -1,6 +1,16 @@
 {
 
     "onStart":{
+        "CurrentUi":{
+            "ShowStatusBar":false
+        },
+        "MiscData":{
+            "const.prehistory.average":0,
+            "const.prehistory.popular":1,
+            "const.prehistory.nerd":2,
+            "const.occupationStart.school":0,
+            "const.occupationStart.university":1
+        },
         "PlayerData":{
             "body.breast.texture":"texture/body/female/breast/breastB_1.jpg",
             "body.feet.texture":"texture/body/female/feet/feet_1.jpg",
@@ -11,9 +21,15 @@
             "body.hair.legs.length": 0,
             "body.hair.legs.growth": 250,
             "gender":"f",
-            "skill.heels": 3,
-            "stat.hygiene_body.current": 0,
-            "trait.genes.appearance":7
+            "name.first":{
+                "mode":"set",
+                ">value":"names_first_female_90s"
+            },
+            "name.last":{
+                "mode":"set",
+                ">value":"names_last"
+            },
+            "stat.hygiene_body.current": 9000
         },
         
         "playerOutfit":{

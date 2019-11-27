@@ -302,6 +302,10 @@ func equals(a,b):
 	#if tb == TYPE_BOOL and ta != TYPE_BOOL:
 	#	a = bool(a)
 	
+	if ta == TYPE_NIL:
+		if tb == TYPE_NIL or b == 0: return true
+	if tb == TYPE_NIL and a == 0: return true
+	
 	if ta == TYPE_STRING or tb == TYPE_STRING:
 		if str(a) == str(b): return true
 		return false

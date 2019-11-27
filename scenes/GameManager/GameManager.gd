@@ -124,6 +124,7 @@ var misc = {}
 var modifiers = {}
 var npcs = {}
 var services = {}
+var temp = {}
 var themes = {}
 #var skills = {}
 
@@ -539,7 +540,7 @@ func pathArrayParase(path):
 			counter+= 1
 				
 		var innerString = Util.stringSubstrFromTo(path,arraySignOpenPos+1,arraySignClosePos-1)
-		var innerValue = getValueFromPath(innerString)
+		var innerValue = str(getValueFromPath(innerString,0))
 		
 		path = Util.stringReplace(path,arraySignOpenPos,arraySignClosePos,"."+innerValue)
 				
@@ -983,6 +984,7 @@ func getObjectFromPath(path):
 	if(path == "MiscData"): return MiscData
 	elif(path == "Misc"): return misc
 	elif(path == "PlayerData"): return PlayerData
+	elif(path == "TEMP"): return temp
 	elif(path == "WorldData"): return WorldData
 	elif(path == "CurrentUi"): return CurrentUi
 	#elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
@@ -1837,6 +1839,16 @@ func executeCommands(commands):
 	
 	if commands.get("Disabled",false) == true: return result
 	
+	if commands.has("conditionExecute"):
+		var cEs = commands.conditionExecute
+		for cEID in cEs:
+			var cE = cEs[cEID]
+			if !cE.has("condition") or checkCondition(cE.condition):
+				if execute(cE): 
+					result.consume = true
+					return result
+				
+	
 	if commands.has("foreach"):
 		var subcommand = commands.foreach.duplicate()
 		subcommand.erase("iterate")
@@ -1866,14 +1878,24 @@ func executeCommands(commands):
 		var text:
 			if typeof(text) == TYPE_ARRAY: text = PoolStringArray(text).join("\n")
 			CurrentUi.Text = parseText(text)
+			
+	match getValue(commands,"textLong",null):
+		null:
+			CurrentUi.erase("TextLong")
+		var textLong:
+			if typeof(textLong) == TYPE_ARRAY: textLong = PoolStringArray(textLong).join("\n")
+			CurrentUi.TextLong = parseText(textLong)
 		
-	for dataContainer in ["PlayerData","MiscData","PARAM1","WorldData"]:
+	for dataContainer in ["PlayerData","MiscData","PARAM1","WorldData","TEMP","CurrentUi"]:
 		result.modifiersRecalc = true
 		if commands.has(dataContainer):
 			var command = commands[dataContainer]
 			for key in command:
-				if typeof(command[key]) == TYPE_DICTIONARY and command[key].has("mode"):
-					modValueAtPath(dataContainer+"."+key,command[key].mode,getValue(command[key],"value",0))
+				if typeof(command[key]) == TYPE_DICTIONARY:
+					if command[key].has("mode"):
+						modValueAtPath(dataContainer+"."+key,command[key].mode,getValue(command[key],"value",0))
+					else:
+						modValueAtPath(dataContainer+"."+key,"set",getValue(command[key],"value",0))
 				else:
 					setValueAtPath(dataContainer+"."+key,command[key])
 			
@@ -2014,8 +2036,8 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 		if execute(location.onStart): return
 	
 	var bgTemp = getValue(location,"bg")
-	if bgTemp != null:
-		CurrentUi.Bg  = bgTemp
+	#if bgTemp != null:
+	CurrentUi.Bg  = bgTemp
 	
 	match getValue(location,"text",null):
 		null:
@@ -2023,6 +2045,13 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 		var text:
 			if typeof(text) == TYPE_ARRAY: text = PoolStringArray(text).join("\n")
 			CurrentUi.Text = parseText(text)
+			
+	match getValue(location,"textLong",null):
+		null:
+			CurrentUi.erase("TextLong")
+		var textLong:
+			if typeof(textLong) == TYPE_ARRAY: textLong = PoolStringArray(textLong).join("\n")
+			CurrentUi.TextLong = parseText(textLong)
 		
 	CurrentUi.RL.clear()
 	if location.has("rl"):
@@ -2058,13 +2087,6 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 		for key in keys:
 			var action = actions[key].duplicate()
 			action = linkAction(action)
-			#if hasValue(action,"action"): action = Util.inherit(action,getValue(action,"action",action))
-			
-			#if action.has("inherit"):
-			#	var parentAction = getAction(action.inherit)
-				
-			#	action = Util.inherit(action,parentAction)
-
 			
 			if action.has("goto"):
 				var actionGotoArr = action.goto.split(".")
@@ -2073,8 +2095,6 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 					action.goto = actionGotoArr.join(".")
 					
 				var targetLocation = getLocation(action.goto)
-				if targetLocation.has("bg"):
-					call_deferred("preloadTexture",[targetLocation.bg])
 				
 			if "condition" in action:
 				if checkCondition(action["condition"]) == true:
@@ -2082,7 +2102,6 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 			else:
 				CurrentUi.Actions.append(action)
 
-		#CurrentUi.Actions = location.actions.duplicate()
 	if updateLocationId:
 		CurrentUi.LocationId = location.ID
 	updateUI()
@@ -2332,13 +2351,14 @@ func timeMove(t):
 func timeUpdate():
 	WorldData.TimeDict = Util.getDateTime(now())
 
-var preloadedTextures = []
-var preloadedTexturesMax = 20
-func preloadTexture(path):
-	if typeof(path) == TYPE_ARRAY: path = path[0]
-	preloadedTextures.append(load(path))
-	if preloadedTextures.size() > preloadedTexturesMax:
-		preloadedTextures.pop_front()
+#var preloadedTextures = []
+#var preloadedTexturesMax = 20
+#func preloadTexture(path):
+#	if path == null: return
+#	if typeof(path) == TYPE_ARRAY: path = path[0]
+#	preloadedTextures.append(load(path))
+#	if preloadedTextures.size() > preloadedTexturesMax:
+#		preloadedTextures.pop_front()
 
 func playerData2UI():
 	CurrentUi.PlayerStat = PlayerData.stat
@@ -2398,10 +2418,16 @@ func updateLocation():
 	var location = getLocation(CurrentUi.LocationId)
 	executeLocation(location,true,false)
 
-func updateUI():
-	playerData2UI()
-	get_tree().call_group(CurrentUi.UIGroup,"updateUI",CurrentUi)
 
+var uiUpdatePending:bool = false
+func updateUI():
+	uiUpdatePending=true
+
+func _process(delta):
+	if uiUpdatePending:
+		playerData2UI()
+		get_tree().call_group(CurrentUi.UIGroup,"updateUI",CurrentUi)
+		uiUpdatePending=false
 
 func wardrobe():
 	CurrentUi.UIGroup = "uiWardrobe"

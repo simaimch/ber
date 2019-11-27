@@ -1,5 +1,10 @@
 extends TextureRect
 
 func updateUI(CurrentUi):
-	var bgTexture = Util.texture(CurrentUi.Bg)
-	set_texture(bgTexture)
+	
+	if CurrentUi.Bg:
+		var bgTexture = Util.texture(CurrentUi.Bg)
+		show()
+		set_texture(bgTexture)
+	else:
+		hide()
