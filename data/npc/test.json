@@ -14,5 +14,5 @@
     },
     "bday":"21.09.1999",
     "gender":"f",
-    "dialogue":"testDialogue"    
+    "dialogue":["basic"]     
 }

@@ -368,7 +368,12 @@ func getValue(obj, index, default = null):
 	elif obj.has(rindex):
 		return getValueFromPath(obj[rindex])
 	elif obj.has(ranindex):
-		pass
+		var options = obj[ranindex]
+		match typeof(options):
+			TYPE_ARRAY:
+				return getValueFromRandom(options)
+			TYPE_DICTIONARY:
+				return getValueFromRandom(options.values())
 	elif obj.has(sindex):
 		return parseText(obj[sindex])
 	elif obj.has("persist"):
@@ -394,18 +399,31 @@ func getValueFromList(list,default = null):
 	var file = File.new()
 	file.open(filePath, file.READ)
 	var entries = []
-	var weightTotal = 0
+	#var weightTotal = 0
 	while !file.eof_reached():
 		var csv = file.get_csv_line (";")
 		if csv.size() == 2:
 			var weight = int(csv[1])
 			var entry = {"value":csv[0],"weight":weight}
 			entries.append(entry)
-			weightTotal += weight
+			#weightTotal += weight
 	file.close()
-		
-	var rand = rng.randi_range(1,weightTotal)
 	
+	return getValueFromRandom(entries)
+	#var rand = rng.randi_range(1,weightTotal)
+	
+	#var i = 0
+	#while(rand > entries[i].weight and i < entries.size()):
+	#	rand -= entries[i].weight
+	#	i += 1
+		
+	#return entries[i].value
+	
+func getValueFromRandom(entries:Array):
+	var weightTotal = 0
+	for entry in entries:
+		weightTotal+=entry.weight
+	var rand = rng.randi_range(1,weightTotal)
 	var i = 0
 	while(rand > entries[i].weight and i < entries.size()):
 		rand -= entries[i].weight
@@ -967,7 +985,7 @@ func getObjectFromPath(path):
 	elif(path == "PlayerData"): return PlayerData
 	elif(path == "WorldData"): return WorldData
 	elif(path == "CurrentUi"): return CurrentUi
-	elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
+	#elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
 	elif(path.begins_with("PARAM")): return functionParameter(int(path.substr(5,path.length()-5))-1)
 	return null
 
