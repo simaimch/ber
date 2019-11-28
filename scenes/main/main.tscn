@@ -54,6 +54,7 @@ script = ExtResource( 2 )
 [node name="defaultView" type="Control" parent="." groups=[
 "uiUpdate",
 ]]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 3 )
@@ -347,8 +348,8 @@ visible = false
 visible = false
 
 [node name="Shop" parent="." groups=[
-"uiShop",
 "uiUpdate",
+"uiShop",
 ] instance=ExtResource( 35 )]
 visible = false
 script = ExtResource( 36 )

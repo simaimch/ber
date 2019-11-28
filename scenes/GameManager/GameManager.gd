@@ -324,7 +324,7 @@ func hasValue(obj, index):
 	return false
 
 func getValue(obj, index, default = null):
-
+	
 	if obj == null: return default
 	
 	if index in obj:
@@ -1839,14 +1839,7 @@ func executeCommands(commands):
 	
 	if commands.get("Disabled",false) == true: return result
 	
-	if commands.has("conditionExecute"):
-		var cEs = commands.conditionExecute
-		for cEID in cEs:
-			var cE = cEs[cEID]
-			if !cE.has("condition") or checkCondition(cE.condition):
-				if execute(cE): 
-					result.consume = true
-					return result
+	
 				
 	
 	if commands.has("foreach"):
@@ -1866,8 +1859,7 @@ func executeCommands(commands):
 					
 	
 	if commands.has("debug"):
-		print(str(OS.get_ticks_msec())+":")
-		print(commands)
+		logOut(["DEBUG: ",commands.debug])
 	
 	if commands.has("bg"):
 		CurrentUi.Bg = commands["bg"]
@@ -1934,6 +1926,17 @@ func executeCommands(commands):
 				Duration = commands.Time.Pass.Duration
 			timePass(Duration,Activity)
 			#result.modifiersRecalc = true
+	
+	# Comes here so that conditionals can override non-conditionals but do not get canceld by consuming events
+	if commands.has("conditionExecute"):
+		var cEs = commands.conditionExecute
+		for cEID in cEs:
+			var cE = cEs[cEID]
+			if !cE.has("condition") or checkCondition(cE.condition):
+				if execute(cE): 
+					result.consume = true
+					return result
+	
 		
 	if commands.has("goto"):
 		match typeof(commands.goto):
@@ -1955,6 +1958,11 @@ func executeCommands(commands):
 	if commands.has("interrupt"):
 		MiscData.locationStack.append(MiscData.currentLocationID)
 		return executeCommands({"goto":commands.interrupt})
+		
+	if commands.has("dialogue"):
+		var dialogue = getValue(commands,"dialogue",{})
+		#var dialogueId = getValue(dialogue,"id","")
+		var npcId = getValue(dialogue,"npc","")
 		
 	if commands.has("gotoShop"):
 		shop(commands.gotoShop)
@@ -2054,15 +2062,16 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 			CurrentUi.TextLong = parseText(textLong)
 		
 	CurrentUi.RL.clear()
-	if location.has("rl"):
+	var rls = getValue(location,"rl",null)
+	if rls:
 		CurrentUi.ShowRL = true
-		match typeof(location.rl):
+		match typeof(rls):
 			TYPE_ARRAY:
-				for rl in location.rl:
+				for rl in rls:
 					currentUIAppendRL(rl)
 			TYPE_DICTIONARY:
-				for rlId in location.rl:
-					currentUIAppendRL(location.rl[rlId])
+				for rlId in rls:
+					currentUIAppendRL(rls[rlId])
 			var rlType:
 				logOut(["Unexpected type of location.rl: ",rlType],"ERROR")
 	else:
@@ -2194,27 +2203,40 @@ func npcDialogShow(npc):
 	updateUI()
 
 func npcDialogReply(reply:Dictionary):
+	var dialogueId = getValue(reply,"dialogue","")
 	var msg = getValue(reply,"text","")
 	var onSelect = getValue(reply,"onSelect",{})
-	var topic = getValue(reply,"topic","TOP")
+	var afterSelect = getValue(reply,"afterSelect",{})
+	var topic = getValue(reply,"topic",null)
+	var goto = getValue(reply,"goto",null)
 	
 	if msg != "": npcDialogSay(PlayerData.ID,msg)
 	
 	execute(onSelect)
 	
-	npcDialogTopic(topic)
+	if topic:
+		npcDialogTopic(topic,dialogueId)
+	elif goto:
+		npcDialogHide()
+		execute({"goto":goto})
+	else:
+		npcDialogTopic("TOP",dialogueId)
+	
+	execute(afterSelect)
 
 func npcDialogSay(charId:String,text:String):
 	var statement = {"charId":charId,"text":text}
 	CurrentUi.NPCDialog.append(statement)
 	updateUI()
 
-func npcDialogSetReplies(replies):
+func npcDialogSetReplies(replies,dialogueId):
 	match typeof(replies):
 		TYPE_DICTIONARY:
 			CurrentUi.NPCDialogOption = replies.values()
 		TYPE_ARRAY:
 			CurrentUi.NPCDialogOption = replies
+	for npcDO in CurrentUi.NPCDialogOption:
+		npcDO.dialogue = dialogueId
 
 func npcDialogTopTopics(npc:Dictionary)->Array:
 	var result = []
@@ -2242,7 +2264,7 @@ func npcDialogTopic(topicId:String,dialogueId:String="",subtopic:int=1):
 			var reply = {"topic":topTopic.dialogueId+"."+topTopic.ID,"label":getValue(topTopic,"TOP",topTopic.ID),"text":getValue(topTopic,"TOP_text","")}
 			topTopicOptions.append(reply)
 		topTopicOptions.append({"topic":"LEAVE","label":"Leave"})
-		npcDialogSetReplies(topTopicOptions)
+		npcDialogSetReplies(topTopicOptions,dialogueId)
 		updateUI()
 		return
 			
@@ -2250,12 +2272,14 @@ func npcDialogTopic(topicId:String,dialogueId:String="",subtopic:int=1):
 	
 	match topicArr.size():
 		2:
-			dialogueId = topicArr[0]
+			if topicArr[0] != "SELF":
+				dialogueId = topicArr[0]
 			topicId = topicArr[1]
 		3: 
-			dialogueId = topicArr[0]
+			if topicArr[0] != "SELF":
+				dialogueId = topicArr[0]
 			topicId = topicArr[1]
-			subtopic = topicArr[2]
+			subtopic = int(topicArr[2])
 
 	var dialogue = getDialogue(dialogueId)
 	var topics = getValue(dialogue,"topics",{})
@@ -2268,7 +2292,7 @@ func npcDialogTopic(topicId:String,dialogueId:String="",subtopic:int=1):
 		var nextTopic=getValue(subTopic,"topic","")
 		if nextTopic:npcDialogTopic(nextTopic,dialogueId)
 	else:
-		npcDialogSetReplies(replies)
+		npcDialogSetReplies(replies,dialogueId)
 		updateUI()
 
 
@@ -2427,6 +2451,8 @@ func _process(delta):
 	if uiUpdatePending:
 		playerData2UI()
 		get_tree().call_group(CurrentUi.UIGroup,"updateUI",CurrentUi)
+		if CurrentUi.UIGroup!= "uiUpdate":
+			get_tree().call_group("uiUpdate","updateUI",CurrentUi)
 		uiUpdatePending=false
 
 func wardrobe():
