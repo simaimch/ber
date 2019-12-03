@@ -1,0 +1,315 @@
+{
+    "greetings":{
+        "1":{
+            "priority":1000,
+            "condition": "PlayerData.QUEST.school.psychologistGreeting.completed!=true",
+            "topic":"interview"
+        },
+        "100":{
+            "priority":800,
+            "condition": "PlayerData.QUEST.school.psychologistStuies.enabled!=true",
+            "topic":"studyChangeMind"
+        },
+        "200":{
+            "priority":600,
+            "condition": "PlayerData.QUEST.school.psychologistStuies.enabled=true",
+            "topic":"study"
+        }
+    },
+    "topics":{
+        "interview":{
+            "1":{
+                "onShow":{
+                    "PARAM1":{
+                        "persist.nameKnown":true,
+                        "persist.nameMode":"titleLast"
+                    }
+                },
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "^text":"Ah, #PlayerData.name.first#. I've been expecting you. My name is Dr. #PARAM1.name.last# and I am your school psychologist."
+                    },
+                    "20":{
+                        "text":"She stands up to shake your hand, then she points at a chair opposite of her own chair."
+                    },
+                    "30":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Please, sit down."
+                    },
+                    "40":{
+                        "text":"You sit down at the chair."
+                    },
+                    "50":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"You might wonder why you are here. It is the schools policy to perform a psychological interview with each new student. Don't worry, it won't take long. Do you have any questions before we start?"
+                    }
+                },
+                "replies":{
+                    "10":{
+                        "label":"No",
+                        "^text":"No.",
+                        "topic": "SELF.interview.10"
+                    }
+                }
+            },
+            "10":{
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Good."
+                    },
+                    "20":{
+                        "text":"She takes out a pen and starts asking you questions. They center around your family, your friends and your previous school experiences. She notes down your answers, not giving away her emotions."
+                    },
+                    "30":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Good, now that we have the basics covered lets talk about the interesting topics. Are you still a virgin?"
+                    }
+                },
+                "replies":{
+                    "10":{
+                        "label":"Yes (truth)",
+                        "text":"Yes.",
+                        "topic": "SELF.interview.100"
+                    },
+                    "20":{
+                        "label":"Yes (lie)",
+                        "text":"Yes.",
+                        "topic": "SELF.interview.110"
+                    },
+                    "30":{
+                        "label":"No (truth)",
+                        "text":"No.",
+                        "topic": "SELF.interview.120"
+                    },
+                    "40":{
+                        "label":"No (lie)",
+                        "text":"No.",
+                        "topic": "SELF.interview.130"
+                    },
+                    "50":{
+                        "label":"That's too personal",
+                        "text":"I'd rather not answer this question. It's too personal.",
+                        "topic": "SELF.interview.20"
+                    }
+                }
+            },
+            "20":{
+                "text":"Don't worry. Your secrets won't leave this room. But I require you to tell me the truth. So, are you a viring or not?",
+                "replies":{
+                    "10":{
+                        "label":"Yes (truth)",
+                        "text":"Yes.",
+                        "topic": "SELF.interview.100"
+                    },
+                    "20":{
+                        "label":"Yes (lie)",
+                        "text":"Yes.",
+                        "topic": "SELF.interview.110"
+                    },
+                    "30":{
+                        "label":"No (truth)",
+                        "text":"No.",
+                        "topic": "SELF.interview.120"
+                    },
+                    "40":{
+                        "label":"No (lie)",
+                        "text":"No.",
+                        "topic": "SELF.interview.130"
+                    }
+                }
+            },
+            "100":{
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"That's good. Your virginity is precious, there is no need to throw it away."
+                    },
+                    "20":{
+                        "text":"You feel a little uncomfortable."
+                    },
+                    "30":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Anyways, I have a proposition for you."
+                    }
+                },
+                "replies":{
+                    "10":{
+                        "label":"Continue",
+                        "topic": "SELF.interview.200"
+                    }
+                }
+            },
+            "110":{
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Really? You know I am a trained psychologist? You can't fool me. And after all there is no need to."
+                    },
+                    "20":{
+                        "text":"You feel a little uncomfortable."
+                    },
+                    "30":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Anyways, I have a proposition for you."
+                    }
+                },
+                "replies":{
+                    "10":{
+                        "label":"Continue",
+                        "topic": "SELF.interview.200"
+                    }
+                }
+            },
+            "120":{
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Intersting."
+                    },
+                    "20":{
+                        "text":"You feel a little uncomfortable."
+                    },
+                    "30":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Anyways, I have a proposition for you."
+                    }
+                },
+                "replies":{
+                    "10":{
+                        "label":"Continue",
+                        "topic": "SELF.interview.200"
+                    }
+                }
+            },
+            "130":{
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Really? You know I am a trained psychologist? You can't fool me. And after all there is no need to. Your virginity is precious, there is no need to throw it away."
+                    },
+                    "20":{
+                        "text":"You feel a little uncomfortable."
+                    },
+                    "30":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Anyways, I have a proposition for you."
+                    }
+                },
+                "replies":{
+                    "10":{
+                        "label":"Continue",
+                        "topic": "SELF.interview.200"
+                    }
+                }
+            },
+            "200":{
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"You might be an interesting case. I'd like to watch your progress more closely. That means you could come here to talk with me and occasionally I'd perform an harmless psychological experiment on you."
+                    },
+                    "20":{
+                        "text":"The thought of the experiments seems to excite her."
+                    },
+                    "30":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"And of course you would get a small financial compensation for your time. What do you say?"
+                    }
+                },
+                "replies":{
+                    "10":{
+                        "label":"Yes",
+                        "text":"Okay, yes.",
+                        "topic": "SELF.interview.300"
+                    },
+                    "20":{
+                        "label":"No",
+                        "text":"Sorry, but I am not interested.",
+                        "topic": "SELF.interview.310"
+                    }
+                }
+            },
+            "300":{
+                "text":"I am happy to hear that. Just come here if you have time after classes.",
+                "replies":{
+                    "10":{
+                        "label":"Leave",
+                        "goto": "dahlemSchool.hallway",
+                        "onSelect":{
+                            "PlayerData":{
+                                "QUEST.school.psychologistGreeting.completed":true,
+                                "QUEST.school.psychologistStuies.enabled":true
+                            }
+                        }
+                                
+                    }
+                }
+            },
+            "310":{
+                "text":"A pity.",
+                "replies":{
+                    "10":{
+                        "label":"Leave",
+                        "goto": "dahlemSchool.hallway",
+                        "onSelect":{
+                            "PlayerData":{
+                                "QUEST.school.psychologistGreeting.completed":true
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "study":{
+            "1":{
+                "^text":"Hello #PlayerData.name.first#. You are her for my extra study, are you? I am sorry, but I don't have time for you right now. Just come back another time.",
+                "replies":{
+                    "0":{
+                        "label":"Leave",
+                        "goto": "dahlemSchool.hallway"
+                    }
+                }   
+            }
+        },
+        "studyChangeMind":{
+            "1":{
+                "^text":"Hello #PlayerData.name.first#. Did you change your mind about my offer?",
+                "replies":{
+                    "0":{
+                        "label":"Yes",
+                        "topic": "SELF.studyChangeMind.100"
+                    },
+                    "10":{
+                        "label":"No",
+                        "topic": "SELF.studyChangeMind.200"
+                    }
+                }
+            },
+            "100":{
+                "text":"I am happy to hear that. Just come here if you have time after classes.",
+                "replies":{
+                    "0":{
+                        "label":"Leave",
+                        "goto": "dahlemSchool.hallway",
+                        "onSelect":{
+                            "PlayerData":{
+                                "QUEST.school.psychologistStuies.enabled":true
+                            }
+                        }
+                    }
+                }
+            },
+            "200":{
+                "text":"Then there is nothing for us to talk about.",
+                "replies":{
+                    "0":{
+                        "label":"Leave",
+                        "goto": "dahlemSchool.hallway"
+                    }
+                }
+            }
+        }
+    }
+}

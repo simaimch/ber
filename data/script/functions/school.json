@@ -1,0 +1,8 @@
+{
+    "schoolIsStudent":{
+        "result": true
+    },
+    "schoolTimeForClass":{
+        "result": true
+    }
+}

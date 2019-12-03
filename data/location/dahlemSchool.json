@@ -2,19 +2,74 @@
     "exterior":{
         "bg":"texture/locations/dahlem/schoolExterior.jpg",
         "label":"School",
-        "text":"The school is currently closed for restauration.",
+        "text":"School.",
         "rl":[
             {
-                "locationId":"dahlem.main",
-                "time": 300
+                "locationId":"SELF.hallway",
+                "time": 60,
+                "label":"Inside"
             },
             {
                 "locationId":"dahlemDorm.exterior",
                 "time": 120
             },
             {
+                "locationId":"dahlem.main",
+                "time": 300
+            },
+            
+            {
                 "locationId":"SELF.sportsfield",
                 "time": 120
+            }
+        ],
+        "actions":{
+            "10000":{
+                "Label": "Go to class",
+                "condition": "schoolIsStudent(PlayerData)=true",
+                "~value":{
+                    "1000":{
+                        "condition":"schoolTimeForClass()=false",
+                        "value":{
+                            "Disabled": true,
+                            "Tooltip": "It is not the right time for classes."
+                        }
+                    },
+                    "100":{
+                        "value":{
+                            "goto":"dahlemSchoolClasses.start"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "hallway":{
+        "bg":"texture/locations/dahlem/schoolHallway.jpg",
+        "label":"Hallway",
+        "text":"Hallway.",
+        "rl":[
+            {
+                "locationId":"SELF.exterior",
+                "time": 60,
+                "label":"Outside"
+            },
+            {
+                "locationId":"SELF.psychologistOffice",
+                "time": 30
+            }
+        ]
+    },
+    "psychologistOffice":{
+        "bg":"texture/npc/schoolPsychologist/psychologistHor.jpg",
+        "rlTexture":"texture/locations/dahlem/schoolPsychologistOffice.jpg",
+        "label":"Psychologist Office",
+        "text":"Psychologist Office",
+        "npcs":true,
+        "rl":[
+            {
+                "locationId":"SELF.hallway",
+                "time": 30
             }
         ]
     },

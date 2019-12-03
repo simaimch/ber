@@ -146,7 +146,16 @@
         "result":{
             "1000":{
                 "condition":"PARAM1.nameKnown = true",
-                "^value":"#PARAM1.name.first# #PARAM1.name.last#"
+                "~value":{
+                    "1000":{
+                        "condition":"PARAM1.nameMode = 'titleLast'",
+                        "^value":"#PARAM1.name.title# #PARAM1.name.last#"
+                    },
+                    "0":{
+                        "^value":"#PARAM1.name.first# #PARAM1.name.last#"
+                    }
+                }
+                
             },
             "0":{
                 "#value":"npcDescriptionAgeGender(PARAM1)"

@@ -119,12 +119,15 @@ func getFoldersInFolder(path)->Array:
 	dir.list_dir_end()
 	
 	return folders
-	
+
+func getEmptyDateTime()->Dictionary:
+	return {"year":1970,"month":1,"day":1,"hour":0,"minute":0,"second":0}
+
 func string2DateTime(s)->Dictionary:
 	#DD.MM.YYYY
 	#hh:mm:ss or hh:mm
 	#combine date and time with a single space in between, example:DD.MM.YYYY hh:mm:ss
-	var result = {"year":1970,"month":1,"day":1,"hour":0,"minute":0,"second":0}
+	var result = getEmptyDateTime()
 	var dateAndTime = s.split(" ")
 	
 	if dateAndTime.size() == 1:
@@ -180,9 +183,13 @@ func getHoursTilTime(now,target)->int:
 	
 	return int(targetDict.hour - nowDict.hour + 24*getDaysTilDate(now,target,false))
 
-func getSecondsTil(now,target)->int:
+func getSecondsTil(now,target,sameDay = false)->int:
 	var unixNow = getUnixTime(now)
 	var unixTarget = getUnixTime(target)
+	
+	if sameDay:
+		unixNow = unixNow % 86400
+		unixTarget = unixTarget % 86400
 	
 	return (unixTarget - unixNow)
 
@@ -191,7 +198,7 @@ func getSecondsTilMidnight(t) -> int:
 	return (t.get("hour",0) * 3600 + t.get("minute",0) * 60 + t.get("second",0))
 
 func getDateTime(dt) -> Dictionary:
-	if typeof(dt) == TYPE_DICTIONARY: return dt
+	if typeof(dt) == TYPE_DICTIONARY: return mergeDateTime(getEmptyDateTime(),dt)
 	if typeof(dt) == TYPE_STRING: return string2DateTime(dt)
 	if typeof(dt) == TYPE_INT: return OS.get_datetime_from_unix_time(dt)
 	if typeof(dt) == TYPE_REAL: return OS.get_datetime_from_unix_time(int(dt))
@@ -422,6 +429,14 @@ func intRandom(v):
 		var vType:
 			GameManager.logOut(["intRandom: unexpected type of v: ",vType],"ERROR")
 	return 0
+
+func mergeDateTime(dtSource,dtTarget)->Dictionary:
+	var dtTargetdt = dtTarget.duplicate()
+	
+	for key in dtSource:
+		if !dtTargetdt.has(key): dtTargetdt[key] = dtSource[key]
+		
+	return dtTargetdt
 
 func mergeDictBoolOr(source,target):
 	

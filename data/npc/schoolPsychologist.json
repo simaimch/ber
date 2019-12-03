@@ -1,0 +1,16 @@
+{
+    "name":{
+        "first":"Saskia",
+        "last":"Wringer",
+        "title":"Dr."
+    },
+    "texture": "texture/npc/schoolPsychologist/psychologistPortrait.jpg",
+    "schedule":{
+        "dahlemSchool.psychologistOffice":[
+            {"days":[1,2,3,4,5,6,7],"timeStart":0,"timeEnd":2400}
+        ]
+    },
+    "bday":"01.01.1984",
+    "gender":"f",
+    "dialogue":["schoolPsychologist","basic"]  
+}

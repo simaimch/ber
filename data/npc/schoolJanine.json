@@ -6,6 +6,7 @@
         "first":"Janine",
         "last":"Krüger"
     },
+    "groups":["dahlemSchoolStudent"],
     "texture": "texture/npc/portrait/MistyRhodes.jpg",
     "schedule":{
         "dahlemDorm.room311":[

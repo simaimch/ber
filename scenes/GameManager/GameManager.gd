@@ -422,12 +422,21 @@ func getValueFromList(list,default = null):
 	
 func getValueFromRandom(entries:Array):
 	var weightTotal = 0
+	var validEntries = []
 	for entry in entries:
-		weightTotal+=entry.weight
+		var condition = getValue(entry,"condition")
+		if !condition or checkCondition(condition):
+			var weight = getValue(entry,"weight",1)
+			weightTotal+=weight
+			validEntries.append(entry)
+			
 	var rand = rng.randi_range(1,weightTotal)
 	var i = 0
-	while(rand > entries[i].weight and i < entries.size()):
-		rand -= entries[i].weight
+	while(i < validEntries.size()):
+		var weight = getValue(validEntries[i],"weight",1)
+		if rand <= weight:
+			break
+		rand -= weight
 		i += 1
 		
 	return entries[i].value
@@ -839,13 +848,17 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 					if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
 						result += getValue(possibleResult,"value")
 			"standard":
-				var keys = results.keys()
-				keys.sort_custom(SorterByIndexInt, "sortInv")
-				for key in keys:
-					var possibleResult = results[key]
-					if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-						result = getValue(possibleResult,"value")
-						break
+				match typeof(results):
+					TYPE_DICTIONARY:
+						var keys = results.keys()
+						keys.sort_custom(SorterByIndexInt, "sortInv")
+						for key in keys:
+							var possibleResult = results[key]
+							if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
+								result = getValue(possibleResult,"value")
+								break
+					_:
+						result = results
 			"stringConcat":
 				result = ""
 				var keys = results.keys()
@@ -1041,13 +1054,18 @@ func modValueAtPath(path,mode,value):
 		
 	var oldValue = getValueFromPath(path)
 	var newValue
-	
-	if mode == "inc": 
-		newValue = oldValue + value
-	elif mode == "dec": 
-		newValue = oldValue - value
+
+	match mode:
+		"inc": 
+			newValue = oldValue + value
+			setValueAtPath(path,newValue)
+		"dec": 
+			newValue = oldValue - value
+			setValueAtPath(path,newValue)
+		"append":
+			oldValue.append(value)
 		
-	setValueAtPath(path,newValue)
+	
 
 func setValueAtPath(path,value):
 	var cObj
@@ -1631,6 +1649,10 @@ func loadThemes():
 func locationInherit(l):
 	l = linkObject(l)
 	if l.has("inherit"):
+		var lArr = l.inherit.split(".")
+		if lArr[0] == "SELF":
+			lArr[0] = l.SELF
+			l.inherit = PoolStringArray(lArr).join(".")
 		var parent = getLocation(l.inherit)
 		l = Util.inherit(l,parent)
 	return l
@@ -1913,17 +1935,23 @@ func executeCommands(commands):
 			for entry in commands.NPCData[key]:
 				setValueAtPath("NPC"+key+".persist."+entry,commands.NPCData[key][entry])
 	
-	if commands.has("Time"):
-		if commands.Time.has("Offset"):
-			WorldData.TimeOffset = int(commands.Time.Offset)
+	
+	var time = getValue(commands,"Time")
+	if time:
+		var timeOffset = getValue(time,"Offset")
+		if timeOffset:
+			WorldData.TimeOffset = int(timeOffset)
 			timeUpdate()
-		if commands.Time.has("Pass"):
-			var Activity = "idle"
-			var Duration = 0
-			if commands.Time.Pass.has("Activity"):
-				Activity = commands.Time.Pass.Activity
-			if commands.Time.Pass.has("Duration"):
-				Duration = commands.Time.Pass.Duration
+		
+		var timePass = getValue(time,"Pass")
+		if timePass:
+			var Activity = getValue(timePass,"Activity","idle")
+			var Duration = getValue(timePass,"Duration",0)
+			
+			var SetTime = getValue(timePass,"SetTime",0)
+			if SetTime:
+				Duration = Util.getSecondsTil(now(),SetTime,true)
+			
 			timePass(Duration,Activity)
 			#result.modifiersRecalc = true
 	
@@ -1938,18 +1966,25 @@ func executeCommands(commands):
 					return result
 	
 		
-	if commands.has("goto"):
-		match typeof(commands.goto):
-			TYPE_STRING:
-				MiscData.currentLocationID = commands["goto"]
-				var gotoLocation = getLocation(commands["goto"])
-				executeLocation(gotoLocation)
-			TYPE_DICTIONARY:
-				var location = locationInherit(commands.goto)
-				executeLocation(location,false,false)
-		#result.modifiersRecalc = true
-		result.consume = true
-		return result
+	#if commands.has("goto"):
+	var goto = getValue(commands,"goto",null)
+	match typeof(goto):
+		TYPE_STRING:
+			var gotoArr = goto.split(".")
+			if gotoArr[0] == "SELF":
+				gotoArr[0] = MiscData.currentLocationID.split(".")[0]
+				goto = PoolStringArray(gotoArr).join(".")
+			MiscData.currentLocationID = goto
+			var gotoLocation = getLocation(goto)
+			executeLocation(gotoLocation)#
+			result.consume = true
+			return result
+		TYPE_DICTIONARY:
+			var location = locationInherit(goto)
+			executeLocation(location,false,false)
+			result.consume = true
+			return result
+		
 	
 	if commands.has("gotoLocationPop"):
 		var locationId = MiscData.locationStack.pop_back()
@@ -2040,8 +2075,9 @@ func executeLocation(location,omitStart=false,updateLocationId=true):
 	#functionObjects.pop_back()
 		
 func executeLocationCommands(location,omitStart=false,updateLocationId=true):
-	if !omitStart and location.has("onStart"):
-		if execute(location.onStart): return
+	var onStart = getValue(location,"onStart")
+	if !omitStart and onStart:
+		if execute(onStart): return
 	
 	var bgTemp = getValue(location,"bg")
 	#if bgTemp != null:
@@ -2287,7 +2323,25 @@ func npcDialogTopic(topicId:String,dialogueId:String="",subtopic:int=1):
 	var subTopic = getValue(topic,str(subtopic),{})
 	var text = getValue(subTopic,"text","")
 	var replies = getValue(subTopic,"replies",[])
-	npcDialogSay(functionParameters.back()[0].ID,text)
+	var onShow = getValue(subTopic,"onShow",null)
+	
+	match typeof(text):
+		TYPE_STRING:
+			npcDialogSay(functionParameters.back()[0].ID,text)
+		TYPE_DICTIONARY:
+			var keys = text.keys()
+			keys.sort_custom(SorterByIndexInt, "sort")
+			for key in keys:
+				var subtext = text[key]
+				match typeof(subtext):
+					TYPE_DICTIONARY:
+						var speakerId = getValue(subtext,"speakerId","NARRATOR")
+						var line = getValue(subtext,"text","Line missing")
+						npcDialogSay(speakerId,line)
+			
+	if onShow:
+		execute(onShow)
+			
 	if replies.empty():
 		var nextTopic=getValue(subTopic,"topic","")
 		if nextTopic:npcDialogTopic(nextTopic,dialogueId)

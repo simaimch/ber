@@ -282,7 +282,7 @@
                     },
                     "1100":{
                         "condition":"PlayerData.occupationStart=MiscData.const.occupationStart.school",
-                        "goto":"dahlemDorm.entry"
+                        "goto":"dahlemDorm.bureau"
                     },
                     "1200":{
                         "condition":"PlayerData.occupationStart=MiscData.const.occupationStart.university",
