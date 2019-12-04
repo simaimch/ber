@@ -6,7 +6,7 @@
         "first":"Janine",
         "last":"Krüger"
     },
-    "groups":["dahlemSchoolStudent"],
+    "inherit":"_schoolStudentFemale",
     "texture": "texture/npc/portrait/MistyRhodes.jpg",
     "schedule":{
         "dahlemDorm.room311":[
@@ -22,5 +22,5 @@
     },
     "bday":"22.09.1999",
     "gender":"f",
-    "dialogue":["schoolJanine","basic"]  
+    "dialogue":["schoolJanine"]  
 }

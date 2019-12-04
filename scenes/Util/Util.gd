@@ -283,9 +283,31 @@ func bigger(a,b):
 	return (a > b)
 	
 
+func isNullFalseEmpty(val)->bool:
+	match typeof(val):
+		TYPE_ARRAY, TYPE_DICTIONARY, TYPE_STRING:
+			return val.empty()
+		TYPE_BOOL:
+			return !val
+		TYPE_INT, TYPE_REAL:
+			if val == 0: return true
+		TYPE_NIL:
+			return true
+		TYPE_STRING_ARRAY:
+			if val.size() == 0: return true
+	return false
+			
+
 func equals(a,b):
 	var ta = typeof(a)
 	var tb = typeof(b)
+	
+	var aFalseNullEmpty = isNullFalseEmpty(a)
+	var bFalseNullEmpty = isNullFalseEmpty(b)
+	
+	if aFalseNullEmpty and bFalseNullEmpty: return true
+	elif aFalseNullEmpty or bFalseNullEmpty: return false # same as xor due to checking and beforehead
+	
 	
 	if (ta == TYPE_REAL or ta == TYPE_INT) and (tb == TYPE_REAL or tb == TYPE_INT):
 		if a == b: return true
@@ -309,9 +331,12 @@ func equals(a,b):
 	#if tb == TYPE_BOOL and ta != TYPE_BOOL:
 	#	a = bool(a)
 	
-	if ta == TYPE_NIL:
-		if tb == TYPE_NIL or b == 0: return true
-	if tb == TYPE_NIL and a == 0: return true
+	#if ta == TYPE_NIL:
+	#	if tb == TYPE_STRING:
+	#		if b=="": return true
+	#		return false
+	#	if tb == TYPE_NIL or b == 0: return true
+	#if tb == TYPE_NIL and a == 0: return true
 	
 	if ta == TYPE_STRING or tb == TYPE_STRING:
 		if str(a) == str(b): return true

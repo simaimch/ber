@@ -1018,6 +1018,7 @@ func getObjectFromPath(path):
 		var npc = functionParameter(npcParamId)
 		var npcId = npc.get("ID",0)
 		return NPCData.get(npcId,{})
+	elif(path=="npcs"): return npcs
 	return null
 
 func getModFolder(modID=""):
@@ -1576,6 +1577,18 @@ func loadNPCs():
 	for npcFile in npcFiles:
 		var npcFileParts = npcFile.split(".")
 		loadNPC(npcFileParts[0])
+		
+	for npcId in npcs:
+		var npc = npcs[npcId]
+		npcs[npcId] = npcInherit(npc)
+
+		
+func npcInherit(npc:Dictionary)->Dictionary:
+	if npc.has("inherit"):
+		var parentNpc = npcInherit(npcs.get(npc.inherit,{}))
+		npc = Util.inherit(npc,parentNpc)
+		#Erase inherit to increase performance?
+	return npc
 	
 func loadPreferences():
 	var preferencesPath = getRootFolder()+"/preferences.json"
