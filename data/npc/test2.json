@@ -1,11 +1,10 @@
 {
-    "persist":{
+    "initialize":{
         "name":{
-            "first":"*names_first_female_90s",
-            "last":"*names_last"
+            "first":{">value":"names_first_female_90s"},
+            "last":{">value":"names_last"}
         },
-        "texture": "*textures_female_18-25",
-        "known": false
+        "texture": {">value":"textures_female_18-25"}
     },
     "schedule":{
         "cityCenter":[

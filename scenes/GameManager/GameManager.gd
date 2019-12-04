@@ -65,6 +65,8 @@ var CurrentUi={
 
 var MetaData = {} #does not get saved in savegame
 
+var NPCData = {} # contains modified NPC-Data for storage in savegame only. Data from gamefiles is stored npcs
+
 var PlayerData = {
 	"ID":"PC",
 	"groups":[],
@@ -254,31 +256,37 @@ func getNPC(npcId):
 	#all NPCs get loaded at the beginning of the game, no need to load them here
 	if npcId == PlayerData.ID:
 		return PlayerData
-	var npc = npcs[npcId]
-	npc["ID"] = npcId
-	if !hasValue(npc,"initialized") or getValue(npc,"initialized") == false:
-		initNpc(npc)
-	return npc
-
-func initNpc(npc):
-	if npc.has("persist"):
-		npc.persist = initEntry(npc.persist)
-	else:
-		npc.persist = {}
-	print("NPC "+npc.ID+" initialized")
-	npc.persist.initialized = true
 	
-func initEntry(entry):
-	if typeof(entry) == TYPE_STRING and entry[0] == "*":
-		entry.erase(0,1)
-		return getValueFromList(entry)
-	if typeof(entry) in [TYPE_STRING, TYPE_BOOL, TYPE_INT, TYPE_REAL]:
-		return entry
-	if typeof(entry) == TYPE_DICTIONARY:
-		var newDict = {}
+	var npc = npcs.get(npcId, null)
+	
+	if !npc:
+		logOut(["NPC not found:",npcId],"ERROR")
+		return {}
+		
+	if !NPCData.has(npcId):
+		var npcData = initNpc(npc)
+		NPCData[npcId] = npcData
+	return Util.inherit(NPCData[npcId],npc)
+
+
+func initNpc(npc:Dictionary)->Dictionary:
+	var result = {}
+	var initialize = getValue(npc,"initialize",{})
+	
+	for key in initialize:
+		result[key] = initEntry(initialize[key])
+	
+	return result
+	
+	
+func initEntry(entry:Dictionary):
+	if hasValue(entry,"value"):
+		return getValue(entry,"value")
+	else:
+		var result = {}
 		for key in entry:
-			newDict[key] = initEntry(entry[key])
-		return newDict
+			result[key] = initEntry(entry[key])
+		return result
 
 func inventoryAdd(item,count=1,ignoreOwned=false):
 	if PlayerData.inventory.has(item.ID):
@@ -308,11 +316,13 @@ func hasValue(obj, index):
 	var lindex = ">"+index
 	var rindex = "#"+index
 	var ranindex="|"+index
+	var sindex = "^"+index
 	if obj.has(cindex): return true
 	if obj.has(findex): return true
 	if obj.has(lindex): return true
 	if obj.has(rindex): return true
-	if obj.has("persist"): return hasValue(obj.persist, index)
+	if obj.has(sindex): return true
+	#if obj.has("persist"): return hasValue(obj.persist, index)
 	
 	var indexArr = index.split(".")
 	if indexArr.size() > 1:
@@ -996,12 +1006,18 @@ func functionParameter(pID:int):
 func getObjectFromPath(path):
 	if(path == "MiscData"): return MiscData
 	elif(path == "Misc"): return misc
+	elif(path == "NPCData"): return NPCData
 	elif(path == "PlayerData"): return PlayerData
 	elif(path == "TEMP"): return temp
 	elif(path == "WorldData"): return WorldData
 	elif(path == "CurrentUi"): return CurrentUi
 	#elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
 	elif(path.begins_with("PARAM")): return functionParameter(int(path.substr(5,path.length()-5))-1)
+	elif(path.begins_with("NPCData")): 
+		var npcParamId:int = int(path.substr(7,path.length()-7))-1
+		var npc = functionParameter(npcParamId)
+		var npcId = npc.get("ID",0)
+		return NPCData.get(npcId,{})
 	return null
 
 func getModFolder(modID=""):
@@ -1550,6 +1566,7 @@ func loadNPC(npcId):
 	var temp = JSON.parse(text)
 	if temp.error == OK:
 		npcs[npcId] = temp.result
+		npcs[npcId].ID = npcId
 		print("NPC "+npcId+" loaded")
 	else:
 		print("Error loading NPC "+npcId+": "+str(temp.error))
@@ -1900,7 +1917,7 @@ func executeCommands(commands):
 			if typeof(textLong) == TYPE_ARRAY: textLong = PoolStringArray(textLong).join("\n")
 			CurrentUi.TextLong = parseText(textLong)
 		
-	for dataContainer in ["PlayerData","MiscData","PARAM1","WorldData","TEMP","CurrentUi"]:
+	for dataContainer in ["PlayerData","MiscData","NPCData1","PARAM1","WorldData","TEMP","CurrentUi"]:
 		result.modifiersRecalc = true
 		if commands.has(dataContainer):
 			var command = commands[dataContainer]
@@ -2452,12 +2469,13 @@ func SaveGameLoad(path = "user://quicksave.json"):
 	saveGame.close()
 	CurrentUi = data.CurrentUi
 	MiscData = data.MiscData
+	NPCData = data.get("NPCData",{})
 	PlayerData = data.PlayerData
 	WorldData = data.WorldData
 	
-	for npcID in data.NPC:
-		if npcID in npcs:
-			npcs[npcID].persist = data.NPC[npcID]
+	#for npcID in data.NPC:
+	#	if npcID in npcs:
+	#		npcs[npcID].persist = data.NPC[npcID]
 	
 	updateUI()
 	
@@ -2467,13 +2485,14 @@ func SaveGameSave(path="user://quicksave.json"):
 	var data = {}
 	data.CurrentUi = CurrentUi
 	data.MiscData = MiscData
+	data.NPCData = NPCData
 	data.PlayerData = PlayerData
 	data.WorldData = WorldData
 	
-	data.NPC = {}
-	for npcID in npcs:
-		if npcs[npcID].has("persist"):
-			data.NPC[npcID] = npcs[npcID].persist
+	#data.NPC = {}
+	#for npcID in npcs:
+	#	if npcs[npcID].has("persist"):
+	#		data.NPC[npcID] = npcs[npcID].persist
 	
 	var saveGame = File.new()
 	saveGame.open(path, File.WRITE)

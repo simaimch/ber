@@ -20,9 +20,9 @@
         "interview":{
             "1":{
                 "onShow":{
-                    "PARAM1":{
-                        "persist.nameKnown":true,
-                        "persist.nameMode":"titleLast"
+                    "NPCData1":{
+                        "nameKnown":true,
+                        "nameMode":"titleLast"
                     }
                 },
                 "text":{
