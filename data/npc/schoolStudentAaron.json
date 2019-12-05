@@ -3,5 +3,6 @@
         "first":"Aaron",
         "last":"Goldschmied"
     },
-    "inherit":"_schoolStudentMale"
+    "inherit":"_schoolStudentMale",
+    "texture": "texture/npc/schoolStudents/boy1Portrait.png"
 }

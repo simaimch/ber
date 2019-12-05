@@ -1,7 +1,9 @@
 {
     "name":{
         "first":"Anja",
-        "last":"Jung"
+        "last":"Kaiser"
     },
-    "inherit":"_schoolStudentFemale"
+    "inherit":"_schoolStudentFemale",
+    "texture": "texture/npc/schoolStudents/anjaPortrait.jpg",
+    "developmentNotes":"Portrayed by Riley Star"
 }

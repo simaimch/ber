@@ -3,5 +3,7 @@
         "first":"Daniela",
         "last":"Peters"
     },
-    "inherit":"_schoolStudentFemale"
+    "inherit":"_schoolStudentFemale",
+    "texture": "texture/npc/schoolStudents/danielaPortrait.png",
+    "developmentNotes":"Portrayed by Girl 11"
 }

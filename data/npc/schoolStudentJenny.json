@@ -3,5 +3,7 @@
         "first":"Jenny",
         "last":"Lang"
     },
-    "inherit":"_schoolStudentFemale"
+    "inherit":"_schoolStudentFemale",
+    "texture": "texture/npc/schoolStudents/juliaPortrait.png",
+    "developmentNotes":"Portrayed by Girl 10"
 }

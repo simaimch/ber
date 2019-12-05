@@ -3,5 +3,7 @@
         "first":"Antonia",
         "last":"Becker"
     },
-    "inherit":"_schoolStudentFemale"
+    "inherit":"_schoolStudentFemale",
+    "texture": "texture/npc/schoolStudents/antoniaPortrait.png",
+    "developmentNotes":"Portrayed by Public Domain Image"
 }

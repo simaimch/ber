@@ -3,5 +3,6 @@
         "first":"Michel",
         "last":"Frank"
     },
-    "inherit":"_schoolStudentMale"
+    "inherit":"_schoolStudentMale",
+    "texture": "texture/npc/schoolStudents/boy6Portrait.png"
 }

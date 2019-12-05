@@ -3,5 +3,6 @@
         "first":"Lars",
         "last":"Keller"
     },
-    "inherit":"_schoolStudentMale"
+    "inherit":"_schoolStudentMale",
+    "texture": "texture/npc/schoolStudents/boy4Portrait.png"
 }
