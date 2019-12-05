@@ -765,41 +765,15 @@ func getValueFromFunction(functionId,functionParameter=null):
 	match functionId:
 		"AGE":
 			result = Util.getAge(now(),currentParameters[0])
+		"DATE_WITH_AGE":
+			result = Util.getDateTimeWithAge(now(),currentParameters[0])
+			result = Util.formtTime(result,"{day}.{month}.{year}")
 		_:
 			var function = getFunction(functionId)
 			result = functionExecute(function,currentParameters)
 	
 	return result
 	
-
-func getValueFromFunctionOld(functionId,functionParameter=""):
-	var result = null
-	if functionId == "INT":
-		return int(functionParameter)
-	
-	var arguments = []
-	if typeof(functionParameter) == TYPE_STRING:
-		var targuments = getArgumentsFromString(functionParameter)
-		for targument in targuments:
-			arguments.append(getValueFromPath(targument))
-	else:
-		arguments.append(functionParameter)
-	
-	match functionId:
-		"COLORNAME":
-			var color = getColor(arguments[0])
-			result = color.name
-		"SUB":
-			var a = float(arguments[0])
-			var b = float(arguments[1])
-			result = a - b
-		"TIME":
-			result = Util.time(now(),arguments[0])
-		_:
-			var function = functions[functionId]
-			result = functionExecute(function,arguments)
-	
-	return result
 
 func functionExecute(function:Dictionary,currentParameters=[]):
 	var result = null
@@ -836,9 +810,6 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 					functionParameters[functionParameters.size()-1] = Util.arraySetAtIndex(functionParameters[functionParameters.size()-1],index,value)
 			var typeParams:
 				logOut(["Unknown type of params ",typeParams, " in ",function],"ERROR")
-	
-	
-	
 	
 	var value = getValue(function,"value",null)
 	
@@ -885,113 +856,6 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 	
 	if getValue(function,"stringFormat",false) == true:
 		result = Util.stringFormat(result)
-	
-	return result
-
-func functionExecuteOld(function,arguments=[]):
-	logOut("Use of functionExecute is deprecated")
-	var result = null
-	#We have to do this here because if function.has("FOBJ"): might require FOBJs to be set up
-	arguments.invert()
-	for argument in arguments:
-		pass
-		#functionObjects.append(argument)
-	var argumentCount = arguments.size()
-	
-	if function.has("FOBJ"):
-		for fobj in function.FOBJ:
-			arguments.push_front(getValueFromPath(fobj))
-	
-		#We have to set up FOBJs again because new FOBJs have been added
-		for i in range(argumentCount):
-			#functionObjects.pop_back()
-			pass
-		for argument in arguments:
-			#functionObjects.append(argument)
-			pass
-		argumentCount = arguments.size()
-	
-	
-	var resultMode = "standard"
-	
-	if function.has("resultMode"): resultMode = function.resultMode
-	
-	if resultMode == "has":
-		var condition = {"mode":"has", "target":function.target, "index":""}
-		var keys = function.result.keys()
-		keys.sort_custom(SorterByIndexInt, "sortInv")
-		for key in keys:
-			var possibleResult = function.result[key]
-			if possibleResult[0] == null:
-				result = possibleResult[1]
-				break
-			condition.index = possibleResult[0]
-			if checkCondition(condition):
-				result = possibleResult[1]
-				break
-		
-	elif resultMode == "standard":
-		var keys = function.result.keys()
-		keys.sort_custom(SorterByIndexInt, "sortInv")
-		for key in keys:
-			var possibleResult = function.result[key]
-			if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-				if possibleResult.has("valueCalc"):
-					result = parseText(possibleResult.valueCalc)
-				elif possibleResult.has("valueRef"):
-					result = getValueFromPath(possibleResult.valueRef)
-				else:
-					result = possibleResult.value
-				break
-	elif resultMode == "stringConcat":
-		result = ""
-		var keys = function.result.keys()
-		keys.sort_custom(SorterByIndexInt, "sort")
-		for key in keys:
-			var possibleResult = function.result[key]
-			if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-				if possibleResult.has("valueCalc"):
-					result += parseText(possibleResult.valueCalc)
-				elif possibleResult.has("valueRef"):
-					result += str(getValueFromPath(possibleResult.valueRef))
-				else:
-					result += str(possibleResult.value)
-	elif resultMode == "stringFormat":
-		result = function.string
-		var resultValues = {}
-		var keys = function.result.keys()
-		for key in keys:
-			var possibleResult = function.result[key]
-			if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-				if possibleResult.has("valueCalc"):
-					resultValues[key] = parseText(possibleResult.valueCalc)
-				elif possibleResult.has("valueRef"):
-					resultValues[key] = str(getValueFromPath(possibleResult.valueRef))
-				else:
-					resultValues[key] = str(possibleResult.value)
-			else:
-				resultValues[key] = ""
-		result = result.format(resultValues)
-		result = Util.stringFormat(result)
-	elif resultMode == "stringParse":
-		result = parseText(function.string)
-		result = Util.stringFormat(result)
-	elif resultMode == "mathAdd":
-		result = 0
-		var keys = function.result.keys()
-		for key in keys:
-			var possibleResult = function.result[key]
-			if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
-				if possibleResult.has("valueCalc"):
-					result += float(parseText(possibleResult.valueCalc))
-				elif possibleResult.has("valueRef"):
-					result += getValueFromPath(possibleResult.valueRef)
-				else:
-					result += possibleResult.value
-					
-	for i in range(argumentCount):
-		#functionObjects.pop_back()
-		pass
 	
 	return result
 

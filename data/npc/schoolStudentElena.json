@@ -1,15 +1,13 @@
 {
-    "persist":{
-        "known": false
-    },
     "name":{
-        "first":"Janine",
-        "last":"Krüger"
+        "first":"Elena",
+        "last":"Melcher"
     },
     "inherit":"_schoolStudentFemale",
-    "texture": "texture/npc/portrait/MistyRhodes.jpg",
+    "texture": "texture/npc/schoolStudents/elenaPortrait.png",
     "schedule":{
-        "dahlemDorm.room311":[
+        "dahlemDorm.room312":[
+            {"days":[1,2,3,4,7],"timeStart":2100,"timeEnd":2400},
             {"days":[1,2,3,4,5],"timeStart":0,"timeEnd":615},
             {"days":[1,2,3,4,5],"timeStart":646,"timeEnd":700}
         ],
@@ -18,9 +16,11 @@
         ],
         "dahlemDorm.kitchen":[
             {"days":[1,2,3,4,5],"timeStart":701,"timeEnd":730}
+        ],
+        "dahlemSchoolClasses.breakHallway":[
+            {"days":[1,2,3,4,5],"timeStart":915,"timeEnd":935}
         ]
     },
-    "bday":"22.09.1999",
     "gender":"f",
-    "dialogue":["schoolJanine"]  
+    "dialogue":[]
 }

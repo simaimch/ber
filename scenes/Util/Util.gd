@@ -40,7 +40,12 @@ func formatMoney(money)->String:
 	return text
 		
 func formtTime(time,timeFormat="{day}.{month}.{year} {hour}:{minute}")->String:
-	var dateTime = OS.get_datetime_from_unix_time (time)
+	var dateTime
+	match typeof(time):
+		TYPE_DICTIONARY:
+			dateTime = time
+		TYPE_INT, TYPE_REAL:
+			dateTime = OS.get_datetime_from_unix_time (time)
 	var day = formatInt(dateTime.day,"00")
 	var month = formatInt(dateTime.month,"00")
 	var year = formatInt(dateTime.year,"00")
@@ -204,7 +209,23 @@ func getDateTime(dt) -> Dictionary:
 	if typeof(dt) == TYPE_REAL: return OS.get_datetime_from_unix_time(int(dt))
 	print("Unexpected Parameter of Type "+str(typeof(dt))+" in Util.getDateTime():"+str(dt))
 	return OS.get_datetime_from_unix_time(0)
+
+func getDateTimeWithAge(now, age)->Dictionary:
+	var nowDict:Dictionary = getDateTime(now)
+	var oneYearAgoDict = nowDict.duplicate()
+	oneYearAgoDict.year -= 1
+
+	nowDict.year -= age
+	oneYearAgoDict.year -= age
 	
+	var nowUnix = getUnixTime(datetimeResetTime(nowDict))
+	nowUnix += 86399 # last second of the day
+	var oneYearAgoUnix = getUnixTime(datetimeResetTime(oneYearAgoDict))
+	
+	var resultUnix = rng.randi_range(oneYearAgoUnix,nowUnix)
+	
+	return getDateTime(resultUnix)
+
 func getUnixTime(time)->int:
 	if typeof(time) == TYPE_DICTIONARY: return OS.get_unix_time_from_datetime(time)
 	if typeof(time) == TYPE_STRING: return OS.get_unix_time_from_datetime(string2DateTime(time))

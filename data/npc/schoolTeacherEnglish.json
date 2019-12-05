@@ -1,0 +1,16 @@
+{
+    "name":{
+        "first":"Kira",
+        "last":"Gatow",
+        "title":"Miss"
+    },
+    "inherit":"_schoolTeacher",
+    "texture": "texture/npc/schoolTeachers/historyPortrait.png",
+    "schedule":{
+        
+    },
+    "bday":"09.12.1992",
+    "gender":"f",
+    "dialogue":[],
+    "developmentNotes":"Portrayed by Keira Nicole"
+}
