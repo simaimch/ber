@@ -4,6 +4,5 @@
         "last":"Lang"
     },
     "inherit":"_schoolStudentFemale",
-    "texture": "texture/npc/schoolStudents/juliaPortrait.png",
-    "developmentNotes":"Portrayed by Girl 10"
+    "texture": "texture/npc/schoolStudents/girl4Portrait.png"
 }

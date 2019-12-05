@@ -3,5 +3,6 @@
         "bday":{"#value":"DATE_WITH_AGE(18)"}
     },
     "groups":["dahlemSchoolStudent"],
-    "dialogue":["basic"]  
+    "dialogue":["basic"],
+    "isTemplate":true
 }

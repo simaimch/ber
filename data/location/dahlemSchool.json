@@ -41,6 +41,10 @@
                         }
                     }
                 }
+            },
+            "5000":{
+                "Label":"Debug: Class List",
+                "npcGroup":"dahlemSchoolStudent"
             }
         }
     },

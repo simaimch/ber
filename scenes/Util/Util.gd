@@ -625,7 +625,7 @@ func stringSubstrFromTo(s:String,from:int,to:int)->String:
 		
 	return result.substr(from,length)
 
-func texture(path):
+func texture(path:String):
 	return cache_texture.get(path)
 
 func textureLoad(path):	

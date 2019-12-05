@@ -4,6 +4,6 @@
         "last":"Kaiser"
     },
     "inherit":"_schoolStudentFemale",
-    "texture": "texture/npc/schoolStudents/anjaPortrait.jpg",
+    "texture": "texture/npc/schoolStudents/anjaPortrait.png",
     "developmentNotes":"Portrayed by Riley Star"
 }

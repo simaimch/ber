@@ -42,7 +42,7 @@
 [ext_resource path="res://scenes/main/StatusDetailsContainer.gd" type="Script" id=40]
 [ext_resource path="res://scenes/main/Statdisplay/Statdisplay.tscn" type="PackedScene" id=41]
 [ext_resource path="res://scenes/main/GameMenu/GameMenu.tscn" type="PackedScene" id=42]
-[ext_resource path="res://media/texture/npc/portrait/female_young/p(0).jpg" type="Texture" id=43]
+[ext_resource path="res://scenes/npcgroup/NPCGroup.tscn" type="PackedScene" id=43]
 
 [node name="main" type="Control" groups=[
 "gameCommand",
@@ -438,54 +438,8 @@ Stat = "sleep"
 [node name="GameMenu" parent="." instance=ExtResource( 42 )]
 visible = false
 
-[node name="Group" type="PanelContainer" parent="."]
+[node name="NPCGroup" parent="." instance=ExtResource( 43 )]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Group"]
-margin_right = 1920.0
-margin_bottom = 1080.0
-
-[node name="CenterContainer" type="CenterContainer" parent="Group/ScrollContainer"]
-margin_right = 1920.0
-margin_bottom = 1080.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="GridContainer" type="GridContainer" parent="Group/ScrollContainer/CenterContainer"]
-margin_left = 960.0
-margin_top = 540.0
-margin_right = 960.0
-margin_bottom = 540.0
-columns = 8
-
-[node name="Control" type="CenterContainer" parent="Group/ScrollContainer/CenterContainer/GridContainer"]
-editor/display_folded = true
-margin_right = 200.0
-margin_bottom = 200.0
-rect_min_size = Vector2( 200, 200 )
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Group/ScrollContainer/CenterContainer/GridContainer/Control"]
-editor/display_folded = true
-margin_left = 20.0
-margin_top = 7.0
-margin_right = 180.0
-margin_bottom = 192.0
-
-[node name="TextureRect" type="TextureRect" parent="Group/ScrollContainer/CenterContainer/GridContainer/Control/VBoxContainer"]
-margin_right = 160.0
-margin_bottom = 160.0
-rect_min_size = Vector2( 160, 160 )
-texture = ExtResource( 43 )
-expand = true
-
-[node name="Label" type="Label" parent="Group/ScrollContainer/CenterContainer/GridContainer/Control/VBoxContainer"]
-margin_top = 164.0
-margin_right = 160.0
-margin_bottom = 185.0
-text = "Name"
-align = 1
 [connection signal="mouse_entered" from="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar/StatusContainer" to="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar/StatusContainer" method="_on_StatusContainer_mouse_entered"]
 [connection signal="mouse_exited" from="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar/StatusContainer" to="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar/StatusContainer" method="_on_StatusContainer_mouse_exited"]
 [connection signal="gui_input" from="defaultView/VSplitContainer/GameStatusContainer/VBoxContainer/CommandLine" to="defaultView/VSplitContainer/GameStatusContainer/VBoxContainer/CommandLine" method="_on_CommandLine_gui_input"]

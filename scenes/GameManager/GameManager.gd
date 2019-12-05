@@ -252,7 +252,7 @@ func getLocation(locationId):
 	
 	return l
 	
-func getNPC(npcId):
+func getNPC(npcId:String)->Dictionary:
 	#all NPCs get loaded at the beginning of the game, no need to load them here
 	if npcId == PlayerData.ID:
 		return PlayerData
@@ -266,7 +266,10 @@ func getNPC(npcId):
 	if !NPCData.has(npcId):
 		var npcData = initNpc(npc)
 		NPCData[npcId] = npcData
-	return Util.inherit(NPCData[npcId],npc)
+		
+	var result = Util.inherit(NPCData[npcId],npc)
+	if npc.get("isTemplate",false) == true: result["isTemplate"] = true
+	return result
 
 
 func initNpc(npc:Dictionary)->Dictionary:
@@ -1897,6 +1900,13 @@ func executeCommands(commands):
 		result.consume = true
 		return result
 		
+	if commands.has("npcGroup"):
+		npcGroupShow(commands.npcGroup)
+		result.consume = true
+		return result
+		
+		
+		
 	if commands.has("services"):
 		services(commands.services)
 		result.consume = true
@@ -2242,6 +2252,28 @@ func npcDialogTopic(topicId:String,dialogueId:String="",subtopic:int=1):
 		npcDialogSetReplies(replies,dialogueId)
 		updateUI()
 
+func npcGroupHide():
+	CurrentUi.UIGroup = "uiUpdate"
+	CurrentUi.ShowNPCGroup = false
+	updateUI()
+
+func npcGroupShow(groupId:String):
+	CurrentUi.UIGroup = "uiNPCGroup"
+	CurrentUi.ShowNPCGroup = true
+	
+	CurrentUi.NPCGroupNPCIds = []
+	
+	for npcId in npcs:
+		var npc = getNPC(npcId)
+		if npc.get("isTemplate",false) == true: continue
+		if npcId == "_schoolStudent": print(npc)
+		var npcGroups = npc.get("groups",[])
+		if npcGroups.has(groupId):
+			CurrentUi.NPCGroupNPCIds.append(npcId)
+			print(npcId)
+		
+	updateUI()
+	
 
 func getEvent(cat,id):
 	if !events.has(cat) or !events[cat].has(id):

@@ -1,4 +1,5 @@
 {
     "groups":["dahlemSchoolTeacher"],
-    "dialogue":["basic"]  
+    "dialogue":["basic"]  ,
+    "isTemplate":true
 }
