@@ -1,0 +1,7 @@
+{
+    "name":{
+        "first":"Simon",
+        "last":"Hartmann"
+    },
+    "inherit":"_schoolStudentMale"
+}

@@ -1432,7 +1432,6 @@ func loadNPC(npcId):
 	if temp.error == OK:
 		npcs[npcId] = temp.result
 		npcs[npcId].ID = npcId
-		print("NPC "+npcId+" loaded")
 	else:
 		print("Error loading NPC "+npcId+": "+str(temp.error))
 
