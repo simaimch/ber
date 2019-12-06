@@ -1,0 +1,8 @@
+{
+    "name":{
+        "first":"Christian",
+        "last":"Schwarz"
+    },
+    "inherit":["_schoolStudentMale","_schoolBreakAtrium"],
+    "texture": "texture/npc/schoolStudents/boy12Portrait.png"
+}

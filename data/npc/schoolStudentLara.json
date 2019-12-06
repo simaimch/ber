@@ -3,6 +3,6 @@
         "first":"Lara",
         "last":"Krause"
     },
-    "inherit":"_schoolStudentFemale",
+    "inherit":["_schoolStudentFemale","_schoolBreakClassroom"],
     "texture": "texture/npc/schoolStudents/girl1Portrait.png"
 }

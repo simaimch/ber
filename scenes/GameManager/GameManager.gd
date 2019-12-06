@@ -613,15 +613,21 @@ func getValueFromPath(path,default=""):
 	
 	
 	var pathArr = path.split(".")
+	var cObj
 	var i = 0
 	
-	var tObj = getObjectFromPath(pathArr[0])
-	var cObj = tObj
-	i+= 1
+	if pathArr[0] == "NPCData" and pathArr.size()>1:
+		var npc = getNPC(pathArr[1])
+		cObj = npc
+		i+=2
+	else:
+		var tObj = getObjectFromPath(pathArr[0])
+		cObj = tObj
+		i+= 1
 	while(i < pathArr.size()):
 		cObj = getValue(cObj,pathArr[i])
 		if cObj == null:
-			if str(default) == "": logOut("ERROR loading "+path+" in "+str(tObj),"ERROR")
+			if str(default) == "": logOut("ERROR loading "+path,"ERROR")
 			return result
 		i+=1
 		
@@ -1450,9 +1456,15 @@ func loadNPCs():
 
 		
 func npcInherit(npc:Dictionary)->Dictionary:
-	if npc.has("inherit"):
-		var parentNpc = npcInherit(npcs.get(npc.inherit,{}))
-		npc = Util.inherit(npc,parentNpc)
+	var inherit = getValue(npc,"inherit")
+	match typeof(inherit):
+		TYPE_STRING:
+			var parentNpc = npcInherit(npcs.get(inherit,{}))
+			npc = Util.inherit(npc,parentNpc)
+		TYPE_ARRAY:
+			for inheritEntry in inherit:
+				var parentNpc = npcInherit(npcs.get(inheritEntry,{}))
+				npc = Util.inherit(npc,parentNpc)
 		#Erase inherit to increase performance?
 	return npc
 	
@@ -2017,7 +2029,8 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 		CurrentUi.ShowRL = false
 
 	CurrentUi.NPCs.clear()
-	if location.has("npcs") and location.npcs == true:
+	#if location.has("npcs") and location.npcs == true:
+	if getValue(location,"npcs",false) == true:
 		for npcId in npcs:
 			var npc = getNPC(npcId)
 			if npcIsPresent(npc,location.ID):
@@ -2089,6 +2102,8 @@ func npcIsPresent(npc,locationId,time = -1):
 	if time == -1: time =  now()
 	
 	var timeDict = Util.getDateTime(time)
+	
+	if npc.get("isTemplate",false) == true: return false
 	
 	if !npc.has("schedule"): return false
 	if !npc.schedule.has(locationId): return false

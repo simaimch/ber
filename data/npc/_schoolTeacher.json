@@ -1,4 +1,5 @@
 {
+    "nameMode":"titleLast",
     "groups":["dahlemSchoolTeacher"],
     "dialogue":["basic"]  ,
     "isTemplate":true

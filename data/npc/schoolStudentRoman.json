@@ -3,6 +3,6 @@
         "first":"Roman",
         "last":"Walter"
     },
-    "inherit":"_schoolStudentMale",
+    "inherit":["_schoolStudentMale","_schoolBreakSports"],
     "texture": "texture/npc/schoolStudents/boy8Portrait.png"
 }

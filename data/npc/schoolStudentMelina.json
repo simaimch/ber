@@ -3,6 +3,6 @@
         "first":"Melina",
         "last":"Lorenz"
     },
-    "inherit":"_schoolStudentFemale",
+    "inherit":["_schoolStudentFemale","_schoolBreakGrounds"],
     "texture": "texture/npc/schoolStudents/girl2Portrait.png"
 }

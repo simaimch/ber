@@ -1,0 +1,8 @@
+{
+    "name":{
+        "first":"Melissa",
+        "last":"Braun"
+    },
+    "inherit":["_schoolStudentFemale","_schoolBreakAtrium"],
+    "texture": "texture/npc/schoolStudents/girl3Portrait.png"
+}

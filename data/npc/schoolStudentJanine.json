@@ -3,7 +3,7 @@
         "first":"Janine",
         "last":"Krüger"
     },
-    "inherit":"_schoolStudentFemale",
+    "inherit":["_schoolStudentFemale","_schoolBreakHallway"],
     "texture": "texture/npc/schoolStudents/janinePortrait.jpg",
     "schedule":{
         "dahlemDorm.room311":[
@@ -16,9 +16,6 @@
         ],
         "dahlemDorm.kitchen":[
             {"days":[1,2,3,4,5],"timeStart":701,"timeEnd":730}
-        ],
-        "dahlemSchoolClasses.breakHallway":[
-            {"days":[1,2,3,4,5],"timeStart":915,"timeEnd":935}
         ]
     },
     "dialogue":["schoolJanine"],

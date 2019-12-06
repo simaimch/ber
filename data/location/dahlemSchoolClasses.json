@@ -11,13 +11,20 @@
                 "goto":"SELF.breakHallway"
             },
             "3000":{
-                "Label":"Hang out (School Grounds)"
+                "Label":"Hang out (School Grounds)",
+                "goto":"SELF.breakGrounds"
             },
             "2000":{
-                "Label":"Hang out (Toilets)"
+                "Label":"Hang out (Sports Field)",
+                "goto":"SELF.breakSports"
             },
             "1000":{
-                "Label":"Hang out (Atrium)"
+                "Label":"Hang out (Atrium)",
+                "goto":"SELF.breakAtrium"
+            },
+            "900":{
+                "Label":"Hang out (Classroom)",
+                "goto":"SELF.breakClassroom"
             }
         }
     },
@@ -33,8 +40,48 @@
         "text":"It's the third break of the day.",
         "inherit":"SELF.break_Generic"
     },
+    "breakAtrium":{
+        "bg":"texture/events/school/break/atrium.jpg",
+        "npcs":true,
+        "actions":{
+            "1000":{
+                "Label":"Back to class",
+                "goto":"SELF.breakEnd"
+            }
+        }
+    },
+    "breakClassroom":{
+        "bg":"texture/events/school/break/classroom.jpg",
+        "npcs":true,
+        "actions":{
+            "1000":{
+                "Label":"Back to class",
+                "goto":"SELF.breakEnd"
+            }
+        }
+    },
+    "breakGrounds":{
+        "bg":"texture/events/school/break/grounds.jpg",
+        "npcs":true,
+        "actions":{
+            "1000":{
+                "Label":"Back to class",
+                "goto":"SELF.breakEnd"
+            }
+        }
+    },
     "breakHallway":{
         "bg":"texture/events/school/break/hallway.jpg",
+        "npcs":true,
+        "actions":{
+            "1000":{
+                "Label":"Back to class",
+                "goto":"SELF.breakEnd"
+            }
+        }
+    },
+    "breakSports":{
+        "bg":"texture/events/school/break/sports.jpg",
         "npcs":true,
         "actions":{
             "1000":{
@@ -397,6 +444,16 @@
             "1":{
                 "Label":"Leave School",
                 "goto":"dahlemSchool.exterior"
+            }
+        }
+    },
+    "introduction":{
+        "bg":"texture/events/school/introduction.jpg",
+        "text":"Everybody is looking at you. You better pick a seat quickly.",
+        "actions":{
+            "1":{
+                "Label":"Third row",
+                "goto":"SELF.start"
             }
         }
     }

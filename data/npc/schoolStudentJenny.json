@@ -3,6 +3,6 @@
         "first":"Jenny",
         "last":"Lang"
     },
-    "inherit":"_schoolStudentFemale",
+    "inherit":["_schoolStudentFemale","_schoolBreakClassroom"],
     "texture": "texture/npc/schoolStudents/girl4Portrait.png"
 }

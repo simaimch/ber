@@ -3,7 +3,7 @@
         "first":"Vanessa",
         "last":"Schubert"
     },
-    "inherit":"_schoolStudentFemale",
+    "inherit":["_schoolStudentFemale","_schoolBreakAtrium"],
     "texture": "texture/npc/schoolStudents/vanessaPortrait.png",
     "developmentNotes":"Portrayed by Girl 4"
 }

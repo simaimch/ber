@@ -4,6 +4,7 @@
         "last":"Wringer",
         "title":"Dr."
     },
+    "nameMode":"titleLast",
     "texture": "texture/npc/schoolPsychologist/psychologistPortrait.jpg",
     "schedule":{
         "dahlemSchool.psychologistOffice":[
