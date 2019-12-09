@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://themes/default.tres" type="Theme" id=1]
 [ext_resource path="res://scenes/main/main.gd" type="Script" id=2]
@@ -43,6 +43,7 @@
 [ext_resource path="res://scenes/main/Statdisplay/Statdisplay.tscn" type="PackedScene" id=41]
 [ext_resource path="res://scenes/main/GameMenu/GameMenu.tscn" type="PackedScene" id=42]
 [ext_resource path="res://scenes/npcgroup/NPCGroup.tscn" type="PackedScene" id=43]
+[ext_resource path="res://scenes/main/Message/MessageContainer.gd" type="Script" id=44]
 
 [node name="main" type="Control" groups=[
 "gameCommand",
@@ -440,6 +441,16 @@ visible = false
 
 [node name="NPCGroup" parent="." instance=ExtResource( 43 )]
 visible = false
+
+[node name="MessageContainer" type="VBoxContainer" parent="." groups=[
+"uiMessage",
+]]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -400.0
+margin_right = 400.0
+margin_bottom = 40.0
+script = ExtResource( 44 )
 [connection signal="mouse_entered" from="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar/StatusContainer" to="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar/StatusContainer" method="_on_StatusContainer_mouse_entered"]
 [connection signal="mouse_exited" from="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar/StatusContainer" to="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar/StatusContainer" method="_on_StatusContainer_mouse_exited"]
 [connection signal="gui_input" from="defaultView/VSplitContainer/GameStatusContainer/VBoxContainer/CommandLine" to="defaultView/VSplitContainer/GameStatusContainer/VBoxContainer/CommandLine" method="_on_CommandLine_gui_input"]

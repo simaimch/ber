@@ -30,6 +30,15 @@
             }
         }
     },
+    "levelup_makeup":{
+        "listen": "levelup",
+        "arguments":"makeup",
+        "actions":{
+            "message":{
+                "^text":"Makeup: Your skill increased to #PlayerData.skill.makeup.level#!"
+            }
+        }
+    },
     "onOutfitUpdate":{
         "listen": "outfitUpdate",
         "arguments":"*",

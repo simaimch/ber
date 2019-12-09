@@ -1,5 +1,10 @@
 {
+    "makeup":{
+        "Label":"Make-Up",
+        "interrupt":"bath.makeup"
+    },
     "makeupClassy":{
+        "condition":"PlayerData.body.face.makeup.style=0",
         "Label":"Apply Make-up (classy)",
         "~value":{
             "1000":{
@@ -8,7 +13,7 @@
                     "skillCheck":{
                         "skill":"makeup",
                         "difficulty":-1,
-                        "experience":10,
+                        "experience":15,
                         "result":{
                             "0":{
                                 "PlayerData":{
@@ -17,8 +22,7 @@
                                     "items.vanity.makeup":{"mode":"dec","value":2}
                                 },
                                 "Time":{"Pass":{"Duration":450,"Activity":"makeup"}},
-                                "modifierUpdate":{"keyword":"makeup"},
-                                "debug":"CALLED"
+                                "modifierUpdate":{"keyword":"makeup"}
                             }
                         }
                     }
@@ -40,19 +44,53 @@
                 "condition":"PlayerData.items.vanity.makeup>=1",
                 "value":{
                     "skillCheck":{
+                        "experience":10,
                         "result":{
                             "0":{
                                 "PlayerData":{
                                     "body.face.makeup.style":10,
                                     "items.vanity.makeup":{"mode":"dec","value":1}
                                 },
-                                "debug":"CALLED"
+                                "Time":{"Pass":{"Duration":300,"Activity":"makeup"}}
                             }
                         }
                     }
                 }
             }
         }
+    },
+    "makeupHeavy":{
+        "inherit":"makeupClassy",
+        "Label":"Apply Make-up (heavy)",
+        "~value":{
+            "1000":{
+                "condition":"PlayerData.items.vanity.makeup>=4",
+                "value":{
+                    "skillCheck":{
+                        "experience":20,
+                        "result":{
+                            "0":{
+                                "PlayerData":{
+                                    "body.face.makeup.style":30,
+                                    "items.vanity.makeup":{"mode":"dec","value":4}
+                                },
+                                "Time":{"Pass":{"Duration":600,"Activity":"makeup"}}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "makeupRemove":{
+        "condition":"PlayerData.body.face.makeup.style>0",
+        "Label":"Remove Make-up",
+        "PlayerData":{
+            "body.face.makeup.style":0,
+            "body.face.makeup.quality":0
+        },
+        "Time":{"Pass":{"Duration":180,"Activity":"makeup"}},
+        "modifierUpdate":{"keyword":"makeup"}
     },
     "setAlarmClock":{
         "^Label":"Set Alarm Clock (#PlayerData.alarmclock.time#)",

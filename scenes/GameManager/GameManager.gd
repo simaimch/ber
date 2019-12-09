@@ -366,8 +366,10 @@ func getValue(obj, index, default = null):
 			if "condition" in obj[cindex][key]:
 				if checkCondition(obj[cindex][key]["condition"]) == true:
 					result = getValue(obj[cindex][key],"value")
+					break
 			else:
 				result = getValue(obj[cindex][key],"value")
+				break
 	elif obj.has(findex):
 		match typeof(obj[findex]):
 			TYPE_STRING:
@@ -489,17 +491,18 @@ func getAction(id:String)->Dictionary:
 	return linkAction(action)
 
 func linkAction(action:Dictionary)->Dictionary:
+	
 	var parentActionId = getValue(action,"inherit",null)
 	
 	if parentActionId != null: 
 		var parentAction = getAction(parentActionId)
 		action = Util.inherit(action,parentAction)
-	
 	return linkObject(action)
 
 func linkObject(object:Dictionary,param=null)->Dictionary:
 	if param: functionParametersAppend(param)
 	var conditionalObject = getValue(object,"value",null)
+	print(conditionalObject)
 	if conditionalObject != null: object = Util.inherit(conditionalObject,object)
 	if param: functionParametersPop()
 	return object
@@ -511,6 +514,15 @@ func getActiveMods():
 			Preferences.mods.erase(modID)
 		elif Preferences.mods[modID] == true:
 			result.append(modID)
+	return result
+	
+func getActiveModificators()->Array:
+	var result = []
+	for categoryId in PlayerData.modifier:
+		var category = getValue(modifiers,categoryId,{})
+		for modifierId in PlayerData.modifier[categoryId]:
+			var modifier = getModifier(categoryId,modifierId,PlayerData)
+			result.append(modifier)
 	return result
 
 func getArgumentsFromString(s):
@@ -1390,7 +1402,7 @@ func eventCategoryExecute(cat, times = 1):
 			execute(event.actions)
 			if getValue(event,"consume",false) == true: return
 
-func eventArgumentExecute(cat, arg, minutes):
+func eventArgumentExecute(cat, arg, minutes=0):
 	if !events.has(cat): return
 	for event in events[cat]:
 		if event.arguments == "*" or Util.isInStr(arg,event.arguments):
@@ -1703,7 +1715,15 @@ func UIGroupStackPop():
 	CurrentUi.UIGroup = CurrentUi.UIGroupStack.pop_back()
 	
 func getModifier(modifierGroupId,modifierID,characterData)->Dictionary:
-	var result = linkObject(modifiers[modifierGroupId][modifierID],characterData)
+	var modifierPathArr:Array = modifierID.split(".")
+	var currentObject = modifiers[modifierGroupId]
+	
+	for i in range(modifierPathArr.size()-1):
+		currentObject = currentObject[modifierPathArr[i]].subMods
+	
+	currentObject = currentObject[modifierPathArr[modifierPathArr.size()-1]]
+	
+	var result = linkObject(currentObject,characterData)
 	result.PARAM = characterData
 	return result
 
@@ -1730,7 +1750,7 @@ func modifiersCalculate(categoryId:String):
 	
 	
 	for modifierId in PlayerData.modifier[categoryId]:
-		var modifier = category[modifierId]
+		var modifier = getModifier(categoryId,modifierId,PlayerData) #category[modifierId]
 		
 		var add = getValue(modifier,"modifier",0)
 		var mult = getValue(modifier,"modifierMult",1)
@@ -1751,24 +1771,43 @@ func modifiersUpdateByCategory(categoryId:String,keyword="*"):
 	
 	var category = getValue(modifiers,categoryId,{})
 	
-	if keyword == "*":
-		PlayerData.modifier[categoryId] = []
+	#if keyword == "*":
+	PlayerData.modifier[categoryId] = []
 		
 	for modifierId in category:
 		#var modifier = category[modifierId]
 		var modifier = getModifier(categoryId,modifierId,PlayerData)
 		var modifierKeywords = getValue(modifier,"keywords",[])
-		if keyword == "*":
-			if checkConditionParameter(modifier.condition,PlayerData):
-				PlayerData.modifier[categoryId].append(modifierId)
-		elif modifierKeywords.has(keyword):
-			if checkConditionParameter(modifier.condition,PlayerData):
-				if !PlayerData.modifier[categoryId].has(modifierId):
-					PlayerData.modifier[categoryId].append(modifierId)
-			else:
-				PlayerData.modifier[categoryId].erase(modifierId)
+		if keyword == "*" or modifierKeywords.has(keyword):
+			var activeModId = modifierActiveSub(modifier,modifierId,PlayerData)
+			if activeModId != "": 
+				PlayerData.modifier[categoryId].append(activeModId)
+		#	if checkConditionParameter(modifier.condition,PlayerData):
+		#		PlayerData.modifier[categoryId].append(modifierId)
+		#elif modifierKeywords.has(keyword):
+		#	if checkConditionParameter(modifier.condition,PlayerData):
+		#		if !PlayerData.modifier[categoryId].has(modifierId):
+		#			PlayerData.modifier[categoryId].append(modifierId)
+		#	else:
+		#		PlayerData.modifier[categoryId].erase(modifierId)
 	modifiersCalculate(categoryId)
 	#functionParameters.pop_back()
+
+func modifierActiveSub(modifier:Dictionary,currentPath:String,character:Dictionary)->String:
+	if modifier.has("condition") and !checkConditionParameter(modifier.condition,character):
+		return ""
+	match typeof(modifier.get("subMods",null)):
+		TYPE_NIL:
+			return currentPath
+		TYPE_DICTIONARY:
+			for subModId in modifier.subMods:
+				var subMod = modifier.subMods[subModId]
+				var subRes = modifierActiveSub(subMod,currentPath+"."+subModId,character)
+				if subRes != "": return subRes
+		var subModsType:
+			logOut(["Type not supported in modifierActiveSub:",subModsType],"ERROR")
+			return ""
+	return "" # should never happen
 
 func loadModInfo(modId):
 	var result = {"name":modId,"description":"","version":0}
@@ -1942,6 +1981,13 @@ func executeCommands(commands):
 				var skillResult = results[key]
 				executeWithParameter(skillResult,skillLevel)
 				break
+				
+	var message = getValue(commands,"message",null)
+	if message:
+		var messageText = getValue(message,"text","Message Missing")
+		var msg2ui = {"text":messageText}
+		get_tree().call_group("uiMessage","messageShow",msg2ui)
+				
 	# Comes here so that conditionals can override non-conditionals but do not get canceld by consuming events
 	if commands.has("conditionExecute"):
 		var cEs = commands.conditionExecute
@@ -2127,7 +2173,6 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 		for key in keys:
 			var action = actions[key].duplicate()
 			action = linkAction(action)
-			
 			if action.has("goto"):
 				var actionGotoArr = action.goto.split(".")
 				if actionGotoArr[0] == "SELF":
@@ -2163,10 +2208,10 @@ func experienceGain(skillId:String,experience:int):
 	var currentLevel = getValue(skill,"level",1)
 	var newExperience = currentExperience + experience
 	var newLevel = experience2Level(newExperience)
-	if newLevel > currentLevel:
-		eventCategoryExecute("levelup")
 	PlayerData.skill[skillId]={"experience":newExperience,"level":newLevel}
-
+	if newLevel > currentLevel:
+		eventArgumentExecute("levelup",skillId)
+		
 func experience2Level(experience:int)->int:
 	var i = 1
 	var experience2Spend:int = experience

@@ -211,209 +211,155 @@
         "makeup_classy":{
             "keywords":["makeup"],
             "condition":"PARAM1.body.face.makeup.style = 20",
-            "~value":{
-                "1000":{
-                    "value":{
-                        "label":"Classy Make-up (Clownish)",
-                        "modifierMult": 0.4
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 10)"
+            "subMods":{
+                "quality10":{
+                    "label":"Classy Make-up (Clownish)",
+                    "modifierMult": 0.4,
+                    "condition":"PARAM1.body.face.makeup.quality <= 10"
                 },
-                "900":{
-                    "value":{
-                        "label":"Classy Make-up (Amateurish)",
-                        "modifierMult": 0.8
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 20)"
+                "quality20":{
+                    "label":"Classy Make-up (Amateurish)",
+                    "modifierMult": 0.8,
+                    "condition":"PARAM1.body.face.makeup.quality <= 20"
                 },
-                "800":{
-                    "value":{
-                        "label":"Classy Make-up (Fine)",
-                        "modifierMult": 1.10
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 40)"
+                "quality40":{
+                    "label":"Classy Make-up (Fine)",
+                    "modifierMult": 1.10,
+                    "condition":"PARAM1.body.face.makeup.quality <= 40"
                 },
-                "700":{
-                    "value":{
-                        "label":"Classy Make-up (Good)",
-                        "modifierMult": 1.15
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 50)"
+                "quality50":{
+                    "label":"Classy Make-up (Good)",
+                    "modifierMult": 1.15,
+                    "condition":"PARAM1.body.face.makeup.quality <= 50"
                 },
-                "600":{
-                    "value":{
-                        "label":"Classy Make-up (Good)",
-                        "modifierMult": 1.20
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 60)"
+                "quality60":{
+                    "label":"Classy Make-up (Good)",
+                    "modifierMult": 1.20,
+                    "condition":"PARAM1.body.face.makeup.quality <= 60"
                 },
-                "500":{
-                    "value":{
-                        "label":"Classy Make-up (Very Good)",
-                        "modifierMult": 1.25
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 70)"
+                "quality70":{
+                    "label":"Classy Make-up (Very Good)",
+                    "modifierMult": 1.25,
+                    "condition":"PARAM1.body.face.makeup.quality <= 70"
                 },
-                "400":{
-                    "value":{
-                        "label":"Classy Make-up (Professional)",
-                        "modifierMult": 1.30
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 80)"
+                "quality80":{
+                    "label":"Classy Make-up (Professional)",
+                    "modifierMult": 1.30,
+                    "condition":"PARAM1.body.face.makeup.quality <= 80"
                 },
-                "300":{
-                    "value":{
-                        "label":"Classy Make-up (High-class)",
-                        "modifierMult": 1.35
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 90)"
+                "quality90":{
+                    "label":"Classy Make-up (High-class)",
+                    "modifierMult": 1.35,
+                    "condition":"PARAM1.body.face.makeup.quality <= 90"
                 },
-                "200":{
-                    "value":{
-                        "label":"Classy Make-up (World-class)",
-                        "modifierMult": 1.55
-                    }
+                "quality100":{
+                    "label":"Classy Make-up (World-class)",
+                    "modifierMult": 1.55,
+                    "condition":"PARAM1.body.face.makeup.quality > 90"
                 }
             }
-
         },
         "makeup_decent":{
             "keywords":["makeup"],
             "condition":"PARAM1.body.face.makeup.style = 10",
-            "~value":{
-                "1000":{
-                    "value":{
-                        "label":"Decent Make-up (Clownish)",
-                        "modifierMult": 0.5
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 10)"
+            "subMods":{
+                "quality10":{
+                    "label":"Decent Make-up (Clownish)",
+                    "modifierMult": 0.5,
+                    "condition":"PARAM1.body.face.makeup.quality <= 10"
                 },
-                "900":{
-                    "value":{
-                        "label":"Decent Make-up (Amateurish)",
-                        "modifierMult": 0.9
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 20)"
+                "quality20":{
+                    "label":"Decent Make-up (Amateurish)",
+                    "modifierMult": 0.9,
+                    "condition":"PARAM1.body.face.makeup.quality <= 20"
                 },
-                "800":{
-                    "value":{
-                        "label":"Decent Make-up (Fine)",
-                        "modifierMult": 1.05
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 40)"
+                "quality40":{
+                    "label":"Decent Make-up (Fine)",
+                    "modifierMult": 1.05,
+                    "condition":"PARAM1.body.face.makeup.quality <= 40"
                 },
-                "700":{
-                    "value":{
-                        "label":"Decent Make-up (Good)",
-                        "modifierMult": 1.1
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 50)"
+                "quality50":{
+                    "label":"Decent Make-up (Good)",
+                    "modifierMult": 1.1,
+                    "condition":"PARAM1.body.face.makeup.quality <= 50"
                 },
-                "600":{
-                    "value":{
-                        "label":"Decent Make-up (Good)",
-                        "modifierMult": 1.15
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 60)"
+                "quality60":{
+                    "label":"Decent Make-up (Good)",
+                    "modifierMult": 1.15,
+                    "condition":"PARAM1.body.face.makeup.quality <= 60"
                 },
-                "500":{
-                    "value":{
-                        "label":"Decent Make-up (Very Good)",
-                        "modifierMult": 1.20
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 70)"
+                "quality70":{
+                    "label":"Decent Make-up (Very Good)",
+                    "modifierMult": 1.2,
+                    "condition":"PARAM1.body.face.makeup.quality <= 70"
                 },
-                "400":{
-                    "value":{
-                        "label":"Decent Make-up (Professional)",
-                        "modifierMult": 1.25
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 80)"
+                "quality80":{
+                    "label":"Decent Make-up (Professional)",
+                    "modifierMult": 1.25,
+                    "condition":"PARAM1.body.face.makeup.quality <= 80"
                 },
-                "300":{
-                    "value":{
-                        "label":"Decent Make-up (High-class)",
-                        "modifierMult": 1.30
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 90)"
+                "quality90":{
+                    "label":"Decent Make-up (High-class)",
+                    "modifierMult": 1.3,
+                    "condition":"PARAM1.body.face.makeup.quality <= 90"
                 },
-                "200":{
-                    "value":{
-                        "label":"Decent Make-up (World-class)",
-                        "modifierMult": 1.50
-                    }
+                "quality100":{
+                    "label":"Decent Make-up (World-class)",
+                    "modifierMult": 1.5,
+                    "condition":"PARAM1.body.face.makeup.quality > 90"
                 }
             }
-
         },
         "makeup_heavy":{
             "keywords":["makeup"],
             "condition":"PARAM1.body.face.makeup.style = 30",
-            "~value":{
-                "1000":{
-                    "value":{
-                        "label":"Heavy Make-up (Clownish)",
-                        "modifierMult": 0.3
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 10)"
+            "subMods":{
+                "quality10":{
+                    "label":"Heavy Make-up (Clownish)",
+                    "modifierMult": 0.3,
+                    "condition":"PARAM1.body.face.makeup.quality <= 10"
                 },
-                "900":{
-                    "value":{
-                        "label":"Heavy Make-up (Amateurish)",
-                        "modifierMult": 0.7
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 20)"
+                "quality20":{
+                    "label":"Heavy Make-up (Amateurish)",
+                    "modifierMult": 0.7,
+                    "condition":"PARAM1.body.face.makeup.quality <= 20"
                 },
-                "800":{
-                    "value":{
-                        "label":"Heavy Make-up (Fine)",
-                        "modifierMult": 1.15
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 40)"
+                "quality40":{
+                    "label":"Heavy Make-up (Fine)",
+                    "modifierMult": 1.15,
+                    "condition":"PARAM1.body.face.makeup.quality <= 40"
                 },
-                "700":{
-                    "value":{
-                        "label":"Heavy Make-up (Good)",
-                        "modifierMult": 1.2
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 50)"
+                "quality50":{
+                    "label":"Heavy Make-up (Good)",
+                    "modifierMult": 1.2,
+                    "condition":"PARAM1.body.face.makeup.quality <= 50"
                 },
-                "600":{
-                    "value":{
-                        "label":"Heavy Make-up (Good)",
-                        "modifierMult": 1.25
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 60)"
+                "quality60":{
+                    "label":"Heavy Make-up (Good)",
+                    "modifierMult": 1.25,
+                    "condition":"PARAM1.body.face.makeup.quality <= 60"
                 },
-                "500":{
-                    "value":{
-                        "label":"Heavy Make-up (Very Good)",
-                        "modifierMult": 1.30
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 70)"
+                "quality70":{
+                    "label":"Heavy Make-up (Very Good)",
+                    "modifierMult": 1.3,
+                    "condition":"PARAM1.body.face.makeup.quality <= 70"
                 },
-                "400":{
-                    "value":{
-                        "label":"Heavy Make-up (Professional)",
-                        "modifierMult": 1.35
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 80)"
+                "quality80":{
+                    "label":"Heavy Make-up (Professional)",
+                    "modifierMult": 1.35,
+                    "condition":"PARAM1.body.face.makeup.quality <= 80"
                 },
-                "300":{
-                    "value":{
-                        "label":"Heavy Make-up (High-class)",
-                        "modifierMult": 1.40
-                    },
-                    "condition":"(PARAM1.body.face.makeup.quality <= 90)"
+                "quality90":{
+                    "label":"Heavy Make-up (High-class)",
+                    "modifierMult": 1.4,
+                    "condition":"PARAM1.body.face.makeup.quality <= 90"
                 },
-                "200":{
-                    "value":{
-                        "label":"Heavy Make-up (World-class)",
-                        "modifierMult": 1.60
-                    }
+                "quality100":{
+                    "label":"Heavy Make-up (World-class)",
+                    "modifierMult": 1.6,
+                    "condition":"PARAM1.body.face.makeup.quality > 90"
                 }
             }
-
         },
         "smell_1":{
             "label":"Smelly",

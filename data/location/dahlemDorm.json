@@ -19,10 +19,7 @@
                 "inherit":"shaveBody"
             },
             "600":{
-                "inherit":"makeupClassy"
-            },
-            "500":{
-                "inherit":"makeupDecent"
+                "inherit":"makeup"
             }
         }
     },
