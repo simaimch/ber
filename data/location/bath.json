@@ -2,14 +2,14 @@
     "shave":{
         "inherit":"interrupt",
         
-        "text":"You have #PlayerData.bath.razor# razor#?langPluralS:PlayerData.bath.razor# left.",
+        "text":"You have #PlayerData.items.bath.razor# razor#?langPluralS:PlayerData.items.bath.razor# left.",
         "actions":{
             "4000":{
                 "Label": "Shave your legs.",
                 "~value":{
                     "1000":{
                         "condition":{
-                            "var":"PlayerData.bath.razor",
+                            "var":"PlayerData.items.bath.razor",
                             "mode":"leq",
                             "val":0
                         },
@@ -20,7 +20,7 @@
                     },
                     "100":{
                         "value":{
-                            "PlayerData":{"bath.razor":{"mode":"dec","value":1}},
+                            "PlayerData":{"items.bath.razor":{"mode":"dec","value":1}},
                             "Time":{"Pass":{"Duration":900,"Activity":"bath"}},
                             "goto": "bath.shave_legs"
                         }
@@ -32,7 +32,7 @@
                 "~value":{
                     "1000":{
                         "condition":{
-                            "var":"PlayerData.bath.razor",
+                            "var":"PlayerData.items.bath.razor",
                             "mode":"leq",
                             "val":0
                         },
@@ -43,7 +43,7 @@
                     },
                     "100":{
                         "value":{
-                            "PlayerData":{"bath.razor":{"mode":"dec","value":1}},
+                            "PlayerData":{"items.bath.razor":{"mode":"dec","value":1}},
                             "Time":{"Pass":{"Duration":600,"Activity":"bath"}},
                             "goto": "bath.shave_armpit"
                         }
@@ -55,7 +55,7 @@
                 "~value":{
                     "1000":{
                         "condition":{
-                            "var":"PlayerData.bath.razor",
+                            "var":"PlayerData.items.bath.razor",
                             "mode":"leq",
                             "val":0
                         },
@@ -66,7 +66,7 @@
                     },
                     "100":{
                         "value":{
-                            "PlayerData":{"bath.razor":{"mode":"dec","value":1}},
+                            "PlayerData":{"items.bath.razor":{"mode":"dec","value":1}},
                             "Time":{"Pass":{"Duration":600,"Activity":"bath"}},
                             "goto": "bath.shave_pubic"
                         }

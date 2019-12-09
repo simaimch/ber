@@ -17,6 +17,12 @@
             },
             "800":{
                 "inherit":"shaveBody"
+            },
+            "600":{
+                "inherit":"makeupClassy"
+            },
+            "500":{
+                "inherit":"makeupDecent"
             }
         }
     },
@@ -290,9 +296,9 @@
             },
             "200":{
                 "Label":"Take ingredients from storage",
-                "PlayerData":{"fridge.ingredient_low":3},
+                "PlayerData":{"items.fridge.ingredient_low":3},
                 "updateLocation":true,
-                "condition":"PlayerData.fridge.ingredient_low<3"
+                "condition":"PlayerData.items.fridge.ingredient_low<3"
             }
         }
     },

@@ -9,7 +9,7 @@
         "time": 1500,
         "calories":760000,
         "saturation":5000,
-        "availableCountRef": "PlayerData.fridge.ingredient_med",
+        "availableCountRef": "PlayerData.items.fridge.ingredient_med",
         "availableCountHint":"medium quality ingredients"
     },
     "cook_pizza_frozen":{
@@ -22,7 +22,7 @@
         "time": 720,
         "calories":760000,
         "saturation":5000,
-        "availableCountRef": "PlayerData.fridge.ingredient_low",
+        "availableCountRef": "PlayerData.items.fridge.ingredient_low",
         "availableCountHint":"low quality ingredients"
     },
     "cook_steak":{
@@ -35,7 +35,7 @@
         "time": 1800,
         "calories":760000,
         "saturation":5000,
-        "availableCountRef": "PlayerData.fridge.ingredient_hq",
+        "availableCountRef": "PlayerData.items.fridge.ingredient_hq",
         "availableCountHint":"high quality ingredients"
     },
     "drink":{
@@ -46,7 +46,8 @@
                 "#bg":"PARAM1.texture",
                 "^text":"You sit down to drink your #PARAM1.name#.",
                 "inherit": "interrupt"
-            }
+            },
+            "modifierUpdate":{"keyword":"thirst"}
         }
     },
     "food":{
@@ -57,7 +58,8 @@
                 "#bg":"PARAM1.texture",
                 "^text":"You sit down to eat your #PARAM1.name#.",
                 "inherit": "interrupt"
-            }
+            },
+            "modifierUpdate":{"keyword":"hunger"}
         }
     },
     "home_water":{
@@ -103,7 +105,7 @@
         "name": "High Quality Ingredients (1x)",
         "texture":"texture/services/sm/cooking_ingr_hq.jpg",
         "price": 1500,
-        "increaseRef": "PlayerData.fridge.ingredient_hq",
+        "increaseRef": "PlayerData.items.fridge.ingredient_hq",
         "increaseCount": 1
     },
     "sm_cooking_ingr_hq_10":{
@@ -118,7 +120,7 @@
         "name": "Medium Quality Ingredients (1x)",
         "texture":"texture/services/sm/cooking_ingr_med.jpg",
         "price": 800,
-        "increaseRef": "PlayerData.fridge.ingredient_med",
+        "increaseRef": "PlayerData.items.fridge.ingredient_med",
         "increaseCount": 1
     },
     "sm_cooking_ingr_med_10":{
@@ -133,7 +135,7 @@
         "name": "Low Quality Ingredients (1x)",
         "texture":"texture/services/sm/cooking_ingr_low.jpg",
         "price": 400,
-        "increaseRef": "PlayerData.fridge.ingredient_low",
+        "increaseRef": "PlayerData.items.fridge.ingredient_low",
         "increaseCount": 1
     },
     "sm_cooking_ingr_low_10":{
@@ -153,7 +155,7 @@
         "description": "10 pink razors, perfectly suited to shave any part of your body",
         "texture":"texture/services/sm/razor.jpg",
         "price": 999,
-        "increaseRef": "PlayerData.bath.razor",
+        "increaseRef": "PlayerData.items.bath.razor",
         "increaseCount": 10,
         "remainAtServices": true
     },
@@ -163,5 +165,26 @@
         "description": "50 pink razors, perfectly suited to shave any part of your body (you save 20% value pack)",
         "price": 3990,
         "increaseCount": 50
+    },
+    "sm_vanity":{
+        "inherit":"supermarket",
+        "category":"Vanity"
+    },
+    "sm_vanity_makeup_30":{
+        "inherit": "sm_vanity",
+        "available":["sm_med"],
+        "name": "Make-up (30x)",
+        "description": "Contains all the make-up you need to replace.",
+        "texture":"texture/services/sm/makeup.jpg",
+        "price": 1990,
+        "increaseRef": "PlayerData.items.vanity.makeup",
+        "increaseCount": 30
+    },
+    "sm_vanity_makeup_150":{
+        "inherit": "sm_vanity_makeup_30",
+        "name": "Make-up (150x)",
+        "description": "Contains all the make-up you need to replace (you save 20%).",
+        "price": 7990,
+        "increaseCount": 150
     }
 }

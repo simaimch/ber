@@ -143,7 +143,7 @@ func _notification(notification):
 func _ready():
 	get_tree().set_auto_accept_quit(false) # so that we can save preferences
 	loadPreferences()
-	playerData2UI()
+	#playerData2UI()
 	CurrentUi.Time = WorldData.Time + WorldData.TimeOffset
 	rng.randomize()
 	randomize()
@@ -343,6 +343,12 @@ func getValue(obj, index, default = null):
 	if index in obj:
 		return obj[index]
 	
+	var functionParametersPopRequired = false
+	
+	if obj.has("PARAM"):
+		functionParametersAppend(obj.PARAM)
+		functionParametersPopRequired = true
+	
 	var cindex = "~"+index # pick first entry with valid condition
 	var findex = "%"+index # compute using a function
 	var lindex = ">"+index # use a list
@@ -351,6 +357,7 @@ func getValue(obj, index, default = null):
 	var ranindex="|"+index # the value is taken from a random list
 	var sindex = "^"+index # the value is a string that needs to be parsed
 	
+	var result = default
 	
 	if cindex in obj:
 		var keys = obj[cindex].keys()#.sort_custom(SorterByIndexInt, "sort")
@@ -358,50 +365,50 @@ func getValue(obj, index, default = null):
 		for key in keys:
 			if "condition" in obj[cindex][key]:
 				if checkCondition(obj[cindex][key]["condition"]) == true:
-					#return obj[cindex][key].value
-					return getValue(obj[cindex][key],"value")
+					result = getValue(obj[cindex][key],"value")
 			else:
-				#return obj[cindex][key].value
-				return getValue(obj[cindex][key],"value")
+				result = getValue(obj[cindex][key],"value")
 	elif obj.has(findex):
 		match typeof(obj[findex]):
 			TYPE_STRING:
 				var functionArr = obj[findex].split(":",false,1)
 				var functionId = functionArr[0].substr(1,functionArr[0].length()-1)
 				if functionArr.size() > 1:
-					return getValueFromFunction(functionId,functionArr[1])
+					result = getValueFromFunction(functionId,functionArr[1])
 				else:
-					var result = getValueFromFunction(functionId)
-					return result
+					result = getValueFromFunction(functionId)
 			TYPE_DICTIONARY:
-				return functionExecute(obj[findex],functionParameters.back())
+				result = functionExecute(obj[findex],functionParameters.back())
 	elif obj.has(lindex):
-		return getValueFromList(obj[lindex])
+		result = getValueFromList(obj[lindex])
 	elif obj.has(mindex):
-		return getValueFromEquation(obj[mindex])
+		result = getValueFromEquation(obj[mindex])
 	elif obj.has(rindex):
-		return getValueFromPath(obj[rindex])
+		result = getValueFromPath(obj[rindex])
 	elif obj.has(ranindex):
 		var options = obj[ranindex]
 		match typeof(options):
 			TYPE_ARRAY:
-				return getValueFromRandom(options)
+				result = getValueFromRandom(options)
 			TYPE_DICTIONARY:
-				return getValueFromRandom(options.values())
+				result = getValueFromRandom(options.values())
 	elif obj.has(sindex):
-		return parseText(obj[sindex])
+		result = parseText(obj[sindex])
 	elif obj.has("persist"):
 		var persistValue = getValue(obj.persist,index)
-		if persistValue: return persistValue
+		if persistValue: result = persistValue
 	
-	var indexArr = index.split(".")
-	if indexArr.size() > 1:
+	if !result:
+		var indexArr = index.split(".")
+		if indexArr.size() > 1:
+			
+			var topObject = getValue(obj,indexArr[0])
+			indexArr.remove(0)
+			result = getValue(topObject,PoolStringArray(indexArr).join("."),default)
+			
+	if functionParametersPopRequired: functionParametersPop()
 		
-		var topObject = getValue(obj,indexArr[0])
-		indexArr.remove(0)
-		return getValue(topObject,PoolStringArray(indexArr).join("."),default)
-		
-	return default
+	return result
 
 func getValueFromList(list,default = null):
 	var filePath = "res://data/list/"+list+".txt"
@@ -490,9 +497,11 @@ func linkAction(action:Dictionary)->Dictionary:
 	
 	return linkObject(action)
 
-func linkObject(object:Dictionary)->Dictionary:
+func linkObject(object:Dictionary,param=null)->Dictionary:
+	if param: functionParametersAppend(param)
 	var conditionalObject = getValue(object,"value",null)
 	if conditionalObject != null: object = Util.inherit(conditionalObject,object)
+	if param: functionParametersPop()
 	return object
 
 func getActiveMods():
@@ -875,6 +884,15 @@ func functionParameter(pID:int):
 		return null
 	return currentParameterSet[pID]
 	
+func functionParametersAppend(param):
+	match typeof(param):
+		TYPE_ARRAY:
+			functionParameters.append(param)
+		_:
+			functionParameters.append([param])
+	
+func functionParametersPop()->Array:
+	return functionParameters.pop_back()
 	
 func getObjectFromPath(path):
 	if(path == "MiscData"): return MiscData
@@ -929,6 +947,18 @@ func getServiceById(serviceId):
 
 func getSkill(id):
 	return misc.skills[id]
+
+func getStatusmods()->Array:
+	#functionParameters.append([PlayerData])
+	var result = []
+	for categoryId in PlayerData.modifier:
+		var category = getValue(modifiers,categoryId,{})
+		for modifierId in PlayerData.modifier[categoryId]:
+			#var modifier = getValue(category,modifierId,{})
+			var modifier = getModifier(categoryId,modifierId,PlayerData)
+			if getValue(modifier,"statBar",false) == true: result.append(modifier)
+	#functionParameters.pop_back()
+	return result
 
 func getTheme(id,subId="main"):
 	if themes.has(id) and themes[id].has(subId): return themes[id][subId]
@@ -1159,7 +1189,14 @@ func checkCondition(condition) -> bool:
 		invertedCondition.mode = condition.mode.substr(1,condition.mode.length()-1)
 		return !checkCondition(invertedCondition)
 	return false
-	
+
+func checkConditionParameter(condition,parameter) -> bool:
+	var result:bool = false
+	functionParametersAppend(parameter)
+	result = checkCondition(condition)
+	functionParametersPop()
+	return result
+
 func checkConditionString(condition:String) -> bool:
 	
 	if condition[0] == "¬" and condition[1] == "(" and condition[condition.length()-1] == ")":
@@ -1286,9 +1323,9 @@ func checkConditionString(condition:String) -> bool:
 				return Util.bigger(val1,val2)
 			"<":
 				return Util.bigger(val2,val1)
-			">=":
+			">=","=>":
 				return (Util.bigger(val1,val2) or Util.equals(val1,val2))
-			"<=":
+			"<=","=<":
 				return (Util.bigger(val2,val1) or Util.equals(val1,val2))
 			"!=","<>":
 				return !Util.equals(val1,val2)
@@ -1346,8 +1383,10 @@ func eventCategoryExecute(cat, times = 1):
 		logOut(["Event category not found: ",cat],"ERROR")
 		return
 	
+	var category = getValue(events,cat,[])
+	
 	for i in range(times):
-		for event in events[cat]:
+		for event in category:
 			execute(event.actions)
 			if getValue(event,"consume",false) == true: return
 
@@ -1633,15 +1672,14 @@ func detailsHide():
 	CurrentUi.UIGroup = "uiUpdate"
 	CurrentUi.ShowDetailsPC = false
 	
-	functionParameters.pop_back()
+	#functionParameters.pop_back()
 	
 	updateUI()
 
 func detailsShow():
 	MiscData.currentNpcId[3] = PlayerData.ID
 	
-	#modifiersCalculate(PlayerData.ID)
-	#modifiersCalculate()
+	#functionParameters.append([PlayerData]) #popped by detailsHide
 	
 	CurrentUi.UIGroup = "uiDetails"
 	CurrentUi.ShowDetailsPC = true
@@ -1652,11 +1690,11 @@ func detailsShow():
 		CurrentUi.ActiveModfiers[modifierGroupId] = []
 		var modifierGroup = PlayerData.modifier[modifierGroupId]
 		for modifierId in modifierGroup:
-			var modifier = getModifier(modifierGroupId,modifierId)
+			var modifier = getModifier(modifierGroupId,modifierId,PlayerData)
 			#modifier.description = parseText(modifier.description)
 			CurrentUi.ActiveModfiers[modifierGroupId].append(modifier)
 	
-	functionParameters.append([PlayerData])
+	
 		
 	updateUI()
 	
@@ -1664,8 +1702,10 @@ func UIGroupStackPop():
 	CurrentUi.UIGroupStack
 	CurrentUi.UIGroup = CurrentUi.UIGroupStack.pop_back()
 	
-func getModifier(modifierGroupId,modifierID):
-	return modifiers[modifierGroupId][modifierID]
+func getModifier(modifierGroupId,modifierID,characterData)->Dictionary:
+	var result = linkObject(modifiers[modifierGroupId][modifierID],characterData)
+	result.PARAM = characterData
+	return result
 
 func getMonthData(id):
 	if !misc.has("month"): loadMisc()
@@ -1677,40 +1717,58 @@ func getMonthData(id):
 		return month
 	return {}
 
-func modifiersCalculate():
+func modifiersCalculate(categoryId:String):
 	
-	functionParameters.append([PlayerData])
-	#var npc = getNPC(npcId)
-	
-	if !PlayerData.has("modifier"): PlayerData.modifier = {}
-	PlayerData.modifier.clear()
 	if !PlayerData.has("property"): PlayerData.property = {}
-	PlayerData.property.clear()
+	PlayerData.property[categoryId] = 0
 	
-	CurrentUi.StatusMods = []
+	var category = getValue(modifiers,categoryId,{})
 	
-	#MiscData.currentNpcId[3] = npcId
+	var modSum = 0
+	var modMult= 1
 	
-	for modifierGroupId in modifiers:
-		var modifierGroup = modifiers[modifierGroupId]
-		PlayerData.modifier[modifierGroupId] = []
-		var modSum = 0
-		var modMult= 1
-		for modifierId in modifierGroup:
-			var modifier = modifierGroup[modifierId]
-			if checkCondition(modifier.condition):
-				PlayerData.modifier[modifierGroupId].append(modifierId)
-				var add = getValue(modifier,"modifier",0)
-				var mult = getValue(modifier,"modifierMult",1)
-				modSum += add
-				modMult*= mult
-				if getValue(modifier,"statBar",false) == true: CurrentUi.StatusMods.append(modifier)
-				
-		PlayerData.property[modifierGroupId] = modSum*modMult
+	
+	
+	for modifierId in PlayerData.modifier[categoryId]:
+		var modifier = category[modifierId]
 		
-	MiscData.modifiersRecalc = false
+		var add = getValue(modifier,"modifier",0)
+		var mult = getValue(modifier,"modifierMult",1)
+		modSum += add
+		modMult*= mult
+				
+	PlayerData.property[categoryId] = modSum*modMult
 	
-	functionParameters.pop_back()
+func modifiersUpdateByCategory(categoryId:String,keyword="*"):
+	
+	if categoryId == "*":
+		for modifierCategoryId in modifiers:
+			modifiersUpdateByCategory(modifierCategoryId,keyword)
+		return
+	#functionParameters.append([PlayerData])
+	if !PlayerData.has("modifier"): PlayerData.modifier = {}
+	if !PlayerData.modifier.has(categoryId): PlayerData.modifier[categoryId] = {}
+	
+	var category = getValue(modifiers,categoryId,{})
+	
+	if keyword == "*":
+		PlayerData.modifier[categoryId] = []
+		
+	for modifierId in category:
+		#var modifier = category[modifierId]
+		var modifier = getModifier(categoryId,modifierId,PlayerData)
+		var modifierKeywords = getValue(modifier,"keywords",[])
+		if keyword == "*":
+			if checkConditionParameter(modifier.condition,PlayerData):
+				PlayerData.modifier[categoryId].append(modifierId)
+		elif modifierKeywords.has(keyword):
+			if checkConditionParameter(modifier.condition,PlayerData):
+				if !PlayerData.modifier[categoryId].has(modifierId):
+					PlayerData.modifier[categoryId].append(modifierId)
+			else:
+				PlayerData.modifier[categoryId].erase(modifierId)
+	modifiersCalculate(categoryId)
+	#functionParameters.pop_back()
 
 func loadModInfo(modId):
 	var result = {"name":modId,"description":"","version":0}
@@ -1737,14 +1795,14 @@ func loadModifiers():
 
 func moneySpend(m):
 	PlayerData.money = int(max(PlayerData.money-m,0))
-	playerData2UI()
+	#playerData2UI()
 
 func newGame():
 	
 	loadConstantData()
 	executeLocation(getLocation(MetaData.startLocation))
 	#modifiersCalculate(PlayerData.ID)
-	modifiersCalculate()
+	modifiersUpdateByCategory("*")
 
 	gotoMain()
 	
@@ -1861,8 +1919,29 @@ func executeCommands(commands):
 				Duration = Util.getSecondsTil(now(),SetTime,true)
 			
 			timePass(Duration,Activity)
-			#result.modifiersRecalc = true
 	
+	var modifierUpdate = getValue(commands,"modifierUpdate")
+	if modifierUpdate:
+		var modCategory = getValue(modifierUpdate,"category","*")
+		var modKeyword = getValue(modifierUpdate,"keyword","*")
+		modifiersUpdateByCategory(modCategory,modKeyword)
+			
+	
+	var skillCheck = getValue(commands,"skillCheck")
+	if skillCheck:
+		var skillId = getValue(skillCheck,"skill")
+		var skillExperience:int = getValue(skillCheck,"experience",0)
+		if skillExperience>0: experienceGain(skillId,skillExperience)
+		var skill = getValue(PlayerData.skill,skillId,{})
+		var skillLevel = getValue(skill,"level",0)
+		var results = getValue(skillCheck,"result")
+		var resultKeys:Array = results.keys()
+		resultKeys.sort_custom(SorterByIndexInt, "sortInv")
+		for key in resultKeys:
+			if int(key) <= skillLevel:
+				var skillResult = results[key]
+				executeWithParameter(skillResult,skillLevel)
+				break
 	# Comes here so that conditionals can override non-conditionals but do not get canceld by consuming events
 	if commands.has("conditionExecute"):
 		var cEs = commands.conditionExecute
@@ -2077,6 +2156,28 @@ func executeWithParameter(commands,parameter):
 	execute(commands)
 	#functionObjects.pop_back()
 	functionParameters.pop_back()
+
+func experienceGain(skillId:String,experience:int):
+	var skill = getValue(PlayerData.skill,skillId,{})
+	var currentExperience = getValue(skill,"experience",0)
+	var currentLevel = getValue(skill,"level",1)
+	var newExperience = currentExperience + experience
+	var newLevel = experience2Level(newExperience)
+	if newLevel > currentLevel:
+		eventCategoryExecute("levelup")
+	PlayerData.skill[skillId]={"experience":newExperience,"level":newLevel}
+
+func experience2Level(experience:int)->int:
+	var i = 1
+	var experience2Spend:int = experience
+	while i < 100:
+		var advanceRequirement:int = pow(2.0,i/10.0) * 10
+		if experience2Spend < advanceRequirement:
+			return i
+		i+= 1
+		experience2Spend -= advanceRequirement
+		
+	return i
 
 func gameMenuHide():
 	CurrentUi.ShowGameMenu = false
@@ -2343,7 +2444,7 @@ func timePass(t:int,activity):
 	var daysToCalc = Util.getDaysTilDate(now(),targetTime,false)
 	
 	#quick and dirty calc modifiers every 10 minutes
-	if int(targetTime/600) > int(now()/600):modifiersCalculate()
+	#if int(targetTime/600) > int(now()/600):modifiersCalculate()
 	
 	if hoursToCalc > 0:
 		eventCategoryExecute("timePass_HOUR",hoursToCalc)
@@ -2379,6 +2480,7 @@ func timeUpdate():
 #		preloadedTextures.pop_front()
 
 func playerData2UI():
+	logOut("Use of playerData2UI is deprecated")
 	CurrentUi.PlayerStat = PlayerData.stat
 	CurrentUi.money = PlayerData.money
 	#CurrentUi.Wardrobe.coutfit = PlayerData.outfit.CURRENT
@@ -2445,7 +2547,7 @@ func updateUI():
 
 func _process(delta):
 	if uiUpdatePending:
-		playerData2UI()
+		#playerData2UI()
 		get_tree().call_group(CurrentUi.UIGroup,"updateUI",CurrentUi)
 		if CurrentUi.UIGroup!= "uiUpdate":
 			get_tree().call_group("uiUpdate","updateUI",CurrentUi)
@@ -2509,16 +2611,11 @@ func setPlayerOutfit(playerOutfit):
 	MiscData.modifiersRecalc = true	
 	
 func setItemWorn(item):
-	#PlayerData.outfit.CURRENT[item.type] = item.ID
-	#eventCategoryExecute("outfitUpdate")
-	#playerData2UI()
-	#updateUI()
 	setItemWornAtSlot(item.type,item.ID)
 
 func setItemWornAtSlot(slot,itemID):
 	PlayerData.outfit.CURRENT[slot] = itemID
 	eventCategoryExecute("outfitUpdate")
-	playerData2UI()
 	updateUI()
 
 func serviceBuy(serviceId):
@@ -2543,7 +2640,7 @@ func serviceBuy(serviceId):
 		var target = current + increase
 		setValueAtPath(service.increaseRef,target)
 	
-	modifiersCalculate()
+	#modifiersCalculate()
 	
 	if getValue(service,"remainAtServices",false) == false:
 		servicesClose()

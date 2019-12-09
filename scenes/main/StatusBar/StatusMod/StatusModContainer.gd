@@ -12,7 +12,9 @@ func clearChildren():
 func updateUI(CurrentUi):
 	clearChildren()
 	
-	var statusMods = GameManager.getValue(CurrentUi,"StatusMods",[])
+	#var statusMods = GameManager.getValue(CurrentUi,"StatusMods",[])
+	
+	var statusMods = GameManager.getStatusmods()
 	
 	for statusMod in statusMods:
 		var StautsModInstance = StatusModPL.instance()

@@ -1,0 +1,78 @@
+{
+    "langIsAre":{
+        "param":["OBJECT"],
+        "result":{
+            "1000":{
+                "value": "are",
+                "condition":"PARAM1.ID=PlayerData.ID"
+            },
+            "0":{
+                "value": "is"
+            }
+        }
+    },
+    "langPluralS":{
+        "param":["INT"],
+        "result":{
+            "1000":{
+                "value": "",
+                "condition":"PARAM1=i'1'"
+            },
+            "0":{
+                "value": "s"
+            }
+        }
+    },
+    "langPossessiveDeterminerSingular":{
+        "param":["OBJECT"],
+        "result":{
+            "1000":{
+                "value": "your",
+                "condition":"PARAM1.ID=PlayerData.ID"
+            },
+            "200":{
+                "value": "her",
+                "condition":"PARAM1.gender='f'"
+            },
+            "100":{
+                "value": "his",
+                "condition":"PARAM1.gender='m'"
+            },
+            "0":{
+                "value": "its"
+            }
+        }
+    },
+    "langPronounObjectSingular":{
+        "param":["OBJECT"],
+        "result":{
+            "1000":{
+                "value": "you",
+                "condition":"PARAM1.ID=PlayerData.ID"
+            },
+            "200":{
+                "value": "her",
+                "condition":"PARAM1.gender='f'"
+            },
+            "100":{
+                "value": "him",
+                "condition":"PARAM1.gender='m'"
+            },
+            "0":{
+                "value": "it"
+            }
+        }
+    },
+    "langThirdPersonS":{
+        "param":["OBJECT"],
+        "result":{
+            "1000":{
+                "value": "",
+                "condition":"PARAM1.ID=PlayerData.ID"
+            },
+            "0":{
+                "value": "s"
+            }
+        }
+    }
+}

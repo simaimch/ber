@@ -1,4 +1,59 @@
 {
+    "makeupClassy":{
+        "Label":"Apply Make-up (classy)",
+        "~value":{
+            "1000":{
+                "condition":"PlayerData.items.vanity.makeup>=2",
+                "value":{
+                    "skillCheck":{
+                        "skill":"makeup",
+                        "difficulty":-1,
+                        "experience":10,
+                        "result":{
+                            "0":{
+                                "PlayerData":{
+                                    "body.face.makeup.style":20,
+                                    "body.face.makeup.quality":{"#value":"PARAM1"},
+                                    "items.vanity.makeup":{"mode":"dec","value":2}
+                                },
+                                "Time":{"Pass":{"Duration":450,"Activity":"makeup"}},
+                                "modifierUpdate":{"keyword":"makeup"},
+                                "debug":"CALLED"
+                            }
+                        }
+                    }
+                }
+            },
+            "0":{
+                "value":{
+                    "Disabled": true,
+                    "Tooltip": "You don't have enough make-up."
+                }
+            }
+        }
+    },
+    "makeupDecent":{
+        "inherit":"makeupClassy",
+        "Label":"Apply Make-up (decent)",
+        "~value":{
+            "1000":{
+                "condition":"PlayerData.items.vanity.makeup>=1",
+                "value":{
+                    "skillCheck":{
+                        "result":{
+                            "0":{
+                                "PlayerData":{
+                                    "body.face.makeup.style":10,
+                                    "items.vanity.makeup":{"mode":"dec","value":1}
+                                },
+                                "debug":"CALLED"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
     "setAlarmClock":{
         "^Label":"Set Alarm Clock (#PlayerData.alarmclock.time#)",
         "showDialog":{
@@ -15,7 +70,7 @@
         "~value":{
             "1000":{
                 "condition":{
-                    "var":"PlayerData.bath.razor",
+                    "var":"PlayerData.items.bath.razor",
                     "mode":"leq",
                     "val":0
                 },
