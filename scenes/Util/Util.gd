@@ -167,7 +167,13 @@ func getAge(now, bday)->int:
 		return nowDict.year - bdayDict.year
 	else:
 		return nowDict.year - bdayDict.year - 1
-		
+
+func getArrayEntryStartingWith(array:Array,startString:String)->String:
+	for entry in array:
+		if entry.begins_with(startString):
+			return entry
+	return ""
+	
 func getDaysTilDate(now,target,anyyear = true)->int:
 	var nowDict = datetimeResetTime(getDateTime(now))
 	var targetDict= datetimeResetTime(getDateTime(target))

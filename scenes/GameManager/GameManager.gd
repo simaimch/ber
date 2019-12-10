@@ -1771,17 +1771,27 @@ func modifiersUpdateByCategory(categoryId:String,keyword="*"):
 	
 	var category = getValue(modifiers,categoryId,{})
 	
-	#if keyword == "*":
-	PlayerData.modifier[categoryId] = []
+	if keyword == "*":
+		PlayerData.modifier[categoryId] = []
 		
 	for modifierId in category:
 		#var modifier = category[modifierId]
 		var modifier = getModifier(categoryId,modifierId,PlayerData)
 		var modifierKeywords = getValue(modifier,"keywords",[])
-		if keyword == "*" or modifierKeywords.has(keyword):
+		if keyword == "*":
 			var activeModId = modifierActiveSub(modifier,modifierId,PlayerData)
 			if activeModId != "": 
 				PlayerData.modifier[categoryId].append(activeModId)
+		elif modifierKeywords.has(keyword):
+			var activeModId = modifierActiveSub(modifier,modifierId,PlayerData)
+			var currentModId = Util.getArrayEntryStartingWith(PlayerData.modifier[categoryId],modifierId)
+			if activeModId != "": 
+				if currentModId != activeModId:
+					if currentModId != "":
+						PlayerData.modifier[categoryId].erase(currentModId)
+					PlayerData.modifier[categoryId].append(activeModId)
+			else:
+				PlayerData.modifier[categoryId].erase(currentModId)
 		#	if checkConditionParameter(modifier.condition,PlayerData):
 		#		PlayerData.modifier[categoryId].append(modifierId)
 		#elif modifierKeywords.has(keyword):
@@ -2489,7 +2499,9 @@ func timePass(t:int,activity):
 	var daysToCalc = Util.getDaysTilDate(now(),targetTime,false)
 	
 	#quick and dirty calc modifiers every 10 minutes
-	#if int(targetTime/600) > int(now()/600):modifiersCalculate()
+	var tenMinutesToCalc = int(targetTime/600) - int(now()/600)
+	if tenMinutesToCalc > 0:
+		eventCategoryExecute("timePass_10Minutes",tenMinutesToCalc)
 	
 	if hoursToCalc > 0:
 		eventCategoryExecute("timePass_HOUR",hoursToCalc)
