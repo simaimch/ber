@@ -127,12 +127,16 @@
     "shower":{
         "Label":"Take a shower",
         "PlayerData": {
+            "body.face.makeup.style":0,
+            "body.face.makeup.quality":0,
             "stat.hygiene_body.current": 10000
         },
+        "modifierUpdate":{"keyword":"makeup"},
         "Time":{"Pass":{"Duration":300,"Activity":"shower"}}
 
     },
     "sleep":{
+        "Label": "Go to sleep",
         "~value":{
             "1000":{
                 "condition":{
@@ -141,7 +145,6 @@
                     "val":7000
                 },
                 "value":{
-                    "Label": "Go to sleep",
                     "Disabled": true,
                     "Tooltip": "You are not tired enough to go to sleep."
                 }
@@ -153,7 +156,6 @@
                     "val":1000
                 },
                 "value":{
-                    "Label": "Go to sleep",
                     "Disabled": true,
                     "Tooltip": "You are too thirsty to go to sleep."
                 }
@@ -165,14 +167,22 @@
                     "val":1000
                 },
                 "value":{
-                    "Label": "Go to sleep",
                     "Disabled": true,
                     "Tooltip": "You are too hungry to go to sleep."
                 }
             },
+            "700":{
+                "condition":"PlayerData.body.face.makeup.style>0",
+                "value":{
+                    "LabelMode": "Warning",
+                    "Tooltip": "Your makeup will smear if you don't wash it off before sleeping.",
+                    "PlayerData":{"body.face.makeup.quality":-1},
+                    "modifierUpdate":{"keyword":"makeup"},
+                    "sleep": {}
+                }
+            },
             "100":{
                 "value":{
-                    "Label": "Go to sleep",
                     "sleep": {}
                 }
             }

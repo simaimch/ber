@@ -212,6 +212,11 @@
             "keywords":["makeup"],
             "condition":"PARAM1.body.face.makeup.style = 20",
             "subMods":{
+                "quality-1":{
+                    "label":"Classy Make-up (Smeared)",
+                    "modifierMult": 0.4,
+                    "condition":"PARAM1.body.face.makeup.quality < 0"
+                },
                 "quality10":{
                     "label":"Classy Make-up (Clownish)",
                     "modifierMult": 0.4,
@@ -263,6 +268,11 @@
             "keywords":["makeup"],
             "condition":"PARAM1.body.face.makeup.style = 10",
             "subMods":{
+                "quality-1":{
+                    "label":"Decent Make-up (Smeared)",
+                    "modifierMult": 0.5,
+                    "condition":"PARAM1.body.face.makeup.quality < 0"
+                },
                 "quality10":{
                     "label":"Decent Make-up (Clownish)",
                     "modifierMult": 0.5,
@@ -314,6 +324,11 @@
             "keywords":["makeup"],
             "condition":"PARAM1.body.face.makeup.style = 30",
             "subMods":{
+                "quality-1":{
+                    "label":"Heavy Make-up (Smeared)",
+                    "modifierMult": 0.3,
+                    "condition":"PARAM1.body.face.makeup.quality < 0"
+                },
                 "quality10":{
                     "label":"Heavy Make-up (Clownish)",
                     "modifierMult": 0.3,
@@ -369,13 +384,13 @@
         },
         "smell_2":{
             "label":"Bad smell",
-            "^description":"#usedName(PARAM1)# smells badly.",
+            "^description":"#usedName(PARAM1)# smell#langThirdPersonS(PARAM1)# badly.",
             "#modifierMult": "MiscData.modifier.apperance.malusAverage.modMult",
             "condition":"PARAM1.stat.hygiene_body.current € [i'2000',i'5000')"
         },
         "smell_3":{
             "label":"Extremely bad smell",
-            "^description":"#usedName(PARAM1)# smells like a sewer.",
+            "^description":"#usedName(PARAM1)# smell#langThirdPersonS(PARAM1)# like a sewer.",
             "#modifierMult": "MiscData.modifier.apperance.malusSevere.modMult",
             "condition":"PARAM1.stat.hygiene_body.current < i'2000'"
         }
