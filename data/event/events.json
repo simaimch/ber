@@ -77,5 +77,13 @@
         "listen": "sleepEnd",
         "arguments":"thirst",
         "actions":{"interrupt":"sleeping.wakeThirsty"}
+    },
+    "stateHungerUpdate":{
+        "listen":"timePass_10Minutes",
+        "actions":{"modifierUpdate":{"keyword":"hunger"}}
+    },
+    "stateThirstUpdate":{
+        "listen":"timePass_10Minutes",
+        "actions":{"modifierUpdate":{"keyword":"thirst"}}
     }
 }
