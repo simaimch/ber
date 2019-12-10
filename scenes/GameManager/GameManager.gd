@@ -1765,7 +1765,6 @@ func modifiersUpdateByCategory(categoryId:String,keyword="*"):
 		for modifierCategoryId in modifiers:
 			modifiersUpdateByCategory(modifierCategoryId,keyword)
 		return
-	#functionParameters.append([PlayerData])
 	if !PlayerData.has("modifier"): PlayerData.modifier = {}
 	if !PlayerData.modifier.has(categoryId): PlayerData.modifier[categoryId] = {}
 	
@@ -1775,7 +1774,6 @@ func modifiersUpdateByCategory(categoryId:String,keyword="*"):
 		PlayerData.modifier[categoryId] = []
 		
 	for modifierId in category:
-		#var modifier = category[modifierId]
 		var modifier = getModifier(categoryId,modifierId,PlayerData)
 		var modifierKeywords = getValue(modifier,"keywords",[])
 		if keyword == "*":
@@ -1792,16 +1790,8 @@ func modifiersUpdateByCategory(categoryId:String,keyword="*"):
 					PlayerData.modifier[categoryId].append(activeModId)
 			else:
 				PlayerData.modifier[categoryId].erase(currentModId)
-		#	if checkConditionParameter(modifier.condition,PlayerData):
-		#		PlayerData.modifier[categoryId].append(modifierId)
-		#elif modifierKeywords.has(keyword):
-		#	if checkConditionParameter(modifier.condition,PlayerData):
-		#		if !PlayerData.modifier[categoryId].has(modifierId):
-		#			PlayerData.modifier[categoryId].append(modifierId)
-		#	else:
-		#		PlayerData.modifier[categoryId].erase(modifierId)
+
 	modifiersCalculate(categoryId)
-	#functionParameters.pop_back()
 
 func modifierActiveSub(modifier:Dictionary,currentPath:String,character:Dictionary)->String:
 	if modifier.has("condition") and !checkConditionParameter(modifier.condition,character):
@@ -2501,7 +2491,7 @@ func timePass(t:int,activity):
 	#quick and dirty calc modifiers every 10 minutes
 	var tenMinutesToCalc = int(targetTime/600) - int(now()/600)
 	if tenMinutesToCalc > 0:
-		eventCategoryExecute("timePass_10Minutes",tenMinutesToCalc)
+		eventCategoryExecute("timePass_10Minutes")
 	
 	if hoursToCalc > 0:
 		eventCategoryExecute("timePass_HOUR",hoursToCalc)

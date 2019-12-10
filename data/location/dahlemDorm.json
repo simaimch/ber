@@ -326,7 +326,7 @@
                 "value":{
                     "label":"Room 311 (your room)",
                     "text":"Room 311",
-                    "inherit":"bedroom"
+                    "inherit":"bedroom.room"
                 }
             }
         },

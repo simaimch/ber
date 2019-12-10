@@ -450,6 +450,7 @@ anchor_right = 0.5
 margin_left = -400.0
 margin_right = 400.0
 margin_bottom = 40.0
+mouse_filter = 2
 script = ExtResource( 44 )
 [connection signal="mouse_entered" from="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar/StatusContainer" to="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar/StatusContainer" method="_on_StatusContainer_mouse_entered"]
 [connection signal="mouse_exited" from="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar/StatusContainer" to="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar/StatusContainer" method="_on_StatusContainer_mouse_exited"]
