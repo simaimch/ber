@@ -8,7 +8,7 @@
     "schedule":{
         "dahlemDorm.room311":[
             {"days":[1,2,3,4,7],"timeStart":2100,"timeEnd":2400},
-            {"days":[1,2,3,4,5],"timeStart":0,"timeEnd":615},
+            {"days":[1,2,3,4,5],"timeStart":0,"timeEnd":615,"activity":"sleep"},
             {"days":[1,2,3,4,5],"timeStart":646,"timeEnd":700}
         ],
         "dahlemDorm.bath3":[

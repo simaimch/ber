@@ -130,7 +130,7 @@ var temp = {}
 var themes = {}
 #var skills = {}
 
-var functionParameters = []
+var functionParameters = [[]]
 #var functionObjects = []
 
 var folderRoot:String setget , getRootFolder
@@ -338,7 +338,7 @@ func hasValue(obj, index):
 
 func getValue(obj, index, default = null):
 	
-	if obj == null: return default
+	if typeof(obj) != TYPE_DICTIONARY: return default
 	
 	if index in obj:
 		return obj[index]
@@ -461,7 +461,7 @@ func getValueFromRandom(entries:Array):
 		rand -= weight
 		i += 1
 		
-	return entries[i].value
+	return getValue(entries[i],"value",entries[i])
 	
 func getWeather(id):
 	if !misc.has("weather"): loadMisc()
@@ -636,19 +636,20 @@ func getValueFromPath(path,default=""):
 	var pathArr = path.split(".")
 	var cObj
 	var i = 0
-	
+	var tObj
 	if pathArr[0] == "NPCData" and pathArr.size()>1:
 		var npc = getNPC(pathArr[1])
+		tObj = npc
 		cObj = npc
 		i+=2
 	else:
-		var tObj = getObjectFromPath(pathArr[0])
+		tObj = getObjectFromPath(pathArr[0])
 		cObj = tObj
 		i+= 1
 	while(i < pathArr.size()):
 		cObj = getValue(cObj,pathArr[i])
 		if cObj == null:
-			if str(default) == "": logOut("ERROR loading "+path,"ERROR")
+			if str(default) == "": logOut(["ERROR loading ",path," in ",tObj],"ERROR")
 			return result
 		i+=1
 		
@@ -798,6 +799,11 @@ func getValueFromFunction(functionId,functionParameter=null):
 		"DATE_WITH_AGE":
 			result = Util.getDateTimeWithAge(now(),currentParameters[0])
 			result = Util.formtTime(result,"{day}.{month}.{year}")
+		"NPC_ACTIVITY_LOCATION":
+			var npcId = currentParameters[0]
+			var locId = currentParameters[1]
+			var npc = getNPC(npcId)
+			result = npcActivityAtLocation(npc,locId)
 		_:
 			var function = getFunction(functionId)
 			result = functionExecute(function,currentParameters)
@@ -916,11 +922,17 @@ func getObjectFromPath(path):
 	elif(path == "CurrentUi"): return CurrentUi
 	#elif(path.begins_with("NPC")): return getNPC(MiscData["currentNpcId"][int(path.substr(3,path.length()-3))])
 	elif(path.begins_with("PARAM")): return functionParameter(int(path.substr(5,path.length()-5))-1)
+	elif(path.begins_with("NPCDataC")): 
+		var npcParamId:int = int(path.substr(8,path.length()-8))-1
+		var npc = functionParameter(npcParamId)
+		var npcId = npc.get("ID",0)
+		return getNPC(npcId)
 	elif(path.begins_with("NPCData")): 
 		var npcParamId:int = int(path.substr(7,path.length()-7))-1
 		var npc = functionParameter(npcParamId)
 		var npcId = npc.get("ID",0)
 		return NPCData.get(npcId,{})
+	
 	elif(path=="npcs"): return npcs
 	return null
 
@@ -2244,21 +2256,28 @@ func gameStatusToggle():
 	CurrentUi.ShowGameStatus = !CurrentUi.get("ShowGameStatus",false)
 	updateUI()
 	
-func npcIsPresent(npc,locationId,time = -1):
+func npcIsPresent(npc:Dictionary,locationId:String,time = -1)->bool:
+	var activity = npcActivityAtLocation(npc,locationId,time)
+	if activity == "none":
+		return false
+	return true
+	
+func npcActivityAtLocation(npc:Dictionary,locationId:String,time = -1)->String:
 	if time == -1: time =  now()
 	
 	var timeDict = Util.getDateTime(time)
 	
-	if npc.get("isTemplate",false) == true: return false
+	if npc.get("isTemplate",false) == true: return "none"
 	
-	if !npc.has("schedule"): return false
-	if !npc.schedule.has(locationId): return false
+	if !npc.has("schedule"): return "none"
+	if !npc.schedule.has(locationId): return "none"
 	
 	for presence in npc.schedule[locationId]:
 		if timeDict.weekday in presence.days:
 			var timeBase100 = timeDict.hour * 100 + timeDict.minute
-			if timeBase100 >= presence.timeStart and timeBase100 <= presence.timeEnd: return true
-	return false
+			if timeBase100 >= presence.timeStart and timeBase100 <= presence.timeEnd:
+				return getValue(presence,"activity","idle")
+	return "none"
 
 func npcDetailsHide():
 	CurrentUi.ShowDetailsNPC = false
@@ -2391,7 +2410,8 @@ func npcDialogTopic(topicId:String,dialogueId:String="",subtopic:int=1):
 	
 	match typeof(text):
 		TYPE_STRING:
-			npcDialogSay(functionParameters.back()[0].ID,text)
+			if text != "":
+				npcDialogSay(functionParameters.back()[0].ID,text)
 		TYPE_DICTIONARY:
 			var keys = text.keys()
 			keys.sort_custom(SorterByIndexInt, "sort")

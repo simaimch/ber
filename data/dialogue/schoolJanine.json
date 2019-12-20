@@ -14,10 +14,94 @@
                     "0":{
                         "label":"Introduce yourself",
                         "onSelect":{
-                            "NPCData1":{"nameKnown":true}
+                            "NPCData1":{
+                                "closeness":30,
+                                "nameKnown":true
+                            }
                         },
-                        "text":"Yes, I am the player. Nice to meet you.",
-                        "topic": "TOP"
+                        "^text":"Yes, I am #PlayerData.name.first#. Nice to meet you.",
+                        "topic": "SELF.introduction.10"
+                    }
+                }
+            },
+            "10":{
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "^text":"I am #NPCDataC1.name.first#."
+                    }
+                },
+                "~topic":{
+                    "1000":{
+                        "condition":"PlayerData.stat.hygiene_body.current < 8000",
+                        "value":"SELF.introduction.22"
+                    },
+                    "100":{
+                        "condition":"PlayerData.property.appearance>=60",
+                        "value":"SELF.introduction.20"
+                    },
+                    "0":{
+                        "value":"SELF.introduction.21"
+                    }
+                }
+            },
+            "20":{
+                "text":{
+                    "10":{
+                        "text":"She takes your hand and shakes it and smiles at you."
+                    },
+                    "20":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"I think we will get along quite well. Just take your time to settle in and talk to me if you feel like it."
+                    }
+                },
+                "onShow":{
+                    "NPCData1":{"affection":10}
+                },
+                "replies":{
+                    "0":{
+                        "label":"Leave",
+                        "topic": "LEAVE"
+                    }
+                }
+            },
+            "21":{
+                "text":{
+                    "10":{
+                        "text":"She inspects you closely. She doesn't seem to like you."
+                    },
+                    "20":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"I guess I have to be your roommate. Make sure to keep your fingers away from my stuff and we might get along."
+                    }
+                },
+                "onShow":{
+                    "NPCData1":{"affection":-5}
+                },
+                "replies":{
+                    "0":{
+                        "label":"Leave",
+                        "topic": "LEAVE"
+                    }
+                }
+            },
+            "22":{
+                "text":{
+                    "10":{
+                        "text":"She looks at you with disgust in her eyes."
+                    },
+                    "20":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"I hope you'll learn to shower once in a while. I won't stand this smell in my room."
+                    }
+                },
+                "onShow":{
+                    "NPCData1":{"affection":-20}
+                },
+                "replies":{
+                    "0":{
+                        "label":"Leave",
+                        "topic": "LEAVE"
                     }
                 }
             }
