@@ -11,7 +11,7 @@ func _init(param):
 		TYPE_DICTIONARY:
 			objectData = param
 		var paramType:
-			GameManager.logOut(["Param of type ",paramType," not supported in GameObject._init()"],"ERROR")
+			LOG.out(["Param of type ",paramType," not supported in GameObject._init()"],LOG.ERROR)
 	
 	var object2inherit = get("inherit")
 	
