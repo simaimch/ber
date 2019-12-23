@@ -1,5 +1,6 @@
 {
     "initialize":{
+        "bday":{"#value":"DATE_WITH_AGE(18)"},
         "name":{
             "first":{">value":"names_first_female_90s"},
             "last":{">value":"names_last"}
@@ -11,7 +12,6 @@
             {"days":[1,2,3,4,5],"timeStart":800,"timeEnd":1800}
         ]
     },
-    "bday":"21.09.1999",
     "gender":"f",
     "dialogue":["basic"]     
 }

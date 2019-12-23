@@ -5,7 +5,7 @@ var servicePL = preload("res://scenes/services/Service.tscn")
 
 func clearChildren():
 	for i in get_children():
-    	i.queue_free()
+		i.queue_free()
 		
 	
 

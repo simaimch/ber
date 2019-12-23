@@ -1,0 +1,9 @@
+{
+    "name":{
+        "first":"Julia",
+        "last":"Kaut"
+    },
+    "inherit":["_schoolStudentFemale","_schoolBreakSports"],
+    "texture": "texture/npc/schoolStudents/juliaPortrait.png",
+    "developmentNotes":"Portrayed by Girl 10"
+}

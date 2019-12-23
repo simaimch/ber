@@ -1,4 +1,97 @@
 {
+    "makeup":{
+        "Label":"Make-Up",
+        "interrupt":"bath.makeup"
+    },
+    "makeupClassy":{
+        "condition":"PlayerData.body.face.makeup.style=0",
+        "Label":"Apply Make-up (classy)",
+        "~value":{
+            "1000":{
+                "condition":"PlayerData.items.vanity.makeup>=2",
+                "value":{
+                    "skillCheck":{
+                        "skill":"makeup",
+                        "difficulty":-1,
+                        "experience":15,
+                        "result":{
+                            "0":{
+                                "PlayerData":{
+                                    "body.face.makeup.style":20,
+                                    "body.face.makeup.quality":{"#value":"PARAM1"},
+                                    "items.vanity.makeup":{"mode":"dec","value":2}
+                                },
+                                "Time":{"Pass":{"Duration":450,"Activity":"makeup"}},
+                                "modifierUpdate":{"keyword":"makeup"}
+                            }
+                        }
+                    }
+                }
+            },
+            "0":{
+                "value":{
+                    "Disabled": true,
+                    "Tooltip": "You don't have enough make-up."
+                }
+            }
+        }
+    },
+    "makeupDecent":{
+        "inherit":"makeupClassy",
+        "Label":"Apply Make-up (decent)",
+        "~value":{
+            "1000":{
+                "condition":"PlayerData.items.vanity.makeup>=1",
+                "value":{
+                    "skillCheck":{
+                        "experience":10,
+                        "result":{
+                            "0":{
+                                "PlayerData":{
+                                    "body.face.makeup.style":10,
+                                    "items.vanity.makeup":{"mode":"dec","value":1}
+                                },
+                                "Time":{"Pass":{"Duration":300,"Activity":"makeup"}}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "makeupHeavy":{
+        "inherit":"makeupClassy",
+        "Label":"Apply Make-up (heavy)",
+        "~value":{
+            "1000":{
+                "condition":"PlayerData.items.vanity.makeup>=4",
+                "value":{
+                    "skillCheck":{
+                        "experience":20,
+                        "result":{
+                            "0":{
+                                "PlayerData":{
+                                    "body.face.makeup.style":30,
+                                    "items.vanity.makeup":{"mode":"dec","value":4}
+                                },
+                                "Time":{"Pass":{"Duration":600,"Activity":"makeup"}}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "makeupRemove":{
+        "condition":"PlayerData.body.face.makeup.style>0",
+        "Label":"Remove Make-up",
+        "PlayerData":{
+            "body.face.makeup.style":0,
+            "body.face.makeup.quality":0
+        },
+        "Time":{"Pass":{"Duration":180,"Activity":"makeup"}},
+        "modifierUpdate":{"keyword":"makeup"}
+    },
     "setAlarmClock":{
         "^Label":"Set Alarm Clock (#PlayerData.alarmclock.time#)",
         "showDialog":{
@@ -15,7 +108,7 @@
         "~value":{
             "1000":{
                 "condition":{
-                    "var":"PlayerData.bath.razor",
+                    "var":"PlayerData.items.bath.razor",
                     "mode":"leq",
                     "val":0
                 },
@@ -34,12 +127,16 @@
     "shower":{
         "Label":"Take a shower",
         "PlayerData": {
+            "body.face.makeup.style":0,
+            "body.face.makeup.quality":0,
             "stat.hygiene_body.current": 10000
         },
+        "modifierUpdate":{"keyword":"makeup"},
         "Time":{"Pass":{"Duration":300,"Activity":"shower"}}
 
     },
     "sleep":{
+        "Label": "Go to sleep",
         "~value":{
             "1000":{
                 "condition":{
@@ -48,7 +145,6 @@
                     "val":7000
                 },
                 "value":{
-                    "Label": "Go to sleep",
                     "Disabled": true,
                     "Tooltip": "You are not tired enough to go to sleep."
                 }
@@ -60,7 +156,6 @@
                     "val":1000
                 },
                 "value":{
-                    "Label": "Go to sleep",
                     "Disabled": true,
                     "Tooltip": "You are too thirsty to go to sleep."
                 }
@@ -72,14 +167,22 @@
                     "val":1000
                 },
                 "value":{
-                    "Label": "Go to sleep",
                     "Disabled": true,
                     "Tooltip": "You are too hungry to go to sleep."
                 }
             },
+            "700":{
+                "condition":"PlayerData.body.face.makeup.style>0",
+                "value":{
+                    "LabelMode": "Warning",
+                    "Tooltip": "Your makeup will smear if you don't wash it off before sleeping.",
+                    "PlayerData":{"body.face.makeup.quality":-1},
+                    "modifierUpdate":{"keyword":"makeup"},
+                    "sleep": {}
+                }
+            },
             "100":{
                 "value":{
-                    "Label": "Go to sleep",
                     "sleep": {}
                 }
             }

@@ -3,14 +3,87 @@
         "1":{
             "priority":10,
             "topic":"hello"
+        },
+        "30":{
+            "priority":100,
+            "topic":"greetClose30",
+            "condition":"NPCDataC1.closeness>=30"
         }
     },
     "topics":{
+        "greetClose30":{
+            "1":{
+                "~topic":{
+                    "1503":{
+                        "condition":"PlayerData.stat.hygiene_body.current < 2000",
+                        "value":"SELF.greetClose30.1503"
+                    },
+                    "1502":{
+                        "condition":"PlayerData.stat.hygiene_body.current < 5000",
+                        "value":"SELF.greetClose30.1502"
+                    },
+                    "1501":{
+                        "condition":"PlayerData.stat.hygiene_body.current < 8000",
+                        "value":"SELF.greetClose30.1501"
+                    },
+                    "1301":{
+                        "condition":"(PlayerData.body.face.makeup.style > 0) AND (PlayerData.body.face.makeup.quality <= 20)",
+                        "value":"SELF.greetClose30.1301"
+                    },
+                    "0":{
+                        "value":"SELF.hello.1"
+                    }
+                }
+            },
+            "1301":{
+                "|text":[
+                    "Your makeup looks... well, you might want to check it.",
+                    "Did you take a look in the mirror lately? You might want to redo your makeup.",
+                    "If I were you I'd do something about my makeup.",
+                    "You are ... interesting looking. Did you do your makeup this way on purpose?"
+                ],
+                "topic":"SELF.greetFollow.1"
+            },
+            "1501":{
+                "text":"What's this smell? Didn't you shower today?",
+                "topic":"SELF.greetFollow.1"
+            },
+            "1502":{
+                "text":"Eww, you smell like a landfill!",
+                "topic":"SELF.greetFollow.1"
+            },
+            "1503":{
+                "text":"Eww, you smell like a rotten corpse!",
+                "topic":"SELF.greetFollow.1"
+            }
+            
+        },
+        "greetFollow":{
+            "1":{
+                "~topic":{
+                    "100":{
+                        "condition":"NPCDataC1.affection>=10",
+                        "value":"SELF.greetFollow.100"
+                    },
+                    "10":{
+                        "value":"SELF.greetFollow.10"
+                    }
+                }
+            },
+            "100":{
+                "text":"Anyways, how can I help you?",
+                "topic":"TOP"
+            },
+            "10":{
+                "text":"Anyways, what do you want?",
+                "topic":"TOP"
+            }
+        },
         "hello":{
             "1":{
                 "~text":{
                     "1000":{
-                        "condition": "PARAM1.nameKnown=true",
+                        "condition": "NPCDataC1.nameKnown=true",
                         "^value": "Hello #PlayerData.name.first#"
                     },
                     "0":{

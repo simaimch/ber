@@ -4,11 +4,13 @@ var modifierPL = preload("res://scenes/detailsMenu/Modifier.tscn")
 
 func clearChildren():
 	for i in get_children():
-    	i.queue_free()
+		i.queue_free()
 
 func updateUI(CurrentUi):
 	clearChildren()
-	for modifier in CurrentUi.ActiveModfiers["appearance"]:
+	#for modifier in CurrentUi.ActiveModfiers["appearance"]:
+	var activeModificators = GameManager.getActiveModificators()
+	for modifier in activeModificators:
 		var modifierInstance = modifierPL.instance()
 		modifierInstance.setModifer(modifier)
 		add_child(modifierInstance)

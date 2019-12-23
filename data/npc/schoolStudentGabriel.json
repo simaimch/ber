@@ -1,0 +1,8 @@
+{
+    "name":{
+        "first":"Gabriel",
+        "last":"Jung"
+    },
+    "inherit":["_schoolStudentMale","_schoolBreakClassroom"],
+    "texture": "texture/npc/schoolStudents/boy2Portrait.png"
+}

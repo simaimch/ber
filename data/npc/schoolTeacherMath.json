@@ -1,0 +1,16 @@
+{
+    "name":{
+        "first":"Nadine",
+        "last":"Müller",
+        "title":"Mrs."
+    },
+    "inherit":"_schoolTeacher",
+    "texture": "texture/npc/schoolTeachers/mathPortrait.png",
+    "schedule":{
+        
+    },
+    "bday":"22.09.1985",
+    "gender":"f",
+    "dialogue":[],
+    "developmentNotes":"Portrayed by Natasha Nice"
+}

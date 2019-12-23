@@ -1,0 +1,16 @@
+{
+    "name":{
+        "first":"Sarah",
+        "last":"Bauer",
+        "title":"Mrs."
+    },
+    "inherit":"_schoolTeacher",
+    "texture": "texture/npc/schoolTeachers/historyPortrait.png",
+    "schedule":{
+        
+    },
+    "bday":"02.04.1981",
+    "gender":"f",
+    "dialogue":[],
+    "developmentNotes":"Portrayed by Shazia Sahari"
+}

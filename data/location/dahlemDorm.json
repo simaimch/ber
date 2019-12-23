@@ -17,6 +17,9 @@
             },
             "800":{
                 "inherit":"shaveBody"
+            },
+            "600":{
+                "inherit":"makeup"
             }
         }
     },
@@ -290,9 +293,9 @@
             },
             "200":{
                 "Label":"Take ingredients from storage",
-                "PlayerData":{"fridge.ingredient_low":3},
+                "PlayerData":{"items.fridge.ingredient_low":3},
                 "updateLocation":true,
-                "condition":"PlayerData.fridge.ingredient_low<3"
+                "condition":"PlayerData.items.fridge.ingredient_low<3"
             }
         }
     },
@@ -322,10 +325,40 @@
                 "condition":"PlayerData.QUEST.school.dormRoom=311",
                 "value":{
                     "label":"Room 311 (your room)",
-                    "text":"Room 311",
-                    "inherit":"bedroom"
+                    "inherit":"bedroom.room"
                 }
             }
+        },
+        "~text":{
+            "1000":{
+                "condition":"PlayerData.QUEST.school.dormRoom=311",
+                "%value":{
+                    "resultMode":"stringConcat",
+                    "params":{
+                        "1":{"#value":"NPC_ACTIVITY_LOCATION('schoolStudentJanine','dahlemDorm.room311')"}
+                    },
+                    "result":{
+                        "0":{
+                            "value":"[b]Room 311: Your dorm room.[/b]\n"
+                        },
+                        "1":{
+                            "value":"Your bed is right beneath the window. Next to it is a small desk and you have a closet where you can store your personal belongings.\n"
+                        },
+                        "100":{
+                            "value":"The other bed in the room belongs to your [url=NPC('schoolStudentJanine')]roommate[/url]."
+                        },
+                        "101":{
+                            "condition":"PARAM1='idle'",
+                            "value":" She is currently sitting on her bed reading a book."
+                        },
+                        "102":{
+                            "condition":"PARAM1='sleep'",
+                            "value":" She is currently sleeping in her bed."
+                        }
+                    }
+                }
+            },
+            "0":{"value":"Room 311"}
         },
         "bg":"texture/locations/dahlem/dorm311.jpg",
         "npcs": true,

@@ -1,0 +1,8 @@
+{
+    "name":{
+        "first":"Pierre",
+        "last":"Zimmermann"
+    },
+    "inherit":["_schoolStudentMale","_schoolBreakGrounds"],
+    "texture": "texture/npc/schoolStudents/boy7Portrait.png"
+}

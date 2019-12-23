@@ -6,12 +6,6 @@
             "interrupt":"subway.event"
         }
     },
-    "testEvent":{
-        "listen": "timePass",
-        "arguments":"*",
-        "mtth": 5,
-        "actions":{}
-    },
     "hourUpdate":{
         "listen":"timePass_HOUR",
         "actions":{
@@ -31,18 +25,28 @@
                 "iterate": "PlayerData.body.hair",
                 "PARAM1":{
                     "length":{"mode":"inc","#value":"PARAM1.growth"}
-                }
-
+                },
+                "modifierUpdate":{"keyword":"hair"}
             }
         }
     },
-    "outfitUpdate":{
+    "levelup_makeup":{
+        "listen": "levelup",
+        "arguments":"makeup",
+        "actions":{
+            "message":{
+                "^text":"Makeup: Your skill increased to #PlayerData.skill.makeup.level#!"
+            }
+        }
+    },
+    "onOutfitUpdate":{
         "listen": "outfitUpdate",
         "arguments":"*",
         "actions":{
             "PlayerData":{
                 "outfit.CURRENT_TYPE":{"mode":"set","#value":"outfitType(PlayerData.outfit.CURRENT)"}
-            }
+            },
+            "modifierUpdate":{"keyword":"outfit"}
         }
     },
     "shower":{
@@ -73,5 +77,13 @@
         "listen": "sleepEnd",
         "arguments":"thirst",
         "actions":{"interrupt":"sleeping.wakeThirsty"}
+    },
+    "stateHungerUpdate":{
+        "listen":"timePass_10Minutes",
+        "actions":{"modifierUpdate":{"keyword":"hunger"}}
+    },
+    "stateThirstUpdate":{
+        "listen":"timePass_10Minutes",
+        "actions":{"modifierUpdate":{"keyword":"thirst"}}
     }
 }

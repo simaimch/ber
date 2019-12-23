@@ -1,0 +1,5 @@
+{
+    "inherit":"_schoolStudent",
+    "gender":"m",
+    "isTemplate":true
+}

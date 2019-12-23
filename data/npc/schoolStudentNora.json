@@ -1,0 +1,9 @@
+{
+    "name":{
+        "first":"Nora",
+        "last":"Beck"
+    },
+    "inherit":["_schoolStudentFemale","_schoolBreakAtrium"],
+    "texture": "texture/npc/schoolStudents/noraPortrait.png",
+    "developmentNotes":"Portrayed by Girl 9"
+}

@@ -21,8 +21,7 @@
             "1":{
                 "onShow":{
                     "NPCData1":{
-                        "nameKnown":true,
-                        "nameMode":"titleLast"
+                        "nameKnown":true
                     }
                 },
                 "text":{
@@ -235,8 +234,8 @@
                 "text":"I am happy to hear that. Just come here if you have time after classes.",
                 "replies":{
                     "10":{
-                        "label":"Leave",
-                        "goto": "dahlemSchool.hallway",
+                        "label":"Continue",
+                        "topic": "SELF.interview.10000",
                         "onSelect":{
                             "PlayerData":{
                                 "QUEST.school.psychologistGreeting.completed":true,
@@ -251,13 +250,84 @@
                 "text":"A pity.",
                 "replies":{
                     "10":{
-                        "label":"Leave",
-                        "goto": "dahlemSchool.hallway",
+                        "label":"Continue",
+                        "topic": "SELF.interview.10000",
                         "onSelect":{
                             "PlayerData":{
                                 "QUEST.school.psychologistGreeting.completed":true
                             }
                         }
+                    }
+                }
+            },
+            "10000":{
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Anyways, that was all I wanted to talk about for now. It's time to meet your new class."
+                    },
+                    "20":{
+                        "text":"She stands up and signals you to do the same."
+                    },
+                    "30":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Please follow me. I will lead you to your classroom."
+                    }
+                },
+                "replies":{
+                    "10":{
+                        "label":"Follow her",
+                        "topic": "SELF.interview.10010"
+                    }
+                }
+            },
+            "10010":{
+                "text":{
+                    "10":{
+                        "text":"She leads you out of her office and down the hallway, explaining some minor details about the history of the school and school life on the way."
+                    },
+                    "20":{
+                        "^text":"After about 2 minutes you arrive at the door of your classroom. #npcKnownName(PARAM1)# opens the door for you and follows you inside."
+                    }
+                },
+                "replies":{
+                    "10":{
+                        "label":"Continue",
+                        "topic": "SELF.interview.10020"
+                    }
+                }
+            },
+            "10020":{
+                "text":{
+                    "10":{
+                        "text":"You are standing in front of a class. The teacher turns around and smiles at you. Apparently she has been expecting you."
+                    },
+                    "20":{
+                        "#speakerId":"PARAM1.ID",
+                        "^text":"Good morning #NPCData.schoolTeacherMath.name.first#. This is Miss #PlayerData.name.last#. I just finished her interview and I am sure she will fit in quite well."
+                    },
+                    "30":{
+                        "text":"After nodding goodbye to her collegue she leaves the classroom."
+                    }
+                },
+                "replies":{
+                    "10":{
+                        "label":"Continue",
+                        "topic": "SELF.interview.10030"
+                    }
+                }
+            },
+            "10030":{
+                "text":{
+                    "10":{
+                        "speakerId":"schoolTeacherMath",
+                        "^text":"Nice to meet you. I am your math teacher and mentor. My name is #npcName(NPCData.schoolTeacherMath)#. Now please take a seat, we are about to continue."
+                    }
+                },
+                "replies":{
+                    "10":{
+                        "label":"Take a look around",
+                        "goto": "dahlemSchoolClasses.introduction"
                     }
                 }
             }

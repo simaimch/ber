@@ -1,0 +1,9 @@
+{
+    "name":{
+        "first":"Daniela",
+        "last":"Peters"
+    },
+    "inherit":["_schoolStudentFemale","_schoolBreakHallway"],
+    "texture": "texture/npc/schoolStudents/danielaPortrait.png",
+    "developmentNotes":"Portrayed by Girl 11"
+}

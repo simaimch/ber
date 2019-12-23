@@ -1,0 +1,9 @@
+{
+    "name":{
+        "first":"Antonia",
+        "last":"Becker"
+    },
+    "inherit":["_schoolStudentFemale","_schoolBreakSports"],
+    "texture": "texture/npc/schoolStudents/antoniaPortrait.png",
+    "developmentNotes":"Portrayed by Public Domain Image"
+}

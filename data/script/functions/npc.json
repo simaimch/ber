@@ -146,19 +146,21 @@
         "result":{
             "1000":{
                 "condition":"PARAM1.nameKnown = true",
-                "~value":{
-                    "1000":{
-                        "condition":"PARAM1.nameMode = 'titleLast'",
-                        "^value":"#PARAM1.name.title# #PARAM1.name.last#"
-                    },
-                    "0":{
-                        "^value":"#PARAM1.name.first# #PARAM1.name.last#"
-                    }
-                }
-                
+                "#value":"npcName(PARAM1)"
             },
             "0":{
                 "#value":"npcDescriptionAgeGender(PARAM1)"
+            }
+        }
+    },
+    "npcName":{
+        "result":{
+            "1000":{
+                "condition":"PARAM1.nameMode = 'titleLast'",
+                "^value":"#PARAM1.name.title# #PARAM1.name.last#"
+            },
+            "0":{
+                "^value":"#PARAM1.name.first# #PARAM1.name.last#"
             }
         }
     }

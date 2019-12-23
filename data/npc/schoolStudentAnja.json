@@ -1,0 +1,9 @@
+{
+    "name":{
+        "first":"Anja",
+        "last":"Kaiser"
+    },
+    "inherit":["_schoolStudentFemale","_schoolBreakHallway"],
+    "texture": "texture/npc/schoolStudents/anjaPortrait.png",
+    "developmentNotes":"Portrayed by Riley Star"
+}

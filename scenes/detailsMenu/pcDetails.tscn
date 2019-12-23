@@ -15,8 +15,8 @@
 [ext_resource path="res://scenes/detailsMenu/Modifier.tscn" type="PackedScene" id=13]
 
 [node name="pcDetails" type="Control" groups=[
-"uiDetails",
 "uiUpdate",
+"uiDetails",
 ]]
 anchor_right = 1.0
 anchor_bottom = 1.0

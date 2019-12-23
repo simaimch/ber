@@ -13,9 +13,27 @@ _global_script_classes=[ {
 "class": "Cache",
 "language": "GDScript",
 "path": "res://scenes/Util/Cache.gd"
+}, {
+"base": "Reference",
+"class": "GameObject",
+"language": "GDScript",
+"path": "res://scripts/GameObject.gd"
+}, {
+"base": "GameObject",
+"class": "NPC",
+"language": "GDScript",
+"path": "res://scripts/NPC.gd"
+}, {
+"base": "Node",
+"class": "Sorter",
+"language": "GDScript",
+"path": "res://scenes/Util/Sorter.gd"
 } ]
 _global_script_class_icons={
-"Cache": ""
+"Cache": "",
+"GameObject": "",
+"NPC": "",
+"Sorter": ""
 }
 
 [application]
@@ -29,6 +47,7 @@ config/icon="res://icon.png"
 
 GameManager="*res://scenes/GameManager/GameManager.tscn"
 Util="*res://scenes/Util/Util.tscn"
+LOG="*res://scenes/LOG/LOG.tscn"
 
 [display]
 

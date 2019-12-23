@@ -4,6 +4,145 @@
             "goto":"SELF.class1"
         }
     },
+    "break_Generic":{
+        "actions":{
+            "4000":{
+                "Label":"Hang out (Hallway)",
+                "goto":"SELF.breakHallway"
+            },
+            "3000":{
+                "Label":"Hang out (School Grounds)",
+                "goto":"SELF.breakGrounds"
+            },
+            "2000":{
+                "Label":"Hang out (Sports Field)",
+                "goto":"SELF.breakSports"
+            },
+            "1000":{
+                "Label":"Hang out (Atrium)",
+                "goto":"SELF.breakAtrium"
+            },
+            "900":{
+                "Label":"Hang out (Classroom)",
+                "goto":"SELF.breakClassroom"
+            }
+        }
+    },
+    "break1":{
+        "text":"It's the first break of the day.",
+        "inherit":"SELF.break_Generic"
+    },
+    "break2":{
+        "text":"It's the second break of the day.",
+        "inherit":"SELF.break_Generic"
+    },
+    "break3":{
+        "text":"It's the third break of the day.",
+        "inherit":"SELF.break_Generic"
+    },
+    "breakAtrium":{
+        "bg":"texture/events/school/break/atrium.jpg",
+        "npcs":true,
+        "actions":{
+            "1000":{
+                "Label":"Back to class",
+                "goto":"SELF.breakEnd"
+            }
+        }
+    },
+    "breakClassroom":{
+        "bg":"texture/events/school/break/classroom.jpg",
+        "npcs":true,
+        "actions":{
+            "1000":{
+                "Label":"Back to class",
+                "goto":"SELF.breakEnd"
+            }
+        }
+    },
+    "breakGrounds":{
+        "bg":"texture/events/school/break/grounds.jpg",
+        "npcs":true,
+        "actions":{
+            "1000":{
+                "Label":"Back to class",
+                "goto":"SELF.breakEnd"
+            }
+        }
+    },
+    "breakHallway":{
+        "bg":"texture/events/school/break/hallway.jpg",
+        "npcs":true,
+        "actions":{
+            "1000":{
+                "Label":"Back to class",
+                "goto":"SELF.breakEnd"
+            }
+        }
+    },
+    "breakSports":{
+        "bg":"texture/events/school/break/sports.jpg",
+        "npcs":true,
+        "actions":{
+            "1000":{
+                "Label":"Back to class",
+                "goto":"SELF.breakEnd"
+            }
+        }
+    },
+    "breakEnd":{
+        "~onStart":{
+            "1":{
+                "condition":"MiscData.school.currentHour=1",
+                "value":{
+                    "goto":"SELF.breakEnd1"
+                }
+            },
+            "2":{
+                "condition":"MiscData.school.currentHour=2",
+                "value":{
+                    "goto":"SELF.breakEnd2"
+                }
+            },
+            "3":{
+                "condition":"MiscData.school.currentHour=3",
+                "value":{
+                    "goto":"SELF.breakEnd3"
+                }
+            }
+
+        }
+    },
+    "breakEnd1":{
+        "onStart":{
+            "Time":{
+                "Pass":{
+                    "SetTime":"09:35"
+                }
+            },
+            "goto":"SELF.class2"
+        }
+    },
+    "breakEnd2":{
+        "onStart":{
+            "Time":{
+                "Pass":{
+                    "SetTime":"11:25"
+                }
+            },
+            "goto":"SELF.class3"
+        }
+    },
+    "breakEnd3":{
+        "onStart":{
+            "Time":{
+                "Pass":{
+                    "SetTime":"13:30"
+                }
+            },
+            "goto":"SELF.class4"
+        }
+    },
     "class_Generic":{
         "actions":{
             "4000":{
@@ -84,17 +223,17 @@
     },
     "class2":{
         "onStart":{
-            "goto":"SELF.class2_Math"
+            "goto":"SELF.class2_German"
         }
     },
     "class3":{
         "onStart":{
-            "goto":"SELF.class3_Math"
+            "goto":"SELF.class3_History"
         }
     },
     "class4":{
         "onStart":{
-            "goto":"SELF.class4_Math"
+            "goto":"SELF.class4_Art"
         }
     },
     "class1_Generic":{
@@ -107,6 +246,7 @@
     },
     "class1_Math":{
         "inherit":"SELF.class1_Generic",
+        "bg":"texture/npc/schoolTeachers/mathBigHor.png",
         "onStart":{
             "MiscData":{
                 "school.currentCourse":"math"
@@ -121,11 +261,12 @@
             }
         }
     },
-    "class2_Math":{
+    "class2_German":{
         "inherit":"SELF.class2_Generic",
+        "bg":"texture/npc/schoolTeachers/germanBigHor.png",
         "onStart":{
             "MiscData":{
-                "school.currentCourse":"math"
+                "school.currentCourse":"german"
             }
         }
     },
@@ -137,11 +278,12 @@
             }
         }
     },
-    "class3_Math":{
+    "class3_History":{
         "inherit":"SELF.class3_Generic",
+        "bg":"texture/npc/schoolTeachers/historyBigHor.png",
         "onStart":{
             "MiscData":{
-                "school.currentCourse":"math"
+                "school.currentCourse":"history"
             }
         }
     },
@@ -153,11 +295,12 @@
             }
         }
     },
-    "class4_Math":{
+    "class4_Art":{
         "inherit":"SELF.class4_Generic",
+        "bg":"texture/npc/schoolTeachers/artBigHor.jpg",
         "onStart":{
             "MiscData":{
-                "school.currentCourse":"math"
+                "school.currentCourse":"art"
             }
         }
     },
@@ -254,8 +397,8 @@
         },
         "actions":{
             "1":{
-                "Label":"Class",
-                "goto":"SELF.class2"
+                "Label":"Break",
+                "goto":"SELF.break1"
             }
         }
     },
@@ -269,8 +412,8 @@
         },
         "actions":{
             "1":{
-                "Label":"Class",
-                "goto":"SELF.class3"
+                "Label":"Break",
+                "goto":"SELF.break2"
             }
         }
     },
@@ -284,8 +427,8 @@
         },
         "actions":{
             "1":{
-                "Label":"Class",
-                "goto":"SELF.class4"
+                "Label":"Break",
+                "goto":"SELF.break3"
             }
         }
     },
@@ -301,6 +444,16 @@
             "1":{
                 "Label":"Leave School",
                 "goto":"dahlemSchool.exterior"
+            }
+        }
+    },
+    "introduction":{
+        "bg":"texture/events/school/introduction.jpg",
+        "text":"Everybody is looking at you. You better pick a seat quickly.",
+        "actions":{
+            "1":{
+                "Label":"Third row",
+                "goto":"SELF.start"
             }
         }
     }
