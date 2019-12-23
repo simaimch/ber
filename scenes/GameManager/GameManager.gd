@@ -65,7 +65,7 @@ var CurrentUi={
 
 var MetaData = {} #does not get saved in savegame
 
-var NPCData = {} # contains modified NPC-Data for storage in savegame only. Data from gamefiles is stored npcs
+var NPCData = {} # contains modified NPC-Data for storage in savegame only. Data from gamefiles is stored in npcs
 
 var PlayerData = {
 	"ID":"PC",
@@ -185,7 +185,10 @@ func itemWornAtSlot(itemslot):
 func now():
 	var now = WorldData.Time + WorldData.TimeOffset
 	return now
-	
+
+func npc(id):
+	return NPC.new(id) 
+
 func getColor(id):
 	if !misc.has("colors"): loadMisc()
 	if misc.colors.has(id):
@@ -337,6 +340,9 @@ func hasValue(obj, index):
 	return false
 
 func getValue(obj, index, default = null):
+	
+	if typeof(obj) == TYPE_OBJECT and obj is GameObject:
+		return getValue(obj.data(),index,default)
 	
 	if typeof(obj) != TYPE_DICTIONARY: return default
 	
@@ -799,10 +805,26 @@ func getValueFromFunction(functionId,functionParameter=null):
 		"DATE_WITH_AGE":
 			result = Util.getDateTimeWithAge(now(),currentParameters[0])
 			result = Util.formtTime(result,"{day}.{month}.{year}")
+		"NPC_ACTIVITY":
+			var npcParam = currentParameters[0]
+			var npc:Dictionary
+			match typeof(npcParam):
+				TYPE_STRING:
+					npc = getNPC(npcParam)
+				TYPE_DICTIONARY:
+					npc = npcParam	
+			
+			var acticity = npcActivity(npc)
+			result = acticity.get("activity","none")
 		"NPC_ACTIVITY_LOCATION":
-			var npcId = currentParameters[0]
+			var npcParam = currentParameters[0]
+			var npc:Dictionary
+			match typeof(npcParam):
+				TYPE_STRING:
+					npc = getNPC(npcParam)
+				TYPE_DICTIONARY:
+					npc = npcParam	
 			var locId = currentParameters[1]
-			var npc = getNPC(npcId)
 			result = npcActivityAtLocation(npc,locId)
 		_:
 			var function = getFunction(functionId)
@@ -2261,6 +2283,18 @@ func npcIsPresent(npc:Dictionary,locationId:String,time = -1)->bool:
 	if activity == "none":
 		return false
 	return true
+
+func npcActivity(npc:Dictionary,time = -1)->Dictionary:
+	if npc.get("isTemplate",false) == true: return {"locationId":"none","acticity":"none"}
+	
+	var schedule = getValue(npc,"schedule",{})
+	
+	for scheduleLocationId in schedule:
+		var activity = npcActivityAtLocation(npc,scheduleLocationId,time)
+		if activity != "none":
+			return {"locationId":scheduleLocationId,"acticity":activity}
+		
+	return {"locationId":"none","acticity":"none"}
 	
 func npcActivityAtLocation(npc:Dictionary,locationId:String,time = -1)->String:
 	if time == -1: time =  now()
@@ -2279,6 +2313,19 @@ func npcActivityAtLocation(npc:Dictionary,locationId:String,time = -1)->String:
 				return getValue(presence,"activity","idle")
 	return "none"
 
+func npcDescription(npc:Dictionary)->String:
+	
+	var lines = []
+	
+	var descriptions = getValue(npc,"description",{})
+	
+	for descriptionId in descriptions:
+		var description = descriptions[descriptionId]
+		if !description.has('condition') or checkCondition(description.condition):
+			lines.append(description)
+	lines.sort_custom(SorterByPriorityInt,"sort")
+	return PoolStringArray(lines).join("\n")
+
 func npcDetailsHide():
 	CurrentUi.ShowDetailsNPC = false
 	CurrentUi.UIGroup = "uiUpdate"
@@ -2296,7 +2343,7 @@ func npcDialogHide():
 	CurrentUi.UIGroup = "uiUpdate"
 	updateUI()	
 
-func npcDialogShow(npc):
+func npcDialogShow(npc:NPC):
 	CurrentUi.NPCDialog = []
 	functionParameters.append([npc])
 	
@@ -2305,7 +2352,8 @@ func npcDialogShow(npc):
 	
 	var greetingUsed = {"priority":-1,"topic":"TOP","dialogueId":""}
 	
-	var npcDialogues = getValue(npc,"dialogue",[])
+	#var npcDialogues = getValue(npc,"dialogue",[])
+	var npcDialogues = npc.get("dialogue",[])
 	for npcDialogue in npcDialogues:
 		var dialogue:Dictionary = getDialogue(npcDialogue)
 		var greetings = getValue(dialogue,"greetings",{})
@@ -2357,9 +2405,10 @@ func npcDialogSetReplies(replies,dialogueId):
 	for npcDO in CurrentUi.NPCDialogOption:
 		npcDO.dialogue = dialogueId
 
-func npcDialogTopTopics(npc:Dictionary)->Array:
+func npcDialogTopTopics(npc:NPC)->Array:
 	var result = []
-	var npcDialogues = getValue(npc,"dialogue",[])
+	#var npcDialogues = getValue(npc,"dialogue",[])
+	var npcDialogues = npc.get("dialogue",[])
 	for npcDialogue in npcDialogues:
 		var dialogue:Dictionary = getDialogue(npcDialogue)
 		var topics = getValue(dialogue,"topics",{})
@@ -2372,12 +2421,15 @@ func npcDialogTopTopics(npc:Dictionary)->Array:
 	return result
 
 func npcDialogTopic(topicId:String,dialogueId:String="",subtopic:int=1):
+	var speakingNpc:NPC = functionParameters.back()[0]
+	
 	if topicId == "LEAVE":
 		npcDialogHide()
 		return
 		
 	if topicId == "TOP":
-		var topTopics = npcDialogTopTopics(functionParameters.back()[0])
+		#var topTopics = npcDialogTopTopics(functionParameters.back()[0])
+		var topTopics = npcDialogTopTopics(speakingNpc)
 		var topTopicOptions = []
 		for topTopic in topTopics:
 			var reply = {"topic":topTopic.dialogueId+"."+topTopic.ID,"label":getValue(topTopic,"TOP",topTopic.ID),"text":getValue(topTopic,"TOP_text","")}
@@ -2411,7 +2463,8 @@ func npcDialogTopic(topicId:String,dialogueId:String="",subtopic:int=1):
 	match typeof(text):
 		TYPE_STRING:
 			if text != "":
-				npcDialogSay(functionParameters.back()[0].ID,text)
+				#npcDialogSay(functionParameters.back()[0].ID,text)
+				npcDialogSay(speakingNpc.id(),text)
 		TYPE_DICTIONARY:
 			var keys = text.keys()
 			keys.sort_custom(SorterByIndexInt, "sort")
@@ -2555,7 +2608,7 @@ func playerData2UI():
 func SaveGameLoad(path = "user://quicksave.json"):
 	var saveGame = File.new()
 	if not saveGame.file_exists(path):
-        return # Error! We don't have a save to load.
+		return # Error! We don't have a save to load.
 	saveGame.open(path, File.READ)
 	var data = parse_json(saveGame.get_line())
 	saveGame.close()

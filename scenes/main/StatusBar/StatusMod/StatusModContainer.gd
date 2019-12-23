@@ -5,7 +5,7 @@ var StatusModPL = preload("res://scenes/main/StatusBar/StatusMod/StatusMod.tscn"
 
 func clearChildren():
 	for i in get_children():
-    	i.queue_free()
+		i.queue_free()
 		
 	
 

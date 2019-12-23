@@ -254,7 +254,7 @@ func loadJSONfromFile(path:String)->Dictionary:
 
 func clearChildren(obj):
 	for i in obj.get_children():
-    	i.queue_free()
+		i.queue_free()
 
 func data2File(data,file:String,readable=false):
 	var saveFile = File.new()

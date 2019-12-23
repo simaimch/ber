@@ -6,7 +6,7 @@ var itemPL = preload("res://scenes/shop/Item.tscn")
 
 func clearChildren():
 	for i in get_children():
-    	i.queue_free()
+		i.queue_free()
 
 func updateUI(CurrentUi):
 	createItems(CurrentUi.ShopItems)

@@ -1,4 +1,5 @@
 {
+    "inherit":"_npc",
     "nameMode":"titleLast",
     "groups":["dahlemSchoolTeacher"],
     "dialogue":["basic"]  ,

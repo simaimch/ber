@@ -5,7 +5,7 @@ var itemPL = preload("res://scenes/wardrobe/Item.tscn")
 
 func clearChildren():
 	for i in get_children():
-    	i.queue_free()
+		i.queue_free()
 		
 	
 

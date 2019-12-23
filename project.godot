@@ -13,9 +13,21 @@ _global_script_classes=[ {
 "class": "Cache",
 "language": "GDScript",
 "path": "res://scenes/Util/Cache.gd"
+}, {
+"base": "Reference",
+"class": "GameObject",
+"language": "GDScript",
+"path": "res://scripts/GameObject.gd"
+}, {
+"base": "GameObject",
+"class": "NPC",
+"language": "GDScript",
+"path": "res://scripts/NPC.gd"
 } ]
 _global_script_class_icons={
-"Cache": ""
+"Cache": "",
+"GameObject": "",
+"NPC": ""
 }
 
 [application]

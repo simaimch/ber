@@ -30,7 +30,6 @@ margin_right = 1750.0
 margin_bottom = 980.0
 
 [node name="MenuVBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-editor/display_folded = true
 margin_right = 360.0
 margin_bottom = 980.0
 
@@ -94,7 +93,6 @@ margin_bottom = 32.0
 text = "Simaimch"
 
 [node name="LogoContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer"]
-editor/display_folded = true
 margin_left = 364.0
 margin_right = 1750.0
 margin_bottom = 980.0
@@ -109,7 +107,6 @@ texture = ExtResource( 3 )
 stretch_mode = 4
 
 [node name="ToolsContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
-editor/display_folded = true
 visible = false
 margin_left = 364.0
 margin_right = 1750.0

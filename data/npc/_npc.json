@@ -1,0 +1,10 @@
+{
+    "isTemplate":true,
+    "description":{
+        "activity_sleep":{
+            "priority": 10000,
+            "condition": "NPC_ACTIVITY(NPCDATA1)='sleep'",
+            "text":"<She> is currently sleeping in <her> bed."
+        }
+    }
+}

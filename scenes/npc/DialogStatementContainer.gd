@@ -4,7 +4,7 @@ var statementPL = preload("res://scenes/npc/DialogStatement.tscn")
 
 func clearChildren():
 	for i in get_children():
-    	i.queue_free()
+		i.queue_free()
 		
 
 func updateUI(CurrentUi):

@@ -339,13 +339,13 @@
                     },
                     "result":{
                         "0":{
-                            "value":"Room 311: Your dorm room.\n"
+                            "value":"[b]Room 311: Your dorm room.[/b]\n"
                         },
                         "1":{
                             "value":"Your bed is right beneath the window. Next to it is a small desk and you have a closet where you can store your personal belongings.\n"
                         },
                         "100":{
-                            "value":"The other bed in the room belongs to your roomate."
+                            "value":"The other bed in the room belongs to your [url=NPC('schoolStudentJanine')]roommate[/url]."
                         },
                         "101":{
                             "condition":"PARAM1='idle'",

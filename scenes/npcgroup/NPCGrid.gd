@@ -1,11 +1,11 @@
 extends GridContainer
 
-var npcPL = preload("res://scenes/npcgroup/NPC.tscn")
+var npcPL = preload("res://scenes/npcgroup/NPCEntry.tscn")
 	
 
 func clearChildren():
 	for i in get_children():
-    	i.queue_free()
+		i.queue_free()
 		
 	
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://scenes/npcgroup/NPC.gd" type="Script" id=1]
+[ext_resource path="res://scenes/npcgroup/NPCEntry.gd" type="Script" id=1]
 [ext_resource path="res://media/texture/npc/portrait/female_young/p(0).jpg" type="Texture" id=2]
 
 [node name="NPC" type="CenterContainer"]

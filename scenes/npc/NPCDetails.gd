@@ -1,6 +1,6 @@
 extends Control
 
-var npc:Dictionary
+var npc:NPC
 
 func _on_TalkButton_pressed():
 	close()
@@ -17,14 +17,18 @@ func _process(delta):
 func close():
 	GameManager.npcDetailsHide()
 
-func setNPC(n:Dictionary):
+func setNPC(n:NPC):
 	npc = n
-	var texturePath:String = GameManager.getValue(npc,"texture","")
-	$HBoxContainer/PortraitTexture.texture = Util.texture(texturePath)
+	#var texturePath:String = GameManager.getValue(npc,"texture","")
+	#$HBoxContainer/PortraitTexture.texture = Util.texture(texturePath)
+	$HBoxContainer/PortraitTexture.texture = npc.texture()
 	
 	#var name:String = GameManager.getNPCDescription(npc)
-	var name:String = GameManager.getValueFromFunction("npcKnownName",npc)
-	$HBoxContainer/VBoxContainer/NameLabel.text = name
+	#var name:String = GameManager.getValueFromFunction("npcKnownName",npc)
+	#$HBoxContainer/VBoxContainer/NameLabel.text = name
+	$HBoxContainer/VBoxContainer/NameLabel.text = npc.knownName()
+	
+	#$HBoxContainer/VBoxContainer/RichTextLabel.bbcode_text = GameManager.npcDescription(npc)
 	
 func updateUI(CurrentUi):
 	if CurrentUi.get("ShowDetailsNPC",false) == true:
