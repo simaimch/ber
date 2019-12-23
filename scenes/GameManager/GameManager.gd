@@ -1,27 +1,6 @@
 extends Control
 
-class SorterByIndexInt:
-	static func sort(a, b):
-		if int(a) < int(b):
-			return true
-		return false
-		
-	static func sortInv(a ,b):
-		return sort(b,a)
 
-class SorterByPriorityInt:
-	static func sort(a,b):
-		if typeof(a) != TYPE_DICTIONARY:
-			return true
-		if typeof(b) != TYPE_DICTIONARY:
-			return false
-		if !a.has("priority"):
-			return true
-		if !b.has("priority"):
-			return false
-		if int(a.priority) < int(b.priority):
-			return true
-		return false
 
 const mainScene = "res://scenes/main/main.tscn"
 var rng = RandomNumberGenerator.new()
@@ -367,7 +346,8 @@ func getValue(obj, index, default = null):
 	
 	if cindex in obj:
 		var keys = obj[cindex].keys()#.sort_custom(SorterByIndexInt, "sort")
-		keys.sort_custom(SorterByIndexInt, "sortInv")
+		#keys.sort_custom(SorterByIndexInt, "sortInv")
+		keys.sort_custom(Sorter, "sortByIndexInv")
 		for key in keys:
 			if "condition" in obj[cindex][key]:
 				if checkCondition(obj[cindex][key]["condition"]) == true:
@@ -890,7 +870,7 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 				match typeof(results):
 					TYPE_DICTIONARY:
 						var keys = results.keys()
-						keys.sort_custom(SorterByIndexInt, "sortInv")
+						keys.sort_custom(Sorter, "sortByIndexInv")
 						for key in keys:
 							var possibleResult = results[key]
 							if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
@@ -901,7 +881,7 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 			"stringConcat":
 				result = ""
 				var keys = results.keys()
-				keys.sort_custom(SorterByIndexInt, "sort")
+				keys.sort_custom(Sorter, "sortByIndex")
 				for key in keys:
 					var possibleResult = results[key]
 					if !possibleResult.has("condition") or checkCondition(possibleResult.condition):
@@ -1420,7 +1400,7 @@ func loadEvents():
 	# Load mods here
 	for category in events:
 		var catArray = events[category].values()
-		catArray.sort_custom(SorterByPriorityInt,"sort")
+		catArray.sort_custom(Sorter, "sortByPriority")
 		events[category] = catArray
 	print("Complete loading Events")
 
@@ -2009,7 +1989,7 @@ func executeCommands(commands):
 		var skillLevel = getValue(skill,"level",0)
 		var results = getValue(skillCheck,"result")
 		var resultKeys:Array = results.keys()
-		resultKeys.sort_custom(SorterByIndexInt, "sortInv")
+		resultKeys.sort_custom(Sorter, "sortByIndexInv")
 		for key in resultKeys:
 			if int(key) <= skillLevel:
 				var skillResult = results[key]
@@ -2203,7 +2183,7 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 	if hasValue(location,"actions"):
 		var actions = getValue(location,"actions")
 		var keys = actions.keys()
-		keys.sort_custom(SorterByIndexInt, "sortInv")
+		keys.sort_custom(Sorter, "sortByIndexInv")
 		for key in keys:
 			var action = actions[key].duplicate()
 			action = linkAction(action)
@@ -2467,7 +2447,7 @@ func npcDialogTopic(topicId:String,dialogueId:String="",subtopic:int=1):
 				npcDialogSay(speakingNpc.id(),text)
 		TYPE_DICTIONARY:
 			var keys = text.keys()
-			keys.sort_custom(SorterByIndexInt, "sort")
+			keys.sort_custom(Sorter, "sortByIndex")
 			for key in keys:
 				var subtext = text[key]
 				match typeof(subtext):
