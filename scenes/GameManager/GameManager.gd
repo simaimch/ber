@@ -2303,7 +2303,7 @@ func npcDescription(npc:Dictionary)->String:
 		var description = descriptions[descriptionId]
 		if !description.has('condition') or checkCondition(description.condition):
 			lines.append(description)
-	lines.sort_custom(SorterByPriorityInt,"sort")
+	lines.sort_custom(Sorter,"sortByPriority")
 	return PoolStringArray(lines).join("\n")
 
 func npcDetailsHide():
