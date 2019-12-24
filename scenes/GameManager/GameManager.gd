@@ -129,12 +129,12 @@ func _ready():
 	
 func commandLine(c:String)->void:
 	if c[0] == "°":
-		logOut([checkConditionString(c.substr(1,c.length()-1))])
+		LOG.out([checkConditionString(c.substr(1,c.length()-1))])
 		return
 	
 	var cParts = c.split("=")
 	if cParts.size() == 1:
-		logOut(getValueFromPath(c))
+		LOG.out(getValueFromPath(c))
 	elif cParts.size() == 2:
 		setValueAtPath(cParts[0],JSON.parse(cParts[1]).result)
 
@@ -205,7 +205,7 @@ func getItemCoveredBodyParts(item):
 func getItempart(id):
 	if !misc.has("itemparts"): loadMisc()
 	if !misc.itemparts.has(id): 
-		logOut("Error loading itempart: "+id)
+		LOG.out("Error loading itempart: "+id)
 		return {}
 	return misc.itemparts[id]
 	
@@ -222,7 +222,7 @@ func getLocation(locationId):
 	while i < locationArr.size():
 		if !l.has(locationArr[i]): 
 			l["ID"] = locationId
-			logOut("Error loading location: "+locationId)
+			LOG.out("Error loading location: "+locationId)
 			return l
 		l = l[locationArr[i]]
 		i += 1
@@ -242,7 +242,7 @@ func getNPC(npcId:String)->Dictionary:
 	var npc = npcs.get(npcId, null)
 	
 	if !npc:
-		logOut(["NPC not found:",npcId],"ERROR")
+		LOG.out(["NPC not found:",npcId],LOG.ERROR)
 		return {}
 		
 	if !NPCData.has(npcId):
@@ -402,7 +402,7 @@ func getValueFromList(list,default = null):
 	var filePath = "res://data/list/"+list+".txt"
 	
 	if !Util.fileExists(filePath):
-		logOut(["List not found: ",list],"ERROR")
+		LOG.out(["List not found: ",list],LOG.ERROR)
 		return default
 	
 	var file = File.new()
@@ -465,13 +465,13 @@ func getWeather(id):
 				result.append(getWeather(subid))
 			return result
 		var idtype:
-			logOut(["getWeather: unexpected type of id:",idtype],"ERROR")
+			LOG.out(["getWeather: unexpected type of id:",idtype],LOG.ERROR)
 	return {}
 
 
 func getAction(id:String)->Dictionary:
 	if !misc.actions.has(id):
-		logOut("Action "+str(id)+" not found!","ERROR")
+		LOG.out("Action "+str(id)+" not found!",LOG.ERROR)
 		return {}
 	var action = misc.actions[id]
 	return linkAction(action)
@@ -558,7 +558,7 @@ func pathArrayParase(path):
 				arraySignClosePos = nextArrayClose
 				break
 			elif nextArrayClose == -1:
-				logOut("Path Array malformed","ERROR")
+				LOG.out("Path Array malformed",LOG.ERROR)
 				return path
 			elif nextArrayOpen < nextArrayClose:
 				arraySignOpenPos = nextArrayOpen
@@ -608,7 +608,7 @@ func getValueFromPath(path,default=""):
 	if path[path.length()-1] == ")":
 		var paramStart = path.find("(")
 		if paramStart == -1:
-			logOut(["Path malformed:",path],"ERROR")
+			LOG.out(["Path malformed:",path],LOG.ERROR)
 			return result
 		elif paramStart == 0:
 			return getValueFromPath(path.substr(1,path.length()-2),default)
@@ -635,7 +635,7 @@ func getValueFromPath(path,default=""):
 	while(i < pathArr.size()):
 		cObj = getValue(cObj,pathArr[i])
 		if cObj == null:
-			if str(default) == "": logOut(["ERROR loading ",path," in ",tObj],"ERROR")
+			if str(default) == "": LOG.out(["ERROR loading ",path," in ",tObj],LOG.ERROR)
 			return result
 		i+=1
 		
@@ -832,7 +832,7 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 							"STRING":
 								currentParameters[i] = ""
 			var typeParamTypes:
-				logOut(["Unknown type of paramTypes ",typeParamTypes, " in ",function],"ERROR")
+				LOG.out(["Unknown type of paramTypes ",typeParamTypes, " in ",function],LOG.ERROR)
 			
 	functionParameters.append(currentParameters)		
 	
@@ -847,7 +847,7 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 					#currentParameters = Util.arraySetAtIndex(currentParameters,index,value)
 					functionParameters[functionParameters.size()-1] = Util.arraySetAtIndex(functionParameters[functionParameters.size()-1],index,value)
 			var typeParams:
-				logOut(["Unknown type of params ",typeParams, " in ",function],"ERROR")
+				LOG.out(["Unknown type of params ",typeParams, " in ",function],LOG.ERROR)
 	
 	var value = getValue(function,"value",null)
 	
@@ -888,7 +888,7 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 						result += str(getValue(possibleResult,"value",""))
 						#TODO: parse?
 			_:
-				logOut(["ResultMode ",resultMode," not supported in functionExecute"],"ERROR")
+				LOG.out(["ResultMode ",resultMode," not supported in functionExecute"],LOG.ERROR)
 		
 	functionParameters.pop_back()
 	
@@ -900,7 +900,7 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 func functionParameter(pID:int):
 	var currentParameterSet = functionParameters.back()
 	if pID >= currentParameterSet.size():
-		logOut(["Invalid Function Parameter ID:",pID],"ERROR")
+		LOG.out(["Invalid Function Parameter ID:",pID],LOG.ERROR)
 		return null
 	return currentParameterSet[pID]
 	
@@ -959,7 +959,7 @@ func getRootFolder():
 
 func getServiceById(serviceId):
 	if !services.has(serviceId):
-		logOut(["Service ",serviceId," not found"],"ERROR")
+		LOG.out(["Service ",serviceId," not found"],LOG.ERROR)
 		return {"ID":serviceId}
 	
 	var result = services[serviceId]
@@ -988,7 +988,7 @@ func getStatusmods()->Array:
 
 func getTheme(id,subId="main"):
 	if themes.has(id) and themes[id].has(subId): return themes[id][subId]
-	logOut(["Theme not found: ",id,"/",subId],"ERROR")
+	LOG.out(["Theme not found: ",id,"/",subId],LOG.ERROR)
 	return Theme.new()
 
 func modValueAtPath(path,mode,value):
@@ -1128,10 +1128,10 @@ func sleep(mode=""):
 		var x:
 			sleepTimeInt = sleepTime
 			sleepEnd = "healthy"
-			logOut(str(x))
-			logOut(str(maxSleep))
+			LOG.out(str(x))
+			LOG.out(str(maxSleep))
 	 
-	logOut("Sleeping time: "+str(sleepTimeInt))
+	LOG.out("Sleeping time: "+str(sleepTimeInt))
 	timePass(sleepTimeInt,"sleep")
 	eventArgumentExecute("sleepEnd",sleepEnd,sleepTimeInt)
 
@@ -1151,7 +1151,7 @@ func checkCondition(condition) -> bool:
 		TYPE_NIL:
 			return false
 		var typeCondition:
-			logOut(["Unsuported condition of type ",typeCondition,":",condition],"ERROR")
+			LOG.out(["Unsuported condition of type ",typeCondition,":",condition],LOG.ERROR)
 			return false
 	
 	
@@ -1193,7 +1193,7 @@ func checkCondition(condition) -> bool:
 			TYPE_ARRAY:
 				return conditionValue.has(valueFromPath)
 			var conType:
-				logOut(["Unexpected type of condition.val ",conType," in ",condition],"ERROR")
+				LOG.out(["Unexpected type of condition.val ",conType," in ",condition],LOG.ERROR)
 				return false
 	elif condition.mode == "timeBetween":
 		var timeFromPath = getValueFromPath(condition["var"],null) # most likely now aka WorldData.TimeDict
@@ -1206,9 +1206,9 @@ func checkCondition(condition) -> bool:
 				timeEnd = Util.string2DateTime(timeEnd)
 				return Util.isBetweenTimes(timeFromPath,timeStart,timeEnd)
 			TYPE_ARRAY:
-				logOut("Multiple Times for condition timeBetween currently not supported")
+				LOG.out("Multiple Times for condition timeBetween currently not supported")
 			var conType:
-				logOut(["Unexpected type of condition.val ",conType," in ",condition],"ERROR")
+				LOG.out(["Unexpected type of condition.val ",conType," in ",condition],LOG.ERROR)
 				return false
 	elif condition.mode[0] == "¬":
 		var invertedCondition = condition.duplicate()
@@ -1266,7 +1266,7 @@ func checkConditionString(condition:String) -> bool:
 					return !checkConditionString(c2)
 				return checkConditionString(c2)
 			_:
-				logOut(["Unsupported logical operator in checkConditionString:",logic],"ERROR")
+				LOG.out(["Unsupported logical operator in checkConditionString:",logic],LOG.ERROR)
 				return false
 	
 	var regex_identifier = "[a-zA-Z0-9'\\._\\-\\(\\)\\[\\],]+"
@@ -1293,7 +1293,7 @@ func checkConditionString(condition:String) -> bool:
 			var setArr = id2.split(",")
 			
 			if setArr.size() != 2:
-				logOut("Invalid set format in checkConditionString","ERROR")
+				LOG.out("Invalid set format in checkConditionString",LOG.ERROR)
 				return false
 			
 			var lowVal = getValueFromPath(setArr[0].substr(1,setArr[0].length()-1))
@@ -1306,7 +1306,7 @@ func checkConditionString(condition:String) -> bool:
 					"[":
 						if Util.bigger(lowVal,val1): return false
 					_:
-						logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+						LOG.out(["Unsupported lower bound in checkConditionString:",lowMode],LOG.ERROR)
 						return false
 						
 				match highMode:
@@ -1315,7 +1315,7 @@ func checkConditionString(condition:String) -> bool:
 					"]":
 						if Util.bigger(val1,highVal): return false
 					_:
-						logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+						LOG.out(["Unsupported lower bound in checkConditionString:",lowMode],LOG.ERROR)
 						return false
 				return true
 			else:
@@ -1326,7 +1326,7 @@ func checkConditionString(condition:String) -> bool:
 					"[":
 						if Util.bigger(val1,lowVal) or Util.equals(lowVal,val1): return true
 					_:
-						logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+						LOG.out(["Unsupported lower bound in checkConditionString:",lowMode],LOG.ERROR)
 						return false
 						
 				match highMode:
@@ -1335,7 +1335,7 @@ func checkConditionString(condition:String) -> bool:
 					"]":
 						if Util.bigger(highVal,val1) or Util.equals(highVal,val1): return true
 					_:
-						logOut(["Unsupported lower bound in checkConditionString:",lowMode],"ERROR")
+						LOG.out(["Unsupported lower bound in checkConditionString:",lowMode],LOG.ERROR)
 						return false
 			
 				return false
@@ -1358,7 +1358,7 @@ func checkConditionString(condition:String) -> bool:
 			"⊆":
 				return Util.isInArray(val1,val2)
 			_:
-				logOut(["Unsupported operator in checkConditionString:",operator],"ERROR")
+				LOG.out(["Unsupported operator in checkConditionString:",operator],LOG.ERROR)
 				return false
 	
 	return false
@@ -1406,7 +1406,7 @@ func loadEvents():
 
 func eventCategoryExecute(cat, times = 1):
 	if !events.has(cat): 
-		logOut(["Event category not found: ",cat],"ERROR")
+		LOG.out(["Event category not found: ",cat],LOG.ERROR)
 		return
 	
 	var category = getValue(events,cat,[])
@@ -1630,18 +1630,6 @@ func locationInherit(l):
 		l = Util.inherit(l,parent)
 	return l
 
-func logOut(msg,type="NOTICE"):
-	
-	if typeof(msg) == TYPE_ARRAY:
-		var text = ""
-		for t in msg:
-			text += str(t)
-		msg = text
-	else:
-		msg = str(msg)
-	
-	get_tree().call_group("logger","logOut",msg,type)
-
 #func loadSkills():
 #	var file = File.new()
 #	file.open("res://data/misc/skills.json", file.READ)
@@ -1819,7 +1807,7 @@ func modifierActiveSub(modifier:Dictionary,currentPath:String,character:Dictiona
 				var subRes = modifierActiveSub(subMod,currentPath+"."+subModId,character)
 				if subRes != "": return subRes
 		var subModsType:
-			logOut(["Type not supported in modifierActiveSub:",subModsType],"ERROR")
+			LOG.out(["Type not supported in modifierActiveSub:",subModsType],LOG.ERROR)
 			return ""
 	return "" # should never happen
 
@@ -1900,7 +1888,7 @@ func executeCommands(commands):
 					
 	
 	if commands.has("debug"):
-		logOut(["DEBUG: ",commands.debug])
+		LOG.out(["DEBUG: ",commands.debug])
 	
 	if commands.has("bg"):
 		CurrentUi.Bg = commands["bg"]
@@ -2163,7 +2151,7 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 				for rlId in rls:
 					currentUIAppendRL(rls[rlId])
 			var rlType:
-				logOut(["Unexpected type of location.rl: ",rlType],"ERROR")
+				LOG.out(["Unexpected type of location.rl: ",rlType],LOG.ERROR)
 	else:
 		CurrentUi.ShowRL = false
 
@@ -2491,13 +2479,13 @@ func npcGroupShow(groupId:String):
 
 func getEvent(cat,id):
 	if !events.has(cat) or !events[cat].has(id):
-		logOut(["Event ",id," not found in ",cat],"ERROR")
+		LOG.out(["Event ",id," not found in ",cat],LOG.ERROR)
 		return {}
 	return events[cat][id]
 	
 func getFunction(id):
 	if !functions.has(id):
-		logOut(["Function ",id," not found"],"ERROR")
+		LOG.out(["Function ",id," not found"],LOG.ERROR)
 		return {}
 	return functions[id]
 
@@ -2580,7 +2568,7 @@ func timeUpdate():
 #		preloadedTextures.pop_front()
 
 func playerData2UI():
-	logOut("Use of playerData2UI is deprecated")
+	LOG.out("Use of playerData2UI is deprecated")
 	CurrentUi.PlayerStat = PlayerData.stat
 	CurrentUi.money = PlayerData.money
 	#CurrentUi.Wardrobe.coutfit = PlayerData.outfit.CURRENT
@@ -2604,7 +2592,7 @@ func SaveGameLoad(path = "user://quicksave.json"):
 	
 	updateUI()
 	
-	logOut("Game loaded from \""+path+"\"")
+	LOG.out("Game loaded from \""+path+"\"")
 	
 func SaveGameSave(path="user://quicksave.json"):
 	var data = {}
@@ -2624,14 +2612,14 @@ func SaveGameSave(path="user://quicksave.json"):
 	saveGame.store_line(to_json(data))
 	saveGame.close()
 	
-	logOut("Game saved at \""+path+"\"")
+	LOG.out("Game saved at \""+path+"\"")
 
 func recalcUI():
 	executeLocation(getLocation(CurrentUi.LocationId),true)
 	updateUI()
 
 func reload():
-	logOut("Reload")
+	LOG.out("Reload")
 	locations.clear()
 	var location = getLocation(CurrentUi.LocationId)
 	executeLocation(location,true,false)
@@ -2759,7 +2747,7 @@ func services(type,category=""):
 	for serviceId in services:
 		var service = getServiceById(serviceId)
 		if getValue(service,"isTemplate",false) == true: continue
-		#logOut(service)
+		#LOG.out(service)
 		if type in getValue(service,"available",[]):
 			CurrentUi.Services.available.append(serviceId)
 			var serviceCategory = getValue(service,"category","Category Missing")

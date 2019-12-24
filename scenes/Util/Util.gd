@@ -466,7 +466,7 @@ func inherit(child, parent):
 			return result
 				
 		var parentType:
-			GameManager.logOut(["inherit: unexpected type of parent:",parentType],"ERROR")
+			LOG.out(["inherit: unexpected type of parent:",parentType],LOG.ERROR)
 			
 func intRandom(v):
 	match typeof(v):
@@ -479,7 +479,7 @@ func intRandom(v):
 				return rng.randi_range(intRandom(v[0]),intRandom(v[1]))
 			return intRandom(v[0])
 		var vType:
-			GameManager.logOut(["intRandom: unexpected type of v: ",vType],"ERROR")
+			LOG.out(["intRandom: unexpected type of v: ",vType],LOG.ERROR)
 	return 0
 
 func mergeDateTime(dtSource,dtTarget)->Dictionary:
@@ -657,7 +657,7 @@ func textureLoad(path):
 		texture.create_from_image(image)
 		return texture
 		
-	GameManager.logOut(["Error loading texture: ",path])
+	LOG.out(["Error loading texture: ",path])
 	
 	var texture = preload("res://media/texture/missingTexture.jpg")
 	return texture
