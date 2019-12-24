@@ -45,7 +45,11 @@
                 "topic":"SELF.greetFollow.1"
             },
             "1501":{
-                "text":"What's this smell? Didn't you shower today?",
+                "|text":[
+                    "What's this smell? Didn't you shower today?",
+                    "Don't you want to take a shower?",
+                    ""
+                ],
                 "topic":"SELF.greetFollow.1"
             },
             "1502":{

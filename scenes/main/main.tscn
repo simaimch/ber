@@ -133,7 +133,6 @@ text = "0,00 €"
 script = ExtResource( 12 )
 
 [node name="WaetherContainer" type="HBoxContainer" parent="defaultView/VSplitContainer/VSplitContainer/StatusBar/StatusBar"]
-editor/display_folded = true
 margin_left = 1810.0
 margin_right = 1920.0
 margin_bottom = 70.0
@@ -318,7 +317,6 @@ margin_right = 960.0
 [node name="GameStatusContainer" type="PanelContainer" parent="defaultView/VSplitContainer" groups=[
 "uiUpdate",
 ]]
-editor/display_folded = true
 visible = false
 margin_top = 870.0
 margin_right = 1920.0
@@ -327,7 +325,6 @@ rect_min_size = Vector2( 50, 0 )
 script = ExtResource( 30 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="defaultView/VSplitContainer/GameStatusContainer"]
-editor/display_folded = true
 margin_right = 1920.0
 margin_bottom = 210.0
 
@@ -344,7 +341,6 @@ margin_top = 189.0
 margin_right = 1920.0
 margin_bottom = 210.0
 focus_mode = 1
-focus_mode = 1
 script = ExtResource( 32 )
 
 [node name="Dialogue" parent="." instance=ExtResource( 33 )]
@@ -357,8 +353,8 @@ visible = false
 visible = false
 
 [node name="Shop" parent="." groups=[
-"uiUpdate",
 "uiShop",
+"uiUpdate",
 ] instance=ExtResource( 36 )]
 visible = false
 script = ExtResource( 37 )
@@ -372,7 +368,6 @@ visible = false
 [node name="Tooltip" type="PanelContainer" parent="." groups=[
 "tooltip",
 ]]
-editor/display_folded = true
 visible = false
 margin_left = 935.0
 margin_top = 404.0
@@ -404,7 +399,6 @@ valign = 1
 [node name="StatusDetailsContainer" type="MarginContainer" parent="." groups=[
 "uiUpdate",
 ]]
-editor/display_folded = true
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0

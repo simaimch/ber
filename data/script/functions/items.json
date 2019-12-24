@@ -1,0 +1,139 @@
+{
+    "itemDescription":{
+        "result":{
+            "1000":{
+                "#value":"shoeDescription(PARAM1)",
+                "condition":"PARAM1.type='shoes'"
+            },
+            "0":{"#value":"PARAM1.ID"}
+        }
+    },
+    "itemDescriptionWear":{
+        "resultMode": "stringConcat",
+        "stringFormat": true,
+        "result":{
+            "1000":{
+                "#value":"itemDescription(PARAM1)"
+            },
+            "2000":{
+                "#value":"wearDescription(PARAM1,PARAM2)"
+            }
+        }
+    },
+    "shoeDescription":{
+        "resultMode": "stringConcat",
+        "stringFormat": true,
+        "result":{
+            "1000":{
+                "#value":"Misc.colors[PARAM1.color].name"
+            },
+            "2000":{
+                "condition":"'shoe_pump' ⊆ PARAM1.parts",
+                "value":" high heels"
+            },
+            "2010":{
+                "condition":"'shoe_boot_overknee' ⊆ PARAM1.parts",
+                "value":" overknee boots"
+            },
+            "2020":{
+                "condition":"'shoe_boot_ankle' ⊆ PARAM1.parts",
+                "value":" ankle boots"
+            },
+            "2030":{
+                "condition":"'shoe_boot_knee' ⊆ PARAM1.parts",
+                "value":" knee high boots"
+            },
+            "3000":{
+                "condition":"PARAM1.height>0",
+                "^value":" with #PARAM1.height# cm high heels"
+            },
+            "10000":{
+                "value":"."
+            }
+            
+        }
+    },
+    "shoeWearDescription":{
+        "params":{
+            "3":{"&value":"PARAM1.difficulty-PARAM2.skill.heels.level"}
+        },
+        "resultMode": "stringConcat",
+        "result":{
+            "1000":{
+                "#value":"shoeDifficultyDiscriptionPC(PARAM3)"
+            }
+        }
+    },
+    "shoeDifficulty":{
+        "result":{
+            "700":{
+                "value": 0,
+                "condition":"PARAM1.height = 0"
+            },
+            "600":{
+                "value": 10,
+                "condition":"PARAM1.height € [1,3]"
+            },
+            "500":{
+                "value": 20,
+                "condition":"PARAM1.height € [4,6]"
+            },
+            "400":{
+                "value": 30,
+                "condition":"PARAM1.height € [7,9]"
+            },
+            "300":{
+                "value": 40,
+                "condition":"PARAM1.height € [10,12]"
+            },
+            "200":{
+                "value": 50,
+                "condition":"PARAM1.height € [13,15]"
+            },
+            "100":{
+                "value": 60,
+                "condition":"PARAM1.height >= 16"
+            }
+        }
+    },
+    "shoeDifficultyDiscriptionPC":{
+        "result":{
+            "600":{
+                "value": "You can't walk in these shoes. If you put them on you have to crawl.",
+                "condition":"PARAM1>=60"
+            },
+            "500":{
+                "value": "You can merely stand in this shoes. Walking will be extremely difficult.",
+                "condition":"PARAM1>=50"
+            },
+            "400":{
+                "value": "You can only walk very slowly in these shoes and the risk of stumbling is high.",
+                "condition":"PARAM1>=40"
+            },
+            "300":{
+                "value": "You can walk slowly in these shoes.",
+                "condition":"PARAM1>=30"
+            },
+            "200":{
+                "value": "You can walk at a slightly slower than normal pace in these shoes.",
+                "condition":"PARAM1>=20"
+            },
+            "100":{
+                "value": "You can walk normally in these shoes.",
+                "condition":"PARAM1>=10"
+            },
+            "0":{
+                "value": "You have no problem walking in these shoes."
+            }
+        }
+    },
+    "wearDescription":{
+        "result":{
+            "1000":{
+                "#value":"shoeWearDescription(PARAM1,PARAM2)",
+                "condition":"PARAM1.type='shoes'"
+            },
+            "0":{"#value":"PARAM1.ID"}
+        }
+    }
+}

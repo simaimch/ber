@@ -149,7 +149,7 @@ func bodyTexture(bodypart):
 	
 func itemWornAtSlot(itemslot):
 	var itemId = getValue(PlayerData.outfit.CURRENT,itemslot)
-	if itemId == "" or itemId == null or itemId == "naked":
+	if itemId == "" or itemId == null or itemId == "naked" or itemId == "NO_"+itemslot:
 		var texture
 		if itemslot == "coat":
 			texture = itemWornAtSlot("clothes").texture
@@ -183,7 +183,7 @@ func getDialogue(dialogueId):
 
 func getItem(itemId):
 	#all items get loaded at startup, no need to load them here
-	var item = items[itemId]
+	var item = items.get(itemId,{})
 	item["ID"] = itemId
 	
 	if item.has("inherit"):
@@ -342,7 +342,7 @@ func getValue(obj, index, default = null):
 	var ranindex="|"+index # the value is taken from a random list
 	var sindex = "^"+index # the value is a string that needs to be parsed
 	
-	var result = default
+	var result
 	
 	if cindex in obj:
 		var keys = obj[cindex].keys()#.sort_custom(SorterByIndexInt, "sort")
@@ -393,7 +393,9 @@ func getValue(obj, index, default = null):
 			var topObject = getValue(obj,indexArr[0])
 			indexArr.remove(0)
 			result = getValue(topObject,PoolStringArray(indexArr).join("."),default)
-			
+		else:
+			result = default
+		
 	if functionParametersPopRequired: functionParametersPop()
 		
 	return result
@@ -604,6 +606,9 @@ func getValueFromPath(path,default=""):
 			
 	path = pathArrayParase(path)
 		
+	#Correct Position?
+	if path.find("+") > 0 or path.find("-") > 0 or path.find("*") > 0 or path.find("/") > 0:
+		return getValueFromEquation(path)
 	
 	if path[path.length()-1] == ")":
 		var paramStart = path.find("(")
@@ -698,8 +703,8 @@ func getValueFromEquation(equation:String):
 		var result_ns1 = result_strings[1]
 		var result_ns2 = result_strings[3]
 		
-		var n1 = float(getValueFromEquation(result_ns1))
-		var n2 = float(getValueFromEquation(result_ns2))
+		var n1 = Util.asFloat(getValueFromEquation(result_ns1))
+		var n2 = Util.asFloat(getValueFromEquation(result_ns2))
 		
 		var result_op = result_strings[2]
 		
@@ -915,7 +920,8 @@ func functionParametersPop()->Array:
 	return functionParameters.pop_back()
 	
 func getObjectFromPath(path):
-	if(path == "MiscData"): return MiscData
+	if(path == "items"): return items
+	elif(path == "MiscData"): return MiscData
 	elif(path == "Misc"): return misc
 	elif(path == "NPCData"): return NPCData
 	elif(path == "PlayerData"): return PlayerData
@@ -1424,7 +1430,8 @@ func eventArgumentExecute(cat, arg, minutes=0):
 			if event.has("mtth"):
 				chanceToHappen = 1-pow(1-(1/event.mtth),minutes)
 			if chanceToHappen >= rng.randf():
-				execute(event.actions)
+				var actions = getValue(event,"actions",{})
+				executeWithParameter(actions,minutes)
 				if getValue(event,"consume",false) == true: return
 
 func loadFunctionFile(filePath):
@@ -1457,7 +1464,14 @@ func loadItem(filePath):
 		for itemId in fitems:
 			var item = fitems[itemId]
 			item.ID = itemId
+			
+			#TODO: MOVE
+			if item.get("type","none") == "shoes":
+				item.difficulty = getValueFromFunction("shoeDifficulty",item)
+			
 			items[itemId] = item
+			
+			
 	else:
 		print("Error loading Items from file "+filePath+": "+str(temp.error))
 
@@ -1768,7 +1782,7 @@ func modifiersUpdateByCategory(categoryId:String,keyword="*"):
 			modifiersUpdateByCategory(modifierCategoryId,keyword)
 		return
 	if !PlayerData.has("modifier"): PlayerData.modifier = {}
-	if !PlayerData.modifier.has(categoryId): PlayerData.modifier[categoryId] = {}
+	if !PlayerData.modifier.has(categoryId): PlayerData.modifier[categoryId] = []
 	
 	var category = getValue(modifiers,categoryId,{})
 	
@@ -1868,9 +1882,6 @@ func executeCommands(commands):
 	
 	if commands.get("Disabled",false) == true: return result
 	
-	
-				
-	
 	if commands.has("foreach"):
 		var subcommand = commands.foreach.duplicate()
 		subcommand.erase("iterate")
@@ -1887,15 +1898,19 @@ func executeCommands(commands):
 		return result
 					
 	
-	if commands.has("debug"):
-		LOG.out(["DEBUG: ",commands.debug])
+	match getValue(commands,"debug"):
+		null:
+			pass
+		var debugMsg:
+			LOG.out(debugMsg,LOG.DEBUG)
 	
 	if commands.has("bg"):
 		CurrentUi.Bg = commands["bg"]
 		
 	match getValue(commands,"text",null):
 		null:
-			CurrentUi.Text  = ""
+			#CurrentUi.Text  = ""
+			pass
 		var text:
 			if typeof(text) == TYPE_ARRAY: text = PoolStringArray(text).join("\n")
 			CurrentUi.Text = parseText(text)
@@ -1972,7 +1987,8 @@ func executeCommands(commands):
 	if skillCheck:
 		var skillId = getValue(skillCheck,"skill")
 		var skillExperience:int = getValue(skillCheck,"experience",0)
-		if skillExperience>0: experienceGain(skillId,skillExperience)
+		var skillDifficulty = getValue(skillCheck,"difficulty",-1)
+		if skillExperience>0: experienceGain(skillId,skillExperience,skillDifficulty)
 		var skill = getValue(PlayerData.skill,skillId,{})
 		var skillLevel = getValue(skill,"level",0)
 		var results = getValue(skillCheck,"result")
@@ -2098,6 +2114,7 @@ func path(p):
 	return p
 
 func currentUIAppendRL(rl):
+	rl = rl.duplicate()
 	if !rl.has("condition") or checkCondition(rl.condition):
 		rl = reachableLocationLink(rl)
 		if rl.has("inherit"):
@@ -2109,6 +2126,16 @@ func currentUIAppendRL(rl):
 			var values = getValue(rl,"values",{})
 			rl = Util.inherit(rl, values)
 			functionParameters.pop_back()
+			
+		var mode = getValue(rl,"mode","walk")
+		if mode == "walk":
+			var walkingSpeed:float = getValue(PlayerData.property,"walkSpeed",1)/100
+			if walkingSpeed == 0:
+				rl.disabled = true
+				rl.tooltip="You can't move."
+			else:
+				rl.time = getValue(rl,"time")*(1/walkingSpeed)
+			
 		CurrentUi.RL.append(rl)
 
 func executeLocation(location,omitStart=false,updateLocationId=true):
@@ -2204,10 +2231,14 @@ func executeWithParameter(commands,parameter):
 	#functionObjects.pop_back()
 	functionParameters.pop_back()
 
-func experienceGain(skillId:String,experience:int):
+func experienceGain(skillId:String,experience:float,difficulty:float):
 	var skill = getValue(PlayerData.skill,skillId,{})
 	var currentExperience = getValue(skill,"experience",0)
-	var currentLevel = getValue(skill,"level",1)
+	var currentLevel:float = getValue(skill,"level",1)
+	
+	if difficulty >= 0:
+		experience = pow(0.5,abs(difficulty-currentLevel-10.0)/10)*experience
+	
 	var newExperience = currentExperience + experience
 	var newLevel = experience2Level(newExperience)
 	PlayerData.skill[skillId]={"experience":newExperience,"level":newLevel}
@@ -2651,13 +2682,14 @@ func wardrobeClose():
 	CurrentUi.UIGroup = "uiUpdate"
 	CurrentUi.ShowWardrobe = false
 	CurrentUi.Wardrobe.selitems.clear()
+	updateLocation()
 	updateUI()
 	
 func wardrobeUpdateItems():
 	CurrentUi.Wardrobe.selitems.clear()
 	for itemId in PlayerData.inventory:
 		var item = getItem(itemId)
-		if item.type == CurrentUi.Wardrobe.seltype:
+		if item.get("type") == CurrentUi.Wardrobe.seltype and getValue(item,"hide",false) == false:
 			CurrentUi.Wardrobe.selitems.append(item)
 	updateUI()
 
@@ -2701,7 +2733,7 @@ func setPlayerOutfit(playerOutfit):
 func setItemWorn(item):
 	setItemWornAtSlot(item.type,item.ID)
 
-func setItemWornAtSlot(slot,itemID):
+func setItemWornAtSlot(slot:String,itemID:String):
 	PlayerData.outfit.CURRENT[slot] = itemID
 	eventCategoryExecute("outfitUpdate")
 	updateUI()
@@ -2775,7 +2807,7 @@ func stateSet(index:String,value:int):
 
 
 func undress(slot:String):
-	setItemWornAtSlot(slot,"")
+	setItemWornAtSlot(slot,"NO_"+slot)
 
 func weatherForecast(targetTimeDict:Dictionary,allowMeta = true):
 	var forecastIndex = weatherForecastIndex(targetTimeDict)

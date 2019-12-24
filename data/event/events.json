@@ -6,6 +6,29 @@
             "interrupt":"subway.event"
         }
     },
+    "walk":{
+        "listen":"timePass",
+        "arguments":"walk",
+        "~actions":{
+            "0":{
+                "condition":"items[PlayerData.outfit.CURRENT.shoes].height > 0",
+                "value":{
+                    
+                    "skillCheck":{
+                        "skill":"heels",
+                        "#difficulty":"items[PlayerData.outfit.CURRENT.shoes].difficulty",
+                        "&experience":"PARAM1*2",
+                        "result":{
+                            "0":{
+                                "modifierUpdate":{"keyword":"makeup"}
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        }
+    },
     "hourUpdate":{
         "listen":"timePass_HOUR",
         "actions":{
@@ -28,6 +51,16 @@
                 },
                 "modifierUpdate":{"keyword":"hair"}
             }
+        }
+    },
+    "levelup_heels":{
+        "listen": "levelup",
+        "arguments":"heels",
+        "actions":{
+            "message":{
+                "^text":"High Heels: Your skill increased to #PlayerData.skill.heels.level#!"
+            },
+            "modifierUpdate":{"keyword":"skillHeels"}
         }
     },
     "levelup_makeup":{

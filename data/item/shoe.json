@@ -6,6 +6,14 @@
         "shopKWs":["shoe"],
         "parts":[]
     },
-    "shoe0001":{"texture":"texture/items/shoes/set1/s(0).jpg","price":1990,"inherit":"shoe","parts":["shoe_pump"]}
-
+    "shoe0001":{"texture":"texture/items/shoes/set1/s(0).jpg","price":1990,"inherit":"shoe","parts":["shoe_pump"]},
+    "NO_shoes":{
+        "price": 0,
+        "type":"shoes",
+        "shopKWs":[],
+        "parts":[],
+        "height":0,
+        "hide":true,
+        "difficulty":0
+    }
 }

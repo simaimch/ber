@@ -458,5 +458,32 @@
             "statBarTexture":"texture/states/state_hunger_4.png",
             "condition":"PARAM1.stat.thirst.current < 1000"
         }
+    },
+    "walkSpeed":{
+        "shoe10":{
+            "keywords":["outfit","skillHeels"],
+            "condition":"items[PlayerData.outfit.CURRENT.shoes].difficulty-PlayerData.skill.heels.level < 20",
+            "modifier": 100
+        },
+        "shoe20":{
+            "keywords":["outfit","skillHeels"],
+            "condition":"items[PlayerData.outfit.CURRENT.shoes].difficulty-PlayerData.skill.heels.level € [20,30)",
+            "modifier": 80
+        },
+        "shoe30":{
+            "keywords":["outfit","skillHeels"],
+            "condition":"items[PlayerData.outfit.CURRENT.shoes].difficulty-PlayerData.skill.heels.level € [30,40)",
+            "modifier": 50
+        },
+        "shoe40":{
+            "keywords":["outfit","skillHeels"],
+            "condition":"items[PlayerData.outfit.CURRENT.shoes].difficulty-PlayerData.skill.heels.level € [40,50)",
+            "modifier": 30
+        },
+        "shoe50":{
+            "keywords":["outfit","skillHeels"],
+            "condition":"items[PlayerData.outfit.CURRENT.shoes].difficulty-PlayerData.skill.heels.level € [50,60)",
+            "modifier": 10
+        }
     }
 }

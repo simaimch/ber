@@ -13,36 +13,7 @@
             }
         }
     },
-    "itemDescription":{
-        "result":{
-            "1000":{
-                "#value":"shoeDescription(PARAM1)",
-                "condition":"PARAM1.type='shoes'"
-            },
-            "0":{"#value":"PARAM1.ID"}
-        }
-    },
-    "itemDescriptionWear":{
-        "resultMode": "stringConcat",
-        "stringFormat": true,
-        "result":{
-            "1000":{
-                "#value":"itemDescription(PARAM1)"
-            },
-            "2000":{
-                "#value":"wearDescription(PARAM1,PARAM2)"
-            }
-        }
-    },
-    "wearDescription":{
-        "result":{
-            "1000":{
-                "#value":"shoeWearDescription(PARAM1,PARAM2)",
-                "condition":"PARAM1.type='shoes'"
-            },
-            "0":{"#value":"PARAM1.ID"}
-        }
-    },
+    
     "outfitType":{
         "result":{
             "10010":{
@@ -56,110 +27,7 @@
             "0":{"value":"casual"}
         }
     },
-    "shoeDescription":{
-        "resultMode": "stringConcat",
-        "stringFormat": true,
-        "result":{
-            "1000":{
-                "#value":"Misc.colors[PARAM1.color].name"
-            },
-            "2000":{
-                "condition":"'shoe_pump' ⊆ PARAM1.parts",
-                "value":" high heels"
-            },
-            "2010":{
-                "condition":"'shoe_boot_overknee' ⊆ PARAM1.parts",
-                "value":" overknee boots"
-            },
-            "2020":{
-                "condition":"'shoe_boot_ankle' ⊆ PARAM1.parts",
-                "value":" ankle boots"
-            },
-            "2030":{
-                "condition":"'shoe_boot_knee' ⊆ PARAM1.parts",
-                "value":" knee high boots"
-            },
-            "3000":{
-                "condition":"PARAM1.height>0",
-                "^value":" with #PARAM1.height# cm high heels"
-            },
-            "10000":{
-                "value":"."
-            }
-            
-        }
-    },
-    "shoeDifficulty":{
-        "resultMode": "mathAdd",
-        "result":{
-            "3":{
-                "value":1,
-                "condition":"PARAM1.height>=3"
-            },
-            "6":{
-                "value":1,
-                "condition":"PARAM1.height>=6"
-            },
-            "9":{
-                "value":1,
-                "condition":"PARAM1.height>=9"
-            },
-            "12":{
-                "value":1,
-                "condition":"PARAM1.height>=12"
-            },
-            "15":{
-                "value":1,
-                "condition":"PARAM1.height>=15"
-            },
-            "18":{
-                "value":1,
-                "condition":"PARAM1.height>=18"
-            }
-        }
-    },
-    "shoeWearDescription":{
-        "params":{
-            "3":{"&value":"shoeDifficulty(PARAM1)-PARAM2.skill.heels"}
-        },
-        "resultMode": "stringConcat",
-        "result":{
-            "1000":{
-                "#value":"shoeDifficultyDiscriptionPC(PARAM3)"
-            }
-        }
-    },
-    "shoeDifficultyDiscriptionPC":{
-        "result":{
-            "600":{
-                "value": "You can't walk in these shoes. If you put them on you have to crawl.",
-                "condition":"PARAM1>=6"
-            },
-            "500":{
-                "value": "You can merely stand in this shoes. Walking will be extremely difficult.",
-                "condition":"PARAM1=5"
-            },
-            "400":{
-                "value": "You can only walk very slowly in these shoes and the risk of stumbling is high.",
-                "condition":"PARAM1=4"
-            },
-            "300":{
-                "value": "You can walk slowly in these shoes.",
-                "condition":"PARAM1=3"
-            },
-            "200":{
-                "value": "You can walk at a slightly slower than normal pace in these shoes.",
-                "condition":"PARAM1=2"
-            },
-            "100":{
-                "value": "You can walk normally in these shoes.",
-                "condition":"PARAM1=1"
-            },
-            "0":{
-                "value": "You have no problem walking in these shoes."
-            }
-        }
-    },
+    
     "timeofday":{
         "&value":"PARAM1.hour*100+PARAM1.minute"
     }

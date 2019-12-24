@@ -295,6 +295,17 @@ func arraySetAtIndex(array,index,value):
 	array[index]= value
 	return array
 	
+func asFloat(val)->float:
+	var result:float = 0
+	
+	match typeof(val):
+		TYPE_REAL:
+			return val
+		TYPE_INT:
+			return val+0.0
+	
+	return result
+	
 func bigger(a,b):
 	var ta = typeof(a)
 	var tb = typeof(b)

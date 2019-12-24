@@ -8,8 +8,8 @@ var tooltip = ""
 func _pressed():
 	if !disable:
 		get_tree().call_group("tooltip","hideTooltip",{})
-		get_tree().call_group("gameCommand","gotoLocation",transferInfo)#.locationId,transferInfo.time,"walk")
-
+		GameManager.gotoLocation(transferInfo)
+		
 func setLocation(l):
 	transferInfo = l
 	var t = ""

@@ -2,6 +2,7 @@ extends Control
 
 var ERROR:int = 1
 var NOTICE:int = 2
+var DEBUG:int = 3
 
 func out(msg,type:int=0):
 	
