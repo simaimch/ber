@@ -1497,13 +1497,26 @@ func loadItems(path="res://data"):
 		loadItem(path+"/item/"+itemFile)
 
 func loadLocation(locationId):
+	var location = locationDataFromPath("res://data/location/"+locationId+".json")
+	
+		
+	for modId in Preferences.mods:
+		if Preferences.mods[modId] == true and Util.folderExists(getModFolder(modId)):
+			var modLocation = locationDataFromPath(getModFolder()+"/"+modId+"/location/"+locationId+".json")
+			location = Util.inherit(modLocation,location)
+			
+	locations[locationId] = location
+			
+func locationDataFromPath(path:String)->Dictionary:
 	var file = File.new()
-	file.open("res://data/location/"+locationId+".json", file.READ)
+	file.open(path, file.READ)
 	var text = file.get_as_text()
 	file.close()
 	var temp = JSON.parse(text)
+	var location = {}
 	if temp.error == OK:
-		locations[locationId] = temp.result
+		location = temp.result
+	return location
 
 func loadMetadata(fileName):
 	var file = File.new()
