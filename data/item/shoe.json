@@ -1,5 +1,6 @@
 {
     "shoe":{
+        "height":0,
         "isTemplate":true,
         "price": 5000,
         "type":"shoes",

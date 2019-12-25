@@ -2746,7 +2746,8 @@ func setPlayerOutfit(playerOutfit):
 		var playerOutfitItem = playerOutfit[itemType]
 		for itemId in itemKeys:
 			var item = getItem(itemId)
-			if item.has("isTemplate") and item.isTemplate == true: continue
+			if item.get("isTemplate",false): continue
+			if item.get("hide",false): continue
 			if item.type != itemType: continue
 			
 			var matched = true

@@ -269,7 +269,7 @@
                     "100":{
                         "condition":"PlayerData.prehistory=MiscData.const.prehistory.popular",
                         "PlayerData":{
-                            "skill.heels": 3,
+                            "skill.heels.level": 30,
                             "trait.genes.appearance":7
                         },
                         "modifierUpdate":{"keyword":"gene"}
@@ -277,7 +277,7 @@
                     "200":{
                         "condition":"PlayerData.prehistory=MiscData.const.prehistory.nerd",
                         "PlayerData":{
-                            "skill.heels": 1,
+                            "skill.heels.level": 10,
                             "trait.genes.appearance":4
                         },
                         "modifierUpdate":{"keyword":"gene"}
