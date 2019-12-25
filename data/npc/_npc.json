@@ -1,6 +1,11 @@
 {
     "isTemplate":true,
     "description":{
+        "activity_bath_morning":{
+            "priority": 10000,
+            "condition": "NPC_ACTIVITY(PARAM1)='bath_morning'",
+            "text":"{She} is currently brushing her teeth."
+        },
         "activity_sleep":{
             "priority": 10000,
             "condition": "NPC_ACTIVITY(PARAM1)='sleep'",

@@ -9,6 +9,11 @@
             "priority":10000,
             "condition": "NPC_ACTIVITY(PARAM1)='sleep'",
             "topic":"sleep"
+        },
+        "3":{
+            "priority":10000,
+            "condition": "NPC_ACTIVITY(PARAM1)='bath_morning'",
+            "topic":"busy"
         }
     },
     "topics":{
@@ -137,6 +142,17 @@
             },
             "condition":"PlayerData.items.bath.razor<1"
         },
+        "busy":{
+            "1":{
+                "^text":"#PARAM1.name.first# is busy and can't talk right now.",
+                "replies":{
+                    "0":{
+                        "label":"Leave",
+                        "topic": "LEAVE"
+                    }
+                }
+            }
+        },
         "introduction":{
             "1":{
                 "text":"Hello. You are the new one, right?",
@@ -251,7 +267,7 @@
         },
         "sleep":{
             "1":{
-                "^text":"#NPCDataC1.name.first# is sleeping.",
+                "^text":"#PARAM1.name.first# is sleeping.",
                 "replies":{
                     "0":{
                         "label":"Leave",
