@@ -161,7 +161,7 @@ func itemWornAtSlot(itemslot):
 		return pseudoItem
 	return getItem(itemId)
 
-func now():
+func now()->int:
 	var now = WorldData.Time + WorldData.TimeOffset
 	return now
 
@@ -599,6 +599,10 @@ func getValueFromPath(path,default=""):
 			return int(path)
 		else:
 			return float(path)
+	if path[0] == "+":
+		return getValueFromPath(path.substr(1,path.length()-1))
+	if path[0] == "-":
+		return getValueFromPath(path.substr(1,path.length()-1))*(-1)
 			
 	if path == "false": return false
 	if path == "true": return true
@@ -629,7 +633,7 @@ func getValueFromPath(path,default=""):
 	var i = 0
 	var tObj
 	if pathArr[0] == "NPCData" and pathArr.size()>1:
-		var npc = getNPC(pathArr[1])
+		var npc = npc(pathArr[1])
 		tObj = npc
 		cObj = npc
 		i+=2
@@ -790,17 +794,28 @@ func getValueFromFunction(functionId,functionParameter=null):
 		"DATE_WITH_AGE":
 			result = Util.getDateTimeWithAge(now(),currentParameters[0])
 			result = Util.formtTime(result,"{day}.{month}.{year}")
+		"NOW_UNIX":
+			result = now()
 		"NPC_ACTIVITY":
 			var npcParam = currentParameters[0]
-			var npc:Dictionary
+			#var npc:Dictionary
+			var npc:NPC
 			match typeof(npcParam):
 				TYPE_STRING:
-					npc = getNPC(npcParam)
+					#npc = getNPC(npcParam)
+					npc = npc(npcParam)
 				TYPE_DICTIONARY:
-					npc = npcParam	
+					#npc = npcParam	
+					npc = npc(npcParam.get("ID"))
+				TYPE_OBJECT:
+					npc = npcParam
+				var npcParamType:
+					LOG.out(["Type of npcParam not supported:",npcParamType],LOG.ERROR)
+					return "none"
 			
-			var acticity = npcActivity(npc)
-			result = acticity.get("activity","none")
+			#var acticity = npcActivity(npc)
+			var activity = npc.activity()
+			result = activity.get("activity","none")
 		"NPC_ACTIVITY_LOCATION":
 			var npcParam = currentParameters[0]
 			var npc:Dictionary
@@ -1230,6 +1245,7 @@ func checkConditionParameter(condition,parameter) -> bool:
 	return result
 
 func checkConditionString(condition:String) -> bool:
+	if condition.empty(): return true
 	
 	if condition[0] == "¬" and condition[1] == "(" and condition[condition.length()-1] == ")":
 		return !checkConditionString(condition.substr(2,condition.length()-3))
@@ -1275,7 +1291,7 @@ func checkConditionString(condition:String) -> bool:
 				LOG.out(["Unsupported logical operator in checkConditionString:",logic],LOG.ERROR)
 				return false
 	
-	var regex_identifier = "[a-zA-Z0-9'\\._\\-\\(\\)\\[\\],]+"
+	var regex_identifier = "[a-zA-Z0-9'\\._\\-\\+\\(\\)\\[\\],]+"
 	var regex_operator = "[><=]{1,2}|!=|€|⊆"
 	
 	
@@ -2442,7 +2458,8 @@ func npcDialogTopTopics(npc:NPC)->Array:
 			topic.dialogueId = npcDialogue
 			topic.ID = topicId
 			if getValue(topic,"TOP"):
-				result.append(topic)
+				if !topic.has("condition") or checkCondition(topic.condition):
+					result.append(topic)
 	return result
 
 func npcDialogTopic(topicId:String,dialogueId:String="",subtopic:int=1):
