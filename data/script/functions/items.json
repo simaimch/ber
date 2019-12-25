@@ -127,6 +127,76 @@
             }
         }
     },
+    "shoePain":{
+        "result":{
+            "700":{
+                "value": 0,
+                "condition":"PARAM1.difficulty = 0"
+            },
+            "600":{
+                "value": 2.5,
+                "condition":"PARAM1.difficulty <= 10"
+            },
+            "500":{
+                "value": 3,
+                "condition":"PARAM1.difficulty <= 20"
+            },
+            "400":{
+                "value": 4,
+                "condition":"PARAM1.difficulty <= 30"
+            },
+            "300":{
+                "value": 5,
+                "condition":"PARAM1.difficulty <= 40"
+            },
+            "200":{
+                "value": 7,
+                "condition":"PARAM1.difficulty <= 50"
+            },
+            "100":{
+                "value": 9
+            }
+        }
+    },
+    "shoePainPC":{
+        "params":{
+            "3":{"&value":"PARAM1.difficulty-PARAM2.skill.heels.level"},
+            "4":{"#value":"shoePain(PARAM1)"}
+        },
+        "result":{
+            "10000":{
+                "value": 0,
+                "condition":"PARAM1.difficulty = 0"
+            },
+            "600":{
+                "&value": "PARAM4*20",
+                "condition":"PARAM3>=60"
+            },
+            "500":{
+                "&value": "PARAM4*10",
+                "condition":"PARAM3>=50"
+            },
+            "400":{
+                "&value": "PARAM4*5",
+                "condition":"PARAM3>=40"
+            },
+            "300":{
+                "&value": "PARAM4*3",
+                "condition":"PARAM3>=30"
+            },
+            "200":{
+                "&value": "PARAM4*2",
+                "condition":"PARAM3>=20"
+            },
+            "100":{
+                "&value": "PARAM4",
+                "condition":"PARAM3>=10"
+            },
+            "0":{
+                "&value": "PARAM4*0.9"
+            }
+        }
+    },
     "wearDescription":{
         "result":{
             "1000":{

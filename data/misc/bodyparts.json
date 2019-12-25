@@ -26,8 +26,9 @@
     "lowerleftleg":{},
     "upperrightleg":{},
     "lowerrightleg":{},
-    "leftfoot":{},
-    "rightfoot":{},
+    "leftfoot":{"pain":false},
+    "rightfoot":{"pain":false},
+    "feet":{},
     "lefttoe":{},
     "righttoe":{}
 }

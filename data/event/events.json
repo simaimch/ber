@@ -13,7 +13,9 @@
             "0":{
                 "condition":"items[PlayerData.outfit.CURRENT.shoes].height > 0",
                 "value":{
-                    
+                    "PlayerData":{
+                        "body.feet.pain.factors.heels.current":{"mode":"inc","&value":"shoePainPC(items[PlayerData.outfit.CURRENT.shoes],PlayerData)*PARAM1"}
+                    },
                     "skillCheck":{
                         "skill":"heels",
                         "#difficulty":"items[PlayerData.outfit.CURRENT.shoes].difficulty",

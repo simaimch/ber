@@ -1004,7 +1004,7 @@ func modValueAtPath(path,mode,value):
 		setValueAtPath(path,value)
 		return
 		
-	var oldValue = getValueFromPath(path)
+	var oldValue = getValueFromPath(path,0)
 	var newValue
 
 	match mode:
@@ -1929,7 +1929,8 @@ func executeCommands(commands):
 			for key in command:
 				if typeof(command[key]) == TYPE_DICTIONARY:
 					if command[key].has("mode"):
-						modValueAtPath(dataContainer+"."+key,command[key].mode,getValue(command[key],"value",0))
+						var newValue =getValue(command[key],"value",0)
+						modValueAtPath(dataContainer+"."+key,command[key].mode,newValue)
 					else:
 						modValueAtPath(dataContainer+"."+key,"set",getValue(command[key],"value",0))
 				else:
@@ -2090,7 +2091,32 @@ func executeCommands(commands):
 		updateLocation()
 	
 	return result
+
+
+func painDecrease(tenminutes:int):
+	var playerBodyparts = getValue(PlayerData,"body",{})
+	var bodyparts = getValue(misc,"bodyparts",{})
 	
+	for playerBodypartId in playerBodyparts:
+		var playerBodypart = playerBodyparts[playerBodypartId]
+		var playerPain = getValue(playerBodypart,"pain",null)
+		if !playerPain: continue
+		var playerPainFactors = getValue(playerPain,"factors",{})
+		var bodypart = getValue(bodyparts,playerBodypartId)
+		var pain = getValue(bodypart,"pain",{})
+		var painFactors = getValue(pain,"factors",{})
+		var bodyPartPainTotal = 0
+		for playerPainFactorId in playerPainFactors:
+			var playerPainFactor = playerPainFactors[playerPainFactorId]
+			var painFactor = getValue(painFactors,playerPainFactorId,{})
+			var playerPainFactorCurrent = getValue(playerPainFactor,"current",0)
+			var painFactorDecrease = getValue(painFactor,"decrease",17)
+			var painDecrease = painFactorDecrease*tenminutes
+			playerPainFactor.current = max(0,playerPainFactorCurrent-painDecrease)
+			bodyPartPainTotal += playerPainFactor.current
+		playerPain.current = bodyPartPainTotal
+	modifiersUpdateByCategory("mood","pain")
+
 func parseText(t:String)->String:
 	var textArr = t.split("#")
 	if textArr.size() == 1: return t
@@ -2563,11 +2589,14 @@ func timePass(t:int,activity):
 	#quick and dirty calc modifiers every 10 minutes
 	var tenMinutesToCalc = int(targetTime/600) - int(now()/600)
 	if tenMinutesToCalc > 0:
+		painDecrease(tenMinutesToCalc)
 		eventCategoryExecute("timePass_10Minutes")
+		
 	
 	if hoursToCalc > 0:
 		eventCategoryExecute("timePass_HOUR",hoursToCalc)
 		#modifiersCalculate()
+		
 		weatherUpdate(targetTime)
 	
 	if daysToCalc > 0:

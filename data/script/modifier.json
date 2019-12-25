@@ -427,6 +427,37 @@
             "statBarTexture":"texture/states/state_hunger_4.png",
             "condition":"PARAM1.stat.hunger.current < 1000"
         },
+        "pain_feet_1":{
+            "label": "Your feet hurt a little.",
+            "keywords":["pain"],
+            "statBar":true,
+            "statBarTexture":"texture/states/state_hunger_4.png",
+            "condition":"PARAM1.body.feet.pain.current € [100,300)"
+        },
+        "pain_feet_2":{
+            "label": "Your feet hurt.",
+            "keywords":["pain"],
+            "statBar":true,
+            "modifier": -10,
+            "statBarTexture":"texture/states/state_hunger_4.png",
+            "condition":"PARAM1.body.feet.pain.current € [300,600)"
+        },
+        "pain_feet_3":{
+            "label": "Your feet hurt badly.",
+            "keywords":["pain"],
+            "statBar":true,
+            "modifier": -40,
+            "statBarTexture":"texture/states/state_hunger_4.png",
+            "condition":"PARAM1.body.feet.pain.current € [600,1000)"
+        },
+        "pain_feet_4":{
+            "label": "Your feet hurt like hell.",
+            "keywords":["pain"],
+            "statBar":true,
+            "modifier": -100,
+            "statBarTexture":"texture/states/state_hunger_4.png",
+            "condition":"PARAM1.body.feet.pain.current >= 1000"
+        },
         "thirst_1":{
             "label": "You feel like you could have a sip.",
             "keywords":["thirst"],
