@@ -4,6 +4,11 @@
             "priority":1000,
             "condition": "PARAM1.nameKnown=false",
             "topic":"introduction"
+        },
+        "2":{
+            "priority":10000,
+            "condition": "NPC_ACTIVITY(PARAM1)='sleep'",
+            "topic":"sleep"
         }
     },
     "topics":{
@@ -240,6 +245,17 @@
                     "0":{
                         "label":"Never mind",
                         "topic": "TOP"
+                    }
+                }
+            }
+        },
+        "sleep":{
+            "1":{
+                "^text":"#NPCDataC1.name.first# is sleeping.",
+                "replies":{
+                    "0":{
+                        "label":"Leave",
+                        "topic": "LEAVE"
                     }
                 }
             }
