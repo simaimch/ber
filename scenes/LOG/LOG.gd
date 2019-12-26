@@ -4,6 +4,9 @@ var ERROR:int = 1
 var NOTICE:int = 2
 var DEBUG:int = 3
 
+func error(msg):
+	out(msg,ERROR)
+
 func out(msg,type:int=0):
 	
 	if typeof(msg) == TYPE_ARRAY:

@@ -16,7 +16,13 @@
     "actions": {
         "3000":{
             "Label": "Change Name",
-            "showDialog":"pcName"
+            "showDialog":{
+                "dialog":"pcName",
+                "params":{
+                    "listNameFirst":"names_first_female_90s",
+                    "listNameLast":"names_last"
+                }
+            }
         },
         "2000":{
             "Label": "Pick Prehistory",

@@ -2073,7 +2073,8 @@ func executeCommands(commands):
 		var dialogId = commands.showDialog
 		var dialogParam = {}
 		if typeof(dialogId) == TYPE_DICTIONARY:
-			dialogParam = dialogId
+			#dialogParam = dialogId
+			dialogParam = dialogId.get("params",{})
 			dialogId = dialogId.dialog
 		var dialog = load("res://scenes/dialog/"+dialogId+".tscn").instance()
 		if dialog.has_method("setParam"): dialog.setParam(dialogParam)
