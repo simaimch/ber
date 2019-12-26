@@ -1,0 +1,11 @@
+{
+    "bg":"texture/locations/dahlem/park.jpg",
+    "label":"Park",
+    "text":"Park.",
+    "rl":[
+        {
+            "locationId":"SELF.main",
+            "time": 300
+        }
+    ]
+}

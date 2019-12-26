@@ -1,0 +1,24 @@
+{
+    "actions":{
+        "4000":{
+            "Label":"Hang out (Hallway)",
+            "goto":"SELF.breakHallway"
+        },
+        "3000":{
+            "Label":"Hang out (School Grounds)",
+            "goto":"SELF.breakGrounds"
+        },
+        "2000":{
+            "Label":"Hang out (Sports Field)",
+            "goto":"SELF.breakSports"
+        },
+        "1000":{
+            "Label":"Hang out (Atrium)",
+            "goto":"SELF.breakAtrium"
+        },
+        "900":{
+            "Label":"Hang out (Classroom)",
+            "goto":"SELF.breakClassroom"
+        }
+    }
+}

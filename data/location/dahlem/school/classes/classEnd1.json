@@ -1,0 +1,15 @@
+{
+    "onStart":{
+        "Time":{
+            "Pass":{
+                "SetTime":"09:15"
+            }
+        }
+    },
+    "actions":{
+        "1":{
+            "Label":"Break",
+            "goto":"SELF.break1"
+        }
+    }
+}

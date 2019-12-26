@@ -1,0 +1,31 @@
+{
+    "bg":null,
+    "textLong":[
+        "[b]Average Girl[/b]",
+        "You start with balanced skills",
+        "",
+        "[b]Nerd[/b]",
+        "You start with more education but less beauty skills",
+        "",
+        "[b]Popular girl[/b]",
+        "You start with more beauty skills but less education",
+        ""
+    ],
+    "actions":{
+        "6000":{
+            "Label":"Average Girl",
+            "goto":"SELF.overview",
+            "PlayerData":{"prehistory":{"#value":"MiscData.const.prehistory.average"}}
+        },
+        "5000":{
+            "Label":"Nerd",
+            "goto":"SELF.overview",
+            "PlayerData":{"prehistory":{"#value":"MiscData.const.prehistory.nerd"}}
+        },
+        "4000":{
+            "Label":"Popular Girl",
+            "goto":"SELF.overview",
+            "PlayerData":{"prehistory":{"#value":"MiscData.const.prehistory.popular"}}
+        }
+    }
+}

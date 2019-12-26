@@ -1,0 +1,23 @@
+{
+    "~onStart":{
+        "1":{
+            "condition":"MiscData.school.currentHour=1",
+            "value":{
+                "goto":"SELF.breakEnd1"
+            }
+        },
+        "2":{
+            "condition":"MiscData.school.currentHour=2",
+            "value":{
+                "goto":"SELF.breakEnd2"
+            }
+        },
+        "3":{
+            "condition":"MiscData.school.currentHour=3",
+            "value":{
+                "goto":"SELF.breakEnd3"
+            }
+        }
+
+    }
+}

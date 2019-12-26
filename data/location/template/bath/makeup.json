@@ -1,0 +1,10 @@
+{
+    "inherit":"interrupt",
+    "text":"You have #PlayerData.items.vanity.makeup# set#langPluralS(PlayerData.items.vanity.makeup)# of makeup left.",
+    "actions":{
+        "5000":{"inherit":"makeupDecent"},
+        "4000":{"inherit":"makeupClassy"},
+        "3000":{"inherit":"makeupHeavy"},
+        "2000":{"inherit":"makeupRemove"}
+    }
+}

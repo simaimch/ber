@@ -1,7 +1,7 @@
 {
     "makeup":{
         "Label":"Make-Up",
-        "interrupt":"bath.makeup"
+        "interrupt":"template.bath.makeup"
     },
     "makeupClassy":{
         "condition":"PlayerData.body.face.makeup.style=0",
@@ -119,7 +119,7 @@
             },
             "100":{
                 "value":{
-                    "interrupt":"bath.shave"
+                    "interrupt":"template.bath.shave"
                 }
             }
         }

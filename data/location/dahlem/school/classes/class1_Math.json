@@ -1,0 +1,9 @@
+{
+    "inherit":"SELF.class1_Generic",
+    "bg":"texture/npc/schoolTeachers/mathBigHor.png",
+    "onStart":{
+        "MiscData":{
+            "school.currentCourse":"math"
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "bg":"texture/events/school/introduction.jpg",
+    "text":"Everybody is looking at you. You better pick a seat quickly.",
+    "actions":{
+        "1":{
+            "Label":"Third row",
+            "goto":"SELF.start"
+        }
+    }
+}

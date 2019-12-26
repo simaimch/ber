@@ -1,0 +1,33 @@
+{
+    "label":"Kitchen",
+    "text":"Kitchen",
+    "bg":"texture/locations/dahlem/dormKitchen.jpg",
+    "npcs": true,
+    "rl":[
+        {
+            "locationId":"SELF.entry",
+            "time": 30,
+            "label":"Hallway"
+        },
+        {
+            "locationId":"SELF.living",
+            "time": 30
+        }
+    ],
+    "actions":{
+        "1000":{
+            "Label": "Prepare Food",
+            "services": "dorm_cook"
+        },
+        "500":{
+            "Label": "Open Fridge",
+            "services": "dorm_fridge"
+        },
+        "200":{
+            "Label":"Take ingredients from storage",
+            "PlayerData":{"items.fridge.ingredient_low":3},
+            "updateLocation":true,
+            "condition":"PlayerData.items.fridge.ingredient_low<3"
+        }
+    }
+}

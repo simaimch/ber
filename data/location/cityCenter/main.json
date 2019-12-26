@@ -1,5 +1,4 @@
 {
-    
     "~bg":{
         "100":{
             "value":"texture/locations/cityCenter/cityCenterDay0.jpg",
@@ -36,7 +35,7 @@
     "rl":[
         {
             "inherit":"shopEnter",
-            "locationId":"cityCenterMall",
+            "locationId":"cityCenter.mall.exterior",
             "time": 180
         },
         {
@@ -48,36 +47,5 @@
             "locationId":"SELF.subway",
             "time": 180
         }
-    ],
-    "kebabhouse":{
-        "bg":"texture/locations/kebab/kebabHouseInside.jpg",
-        "rlTexture":"texture/locations/kebab/kebabHouse.jpg",
-        "text":"Kabab House",
-        "label":"Kabab House",
-        "timeOpen":{"start":1000,"end":200},
-        "rl":[
-            {
-                "locationId":"SELF",
-                "time": 180
-            }
-        ],
-        "actions": {
-            "1000":{
-                "Label": "Order from Menu",
-                "services": "kebab"
-            }
-        }
-    },
-    "subway":{
-        "rlTexture":"texture/locations/cityCenter/cityCenterSubway0.jpg",
-        "bg":"texture/locations/cityCenter/cityCenterSubway1.jpg",
-        "inherit":"subway.template",
-        "label":"Subway Station",
-        "*rl":[
-            {
-                "locationId":"SELF",
-                "time": 180
-            }
-        ]
-    }
+    ]
 }

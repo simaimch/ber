@@ -1,0 +1,9 @@
+{
+    "text":"You wake up early.",
+    "actions": {
+        "1000":{
+            "Label": "Continue",
+            "gotoLocationPop":true
+        }
+    }
+}

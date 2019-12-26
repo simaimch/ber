@@ -1,0 +1,36 @@
+{
+    "|onStart":{
+        "1":{
+            "~weight":{
+                "1000":{
+                    "condition":"PlayerData.stat.sleep.current < 500",
+                    "value":100
+                },
+                "900":{
+                    "condition":"PlayerData.stat.sleep.current < 1000",
+                    "value":75
+                },
+                "800":{
+                    "condition":"PlayerData.stat.sleep.current < 1500",
+                    "value":50
+                },
+                "700":{
+                    "condition":"PlayerData.stat.sleep.current < 2000",
+                    "value":25
+                },
+                "600":{
+                    "value":10
+                }
+            },
+            "value":{
+                "goto":"SELF.classRelaxCaught"
+            }
+        },
+        "2":{
+            "weight":100,
+            "value":{
+                "goto":"SELF.classRelaxSuccess"
+            }
+        }
+    }
+}

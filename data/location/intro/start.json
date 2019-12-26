@@ -1,0 +1,22 @@
+{
+    "bg":"texture/events/intro/tada.jpg",
+    "text": ["Welcome and thank you for playing BER."],
+    "actions": {
+        "100":{
+            "Label": "About",
+            "goto":"SELF.about"
+        },
+        "1000":{
+            "Label": "Continue",
+            "goto":"SELF.explain"
+        },
+        "1500":{
+            "Label": "Skip Intro",
+            "goto":"SELF.skipIntro.overview"
+        },
+        "2000":{
+            "Label": "Cheat",
+            "goto":"cityCenter.main"
+        }
+    }
+}

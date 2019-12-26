@@ -7,7 +7,7 @@
     "nameMode":"titleLast",
     "texture": "texture/npc/schoolPsychologist/psychologistPortrait.jpg",
     "schedule":{
-        "dahlemSchool.psychologistOffice":[
+        "dahlem.school.psychologistOffice":[
             {"days":[1,2,3,4,5,6,7],"timeStart":0,"timeEnd":2400}
         ]
     },

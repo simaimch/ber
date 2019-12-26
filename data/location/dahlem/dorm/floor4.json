@@ -1,0 +1,31 @@
+{
+    "bg":"texture/locations/dahlem/dormHallway.jpg",
+    "label":"4th Floor",
+    "text":"4th Floor.",
+    "rl":[
+        {
+            "locationId":"SELF.entry",
+            "time": 60,
+            "label":"1st Floor",
+            "textureDisabled":true
+        },
+        {
+            "locationId":"SELF.floor2",
+            "time": 40,
+            "label":"2nd Floor",
+            "textureDisabled":true
+        },
+        {
+            "locationId":"SELF.floor3",
+            "time": 20,
+            "label":"3rd Floor",
+            "textureDisabled":true
+        },
+        {
+            "locationId":"SELF.floor5",
+            "time": 20,
+            "label":"5th Floor",
+            "textureDisabled":true
+        }
+    ]
+}

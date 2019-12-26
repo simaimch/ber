@@ -18,10 +18,18 @@ func _init(param):
 	match typeof(object2inherit):
 		TYPE_STRING:
 			var objectId =  object2inherit
+			var objectIdArr = objectId.split(".")
+			if objectIdArr[0] == "SELF":
+				objectIdArr.remove(0)
+				objectId = idSelf()+"."+PoolStringArray(objectIdArr).join(".")
 			var object = newObject(objectId)
 			inherit(object.data())
 		TYPE_ARRAY:
 			for objectId in object2inherit:
+				var objectIdArr = objectId.split(".")
+				if objectIdArr[0] == "SELF":
+					objectIdArr.remove(0)
+					objectId = idSelf()+"."+PoolStringArray(objectIdArr).join(".")
 				var object = newObject(objectId)
 				inherit(object.data())
 				
@@ -41,9 +49,21 @@ func getPersistentData()->Dictionary:
 
 static func getPersistentDataById(id:String)->Dictionary:
 	return {}
+
+func has(property:String)->bool:
+	return data().has(property)
 	
 func id()->String:
 	return get("ID","0")
+	
+func idSelf()->String:
+	var idArr = id().split(".")
+	idArr.remove(idArr.size()-1)
+	return PoolStringArray(idArr).join(".")
+
+func idTop()->String:
+	var idArr = id().split(".")
+	return idArr[0]
 
 func inherit(inheritanceData:Dictionary,mode="child"):
 

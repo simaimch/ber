@@ -1,0 +1,10 @@
+{
+    "onStart":{
+        "Time":{
+            "Pass":{
+                "SetTime":"13:30"
+            }
+        },
+        "goto":"SELF.class4"
+    }
+}

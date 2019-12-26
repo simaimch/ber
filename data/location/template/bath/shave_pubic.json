@@ -1,0 +1,5 @@
+{
+    "inherit":"SELF.shave",
+    "*text": "You carefully shave your pubic area.\n",
+    "bg": "texture/actions/bath/shave_pubic.jpg"
+}

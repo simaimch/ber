@@ -1,0 +1,13 @@
+{
+    "actions": {
+        "4000":{
+            "Label": "Bed",
+            "interrupt":"template.bedroom.bed"
+        },
+        "2000":{
+            "Label": "Wardrobe",
+            "showWardrobe":true
+        }
+        
+    }
+}

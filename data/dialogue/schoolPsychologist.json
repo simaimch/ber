@@ -327,7 +327,7 @@
                 "replies":{
                     "10":{
                         "label":"Take a look around",
-                        "goto": "dahlemSchoolClasses.introduction"
+                        "goto": "dahlem.school.classes.introduction"
                     }
                 }
             }
@@ -338,7 +338,7 @@
                 "replies":{
                     "0":{
                         "label":"Leave",
-                        "goto": "dahlemSchool.hallway"
+                        "goto": "dahlem.school.hallway"
                     }
                 }   
             }
@@ -362,7 +362,7 @@
                 "replies":{
                     "0":{
                         "label":"Leave",
-                        "goto": "dahlemSchool.hallway",
+                        "goto": "dahlem.school.hallway",
                         "onSelect":{
                             "PlayerData":{
                                 "QUEST.school.psychologistStuies.enabled":true
@@ -376,7 +376,7 @@
                 "replies":{
                     "0":{
                         "label":"Leave",
-                        "goto": "dahlemSchool.hallway"
+                        "goto": "dahlem.school.hallway"
                     }
                 }
             }

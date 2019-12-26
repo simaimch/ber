@@ -1,0 +1,9 @@
+{
+    "text":"You are driving with the subway.",
+    "actions": {
+        "1000":{
+            "Label": "Continue",
+            "gotoLocationPop":true
+        }
+    }
+}

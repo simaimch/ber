@@ -94,7 +94,7 @@ func getFilesInFolder(path)->Array:
 	#https://godotengine.org/qa/5175/how-to-get-all-the-files-inside-a-folder
 	var files = []
 	var dir = Directory.new()
-	dir.open(path)
+	if dir.open(path) != OK: return []
 	dir.list_dir_begin(true,true)
 	
 	while true:
@@ -583,6 +583,16 @@ func mergeInto(source,target,inplace = true):
 				
 	
 	return target
+
+func readFile(path:String,showError:bool):
+	var file = File.new()
+	if file.open(path, file.READ)!=OK:
+		if showError:
+			LOG.out(["Error reading file:",path],LOG.ERROR)
+		return "{}"
+	var text = file.get_as_text()
+	file.close()
+	return text
 
 func regex(s):
 	return cache_regex.get(s)

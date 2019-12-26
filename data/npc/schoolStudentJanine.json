@@ -6,16 +6,16 @@
     "inherit":["_schoolStudentFemale","_schoolBreakHallway"],
     "texture": "texture/npc/schoolStudents/janinePortrait.jpg",
     "schedule":{
-        "dahlemDorm.room311":[
+        "dahlem.dorm.room311":[
             {"days":[1,2,3,4,7],"timeStart":2100,"timeEnd":2230},
             {"days":[1,2,3,4,7],"timeStart":2231,"timeEnd":2400,"activity":"sleep"},
             {"days":[1,2,3,4,5],"timeStart":0,"timeEnd":615,"activity":"sleep"},
             {"days":[1,2,3,4,5],"timeStart":646,"timeEnd":700}
         ],
-        "dahlemDorm.bath3":[
+        "dahlem.dorm.bath3":[
             {"days":[1,2,3,4,5],"timeStart":616,"timeEnd":645,"activity":"bath_morning"}
         ],
-        "dahlemDorm.kitchen":[
+        "dahlem.dorm.kitchen":[
             {"days":[1,2,3,4,5],"timeStart":701,"timeEnd":730}
         ]
     },

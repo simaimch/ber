@@ -1,0 +1,11 @@
+{
+    "bg":"texture/locations/dahlem/sportsfield.png",
+    "label":"Sportsfield",
+    "text":"Sportsfield.",
+    "rl":[
+        {
+            "locationId":"SELF.exterior",
+            "time": 120
+        }
+    ]
+}

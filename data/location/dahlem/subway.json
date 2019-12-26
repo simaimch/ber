@@ -1,0 +1,12 @@
+{
+    "rlTexture":"texture/locations/dahlem/subwayExterior.jpg",
+    "bg":"texture/locations/dahlem/subway.jpg",
+    "inherit":"template.subway",
+    "label":"Subway Station",
+    "*rl":[
+        {
+            "locationId":"SELF.main",
+            "time": 180
+        }
+    ]
+}

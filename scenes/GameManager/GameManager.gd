@@ -89,6 +89,8 @@ var MiscData = {
 	locationStack = []
 }
 
+var currentLocation
+
 var Preferences = {
 	"modsAutoactivate":false,
 	"mods":{},
@@ -208,31 +210,6 @@ func getItempart(id):
 		LOG.out("Error loading itempart: "+id)
 		return {}
 	return misc.itemparts[id]
-	
-func getLocation(locationId):
-	
-	var locationArr = locationId.split(".")
-	
-	
-	if !locations.has(locationArr[0]):
-		loadLocation(locationArr[0])
-	var l = locations[locationArr[0]] 
-		
-	var i = 1
-	while i < locationArr.size():
-		if !l.has(locationArr[i]): 
-			l["ID"] = locationId
-			LOG.out("Error loading location: "+locationId)
-			return l
-		l = l[locationArr[i]]
-		i += 1
-	
-	l["SELF"] = locationArr[0]
-	l["ID"] = locationId
-	
-	l = locationInherit(l)
-	
-	return l
 	
 func getNPC(npcId:String)->Dictionary:
 	#all NPCs get loaded at the beginning of the game, no need to load them here
@@ -490,7 +467,6 @@ func linkAction(action:Dictionary)->Dictionary:
 func linkObject(object:Dictionary,param=null)->Dictionary:
 	if param: functionParametersAppend(param)
 	var conditionalObject = getValue(object,"value",null)
-	print(conditionalObject)
 	if conditionalObject != null: object = Util.inherit(conditionalObject,object)
 	if param: functionParametersPop()
 	return object
@@ -649,9 +625,6 @@ func getValueFromPath(path,default=""):
 		i+=1
 		
 	return cObj
-	
-#func getFOBJ(index):
-	#return functionObjects[functionObjects.size()-index]
 
 func getValueFromEquation(equation:String):
 	var result
@@ -674,7 +647,6 @@ func getValueFromEquation(equation:String):
 	result = regex_brakcets.search(equation)
 	
 	if result:
-		#print("Brackets:"+equation)
 		var result_start = result.get_start()
 		var result_end = result.get_end()
 		
@@ -687,7 +659,6 @@ func getValueFromEquation(equation:String):
 		equation = equation.insert(result_start,valueInBrackets)
 		return getValueFromEquation(equation)
 	
-	#var regex_addsub = "+-"
 	regex_dict["opAS"] = "[+-]"
 	regex_dict["ref"] =  "[^{bc}{bo}]+|\\w+{bo}.*{bc}".format(regex_dict)
 	
@@ -699,7 +670,6 @@ func getValueFromEquation(equation:String):
 	result = regex_addition.search(equation)
 	
 	if result:
-		#print("Addition:"+equation)
 		var result_start = result.get_start()
 		var result_end = result.get_end()
 		
@@ -718,12 +688,8 @@ func getValueFromEquation(equation:String):
 			"+": mathResult = n1+n2
 			"-": mathResult = n1-n2
 		
-		#print("Add Result:"+str(mathResult))
-		
 		equation = Util.stringEraseFromTo(equation,result_start,result_end)
 		equation = equation.insert(result_start,str(mathResult))
-		
-		#print("New Eq:"+equation)
 		
 		return getValueFromEquation(equation)
 	
@@ -736,7 +702,6 @@ func getValueFromEquation(equation:String):
 	result = regex_mult.search(equation)
 	
 	if result:
-		#print("Mult:"+equation)
 		var result_start = result.get_start()
 		var result_end = result.get_end()
 		
@@ -755,18 +720,11 @@ func getValueFromEquation(equation:String):
 			"*": mathResult = n1*n2
 			"/": mathResult = n1/n2
 		
-		#print("Mult Result:"+str(mathResult))
-		
 		equation = Util.stringEraseFromTo(equation,result_start,result_end)
 		equation = equation.insert(result_start,str(mathResult))
 		
-		#print("New Eq:"+equation)
-		
 		return getValueFromEquation(equation)
-			
-	#print("Not found:"+equation)
 	result = getValueFromPath(equation)
-	#print("Result:"+str(result))
 	return result
 
 func getValueFromFunction(functionId,functionParameter=null):
@@ -798,34 +756,34 @@ func getValueFromFunction(functionId,functionParameter=null):
 			result = now()
 		"NPC_ACTIVITY":
 			var npcParam = currentParameters[0]
-			#var npc:Dictionary
 			var npc:NPC
 			match typeof(npcParam):
 				TYPE_STRING:
-					#npc = getNPC(npcParam)
 					npc = npc(npcParam)
 				TYPE_DICTIONARY:
-					#npc = npcParam	
 					npc = npc(npcParam.get("ID"))
 				TYPE_OBJECT:
 					npc = npcParam
 				var npcParamType:
 					LOG.out(["Type of npcParam not supported:",npcParamType],LOG.ERROR)
 					return "none"
-			
-			#var acticity = npcActivity(npc)
 			var activity = npc.activity()
 			result = activity.get("activity","none")
 		"NPC_ACTIVITY_LOCATION":
 			var npcParam = currentParameters[0]
-			var npc:Dictionary
+			var npc:NPC
 			match typeof(npcParam):
 				TYPE_STRING:
-					npc = getNPC(npcParam)
+					npc = npc(npcParam)
 				TYPE_DICTIONARY:
-					npc = npcParam	
+					npc = npc(npcParam.get("ID"))
+				TYPE_OBJECT:
+					npc = npcParam
+				var npcParamType:
+					LOG.out(["Type of npcParam not supported:",npcParamType],LOG.ERROR)
+					return "none"
 			var locId = currentParameters[1]
-			result = npcActivityAtLocation(npc,locId)
+			result = npc.activityAtLocation(locId)
 		_:
 			var function = getFunction(functionId)
 			result = functionExecute(function,currentParameters)
@@ -1080,7 +1038,6 @@ func shop(arguments):
 		WorldData.shops[arguments.ID].items = possibleItems
 		
 		WorldData.shops[arguments.ID].validTil = WorldData.Time+180#todo
-		print(WorldData.shops[arguments.ID].validTil)
 	
 	CurrentUi.UIGroup = "uiShop"
 	CurrentUi.ShowShop = true
@@ -1497,21 +1454,36 @@ func loadItems(path="res://data"):
 		loadItem(path+"/item/"+itemFile)
 
 func loadLocation(locationId):
-	var location = locationDataFromPath("res://data/location/"+locationId+".json")
+	
+	var locationPath = locationId.replace(".","/")
+	
+	var location = locationDataFromPath("res://data/location/"+locationPath+".json")
 	
 		
 	for modId in Preferences.mods:
 		if Preferences.mods[modId] == true and Util.folderExists(getModFolder(modId)):
-			var modLocation = locationDataFromPath(getModFolder()+"/"+modId+"/location/"+locationId+".json")
+			var modLocation = locationDataFromPath(getModFolder()+"/"+modId+"/location/"+locationPath+".json")
 			location = Util.inherit(modLocation,location)
-			
+	
+	if location.empty():
+		LOG.out(["Location not found:",locationId],LOG.ERROR)
+	
+	location = linkObject(location)
+	
+	location["ID"] = locationId
 	locations[locationId] = location
+
+func location(id)->Location:
+	return Location.new(id) 
+	
+func locationData(id):	
+	if !locations.has(id):
+		loadLocation(id)
+	var locationData = locations[id]
+	return locationData
 			
-func locationDataFromPath(path:String)->Dictionary:
-	var file = File.new()
-	file.open(path, file.READ)
-	var text = file.get_as_text()
-	file.close()
+func locationDataFromPath(path:String,showError=false)->Dictionary:
+	var text = Util.readFile(path,showError)
 	var temp = JSON.parse(text)
 	var location = {}
 	if temp.error == OK:
@@ -1660,18 +1632,6 @@ func loadThemes():
 				if color_font != null: theme.set_color(color[1],color[0],color_font)
 				
 			themes[themeId][subThemeId] = theme
-	
-
-func locationInherit(l):
-	l = linkObject(l)
-	if l.has("inherit"):
-		var lArr = l.inherit.split(".")
-		if lArr[0] == "SELF":
-			lArr[0] = l.SELF
-			l.inherit = PoolStringArray(lArr).join(".")
-		var parent = getLocation(l.inherit)
-		l = Util.inherit(l,parent)
-	return l
 
 #func loadSkills():
 #	var file = File.new()
@@ -1694,9 +1654,12 @@ func mainMenu():
 func reachableLocationLink(rl,linkSelf="DEFAULT"):
 	var targetArr = rl.locationId.split(".")
 	if targetArr[0] == "SELF": 
-		if linkSelf=="DEFAULT": linkSelf=MiscData.currentLocationID.split(".")[0]
-		targetArr[0] = linkSelf
-		rl.locationId = targetArr.join(".")
+		#if linkSelf=="DEFAULT": linkSelf=MiscData.currentLocationID.split(".")[0]
+		#targetArr[0] = linkSelf
+		#rl.locationId = targetArr.join(".")
+		targetArr.remove(0)
+		rl.locationId = currentLocation.idSelf()+"."+PoolStringArray(targetArr).join(".")
+		#pass
 	return rl
 
 func continueGame():
@@ -1724,6 +1687,7 @@ func loadConstantData():
 	#loadSkills()
 	loadMods()
 	loadThemes()
+	currentLocationSet()
 
 func detailsHide():
 	CurrentUi.UIGroup = "uiUpdate"
@@ -1884,7 +1848,7 @@ func moneySpend(m):
 func newGame():
 	
 	loadConstantData()
-	executeLocation(getLocation(MetaData.startLocation))
+	executeLocation(location(MetaData.startLocation))
 	#modifiersCalculate(PlayerData.ID)
 	modifiersUpdateByCategory("*")
 
@@ -2053,15 +2017,18 @@ func executeCommands(commands):
 		TYPE_STRING:
 			var gotoArr = goto.split(".")
 			if gotoArr[0] == "SELF":
-				gotoArr[0] = MiscData.currentLocationID.split(".")[0]
-				goto = PoolStringArray(gotoArr).join(".")
+				#gotoArr[0] = MiscData.currentLocationID.split(".")[0]
+				#goto = PoolStringArray(gotoArr).join(".")
+				gotoArr.remove(0)
+				goto = currentLocation.idSelf()+"."+PoolStringArray(gotoArr).join(".")
 			MiscData.currentLocationID = goto
-			var gotoLocation = getLocation(goto)
+			var gotoLocation = location(goto)
 			executeLocation(gotoLocation)#
 			result.consume = true
 			return result
 		TYPE_DICTIONARY:
-			var location = locationInherit(goto)
+			#var location = locationInherit(goto)
+			var location = location(goto)
 			executeLocation(location,false,false)
 			result.consume = true
 			return result
@@ -2168,6 +2135,19 @@ func path(p):
 		return getModFolder() + "/" + p.substr(7,p.length()-7)
 	return p
 
+func currentLocationSet(id=null):
+	if !id: id = CurrentUi.LocationId
+	
+	match typeof(id):
+		TYPE_STRING:
+			MiscData.currentLocationID = id
+			CurrentUi.LocationId = id
+			currentLocation = location(id)
+		TYPE_OBJECT:
+			currentLocation = id
+			MiscData.currentLocationID = id.id()
+			CurrentUi.LocationId = id.id()
+
 func currentUIAppendRL(rl):
 	rl = rl.duplicate()
 	if !rl.has("condition") or checkCondition(rl.condition):
@@ -2176,7 +2156,7 @@ func currentUIAppendRL(rl):
 			var parent = getRL(rl.inherit)
 			rl = Util.inherit(rl, parent)
 		if hasValue(rl,"values"):
-			var targetLocation = getLocation(getValue(rl,"locationId"))
+			var targetLocation = location(getValue(rl,"locationId"))
 			functionParameters.append([rl,targetLocation])
 			var values = getValue(rl,"values",{})
 			rl = Util.inherit(rl, values)
@@ -2193,12 +2173,15 @@ func currentUIAppendRL(rl):
 			
 		CurrentUi.RL.append(rl)
 
-func executeLocation(location,omitStart=false,updateLocationId=true):
+func executeLocation(location:Location,omitStart=false,updateLocationId=true):
 	#functionObjects.append(location)
 	executeLocationCommands(location,omitStart,updateLocationId)
 	#functionObjects.pop_back()
 		
-func executeLocationCommands(location,omitStart=false,updateLocationId=true):
+func executeLocationCommands(location:Location,omitStart=false,updateLocationId=true):
+	if updateLocationId:
+		currentLocationSet(location)
+	
 	var onStart = getValue(location,"onStart")
 	if !omitStart and onStart:
 		if execute(onStart): return
@@ -2242,7 +2225,7 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 	if getValue(location,"npcs",false) == true:
 		for npcId in npcs:
 			var npc = getNPC(npcId)
-			if npcIsPresent(npc,location.ID):
+			if npcIsPresent(npc,location.id()):
 				CurrentUi.NPCs.append(npcId)
 	if CurrentUi.NPCs.size() > 0:
 		CurrentUi.ShowNPCs = true
@@ -2260,10 +2243,11 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 			if action.has("goto"):
 				var actionGotoArr = action.goto.split(".")
 				if actionGotoArr[0] == "SELF":
-					actionGotoArr[0] = location.SELF
-					action.goto = actionGotoArr.join(".")
+					actionGotoArr.remove(0)
+					action.goto = currentLocation.idSelf()+"."+PoolStringArray(actionGotoArr).join(".")
+
 					
-				var targetLocation = getLocation(action.goto)
+				var targetLocation = location(action.goto)
 				
 			if "condition" in action:
 				if checkCondition(action["condition"]) == true:
@@ -2271,8 +2255,8 @@ func executeLocationCommands(location,omitStart=false,updateLocationId=true):
 			else:
 				CurrentUi.Actions.append(action)
 
-	if updateLocationId:
-		CurrentUi.LocationId = location.ID
+	
+		
 	updateUI()
 
 func executeWithParameter(commands,parameter):
@@ -2585,8 +2569,9 @@ func gotoLocation(transferInfo):
 	var locationId = getValue(transferInfo,"locationId","start")
 	var time = getValue(transferInfo,"time",0)
 	var mode = getValue(transferInfo,"mode","walk")
-	MiscData.currentLocationID = locationId
-	var gotoLocation = getLocation(locationId)
+	#MiscData.currentLocationID = locationId
+	#currentLocationSet(locationId)
+	var gotoLocation = location(locationId)
 	executeLocation(gotoLocation)
 	timePass(time,mode)
 	
@@ -2681,7 +2666,7 @@ func SaveGameLoad(path = "user://quicksave.json"):
 	#		npcs[npcID].persist = data.NPC[npcID]
 	
 	updateUI()
-	
+	currentLocationSet()
 	LOG.out("Game loaded from \""+path+"\"")
 	
 func SaveGameSave(path="user://quicksave.json"):
@@ -2705,17 +2690,17 @@ func SaveGameSave(path="user://quicksave.json"):
 	LOG.out("Game saved at \""+path+"\"")
 
 func recalcUI():
-	executeLocation(getLocation(CurrentUi.LocationId),true)
+	executeLocation(location(CurrentUi.LocationId),true)
 	updateUI()
 
 func reload():
 	LOG.out("Reload")
 	locations.clear()
-	var location = getLocation(CurrentUi.LocationId)
+	var location = location(CurrentUi.LocationId)
 	executeLocation(location,true,false)
 
 func updateLocation():
-	var location = getLocation(CurrentUi.LocationId)
+	var location = location(CurrentUi.LocationId)
 	executeLocation(location,true,false)
 
 

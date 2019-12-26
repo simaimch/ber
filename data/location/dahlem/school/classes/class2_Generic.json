@@ -1,0 +1,8 @@
+{
+    "inherit":"SELF.class_Generic",
+    "onStart":{
+        "MiscData":{
+            "school.currentHour":2
+        }
+    }
+}

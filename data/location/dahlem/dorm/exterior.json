@@ -1,0 +1,31 @@
+{
+    "bg":"texture/locations/dahlem/dorm.jpg",
+    "label":"Dorm",
+    "text":"Dorm.",
+    "rl":[
+        {
+            "locationId":"dahlem.school.exterior",
+            "time": 120
+        },
+        {
+            "locationId":"SELF.entry",
+            "time": 60,
+            "label":"Inside",
+            "~values":{
+                "10000":{
+                    "value":{
+                        "disabled":true,
+                        "tooltip": "You don't have permission to enter the dorm."
+                    },
+                    "condition": "¬('dahlemSchoolStudent' ⊆ PlayerData.groups)"
+                }
+            }
+        },
+        {
+            "label":"Your room",
+            "locationId":"SELF.room311",
+            "time": 130,
+            "condition":"PlayerData.QUEST.school.dormRoom=311"
+        }
+    ]
+}

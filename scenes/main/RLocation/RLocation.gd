@@ -13,13 +13,13 @@ func _pressed():
 func setLocation(l):
 	transferInfo = l
 	var t = ""
-	var targetLocation = GameManager.getLocation(transferInfo.locationId)
-	if "label" in transferInfo:
-		t = transferInfo.label
-	elif "label" in targetLocation:
-		t = targetLocation.label
+	var targetLocation = GameManager.location(transferInfo.locationId)
+	if transferInfo.has("label"):
+		t = transferInfo.get("label")
+	elif targetLocation.has("label"):
+		t = targetLocation.get("label")
 	elif targetLocation.has("text"):
-		t = targetLocation.text
+		t = targetLocation.get("text")
 	setText(t)
 	
 	if GameManager.getValue(transferInfo,"disabled",false) == true:
@@ -39,10 +39,15 @@ func setLocation(l):
 		$VBoxContainer/TimeLabel.hide()
 		rect_min_size.y = 0
 	else:
-		if GameManager.hasValue(targetLocation,"rlTexture"):
-			setTexture(GameManager.getValue(targetLocation,"rlTexture"))
-		elif GameManager.hasValue(targetLocation,"bg"):
-			setTexture(GameManager.getValue(targetLocation,"bg"))
+		var textureId = targetLocation.get("rlTexture")
+		if !textureId:
+			textureId = targetLocation.get("bg")
+		if textureId:
+			setTexture(textureId)
+		#if GameManager.hasValue(targetLocation,"rlTexture"):
+			#setTexture(GameManager.getValue(targetLocation,"rlTexture"))
+		#elif GameManager.hasValue(targetLocation,"bg"):
+			#setTexture(GameManager.getValue(targetLocation,"bg"))
 	
 	
 
@@ -50,7 +55,7 @@ func setText(text):
 	$VBoxContainer/Label.text = text
 	
 func setTexture(path):
-	var texture = Util.texture(path)#load(path)
+	var texture = Util.texture(path)
 	$VBoxContainer/TextureRect.set_texture(texture)
 
 func _on_RLocation_mouse_entered():
