@@ -567,7 +567,10 @@ func mergeInto(source,target,inplace = true):
 				for i in range(valueSource.size()): target[skey].append(valueSource[i])
 				
 		elif typeSource == TYPE_DICTIONARY and typeTarget == TYPE_DICTIONARY:
-			target[skey] = mergeInto(valueSource,valueTarget)
+			if commands.has(commandSigns.replaceEntry):
+				target[skey] = valueSource
+			else:
+				target[skey] = mergeInto(valueSource,valueTarget)
 		
 		elif (typeSource == TYPE_STRING and typeTarget == TYPE_STRING):
 			if commands.has(commandSigns.prepend):
