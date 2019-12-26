@@ -1928,6 +1928,17 @@ func executeCommands(commands):
 						modValueAtPath(dataContainer+"."+key,"set",getValue(command[key],"value",0))
 				else:
 					setValueAtPath(dataContainer+"."+key,command[key])
+	
+	if commands.has("skill"):
+		var skill= commands.get("skill")
+		for skillId in skill:
+			var skillEntry = skill[skillId]
+			if skillEntry.has("level"):
+				var level:int = skillEntry.get("level",1)
+				PlayerData.skill[skillId] = {"level":level,"experience":level2Experience(level)}
+			elif skillEntry.has("experience"):
+				var experience:int = skillEntry.get("experience",0)
+				PlayerData.skill[skillId] = {"level":experience2Level(experience),"experience":experience}
 			
 	if commands.has("eat"):
 		var saturation = getValue(commands.eat,"saturation",0)
@@ -2296,6 +2307,16 @@ func experience2Level(experience:int)->int:
 		experience2Spend -= advanceRequirement
 		
 	return i
+	
+func level2Experience(level:int)->int:
+	level = min(100,level)
+	var i = 1
+	var experience:int = 0
+	while i < level:
+		var advanceRequirement:int = pow(2.0,i/10.0) * 10
+		experience += advanceRequirement
+		i+= 1
+	return experience
 
 func gameMenuHide():
 	CurrentUi.ShowGameMenu = false

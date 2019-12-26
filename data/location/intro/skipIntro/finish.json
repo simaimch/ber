@@ -4,16 +4,33 @@
             "100":{
                 "condition":"PlayerData.prehistory=MiscData.const.prehistory.popular",
                 "PlayerData":{
-                    "skill.heels.level": 30,
                     "trait.genes.appearance":7
+                },
+                "skill":{
+                    "heels":{"level":30},
+                    "makeup":{"level":30}
                 },
                 "modifierUpdate":{"keyword":"gene"}
             },
             "200":{
                 "condition":"PlayerData.prehistory=MiscData.const.prehistory.nerd",
                 "PlayerData":{
-                    "skill.heels.level": 10,
                     "trait.genes.appearance":4
+                },
+                "skill":{
+                    "heels":{"level":10},
+                    "makeup":{"level":10}
+                },
+                "modifierUpdate":{"keyword":"gene"}
+            },
+            "300":{
+                "condition":"PlayerData.prehistory=MiscData.const.prehistory.average",
+                "PlayerData":{
+                    "trait.genes.appearance":5
+                },
+                "skill":{
+                    "heels":{"level":20},
+                    "makeup":{"level":20}
                 },
                 "modifierUpdate":{"keyword":"gene"}
             },
