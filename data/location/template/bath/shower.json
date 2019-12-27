@@ -1,0 +1,5 @@
+{
+    "inherit":"interrupt",
+    "text": "You shower.",
+    "bg":"texture/actions/bath/shower.jpg"
+}

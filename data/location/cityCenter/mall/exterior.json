@@ -1,0 +1,17 @@
+{
+    "bg":"texture/locations/cityCenter/cityCanterMall0.jpg",
+    "label":"Mall (exterior)",
+    "npcs": true,
+    "text":"The exterior of a mall.",
+    "timeOpen":{"start":930,"end":2130},
+    "rl":[
+        {
+            "locationId":"cityCenter.main",
+            "time": 180
+        },
+        {
+            "locationId":"SELF.interior",
+            "time": 180
+        }
+    ]
+}

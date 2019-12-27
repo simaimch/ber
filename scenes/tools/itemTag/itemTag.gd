@@ -256,7 +256,7 @@ func _on_SelectFolderDialog_dir_selected(dir):
 		return
 	
 	for i in imageFileContainer.get_children():
-    	i.queue_free()
+		i.queue_free()
 	
 	var imageFileButtonPL = preload("res://scenes/tools/itemTag/ImageFileButton.tscn")
 	
@@ -373,7 +373,8 @@ func saveMod(modId):
 		dir.copy(items[key].texture, mediaFolder+"/"+fileName)
 		items[key].texture = "mods/"+modId+"/"+fileName
 		items[key].covers = GameManager.getItemCoveredBodyParts(items[key])
-		itemToSave[modId+"_"+key] = items[key]
+		var itemKey = modId+"_"+key.md5_text().substr(0,12)
+		itemToSave[itemKey] = items[key]
 		
 		
 	Util.data2File(itemToSave,itemFile,true)

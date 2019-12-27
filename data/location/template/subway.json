@@ -1,0 +1,25 @@
+{
+    "rl":[
+        {
+            "locationId":"cityCenter.subway",
+            "time": 1200,
+            "label":"Alexanderplatz",
+            "mode":"subway",
+            "condition":"currentLocationID() != 'cityCenter.subway'"
+        },
+        {
+            "locationId":"dahlem.subway",
+            "time": 1200,
+            "label":"Dahlem-Dorf",
+            "mode":"subway",
+            "condition":"currentLocationID() != 'dahlem.subway'"
+        },
+        {
+            "locationId":"testStreet.subway",
+            "time": 1200,
+            "label":"Görlitzer Straße",
+            "mode":"subway",
+            "condition":"currentLocationID() != 'testStreet.subway'"
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "bg":"texture/npc/schoolPsychologist/psychologistHor.jpg",
+    "rlTexture":"texture/locations/dahlem/schoolPsychologistOffice.jpg",
+    "label":"Psychologist Office",
+    "text":"Psychologist Office",
+    "npcs":true,
+    "rl":[
+        {
+            "locationId":"SELF.hallway",
+            "time": 30
+        }
+    ]
+}

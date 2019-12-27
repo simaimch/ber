@@ -1,0 +1,9 @@
+{
+    "text":"CAUGHT",
+    "actions":{
+        "1000":{
+            "Label":"Next",
+            "goto":"SELF.classEnd"
+        }
+    }
+}

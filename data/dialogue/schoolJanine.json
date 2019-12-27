@@ -4,9 +4,155 @@
             "priority":1000,
             "condition": "PARAM1.nameKnown=false",
             "topic":"introduction"
+        },
+        "2":{
+            "priority":10000,
+            "condition": "NPC_ACTIVITY(PARAM1)='sleep'",
+            "topic":"sleep"
+        },
+        "3":{
+            "priority":10000,
+            "condition": "NPC_ACTIVITY(PARAM1)='bath_morning'",
+            "topic":"busy"
         }
     },
     "topics":{
+        "borrowRazor":{
+            "TOP":"Borrow razor",
+            "TOP_text":"Would you mind borrowing me a razor?",
+            "1":{
+                "~topic":{
+                    "100":{
+                        "condition":"PARAM1.interaction.borrow.last+518400>NOW_UNIX()",
+                        "value":"SELF.borrowRazor.100"
+                    },
+                    "10":{
+                        "value":"SELF.borrowRazor.10"
+                    }
+                }
+            },
+            "100":{
+                "~topic":{
+                    "100":{
+                        "condition":"PARAM1.affection >= 10",
+                        "value":"SELF.borrowRazor.120"
+                    },
+                    "10":{
+                        "value":"SELF.borrowRazor.110"
+                    }
+                }
+            },
+            "110":{
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Really? Again? You should start buying your own stuff."
+                    }
+                },
+                "replies":{
+                    "0":{
+                        "label":"Okay",
+                        "topic": "TOP",
+                        "text": "Okay."
+                    }
+                }
+            },
+            "120":{
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Sorry, but I can't keep handing out my stuff to you. Otherwise I won't have enough left myself."
+                    }
+                },
+                "replies":{
+                    "0":{
+                        "label":"Okay",
+                        "topic": "TOP",
+                        "text": "Okay."
+                    }
+                }
+            },
+            "10":{
+                "~topic":{
+                    "100":{
+                        "condition":"PARAM1.affection >= 10",
+                        "value":"SELF.borrowRazor.20"
+                    },
+                    "10":{
+                        "value":"SELF.borrowRazor.11"
+                    }
+                }
+            },
+            "20":{
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "|text":{
+                            "0":"Of course not.",
+                            "1":"Of course I will help you out.",
+                            "2":"Sure."
+                        }
+                    },
+                    "20":{
+                        "text":"She takes one of her razors out of her vanity set."
+                    },
+                    "30":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Here you go. Just keep it, I don't want it back after you used it."
+                    }
+                },
+                "topic":"SELF.borrowRazor.30"
+            },
+            "11":{
+                "text":{
+                    "10":{
+                        "#speakerId":"PARAM1.ID",
+                        "|text":{
+                            "0":"Seriously? Can't you afford your own razors?",
+                            "1":"You want to improve your looks? I guess I can support that.",
+                            "2":"I guess I can give you one."
+                        }
+                    },
+                    "20":{
+                        "text":"She takes one of her razors out of her vanity set."
+                    },
+                    "30":{
+                        "#speakerId":"PARAM1.ID",
+                        "text":"Keep it, I don't want it back after you used it."
+                    }
+                },
+                "topic":"SELF.borrowRazor.30"
+            },
+            "30":{
+                "replies":{
+                    "0":{
+                        "label":"Thank you",
+                        "topic": "TOP",
+                        "text": "Thank you.",
+                        "onSelect":{
+                            "NPCData1":{
+                                "interaction.borrow.last":{"mode":"set","#value":"NOW_UNIX()"}
+                            },
+                            "PlayerData":{
+                                "items.bath.razor":{"mode":"inc","value":1}
+                            }
+                        }
+                    }
+                }
+            },
+            "condition":"PlayerData.items.bath.razor<1"
+        },
+        "busy":{
+            "1":{
+                "^text":"#PARAM1.name.first# is busy and can't talk right now.",
+                "replies":{
+                    "0":{
+                        "label":"Leave",
+                        "topic": "LEAVE"
+                    }
+                }
+            }
+        },
         "introduction":{
             "1":{
                 "text":"Hello. You are the new one, right?",
@@ -115,6 +261,17 @@
                     "0":{
                         "label":"Never mind",
                         "topic": "TOP"
+                    }
+                }
+            }
+        },
+        "sleep":{
+            "1":{
+                "^text":"#PARAM1.name.first# is sleeping.",
+                "replies":{
+                    "0":{
+                        "label":"Leave",
+                        "topic": "LEAVE"
                     }
                 }
             }

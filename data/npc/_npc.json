@@ -1,10 +1,30 @@
 {
     "isTemplate":true,
     "description":{
+        "activity_bath_morning":{
+            "priority": 10000,
+            "condition": "NPC_ACTIVITY(PARAM1)='bath_morning'",
+            "text":"{She} is currently brushing her teeth."
+        },
         "activity_sleep":{
             "priority": 10000,
-            "condition": "NPC_ACTIVITY(NPCDATA1)='sleep'",
-            "text":"<She> is currently sleeping in <her> bed."
+            "condition": "NPC_ACTIVITY(PARAM1)='sleep'",
+            "text":"{She} is currently sleeping in {her} bed."
+        },
+        "affection-10":{
+            "priority": 1000,
+            "condition": "PARAM1.affection <= -10",
+            "text":"{She} doesn't seem to like you."
+        },
+        "affection0":{
+            "priority": 1000,
+            "condition": "PARAM1.affection € (-10,10)",
+            "text":"{She} seems to be indifferent about you."
+        },
+        "affection10":{
+            "priority": 1000,
+            "condition": "PARAM1.affection >= 10",
+            "text":"{She} seems to like you."
         }
     }
 }

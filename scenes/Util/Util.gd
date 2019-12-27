@@ -94,7 +94,7 @@ func getFilesInFolder(path)->Array:
 	#https://godotengine.org/qa/5175/how-to-get-all-the-files-inside-a-folder
 	var files = []
 	var dir = Directory.new()
-	dir.open(path)
+	if dir.open(path) != OK: return []
 	dir.list_dir_begin(true,true)
 	
 	while true:
@@ -295,6 +295,17 @@ func arraySetAtIndex(array,index,value):
 	array[index]= value
 	return array
 	
+func asFloat(val)->float:
+	var result:float = 0
+	
+	match typeof(val):
+		TYPE_REAL:
+			return val
+		TYPE_INT:
+			return val+0.0
+	
+	return result
+	
 func bigger(a,b):
 	var ta = typeof(a)
 	var tb = typeof(b)
@@ -466,7 +477,7 @@ func inherit(child, parent):
 			return result
 				
 		var parentType:
-			GameManager.logOut(["inherit: unexpected type of parent:",parentType],"ERROR")
+			LOG.out(["inherit: unexpected type of parent:",parentType],LOG.ERROR)
 			
 func intRandom(v):
 	match typeof(v):
@@ -479,7 +490,7 @@ func intRandom(v):
 				return rng.randi_range(intRandom(v[0]),intRandom(v[1]))
 			return intRandom(v[0])
 		var vType:
-			GameManager.logOut(["intRandom: unexpected type of v: ",vType],"ERROR")
+			LOG.out(["intRandom: unexpected type of v: ",vType],LOG.ERROR)
 	return 0
 
 func mergeDateTime(dtSource,dtTarget)->Dictionary:
@@ -556,7 +567,10 @@ func mergeInto(source,target,inplace = true):
 				for i in range(valueSource.size()): target[skey].append(valueSource[i])
 				
 		elif typeSource == TYPE_DICTIONARY and typeTarget == TYPE_DICTIONARY:
-			target[skey] = mergeInto(valueSource,valueTarget)
+			if commands.has(commandSigns.replaceEntry):
+				target[skey] = valueSource
+			else:
+				target[skey] = mergeInto(valueSource,valueTarget)
 		
 		elif (typeSource == TYPE_STRING and typeTarget == TYPE_STRING):
 			if commands.has(commandSigns.prepend):
@@ -572,6 +586,16 @@ func mergeInto(source,target,inplace = true):
 				
 	
 	return target
+
+func readFile(path:String,showError:bool):
+	var file = File.new()
+	if file.open(path, file.READ)!=OK:
+		if showError:
+			LOG.out(["Error reading file:",path],LOG.ERROR)
+		return "{}"
+	var text = file.get_as_text()
+	file.close()
+	return text
 
 func regex(s):
 	return cache_regex.get(s)
@@ -657,7 +681,7 @@ func textureLoad(path):
 		texture.create_from_image(image)
 		return texture
 		
-	GameManager.logOut(["Error loading texture: ",path])
+	LOG.out(["Error loading texture: ",path])
 	
 	var texture = preload("res://media/texture/missingTexture.jpg")
 	return texture

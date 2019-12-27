@@ -1,0 +1,5 @@
+{
+    "onStart":{
+        "goto":"SELF.class1"
+    }
+}

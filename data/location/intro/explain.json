@@ -1,0 +1,9 @@
+{
+    "text": ["The following tutorial will lead you trough the most important aspects of this game and introduces you to your new life.","During the tutorial you can use the help-button to get additional information."],
+    "actions": {            
+        "1000":{
+            "Label": "Continue",
+            "goto":"SELF.100"
+        }
+    }
+}

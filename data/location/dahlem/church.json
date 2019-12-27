@@ -1,0 +1,11 @@
+{
+    "bg":"texture/locations/dahlem/church.jpg",
+    "label":"Church",
+    "text":"The church is currently closed for restauration.",
+    "rl":[
+        {
+            "locationId":"SELF.main",
+            "time": 300
+        }
+    ]
+}

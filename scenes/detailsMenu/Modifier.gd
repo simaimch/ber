@@ -4,7 +4,7 @@ var modifier
 
 func setModifer(m):
 	modifier = m
-	text = modifier.label
+	text = GameManager.getValue(modifier,"label","Label Missing")
 
 func _on_Modifier_mouse_entered():
 	var t = GameManager.getValue(modifier,"description",null)

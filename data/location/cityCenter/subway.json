@@ -1,0 +1,12 @@
+{
+    "rlTexture":"texture/locations/cityCenter/cityCenterSubway0.jpg",
+    "bg":"texture/locations/cityCenter/cityCenterSubway1.jpg",
+    "inherit":"template.subway",
+    "label":"Subway Station",
+    "*rl":[
+        {
+            "locationId":"SELF.main",
+            "time": 180
+        }
+    ]
+}

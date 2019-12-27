@@ -28,7 +28,7 @@ func setNPC(n:NPC):
 	#$HBoxContainer/VBoxContainer/NameLabel.text = name
 	$HBoxContainer/VBoxContainer/NameLabel.text = npc.knownName()
 	
-	#$HBoxContainer/VBoxContainer/RichTextLabel.bbcode_text = GameManager.npcDescription(npc)
+	$HBoxContainer/VBoxContainer/Description.bbcode_text = npc.description()
 	
 func updateUI(CurrentUi):
 	if CurrentUi.get("ShowDetailsNPC",false) == true:

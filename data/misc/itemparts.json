@@ -50,6 +50,9 @@
     "shoe_boot_overknee":{
         "covers":["leftfoot","rightfoot","lowerleftleg","lowerrightleg"]
     },
+    "shoe_sneakers":{
+        "covers":["leftfoot","rightfoot","lefttoe","righttoe"]
+    },
     "shoe_toe_closed":{
         "covers":["lefttoe","righttoe"]
     },

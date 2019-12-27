@@ -1,0 +1,73 @@
+{
+    "actions":{
+        "4000":{
+            "Label":"Participate actively",
+            "~value":{
+                "1000":{
+                    "condition":"PlayerData.stat.sleep.current < 2000",
+                    "value":{
+                        "Disabled": true,
+                        "Tooltip": "You are too tired to keep your eyes open."
+                    }
+                },
+                "900":{
+                    "condition":"PlayerData.stat.sleep.current < 4000",
+                    "value":{
+                        "Disabled": true,
+                        "Tooltip": "You are too tired to concentrate."
+                    }
+                },
+                "100":{
+                    "value":{
+                        "goto":"dahlem.school.classes.start"
+                    }
+                }
+            }
+        },
+        "3000":{
+            "Label":"Listen to the lecture",
+            "~value":{
+                "1000":{
+                    "condition":"PlayerData.stat.sleep.current < 2000",
+                    "value":{
+                        "Disabled": true,
+                        "Tooltip": "You are too tired to keep your eyes open."
+                    }
+                },
+                "900":{
+                    "condition":"PlayerData.stat.sleep.current < 4000",
+                    "value":{
+                        "Disabled": true,
+                        "Tooltip": "You are too tired to concentrate."
+                    }
+                },
+                "100":{
+                    "value":{
+                        "goto":"dahlem.school.classes.start"
+                    }
+                }
+            }
+        },
+        "2000":{
+            "Label":"Daydream",
+            "~value":{
+                "1000":{
+                    "condition":"PlayerData.stat.sleep.current < 2000",
+                    "value":{
+                        "Disabled": true,
+                        "Tooltip": "You are too tired to keep your eyes open."
+                    }
+                },
+                "100":{
+                    "value":{
+                        "goto":"dahlem.school.classes.start"
+                    }
+                }
+            }
+        },
+        "1000":{
+            "Label":"Relax",
+            "goto":"SELF.classRelax"
+        }
+    }
+}

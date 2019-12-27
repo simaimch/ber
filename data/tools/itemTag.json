@@ -715,6 +715,16 @@
             }
         }
     },
+    "shoe_flat":{
+        "order":[null,"flat_sneakers",null],
+        "items":{
+            "flat_sneakers":{
+                "texture":"texture/misc/itemtype/shoe/flat_sneaker.png",
+                "text":"Sneakers",
+                "result":{"parts":["shoe_sneakers"]}
+            }
+        }
+    },
     "shoe_pump":{
         "order":[null,null,null,"nopeeptoe","peeptoe"],
         "items":{

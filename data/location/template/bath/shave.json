@@ -1,0 +1,76 @@
+{
+    "inherit":"interrupt",
+    
+    "text":"You have #PlayerData.items.bath.razor# razor#langPluralS(PlayerData.items.bath.razor)# left.",
+    "actions":{
+        "4000":{
+            "Label": "Shave your legs.",
+            "~value":{
+                "1000":{
+                    "condition":{
+                        "var":"PlayerData.items.bath.razor",
+                        "mode":"leq",
+                        "val":0
+                    },
+                    "value":{
+                        "Disabled": true,
+                        "Tooltip": "You don't have any razors left."
+                    }
+                },
+                "100":{
+                    "value":{
+                        "PlayerData":{"items.bath.razor":{"mode":"dec","value":1}},
+                        "Time":{"Pass":{"Duration":900,"Activity":"bath"}},
+                        "goto": "SELF.shave_legs"
+                    }
+                }
+            }
+        },
+        "3000":{
+            "Label": "Shave your armpits.",
+            "~value":{
+                "1000":{
+                    "condition":{
+                        "var":"PlayerData.items.bath.razor",
+                        "mode":"leq",
+                        "val":0
+                    },
+                    "value":{
+                        "Disabled": true,
+                        "Tooltip": "You don't have any razors left."
+                    }
+                },
+                "100":{
+                    "value":{
+                        "PlayerData":{"items.bath.razor":{"mode":"dec","value":1}},
+                        "Time":{"Pass":{"Duration":600,"Activity":"bath"}},
+                        "goto": "SELF.shave_armpit"
+                    }
+                }
+            }
+        },
+        "2000":{
+            "Label": "Shave your pubic area.",
+            "~value":{
+                "1000":{
+                    "condition":{
+                        "var":"PlayerData.items.bath.razor",
+                        "mode":"leq",
+                        "val":0
+                    },
+                    "value":{
+                        "Disabled": true,
+                        "Tooltip": "You don't have any razors left."
+                    }
+                },
+                "100":{
+                    "value":{
+                        "PlayerData":{"items.bath.razor":{"mode":"dec","value":1}},
+                        "Time":{"Pass":{"Duration":600,"Activity":"bath"}},
+                        "goto": "SELF.shave_pubic"
+                    }
+                }
+            }
+        }
+    }
+}

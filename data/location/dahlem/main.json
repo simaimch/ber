@@ -1,0 +1,23 @@
+{
+    "text":"Dahlem-Dorf",
+    "label":"Dahlem-Dorf",
+    "bg":"texture/locations/dahlem/dahlem.jpg",
+    "rl":[
+        {
+            "locationId":"SELF.subway",
+            "time": 180
+        },
+        {
+            "locationId":"dahlem.school.exterior",
+            "time": 300
+        },
+        {
+            "locationId":"SELF.church",
+            "time": 300
+        },
+        {
+            "locationId":"SELF.park",
+            "time": 300
+        }
+    ]
+}

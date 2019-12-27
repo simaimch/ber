@@ -1,4 +1,5 @@
 {
+    "inherit":"_npc",
     "initialize":{
         "bday":{"#value":"DATE_WITH_AGE(18)"}
     },

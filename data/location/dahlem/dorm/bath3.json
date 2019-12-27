@@ -1,0 +1,24 @@
+{
+    "label":"Bathroom",
+    "text":"Bathroom",
+    "bg":"texture/locations/dahlem/dormBath3.jpg",
+    "npcs": true,
+    "rl":[
+        {
+            "locationId":"SELF.floor3",
+            "time": 30,
+            "label":"Hallway"
+        }
+    ],
+    "actions":{
+        "1000":{
+            "inherit":"shower"
+        },
+        "800":{
+            "inherit":"shaveBody"
+        },
+        "600":{
+            "inherit":"makeup"
+        }
+    }
+}

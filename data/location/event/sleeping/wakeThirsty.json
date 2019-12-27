@@ -1,0 +1,9 @@
+{
+    "text":"You are too thirsty to continue sleeping.",
+    "actions": {
+        "1000":{
+            "Label": "Continue",
+            "gotoLocationPop":true
+        }
+    }
+}

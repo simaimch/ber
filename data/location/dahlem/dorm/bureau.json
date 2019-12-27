@@ -1,0 +1,30 @@
+{
+    "label":"Bureau",
+    "~text":{
+        "1000":{
+            "value":"An old bureau. A woman in her twnenties sits at a desk and works with her notebook.\nYou should talk to her.",
+            "condition":"PlayerData.QUEST.school.dormGreeting.completed!=true"
+        },
+        "0":{
+            "value":"An old bureau. The dorms secreatary sits at a desk and works with her notebook."
+        }
+    },
+    "bg":"texture/npc/dormSecretary/bureauHor.jpg",
+    "rlTexture":"texture/locations/dahlem/dormBureau.jpg",
+    "npcs": true,
+    "~rl":{
+        "1000":{
+            "value":[],
+            "condition":"PlayerData.QUEST.school.dormGreeting.completed!=true"
+        },
+        "0":{
+            "value":[
+                {
+                    "locationId":"SELF.entry",
+                    "time": 30,
+                    "label":"Hallway"
+                }
+            ]
+        }
+    }
+}

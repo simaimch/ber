@@ -3,6 +3,9 @@ extends PopupPanel
 var fname = ""
 var lname = ""
 
+var fname_list = "names_first_female_90s"
+var lname_list = "names_last"
+
 func _on_Confirm_pressed():
 	if fname.empty():
 		setFnameRandom()
@@ -38,10 +41,18 @@ func setLname(s):
 	$CenterContainer/VBoxContainer/LastNameContainer/LastName.text = lname
 
 func setFnameRandom():
-	setFname(GameManager.getValueFromList("names_first_female_90s"))
+	setFname(GameManager.getValueFromList(fname_list))
 	
 func setLnameRandom():
-	setLname(GameManager.getValueFromList("names_last"))
+	setLname(GameManager.getValueFromList(lname_list))
+
+func setParam(dialogParam):
+	if typeof(dialogParam) != TYPE_DICTIONARY:
+		LOG.error("Unsupported type of dialogParam in pcName")
+		return
+	if dialogParam.has("listNameFirst"): fname_list = dialogParam.get("listNameFirst")
+	if dialogParam.has("listNameLast"): lname_list = dialogParam.get("listNameLast")
+
 
 func _on_FirstNameRandomButton_pressed():
 	setFnameRandom()

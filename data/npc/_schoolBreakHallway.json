@@ -1,6 +1,6 @@
 {
     "schedule":{
-        "dahlemSchoolClasses.breakHallway":[
+        "dahlem.school.classes.breakHallway":[
             {"days":[1,2,3,4,5],"timeStart":915,"timeEnd":935},
             {"days":[1,2,3,4,5],"timeStart":1105,"timeEnd":1125},
             {"days":[1,2,3,4,5],"timeStart":1255,"timeEnd":1330}

@@ -3,7 +3,32 @@
         "listen": "timePass",
         "arguments":"subway",
         "actions":{
-            "interrupt":"subway.event"
+            "interrupt":"event.subway"
+        }
+    },
+    "walk":{
+        "listen":"timePass",
+        "arguments":"walk",
+        "~actions":{
+            "0":{
+                "condition":"items[PlayerData.outfit.CURRENT.shoes].height > 0",
+                "value":{
+                    "PlayerData":{
+                        "body.feet.pain.factors.heels.current":{"mode":"inc","&value":"shoePainPC(items[PlayerData.outfit.CURRENT.shoes],PlayerData)*PARAM1"}
+                    },
+                    "skillCheck":{
+                        "skill":"heels",
+                        "#difficulty":"items[PlayerData.outfit.CURRENT.shoes].difficulty",
+                        "&experience":"PARAM1*2",
+                        "result":{
+                            "0":{
+                                "modifierUpdate":{"keyword":"makeup"}
+                            }
+                        }
+                    }
+                    
+                }
+            }
         }
     },
     "hourUpdate":{
@@ -30,6 +55,16 @@
             }
         }
     },
+    "levelup_heels":{
+        "listen": "levelup",
+        "arguments":"heels",
+        "actions":{
+            "message":{
+                "^text":"High Heels: Your skill increased to #PlayerData.skill.heels.level#!"
+            },
+            "modifierUpdate":{"keyword":"skillHeels"}
+        }
+    },
     "levelup_makeup":{
         "listen": "levelup",
         "arguments":"makeup",
@@ -53,30 +88,30 @@
         "listen": "timePass",
         "arguments":"shower",
         "actions":{
-            "interrupt":"bath.shower"
+            "interrupt":"template.bath.shower"
         }
     },
     "sleepEndEarly":{
         "listen": "sleepEnd",
         "arguments":"early",
-        "actions":{"interrupt":"sleeping.wakeEarly"}
+        "actions":{"interrupt":"event.sleeping.wakeEarly"}
     },
     "sleepEndHealthy":{
         "listen": "sleepEnd",
         "arguments":"healthy",
-        "actions":{"interrupt":"sleeping.wakeHealthy"}
+        "actions":{"interrupt":"event.sleeping.wakeHealthy"}
     }
     ,
     "sleepEndHungry":{
         "listen": "sleepEnd",
         "arguments":"hunger",
-        "actions":{"interrupt":"sleeping.wakeHungry"}
+        "actions":{"interrupt":"event.sleeping.wakeHungry"}
     }
     ,
     "sleepEndThirsty":{
         "listen": "sleepEnd",
         "arguments":"thirst",
-        "actions":{"interrupt":"sleeping.wakeThirsty"}
+        "actions":{"interrupt":"event.sleeping.wakeThirsty"}
     },
     "stateHungerUpdate":{
         "listen":"timePass_10Minutes",

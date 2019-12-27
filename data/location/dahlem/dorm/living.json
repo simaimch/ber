@@ -1,0 +1,20 @@
+{
+    "label":"Living Room",
+    "text":"Living Room",
+    "bg":"texture/locations/dahlem/dormLiving.jpg",
+    "npcs": true,
+    "rl":[
+        {
+            "locationId":"SELF.entry",
+            "time": 30,
+            "label":"Hallway"
+        },
+        {
+            "locationId":"SELF.kitchen",
+            "time": 30
+        }
+    ],
+    "actions":{
+
+    }
+}

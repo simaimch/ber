@@ -1,0 +1,10 @@
+{
+    "bg":"texture/events/intro/about.jpg",
+    "text": ["This game was created by me."],
+    "actions": {
+        "100":{
+            "Label": "Back",
+            "goto":"SELF.start"
+        }
+    }
+}

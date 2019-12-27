@@ -1,0 +1,10 @@
+{
+    "bg":"texture/events/school/break/hallway.jpg",
+    "npcs":true,
+    "actions":{
+        "1000":{
+            "Label":"Back to class",
+            "goto":"SELF.breakEnd"
+        }
+    }
+}

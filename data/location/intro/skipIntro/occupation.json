@@ -1,0 +1,23 @@
+{
+    "bg":null,
+    "textLong":[
+        "[b]Schoolgirl (adult)[/b]",
+        "You start at the beginning of your last year at school. You just turned 18.",
+        "",
+        "[b]University Student[/b]",
+        "You start ath the beginning of your first year at university. You just turned 19. Currently not available.",
+        ""
+    ],
+    "actions":{
+        "6000":{
+            "Label":"Schoolgirl (adult)",
+            "goto":"SELF.overview",
+            "PlayerData":{"occupationStart":{"#value":"MiscData.const.occupationStart.school"}}
+        },
+        "4000":{
+            "Label":"University Student",
+            "goto":"SELF.overview",
+            "PlayerData":{"occupationStart":{"#value":"MiscData.const.occupationStart.university"}}
+        }
+    }
+}

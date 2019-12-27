@@ -1,0 +1,16 @@
+{
+    "bg":"texture/locations/dahlem/schoolHallway.jpg",
+    "label":"Hallway",
+    "text":"Hallway.",
+    "rl":[
+        {
+            "locationId":"SELF.exterior",
+            "time": 60,
+            "label":"Outside"
+        },
+        {
+            "locationId":"SELF.psychologistOffice",
+            "time": 30
+        }
+    ]
+}

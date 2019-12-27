@@ -5,11 +5,11 @@
             "ShowStatusBar":false
         },
         "MiscData":{
+            "const.occupationStart.school":0,
+            "const.occupationStart.university":1,
             "const.prehistory.average":0,
             "const.prehistory.popular":1,
-            "const.prehistory.nerd":2,
-            "const.occupationStart.school":0,
-            "const.occupationStart.university":1
+            "const.prehistory.nerd":2            
         },
         "PlayerData":{
             "body.breast.texture":"texture/body/female/breast/breastB_1.jpg",
