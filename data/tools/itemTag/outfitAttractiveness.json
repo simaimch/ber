@@ -1,0 +1,25 @@
+{
+    "order":["sloppy",null,"conservative",null,null,"sexy","slutty","slutty+"],
+    "items":{
+        "conservative":{
+            "result":{"attractiveness":"conservative"},
+            "text": "Conservative"
+        },
+        "sexy":{
+            "result":{"attractiveness":"sexy"},
+            "text": "Sexy"
+        },
+        "sloppy":{
+            "result":{"attractiveness":"sloppy"},
+            "text": "Sloppy"
+        },
+        "slutty":{
+            "result":{"attractiveness":"slutty"},
+            "text": "Slutty"
+        },
+        "slutty+":{
+            "result":{"attractiveness":"slutty+"},
+            "text": "Very Slutty"
+        }
+    }
+}

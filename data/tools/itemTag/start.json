@@ -1,51 +1,40 @@
-[
-    {
-        "texture":"texture/misc/itemtype/dress.png",
-        "result":{"type":"clothes","inherit":"dress"},
-        "categories":[
-            "dekoltee",
-            "coveredArm",
-            "skirtlength",
-            {"category":"color","target":"color","label":"Dress Color"},
-            "priceDress"
-        ]
-    },
-    {
-        "text":"Top+Skirt",
-        "result":{"type":"clothes","inherit":"dress"},
-        "categories":[
-            "neck",
-            "sleeve",
-            {"category":"color","target":"colorTop","label":"Top Color"},
-            "skirtlength",
-            {"category":"color","target":"color","label":"Skirt Color"},
-            "extras"
-        ]
-    },
-    {
-        "text":"Top+Pants",
-        "result":{"type":"clothes","inherit":"dress"},
-        "categories":[
-            "neck",
-            "sleeve",
-            "skirtlength",
-            {"category":"color","target":"color","label":"Skirt Color"},
-            "extras"
-        ]
-    },
-    {
-        "texture":"texture/misc/itemtype/bra.png"
-        
-    },
-    {
-        "texture":"texture/misc/itemtype/panties.jpg"
-        
-    },
-    "",
-    {
-        "texture":"texture/misc/itemtype/shoes.jpg",
-        "result":{"type":"shoes","inherit":"shoe"},
-        "jump":"shoeType"
-    },
-    ""
-]
+{
+    "order":[null,"outfit",null,"bra","panties",null,"shoes"],
+    "items":{
+        "outfit":{
+            "texture":"texture/misc/itemtype/dress.png",
+            "result":{"type":"clothes"},
+            "categories":[
+                "outfitPurpose",
+                "outfitAttractiveness",
+                {"category":"color","target":"color","label":"Outfit Color"},
+                "price"
+            ]
+        },
+        "bra":{
+            "texture":"texture/misc/itemtype/bra.png",
+            "result":{"type":"bra"},
+            "categories":[
+                "outfitAttractiveness",
+                {"category":"color","target":"color","label":"Outfit Color"},
+                "price"
+            ]
+            
+        },
+        "panties":{
+            "texture":"texture/misc/itemtype/panties.jpg",
+            "result":{"type":"panties"},
+            "categories":[
+                "outfitAttractiveness",
+                {"category":"color","target":"color","label":"Outfit Color"},
+                "price"
+            ]
+            
+        },
+        "shoes":{
+            "texture":"texture/misc/itemtype/shoes.jpg",
+            "result":{"type":"shoes","inherit":"shoe"},
+            "jump":"shoeType"
+        }
+    }
+}
