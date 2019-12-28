@@ -1442,6 +1442,18 @@ func loadItem(filePath):
 			if item.get("type","none") == "shoes":
 				item.difficulty = getValueFromFunction("shoeDifficulty",item)
 			
+			if !item.has("price"):
+				match item.get("priceClass",null):
+					"low+": item.price = 1499
+					"low": item.price = 2499
+					"average": item.price = 4499
+					"high": item.price = 9999
+					"high+": item.price = 19999
+			
+			if !item.has("inherit") and item.get("isTemplate",false)==false:
+				match item.get("type",null):
+					"clothes": item.inherit="dress"
+			
 			items[itemId] = item
 			
 			
