@@ -579,8 +579,7 @@ func mergeInto(source,target,inplace = true):
 				target[skey] = valueTarget + valueSource
 			else:
 				target[skey] = valueSource
-		elif ((typeSource == TYPE_INT and typeTarget == TYPE_INT) or
-			(typeSource == TYPE_REAL and typeTarget == TYPE_REAL) or 
+		elif ((typeSource in [TYPE_INT,TYPE_REAL] and typeTarget in [TYPE_INT,TYPE_REAL]) or
 			(typeSource == TYPE_BOOL and typeTarget == TYPE_BOOL)):
 				target[skey] = valueSource
 				
