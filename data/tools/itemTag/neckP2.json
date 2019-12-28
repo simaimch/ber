@@ -1,0 +1,29 @@
+[
+    {
+        "texture":"texture/misc/itemtype/neck/grecian.png",
+        "result":{"parts":["neck_gr"]}
+    },{
+        "texture":"texture/misc/itemtype/neck/queenanne.png",
+        "result":{"parts":["neck_qa"]}
+    },{
+        "texture":"texture/misc/itemtype/neck/halter.png",
+        "result":{"parts":["neck_ha"]}
+    },{
+        "texture":"texture/misc/itemtype/neck/assymetric.png",
+        "result":{"parts":["neck_as"]}
+    },
+    {
+        "text":"Back",
+        "jump":"neck"
+    },
+    {
+        "texture":"texture/misc/itemtype/neck/split.png",
+        "result":{"parts":["neck_spl"]}
+    },{
+        "texture":"texture/misc/itemtype/neck/keyhole.png",
+        "result":{"parts":["neck_kh"]}
+    },{
+        "texture":"texture/misc/itemtype/neck/illusion.png",
+        "result":{"parts":["neck_il"]}
+    }
+]

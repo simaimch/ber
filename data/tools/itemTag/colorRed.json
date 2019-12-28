@@ -1,0 +1,30 @@
+{
+    "order":["red","crimson","scarlet","blood","ruby"],
+    "items":{
+        "blood":{
+            "color":"red_blood",
+            "result":{"color1":"red_blood"},
+            "text":"blood"
+        },
+        "crimson":{
+            "color":"red_crimson",
+            "result":{"color1":"red_crimson"},
+            "text":"crimson"
+        },
+        "red":{
+            "color":"red",
+            "result":{"color1":"red"},
+            "text":"red"
+        },
+        "ruby":{
+            "color":"red_ruby",
+            "result":{"color1":"red_ruby"},
+            "text":"ruby"
+        },
+        "scarlet":{
+            "color":"red_scarlet",
+            "result":{"color1":"red_scarlet"},
+            "text":"scarlet"
+        }
+    }
+}

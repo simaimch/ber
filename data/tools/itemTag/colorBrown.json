@@ -1,0 +1,30 @@
+{
+    "order":["brown","peanut","walnut","caramel","chocolate"],
+    "items":{
+        "brown":{
+            "color":"brown",
+            "result":{"color1":"brown"},
+            "text":"brown"
+        },
+        "caramel":{
+            "color":"brown_caramel",
+            "result":{"color1":"brown_caramel"},
+            "text":"caramel"
+        },
+        "chocolate":{
+            "color":"brown_chocolate",
+            "result":{"color1":"brown_chocolate"},
+            "text":"chocolate"
+        },
+        "peanut":{
+            "color":"brown_peanut",
+            "result":{"color1":"brown_peanut"},
+            "text":"peanut"
+        },
+        "walnut":{
+            "color":"brown_walnut",
+            "result":{"color1":"brown_walnut"},
+            "text":"walnut"
+        }
+    }
+}

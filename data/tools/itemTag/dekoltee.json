@@ -1,0 +1,22 @@
+[
+    {
+        "texture":"texture/misc/itemtype/dekoltee/veryHigh.png",
+        "result":{"parts":["dekoltee_vhigh"]}
+    },
+    {
+        "texture":"texture/misc/itemtype/dekoltee/high.png",
+        "result":{"parts":["dekoltee_high"]}
+    },
+    {
+        "texture":"texture/misc/itemtype/dekoltee/medium.png",
+        "result":{"parts":["dekoltee_medium"]}
+    },
+    {
+        "texture":"texture/misc/itemtype/dekoltee/deep.png",
+        "result":{"parts":["dekoltee_deep"]}
+    },
+    {
+        "texture":"texture/misc/itemtype/dekoltee/veryDeep.png",
+        "result":{"parts":["dekoltee_vdeep"]}
+    }
+]

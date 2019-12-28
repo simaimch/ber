@@ -15,12 +15,15 @@
 [ext_resource path="res://scenes/detailsMenu/Modifier.tscn" type="PackedScene" id=13]
 
 [node name="pcDetails" type="Control" groups=[
-"uiUpdate",
 "uiDetails",
+"uiUpdate",
 ]]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -173,7 +176,6 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
 
 [node name="GeneralDataContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-editor/display_folded = true
 margin_right = 637.0
 margin_bottom = 646.0
 size_flags_horizontal = 3

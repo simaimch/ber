@@ -1,0 +1,23 @@
+[
+    {
+        "texture":"texture/misc/itemtype/skirt/micro.png",
+        "result":{"parts":["skirt_micro"]}
+    },{
+        "texture":"texture/misc/itemtype/skirt/mini.png",
+        "result":{"parts":["skirt_mini"]}
+    },{
+        "texture":"texture/misc/itemtype/skirt/aboveKnee.png",
+        "result":{"parts":["skirt_ak"]}
+    },
+    "","",
+    {
+        "texture":"texture/misc/itemtype/skirt/midi.png",
+        "result":{"parts":["skirt_midi"]}
+    },{
+        "texture":"texture/misc/itemtype/skirt/long.png",
+        "result":{"parts":["skirt_long"]}
+    },{
+        "texture":"texture/misc/itemtype/skirt/evening.png",
+        "result":{"parts":["skirt_ev"]}
+    }
+]

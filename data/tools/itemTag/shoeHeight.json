@@ -1,0 +1,34 @@
+[
+    {
+        "text":"Flat",
+        "result":{"height":null}
+    },
+    {
+        "text":"2 cm",
+        "result":{"height":2}
+    },
+    {
+        "texture":"texture/misc/itemtype/shoeHeight/5cm.png",
+        "result":{"height":5}
+    },
+    {
+        "texture":"texture/misc/itemtype/shoeHeight/8cm.png",
+        "result":{"height":8}
+    },
+    {
+        "texture":"texture/misc/itemtype/shoeHeight/10cm.png",
+        "result":{"height":10}
+    },
+    {
+        "texture":"texture/misc/itemtype/shoeHeight/12cm.png",
+        "result":{"height":12}
+    },
+    {
+        "texture":"texture/misc/itemtype/shoeHeight/16cm.png",
+        "result":{"height":16}
+    },
+    {
+        "texture":"texture/misc/itemtype/shoeHeight/20cm.png",
+        "result":{"height":20}
+    }
+]

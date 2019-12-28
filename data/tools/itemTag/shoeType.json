@@ -1,0 +1,49 @@
+{
+    "order":["boot","pump","wedge",null,null,null,"flat"],
+    "items":{
+        "boot":{
+            "texture":"texture/misc/itemtype/shoe/boot.png",
+            "text":"Boots",
+            "tooltip": "With heels (wedge or no wedge), covers upper side of feet, at least ankle high",
+            "categories":[
+                "shoe_boot",
+                "shoeHeight",
+                {"category":"color","target":"color","label":"Shoe Color"},
+                "priceShoes"
+            ]
+        },
+        "flat":{
+            "texture":"texture/misc/itemtype/shoe/flat_sneaker.png",
+            "text":"Flats",
+            "tooltip": "Without heels",
+            "categories":[
+                "shoe_flat",
+                {"category":"color","target":"color","label":"Shoe Color"},
+                "priceShoes"
+            ]
+        },
+        "pump":{
+            "texture":"texture/misc/itemtype/shoe/pump.png",
+            "text":"Pumps",
+            "tooltip": "With heels (no wedge), do not cover upper side of feet",
+            "categories":[
+                "shoe_pump",
+                "shoeHeight",
+                {"category":"color","target":"color","label":"Shoe Color"},
+                "priceShoes"
+            ]
+        },
+        "wedge":{
+            "texture":"texture/misc/itemtype/shoe/wedge.png",
+            "text":"Wedges",
+            "tooltip": "Wedge heels",
+            "result":{"parts":["shoe_wedge"]},
+            "categories":[
+                "shoe_wedge",
+                "shoeHeight",
+                {"category":"color","target":"color","label":"Shoe Color"},
+                "priceShoes"
+            ]
+        }
+    }
+}

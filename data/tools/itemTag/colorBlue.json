@@ -1,0 +1,35 @@
+{
+    "order":["blue","azure","navy","sky","denim","teal"],
+    "items":{
+        "azure":{
+            "color":"blue_azure",
+            "result":{"color1":"blue_azure"},
+            "text":"azure"
+        },
+        "blue":{
+            "color":"blue",
+            "result":{"color1":"blue"},
+            "text":"blue"
+        },
+        "denim":{
+            "color":"blue_denim",
+            "result":{"color1":"blue_denim"},
+            "text":"denim"
+        },
+        "navy":{
+            "color":"blue_navy",
+            "result":{"color1":"blue_navy"},
+            "text":"navy"
+        },
+        "sky":{
+            "color":"blue_sky",
+            "result":{"color1":"blue_sky"},
+            "text":"sky"
+        },
+        "teal":{
+            "color":"blue_teal",
+            "result":{"color1":"blue_teal"},
+            "text":"teal"
+        }
+    }
+}
