@@ -1012,30 +1012,8 @@ func shop(arguments):
 	if !WorldData.shops.has(arguments.ID): WorldData.shops[arguments.ID] = {"validTil":-1,"items":[]}
 	
 	if WorldData.shops[arguments.ID].validTil < WorldData.Time:
-		var possibleItems = []
-		for itemId in items:
-			#var item = items[itemId]
-			var item = getItem(itemId)
-			if item.has("isTemplate") and item.isTemplate == true: continue
-			if typeof(arguments.kw) == TYPE_STRING:
-				if arguments.kw in item.shopKWs:
-					possibleItems.append(itemId)
-			elif typeof(arguments.kw) == TYPE_ARRAY or typeof(arguments.kw) == TYPE_STRING_ARRAY:
-				for kw in arguments.kw:
-					if kw in item.shopKWs:
-						possibleItems.append(itemId)
-						break
-		possibleItems.shuffle()
-		var itemCountMax = 20
-		var itemCountMin = 10
-		if arguments.has("itemCountMax"): itemCountMax = arguments.itemCountMax
-		if arguments.has("itemCountMin"): itemCountMin = arguments.itemCountMin
-		
-		var itemCount = rng.randi_range(itemCountMin,itemCountMax)
-		
-		if possibleItems.size() > itemCount : possibleItems.resize(itemCount)
-		
-		WorldData.shops[arguments.ID].items = possibleItems
+		var shop:Shop = Shop.new(arguments)
+		WorldData.shops[arguments.ID].items = shopItems(shop)
 		
 		WorldData.shops[arguments.ID].validTil = WorldData.Time+180#todo
 	
@@ -1051,7 +1029,47 @@ func shopClose():
 	CurrentUi.ShowShop = false
 	CurrentUi.ShopItems.clear()
 	updateUI()
+
+func shopItems(shop:Shop)->Array:
+	var result = []
 	
+	var filter = shop.get("filter",null)
+	var itemCount = shop.get("itemCount",{})
+	var itemCountMin = itemCount.get("min",10)
+	var itemCountMax = itemCount.get("max",20)
+	var itemCountTarget = rng.randi_range(itemCountMin,itemCountMax)
+	
+	for itemId in items:
+		var item = getItem(itemId)
+		if item.get("isTemplate",false) == true: continue
+		if item.get("hide",false) == true: continue
+		
+		if !filter: result.append(itemId)
+		else:
+			var matched = true
+			for key in filter:
+				var matchFilter = filter[key]
+				var matchItem = item.get(key,null)
+				if !matchItem:
+					matched = false
+					break
+				match typeof(matchFilter):
+					TYPE_STRING, TYPE_INT, TYPE_REAL, TYPE_BOOL:
+						if !Util.equals(matchFilter,matchItem):
+							matched = false
+							break
+					TYPE_ARRAY, TYPE_STRING_ARRAY, TYPE_INT_ARRAY, TYPE_REAL_ARRAY:
+						if !matchFilter.has(matchItem):
+							matched = false
+							break
+			if matched: result.append(itemId)
+						
+	result.shuffle()
+	if result.size() > itemCountTarget : result.resize(itemCountTarget)
+	
+	return result
+	
+
 func shopUpdateItems():
 	var shopID = CurrentUi.ShopID
 	var shopItems = WorldData.shops[shopID].items
