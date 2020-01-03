@@ -1,9 +1,7 @@
-[gd_scene load_steps=2 format=2]
-
-[ext_resource path="res://font/Timeless18.tres" type="DynamicFont" id=1]
+[gd_scene format=2]
 
 [node name="LogEntry" type="Label"]
 margin_right = 1920.0
 margin_bottom = 21.0
-custom_fonts/font = ExtResource( 1 )
+focus_mode = 2
 text = "Some example text"

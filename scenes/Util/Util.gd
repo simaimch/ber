@@ -208,6 +208,44 @@ func getSecondsTilMidnight(t) -> int:
 	var tdict = getDateTime(t)
 	return (t.get("hour",0) * 3600 + t.get("minute",0) * 60 + t.get("second",0))
 
+
+func day2int(day)->int:
+	match typeof(day):
+		TYPE_INT:
+			return day
+		TYPE_STRING:
+			pass
+		_:
+			return 0
+	match day:
+		"SUN": return 0
+		"MON": return 1
+		"TUE": return 2
+		"WED": return 3
+		"THU": return 4
+		"FRI": return 5
+		"SAT": return 6
+	return 0
+
+func getTimeNext(criteria:Dictionary,now,default:int=0)->int:	
+	var timeCurrentUnix = getUnixTime(now)
+	var timeCurrentUnixReset = datetimeResetTime(timeCurrentUnix)
+	var timeCurrentDT = getDateTime(timeCurrentUnix)
+	var timeCurrentDTReset = datetimeResetTime(timeCurrentDT)
+	
+	var timeTargetUnix = default
+	
+	if criteria.has("day"):
+		var dayTarget = day2int(criteria.get("day"))
+		var dayCurrent= timeCurrentDTReset.weekday
+		var dayOffset = dayTarget-dayCurrent
+		if dayOffset <= 0: dayOffset+=7
+		
+		timeTargetUnix = timeCurrentUnixReset + 86400*dayOffset
+		
+	
+	return timeTargetUnix
+
 func getDateTime(dt) -> Dictionary:
 	if typeof(dt) == TYPE_DICTIONARY: return mergeDateTime(getEmptyDateTime(),dt)
 	if typeof(dt) == TYPE_STRING: return string2DateTime(dt)

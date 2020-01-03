@@ -1015,7 +1015,8 @@ func shop(arguments):
 		var shop:Shop = Shop.new(arguments)
 		WorldData.shops[arguments.ID].items = shopItems(shop)
 		
-		WorldData.shops[arguments.ID].validTil = WorldData.Time+180#todo
+		#WorldData.shops[arguments.ID].validTil = WorldData.Time+180#todo
+		WorldData.shops[arguments.ID].validTil = Util.getTimeNext(shop.get("resetTime",{}),now(),WorldData.Time+180)
 	
 	CurrentUi.UIGroup = "uiShop"
 	CurrentUi.ShowShop = true
