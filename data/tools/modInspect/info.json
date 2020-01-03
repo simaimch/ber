@@ -1,0 +1,10 @@
+{
+    "description":{
+        "required": true,
+        "valueType": "String"
+    },
+	"name":{
+        "required": true,
+        "valueType": "String"
+    }
+}

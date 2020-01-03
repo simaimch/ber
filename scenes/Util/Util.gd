@@ -279,10 +279,11 @@ func getUnixTime(time)->int:
 	return 0
 
 func loadJSONfromFile(path:String)->Dictionary:
-	var file = File.new()
-	file.open(path, file.READ)
-	var text = file.get_as_text()
-	file.close()
+	#var file = File.new()
+	#file.open(path, file.READ)
+	#var text = file.get_as_text()
+	#file.close()
+	var text = readFile(path)
 	var temp = JSON.parse(text)
 	if temp.error == OK:
 		return temp.result
@@ -624,7 +625,17 @@ func mergeInto(source,target,inplace = true):
 	
 	return target
 
-func readFile(path:String,showError:bool):
+func path(p)->String:
+	match typeof(p):
+		TYPE_STRING:
+			return p
+		TYPE_STRING_ARRAY:
+			return p.join("/")
+		TYPE_ARRAY:
+			return PoolStringArray(p).join("/")
+	return str(p)
+
+func readFile(path:String,showError:bool=true):
 	var file = File.new()
 	if file.open(path, file.READ)!=OK:
 		if showError:

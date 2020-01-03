@@ -1,0 +1,96 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://themes/default.tres" type="Theme" id=1]
+[ext_resource path="res://scenes/tools/modInspect/modInspect.gd" type="Script" id=2]
+[ext_resource path="res://scenes/tools/modInspect/ErrorDialog.gd" type="Script" id=3]
+
+[node name="Control" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1920.0
+margin_bottom = 21.0
+
+[node name="LoadButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_right = 37.0
+margin_bottom = 21.0
+text = "Load"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VBoxContainer"]
+margin_top = 25.0
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+split_offset = 600
+
+[node name="Tree" type="Tree" parent="VBoxContainer/HSplitContainer"]
+margin_right = 601.0
+margin_bottom = 1055.0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HSplitContainer"]
+margin_left = 613.0
+margin_right = 1920.0
+margin_bottom = 1055.0
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/HSplitContainer/PanelContainer"]
+margin_right = 1307.0
+margin_bottom = 21.0
+size_flags_vertical = 0
+
+[node name="ModInfoGrid" type="GridContainer" parent="VBoxContainer/HSplitContainer/PanelContainer/CenterContainer"]
+margin_left = 529.0
+margin_right = 777.0
+margin_bottom = 21.0
+columns = 2
+
+[node name="ModNameLabel" type="Label" parent="VBoxContainer/HSplitContainer/PanelContainer/CenterContainer/ModInfoGrid"]
+margin_right = 44.0
+margin_bottom = 21.0
+text = "Name"
+
+[node name="ModNameInput" type="LineEdit" parent="VBoxContainer/HSplitContainer/PanelContainer/CenterContainer/ModInfoGrid"]
+margin_left = 48.0
+margin_right = 248.0
+margin_bottom = 21.0
+rect_min_size = Vector2( 200, 0 )
+
+[node name="OpenModDialog" type="FileDialog" parent="."]
+margin_right = 500.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 500, 300 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+window_title = "Verzeichnis wählen"
+resizable = true
+mode = 2
+access = 2
+current_dir = "I:/ownCloud/Development/Godot"
+current_file = "Ber"
+current_path = "I:/ownCloud/Development/Godot/Ber"
+
+[node name="ErrorDialog" type="AcceptDialog" parent="." groups=[
+"error",
+]]
+margin_right = 300.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 300, 120 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+popup_exclusive = true
+script = ExtResource( 3 )
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/LoadButton" to="." method="_on_LoadButton_pressed"]
+[connection signal="item_selected" from="VBoxContainer/HSplitContainer/Tree" to="." method="_on_Tree_item_selected"]
+[connection signal="dir_selected" from="OpenModDialog" to="." method="_on_OpenModDialog_dir_selected"]
