@@ -1,0 +1,38 @@
+{
+    "texture":{
+        "required": true,
+        "valueType": "Texture"
+    },
+    "type":{
+        "editorRefresh":true,
+        "editorTool": "select",
+        "required":true,
+        "valueType": "StringSelect",
+        "values":["bra","clothes","panties","shoes"]
+    },
+    "attractiveness":{
+        "condition": "PARAM1.type='clothes'",
+        "editorTool": "select",
+        "required":true,
+        "valueType": "StringSelect",
+        "values":["sloppy","conservative","sexy","slutty","slutty+"]
+    },
+    "purpose":{
+        "condition": "PARAM1.type='clothes'",
+        "editorTool": "select",
+        "required":true,
+        "valueType": "StringSelect",
+        "values":["everyday","costume","dance","gala","office","school","sport","swim"]
+    },
+    "height":{
+        "condition": "PARAM1.type='shoes'",
+        "required": true,
+        "valueType":"String"
+    },
+    "priceClass":{
+        "editorTool": "select",
+        "required":true,
+        "valueType": "StringSelect",
+        "values":["low+","low","average","high","high+"]
+    }
+}
