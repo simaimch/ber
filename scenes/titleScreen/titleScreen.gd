@@ -22,6 +22,9 @@ func _on_Tools_pressed():
 func _on_ToolsItemTag_pressed():
 	return get_tree().change_scene("res://scenes/tools/itemTag/itemTag.tscn")
 
+func _on_ToolsModInspect_pressed():
+	return get_tree().change_scene("res://scenes/tools/modInspect/modInspect.tscn")
+
 func _ready():
 	#$MarginContainer/HBoxContainer/ToolsContainer.hide()
 	
@@ -50,3 +53,6 @@ func _on_LoadGameButton_pressed():
 
 func _on_LoadGameDialog_file_selected(path):
 	GameManager.loadGame(path)
+
+
+
