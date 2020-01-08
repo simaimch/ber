@@ -10,7 +10,23 @@
                     "heels":{"level":30},
                     "makeup":{"level":30}
                 },
-                "modifierUpdate":{"keyword":"gene"}
+                "modifierUpdate":{"keyword":"gene"},
+                "playerOutfit":{
+                    "clothes":{
+                        "priceClass": "average",
+                        "attractiveness": "sexy",
+                        "purpose": "everyday"
+                    },
+                    "shoes":{
+                        "height": 0
+                    },
+                    "bra":{
+                        "price": [0,40]
+                    },
+                    "panties":{
+                        "price": [0,40]
+                    }
+                }
             },
             "200":{
                 "condition":"PlayerData.prehistory=MiscData.const.prehistory.nerd",
@@ -21,7 +37,24 @@
                     "heels":{"level":10},
                     "makeup":{"level":10}
                 },
-                "modifierUpdate":{"keyword":"gene"}
+                "modifierUpdate":{"keyword":"gene"},
+                "playerOutfit":{
+                    "clothes":{
+                        "priceClass": ["low+","low"],
+                        "attractiveness": "sloppy",
+                        "purpose": "everyday",
+                        "style": "toppants"
+                    },
+                    "shoes":{
+                        "height": 0
+                    },
+                    "bra":{
+                        "price": [0,40]
+                    },
+                    "panties":{
+                        "price": [0,40]
+                    }
+                }
             },
             "300":{
                 "condition":"PlayerData.prehistory=MiscData.const.prehistory.average",
@@ -32,7 +65,23 @@
                     "heels":{"level":20},
                     "makeup":{"level":20}
                 },
-                "modifierUpdate":{"keyword":"gene"}
+                "modifierUpdate":{"keyword":"gene"},
+                "playerOutfit":{
+                    "clothes":{
+                        "priceClass": "average",
+                        "attractiveness": "conservative",
+                        "purpose": "everyday"
+                    },
+                    "shoes":{
+                        "height": 0
+                    },
+                    "bra":{
+                        "price": [0,40]
+                    },
+                    "panties":{
+                        "price": [0,40]
+                    }
+                }
             },
             "1100":{
                 "condition":"PlayerData.occupationStart=MiscData.const.occupationStart.school",
@@ -44,7 +93,9 @@
             }
         },
         "CurrentUi":{
-            "ShowStatusBar":true
+            "ShowStatusBar":true,
+            "PCDetailsEnabled":true,
+            "Theme": null
         }
     }
 }

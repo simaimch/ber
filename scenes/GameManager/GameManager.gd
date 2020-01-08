@@ -176,6 +176,13 @@ func getColor(id):
 		return misc.colors[id]
 	return {"name":id,"rgb":"000000"}
 
+func getCurrentTheme()->Theme:
+	if CurrentUi.has("Theme"):
+		return GameManager.getTheme(CurrentUi["Theme"])
+	
+	var timeOfDay = GameManager.getValueFromPath("WorldData.weather.timeOfDay","night")
+	return GameManager.getTheme(timeOfDay)
+
 func getDialogue(dialogueId):
 
 	if !dialogues.has(dialogueId):
@@ -977,6 +984,10 @@ func modValueAtPath(path,mode,value):
 		setValueAtPath(path,value)
 		return
 		
+	if mode == "unset": 
+		unsetValueAtPath(path,value)
+		return
+		
 	var oldValue = getValueFromPath(path,0)
 	var newValue
 
@@ -1090,7 +1101,6 @@ func shopUpdateItems():
 	CurrentUi.ShopItems.clear()
 	
 	for itemId in shopItems:
-		#var item = items[itemId]
 		var item = getItem(itemId)
 		item = item.duplicate()
 		item.price = item.get("price",0)*WorldData.shopPriceMod
@@ -1744,6 +1754,8 @@ func detailsHide():
 	updateUI()
 
 func detailsShow():
+	if !CurrentUi.get("PCDetailsEnabled",true): return
+	
 	MiscData.currentNpcId[3] = PlayerData.ID
 	
 	#functionParameters.append([PlayerData]) #popped by detailsHide
@@ -1966,14 +1978,18 @@ func executeCommands(commands):
 		if commands.has(dataContainer):
 			var command = commands[dataContainer]
 			for key in command:
-				if typeof(command[key]) == TYPE_DICTIONARY:
-					if command[key].has("mode"):
-						var newValue =getValue(command[key],"value",0)
-						modValueAtPath(dataContainer+"."+key,command[key].mode,newValue)
-					else:
-						modValueAtPath(dataContainer+"."+key,"set",getValue(command[key],"value",0))
-				else:
-					setValueAtPath(dataContainer+"."+key,command[key])
+				match typeof(command[key]):
+					TYPE_DICTIONARY:
+						if command[key].has("mode"):
+							var newValue =getValue(command[key],"value",0)
+							modValueAtPath(dataContainer+"."+key,command[key].mode,newValue)
+						else:
+							modValueAtPath(dataContainer+"."+key,"set",getValue(command[key],"value",0))
+					TYPE_NIL:
+						#dataContainer.erase(key)
+						modValueAtPath(dataContainer+"."+key,"unset",null)
+					_:
+						setValueAtPath(dataContainer+"."+key,command[key])
 	
 	if commands.has("skill"):
 		var skill= commands.get("skill")
@@ -2928,6 +2944,20 @@ func weatherForecast(targetTimeDict:Dictionary,allowMeta = true):
 	if typeof(forecast) == TYPE_NIL:
 		forecast = weatherForecastGenerate(targetTimeDict,allowMeta)
 	return forecast
+
+func unsetValueAtPath(path,value):
+	var cObj
+	var pathArr = path.split(".")
+	var i = 0
+	cObj = getObjectFromPath(pathArr[0])
+	i+= 1
+	while(i < pathArr.size()-1):
+		if !cObj.has(pathArr[i]):
+			return
+		cObj = cObj[pathArr[i]]
+		i+=1
+		
+	cObj.erase(pathArr[i])
 
 func weatherForecastGenerate(targetTimeDict:Dictionary,allowMeta = true):
 	var forecast = "mild"
