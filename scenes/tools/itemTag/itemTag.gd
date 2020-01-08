@@ -135,15 +135,23 @@ func getCategoryItems(category):
 					categoryItems.append(null)
 	return categoryItems
 
+
 func loadCategoires():
+	categories = {}
+	var itemFiles = Util.getFilesInFolder("res://data/tools/itemTag/")
+	for itemFile in itemFiles:
+		loadCategory(itemFile.get_basename())
+		
+func loadCategory(id:String):
 	var file = File.new()
-	file.open("res://data/tools/itemTag.json", file.READ)
+	var path = "res://data/tools/itemTag/"+id+".json"
+	file.open(path, file.READ)
 	var text = file.get_as_text()
 	file.close()
 	var temp = JSON.parse(text)
 	if temp.error == OK:
-		var fcategories = temp.result
-		categories = fcategories
+		#var fcategories[id] = temp.result
+		categories[id] = temp.result
 	else:
 		print("Error loading Categories: "+str(temp.error))
 

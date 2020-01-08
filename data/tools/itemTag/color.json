@@ -1,0 +1,45 @@
+{
+    "order":["blackwhite","red","pinkviolet","orangeyellow","green","blue","brown","other"],
+    "items":{
+        "blackwhite":{
+            "color":["black","white"],
+            "jump":"colorBlackWhite",
+            "text":"black, white, grey"
+        },
+        "blue":{
+            "color":"blue",
+            "jump":"colorBlue",
+            "text":"blue"
+        },
+        "brown":{
+            "color":"brown",
+            "jump":"colorBrown",
+            "text":"brown"
+        },
+        "green":{
+            "color":"green",
+            "jump":"colorGreen",
+            "text":"green"
+        },
+        "orangeyellow":{
+            "color":["orange","yellow"],
+            "jump":"colorOrangeYellow",
+            "text":"orange, yellow"
+        },
+        "pinkviolet":{
+            "color":["pink","violet"],
+            "jump":"colorPinkViolet",
+            "text":"pink, violet"
+        },
+        "red":{
+            "color":"red",
+            "jump":"colorRed",
+            "text":"red"
+        },
+        "other":{
+            "color":"white",
+            "jump":"colorOther",
+            "text":"other"
+        }
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "order":[null,"outfit",null,"bra","panties",null,"shoes"],
+    "items":{
+        "outfit":{
+            "texture":"texture/misc/itemtype/dress.png",
+            "result":{"type":"clothes"},
+            "categories":[
+                "outfitPurpose",
+                "outfitAttractiveness",
+                {"category":"color","target":"color","label":"Outfit Color"},
+                "price"
+            ]
+        },
+        "bra":{
+            "texture":"texture/misc/itemtype/bra.png",
+            "result":{"type":"bra"},
+            "categories":[
+                "outfitAttractiveness",
+                {"category":"color","target":"color","label":"Outfit Color"},
+                "price"
+            ]
+            
+        },
+        "panties":{
+            "texture":"texture/misc/itemtype/panties.jpg",
+            "result":{"type":"panties"},
+            "categories":[
+                "outfitAttractiveness",
+                {"category":"color","target":"color","label":"Outfit Color"},
+                "price"
+            ]
+            
+        },
+        "shoes":{
+            "texture":"texture/misc/itemtype/shoes.jpg",
+            "result":{"type":"shoes","inherit":"shoe"},
+            "jump":"shoeType"
+        }
+    }
+}

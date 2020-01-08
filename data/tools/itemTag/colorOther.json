@@ -1,0 +1,20 @@
+{
+    "order":["silver","gold","mixed-colored"],
+    "items":{
+        "gold":{
+            "color":"gold",
+            "result":{"color1":"gold"},
+            "text":"gold"
+        },
+        "silver":{
+            "color":"silver",
+            "result":{"color1":"silver"},
+            "text":"silver"
+        },
+        "mixed-colored":{
+            "color":"gold",
+            "result":{"color1":"mixed-colored"},
+            "text":"mixed-colored"
+        }
+    }
+}

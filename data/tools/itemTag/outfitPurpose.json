@@ -1,0 +1,38 @@
+{
+    "order":["costume","dance","everyday","gala","office","school","sport","swim"],
+    "items":{
+        "costume":{
+            "result":{"purpose":"costume"},
+            "text": "Costume"
+        },
+        "dance":{
+            "result":{"purpose":"dance"},
+            "text": "Dancing"
+        },
+        "everyday":{
+            "result":{"purpose":"everyday"},
+            "text": "Everyday",
+            "jump":"outfitStyleEveryday"
+        },
+        "gala":{
+            "result":{"purpose":"gala"},
+            "text": "Gala"
+        },
+        "office":{
+            "result":{"purpose":"office"},
+            "text": "Office"
+        },
+        "school":{
+            "result":{"purpose":"school"},
+            "text": "School"
+        },
+        "sport":{
+            "result":{"purpose":"sport"},
+            "text": "Sport"
+        },
+        "swim":{
+            "result":{"purpose":"swim"},
+            "text": "Swimming"
+        }
+    }
+}

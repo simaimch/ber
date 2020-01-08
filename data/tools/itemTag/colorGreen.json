@@ -1,0 +1,35 @@
+{
+    "order":["green","emerald","seafoam","olive","pear","lime"],
+    "items":{
+        "emerald":{
+            "color":"green_emerald",
+            "result":{"color1":"green_emerald"},
+            "text":"emerald"
+        },
+        "green":{
+            "color":"green",
+            "result":{"color1":"green"},
+            "text":"green"
+        },
+        "lime":{
+            "color":"green_lime",
+            "result":{"color1":"green_lime"},
+            "text":"lime"
+        },
+        "olive":{
+            "color":"green_olive",
+            "result":{"color1":"green_olive"},
+            "text":"olive"
+        },
+        "pear":{
+            "color":"green_pear",
+            "result":{"color1":"green_pear"},
+            "text":"pear"
+        },
+        "seafoam":{
+            "color":"green_seafoam",
+            "result":{"color1":"green_seafoam"},
+            "text":"seafoam"
+        }
+    }
+}

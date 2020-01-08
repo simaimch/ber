@@ -1,0 +1,23 @@
+{
+    "order":["shoe_boot_ankle","shoe_boot_knee","shoe_boot_overknee"],
+    "items":{
+        "shoe_boot_ankle":{
+            "texture":"texture/misc/itemtype/shoe/boot_ankle2.png",
+            "jump":"shoe_boot_ankle",
+            "text":"Ankle-high",
+            "result":{"parts":["shoe_boot_ankle"]}
+        },
+        "shoe_boot_knee":{
+            "texture":"texture/misc/itemtype/shoe/boot_knee.png",
+            "jump":"shoe_boot_knee",
+            "text":"Knee-high",
+            "result":{"parts":["shoe_boot_knee"]}
+        },
+        "shoe_boot_overknee":{
+            "texture":"texture/misc/itemtype/shoe/boot_overknee.png",
+            "jump":"shoe_boot_overknee",
+            "text":"Overknee",
+            "result":{"parts":["shoe_boot_overknee"]}
+        }
+    }
+}

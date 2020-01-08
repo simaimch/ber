@@ -1,0 +1,45 @@
+{
+    "order":["pink","rose","magenta","hotpink","purple","violet","plum","lilac"],
+    "items":{
+        "hotpink":{
+            "color":"pink_hotpink",
+            "result":{"color1":"pink_hotpink"},
+            "text":"hot pink"
+        },
+        "lilac":{
+            "color":"violet_lilac",
+            "result":{"color1":"violet_lilac"},
+            "text":"lilac"
+        },
+        "magenta":{
+            "color":"pink_magenta",
+            "result":{"color1":"pink_magenta"},
+            "text":"magenta"
+        },
+        "plum":{
+            "color":"violet_plum",
+            "result":{"color1":"violet_plum"},
+            "text":"plum"
+        },
+        "pink":{
+            "color":"pink",
+            "result":{"color1":"pink"},
+            "text":"pink"
+        },
+        "purple":{
+            "color":"violet_purple",
+            "result":{"color1":"violet_purple"},
+            "text":"purple"
+        },
+        "rose":{
+            "color":"pink_rose",
+            "result":{"color1":"pink_rose"},
+            "text":"rose"
+        },
+        "violet":{
+            "color":"violet",
+            "result":{"color1":"violet"},
+            "text":"violet"
+        }
+    }
+}

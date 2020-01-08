@@ -1,0 +1,25 @@
+{
+    "order":["verylow",null,"low","average",null,"high",null,"veryhigh"],
+    "items":{
+        "low":{
+            "result":{"priceClass":"low"},
+            "text": "Low"
+        },
+        "average":{
+            "result":{"priceClass":"average"},
+            "text": "Average"
+        },
+        "high":{
+            "result":{"priceClass":"high"},
+            "text": "High"
+        },
+        "veryhigh":{
+            "result":{"priceClass":"high+"},
+            "text": "Very High"
+        },
+        "verylow":{
+            "result":{"priceClass":"low+"},
+            "text": "Very Low"
+        }
+    }
+}

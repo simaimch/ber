@@ -1,0 +1,25 @@
+{
+    "order":["black","white","silver"],
+    "items":{
+        "black":{
+            "color":"black",
+            "result":{"color1":"black"},
+            "text":"black"
+        },
+        "white":{
+            "color":"white",
+            "result":{"color1":"white"},
+            "text":"white"
+        },
+        "silver":{
+            "color":"silver",
+            "result":{"color1":"silver"},
+            "text":"silver"
+        },
+        "grey":{
+            "color":"grey",
+            "result":{"color1":"grey"},
+            "text":"grey"
+        }
+    }
+}

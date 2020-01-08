@@ -1,0 +1,41 @@
+{
+    "fn_dress":{
+        "filter":{
+            "type":"clothes",
+            "purpose":"everyday",
+            "attractiveness":["conservative","sexy","sloppy"],
+            "priceClass": ["low+","low"]
+        },
+        "itemCount":{
+            "min": 10,
+            "max": 16
+        },
+        "resetTime":{
+            "day":"MON"
+        }
+    },
+    "fn_shoes":{
+        "filter":{
+            "type":"shoes"
+        },
+        "itemCount":{
+            "min": 10,
+            "max": 16
+        },
+        "resetTime":{
+            "day":"MON"
+        }
+    },
+    "fn_underwear":{
+        "filter":{
+            "type":["bra","panties"]
+        },
+        "itemCount":{
+            "min": 10,
+            "max": 16
+        },
+        "resetTime":{
+            "day":"MON"
+        }
+    }
+}

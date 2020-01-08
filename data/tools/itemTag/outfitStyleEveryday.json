@@ -1,0 +1,21 @@
+{
+    "order":["dress","topHotpants","topPants","topSkirt"],
+    "items":{
+        "dress":{
+            "result":{"style":"dress"},
+            "text": "Dress"
+        },
+        "topHotpants":{
+            "result":{"style":"tophotpants"},
+            "text": "Hotpants+Top"
+        },
+        "topPants":{
+            "result":{"style":"toppants"},
+            "text": "Pants (long)+Top"
+        },
+        "topSkirt":{
+            "result":{"style":"topskirt"},
+            "text": "Skirt+Top"
+        }
+    }
+}

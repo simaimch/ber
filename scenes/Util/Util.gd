@@ -208,6 +208,44 @@ func getSecondsTilMidnight(t) -> int:
 	var tdict = getDateTime(t)
 	return (t.get("hour",0) * 3600 + t.get("minute",0) * 60 + t.get("second",0))
 
+
+func day2int(day)->int:
+	match typeof(day):
+		TYPE_INT:
+			return day
+		TYPE_STRING:
+			pass
+		_:
+			return 0
+	match day:
+		"SUN": return 0
+		"MON": return 1
+		"TUE": return 2
+		"WED": return 3
+		"THU": return 4
+		"FRI": return 5
+		"SAT": return 6
+	return 0
+
+func getTimeNext(criteria:Dictionary,now,default:int=0)->int:	
+	var timeCurrentUnix = getUnixTime(now)
+	var timeCurrentUnixReset = datetimeResetTime(timeCurrentUnix)
+	var timeCurrentDT = getDateTime(timeCurrentUnix)
+	var timeCurrentDTReset = datetimeResetTime(timeCurrentDT)
+	
+	var timeTargetUnix = default
+	
+	if criteria.has("day"):
+		var dayTarget = day2int(criteria.get("day"))
+		var dayCurrent= timeCurrentDTReset.weekday
+		var dayOffset = dayTarget-dayCurrent
+		if dayOffset <= 0: dayOffset+=7
+		
+		timeTargetUnix = timeCurrentUnixReset + 86400*dayOffset
+		
+	
+	return timeTargetUnix
+
 func getDateTime(dt) -> Dictionary:
 	if typeof(dt) == TYPE_DICTIONARY: return mergeDateTime(getEmptyDateTime(),dt)
 	if typeof(dt) == TYPE_STRING: return string2DateTime(dt)
@@ -241,10 +279,11 @@ func getUnixTime(time)->int:
 	return 0
 
 func loadJSONfromFile(path:String)->Dictionary:
-	var file = File.new()
-	file.open(path, file.READ)
-	var text = file.get_as_text()
-	file.close()
+	#var file = File.new()
+	#file.open(path, file.READ)
+	#var text = file.get_as_text()
+	#file.close()
+	var text = readFile(path)
 	var temp = JSON.parse(text)
 	if temp.error == OK:
 		return temp.result
@@ -252,7 +291,7 @@ func loadJSONfromFile(path:String)->Dictionary:
 		printerr("Error loading JSON from "+path+": "+str(temp.error))
 		return {}
 
-func clearChildren(obj):
+func clearChildren(obj:Node):
 	for i in obj.get_children():
 		i.queue_free()
 
@@ -579,15 +618,24 @@ func mergeInto(source,target,inplace = true):
 				target[skey] = valueTarget + valueSource
 			else:
 				target[skey] = valueSource
-		elif ((typeSource == TYPE_INT and typeTarget == TYPE_INT) or
-			(typeSource == TYPE_REAL and typeTarget == TYPE_REAL) or 
+		elif ((typeSource in [TYPE_INT,TYPE_REAL] and typeTarget in [TYPE_INT,TYPE_REAL]) or
 			(typeSource == TYPE_BOOL and typeTarget == TYPE_BOOL)):
 				target[skey] = valueSource
 				
 	
 	return target
 
-func readFile(path:String,showError:bool):
+func path(p)->String:
+	match typeof(p):
+		TYPE_STRING:
+			return p
+		TYPE_STRING_ARRAY:
+			return p.join("/")
+		TYPE_ARRAY:
+			return PoolStringArray(p).join("/")
+	return str(p)
+
+func readFile(path:String,showError:bool=true):
 	var file = File.new()
 	if file.open(path, file.READ)!=OK:
 		if showError:
@@ -658,6 +706,13 @@ func stringSubstrFromTo(s:String,from:int,to:int)->String:
 func texture(path:String):
 	return cache_texture.get(path)
 
+func textureCreate(path:String)->Texture:
+	var image = Image.new()
+	image.load(path)
+	var texture = ImageTexture.new()
+	texture.create_from_image(image)
+	return texture
+
 func textureLoad(path):	
 	var mods = GameManager.getActiveMods()
 	
@@ -675,11 +730,7 @@ func textureLoad(path):
 		return texture
 	
 	elif fileExists(path):
-		var image = Image.new()
-		image.load(path)
-		var texture = ImageTexture.new()
-		texture.create_from_image(image)
-		return texture
+		return textureCreate(path)
 		
 	LOG.out(["Error loading texture: ",path])
 	

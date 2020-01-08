@@ -6,7 +6,6 @@
 [node name="BuyDialogue" type="PopupDialog" groups=[
 "uiShopDialogue",
 ]]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
