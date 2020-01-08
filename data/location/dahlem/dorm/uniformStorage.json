@@ -1,0 +1,35 @@
+{
+    "label":"Uniform Storage",
+    "text":"School uniforms of all sizes are stored in this room.",
+    "bg":"texture/locations/dahlem/uniformStorage.jpg",
+    "npcs": true,
+    "rl":[
+        {
+            "locationId":"SELF.floor5",
+            "time": 30,
+            "label":"Hallway"
+        }
+    ],
+    "actions":{
+        "1000":{
+            "Label": "Take a uniform",
+            "gotoShop":{
+                "ID":"Dahlem_Dorm_UniStor",
+                "filter":{
+                    "type":"clothes",
+                    "purpose":"school",
+                    "attractiveness":["conservative"],
+                    "priceClass": ["low+","low"]
+                },
+                "itemCount":{
+                    "min": 1,
+                    "max": 1
+                },
+                "pricemod":0.0,
+                "resetTime":{
+                    "day":"MON"
+                }
+            }
+        }
+    }
+}

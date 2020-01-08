@@ -1022,6 +1022,9 @@ func shop(arguments):
 	CurrentUi.ShowShop = true
 	CurrentUi.ShowWearInformation = true
 	CurrentUi.ShopID = arguments.ID
+	
+	WorldData.shopPriceMod = getValue(arguments,"pricemod",1.0)
+	
 	shopUpdateItems()
 	
 
@@ -1041,6 +1044,7 @@ func shopItems(shop:Shop)->Array:
 	var itemCountTarget = rng.randi_range(itemCountMin,itemCountMax)
 	
 	for itemId in items:
+		
 		var item = getItem(itemId)
 		if item.get("isTemplate",false) == true: continue
 		if item.get("hide",false) == true: continue
@@ -1051,9 +1055,9 @@ func shopItems(shop:Shop)->Array:
 			for key in filter:
 				var matchFilter = filter[key]
 				var matchItem = item.get(key,null)
-				if !matchItem:
-					matched = false
-					break
+#				if !matchItem:
+#					matched = false
+#					break
 				match typeof(matchFilter):
 					TYPE_STRING, TYPE_INT, TYPE_REAL, TYPE_BOOL:
 						if !Util.equals(matchFilter,matchItem):
@@ -1063,6 +1067,15 @@ func shopItems(shop:Shop)->Array:
 						if !matchFilter.has(matchItem):
 							matched = false
 							break
+					TYPE_DICTIONARY:
+						match matchFilter.get("mode"):
+							"rangeINT":
+								matchItem = int(str(matchItem))
+								var val_min = matchFilter.get("min",0)
+								var val_max = matchFilter.get("max",1000000)
+								if Util.bigger(matchItem,val_max) or Util.bigger(val_min,matchItem):
+									matched = false
+									break
 			if matched: result.append(itemId)
 						
 	result.shuffle()
@@ -1079,6 +1092,8 @@ func shopUpdateItems():
 	for itemId in shopItems:
 		#var item = items[itemId]
 		var item = getItem(itemId)
+		item = item.duplicate()
+		item.price = item.get("price",0)*WorldData.shopPriceMod
 		if CurrentUi.get("ShopShowOwned",false) or !(itemId in PlayerData.inventory):
 			CurrentUi.ShopItems.append(item)
 			
