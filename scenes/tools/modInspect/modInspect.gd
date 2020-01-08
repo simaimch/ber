@@ -29,6 +29,9 @@ func _ready():
 func _on_LoadButton_pressed():
 	openModDialog.popup_centered()
 
+func _on_MainMenuButton_pressed():
+	return get_tree().change_scene("res://scenes/titleScreen/titleScreen.tscn")
+
 func _on_OpenModDialog_dir_selected(dir):
 	modLoad(dir)
 
@@ -363,6 +366,9 @@ func updateEntry(value,label,entryKey,category,id):
 		label.set("custom_colors/font_color", Color(0,0,0))
 	else:
 		label.set("custom_colors/font_color", Color(1,0,0))
+
+
+
 
 
 
