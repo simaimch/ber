@@ -7,8 +7,5 @@
 	"name":{
         "required": true,
         "valueType": "String"
-    },
-    "test":{
-        "required":true
     }
 }

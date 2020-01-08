@@ -1,4 +1,7 @@
 {
+    "name":{
+        "valueType":"String"
+    },
     "texture":{
         "required": true,
         "valueType": "Texture"
@@ -19,13 +22,26 @@
     },
     "purpose":{
         "condition": "PARAM1.type='clothes'",
+        "editorRefresh":true,
         "editorTool": "select",
         "required":true,
         "valueType": "StringSelect",
         "values":["everyday","costume","dance","gala","office","school","sport","swim"]
     },
+    "style":{
+        "condition": "PARAM1.purpose='everyday'",
+        "editorTool": "select",
+        "required":true,
+        "valueType": "StringSelect",
+        "values":["dress","tophotpants","toppants","topskirt"]
+    },
     "height":{
         "condition": "PARAM1.type='shoes'",
+        "valueMax": 20,
+        "valueMin": 0,
+        "valueType":"Int"
+    },
+    "color":{
         "required": true,
         "valueType":"String"
     },

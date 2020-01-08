@@ -52,21 +52,36 @@ margin_left = 613.0
 margin_right = 1920.0
 margin_bottom = 1055.0
 
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HSplitContainer/PanelContainer"]
+margin_right = 1307.0
+margin_bottom = 1055.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="OverviewContainer" type="GridContainer" parent="VBoxContainer/HSplitContainer/PanelContainer/ScrollContainer"]
+margin_right = 1307.0
+margin_bottom = 1055.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 6
+
 [node name="CenterContainer" type="CenterContainer" parent="VBoxContainer/HSplitContainer/PanelContainer"]
 margin_right = 1307.0
 size_flags_vertical = 0
 
 [node name="ModInfoGrid" type="GridContainer" parent="VBoxContainer/HSplitContainer/PanelContainer/CenterContainer"]
 margin_left = 653.0
+margin_top = 6.0
 margin_right = 653.0
+margin_bottom = 6.0
 columns = 2
 
 [node name="GridTemplate" type="GridContainer" parent="VBoxContainer/HSplitContainer/PanelContainer/CenterContainer"]
 visible = false
 margin_left = 503.0
-margin_top = -277.0
+margin_top = -284.0
 margin_right = 803.0
-margin_bottom = 277.0
+margin_bottom = 295.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HSplitContainer/PanelContainer/CenterContainer/GridTemplate"]
 margin_right = 300.0
@@ -109,6 +124,25 @@ stretch_mode = 6
 margin_top = 304.0
 margin_right = 300.0
 margin_bottom = 325.0
+
+[node name="HSliderContainer" type="HBoxContainer" parent="VBoxContainer/HSplitContainer/PanelContainer/CenterContainer/GridTemplate"]
+margin_top = 558.0
+margin_right = 300.0
+margin_bottom = 579.0
+
+[node name="HSlider" type="HSlider" parent="VBoxContainer/HSplitContainer/PanelContainer/CenterContainer/GridTemplate/HSliderContainer"]
+margin_right = 266.0
+margin_bottom = 21.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/HSplitContainer/PanelContainer/CenterContainer/GridTemplate/HSliderContainer"]
+margin_left = 270.0
+margin_right = 300.0
+margin_bottom = 21.0
+rect_min_size = Vector2( 30, 0 )
+text = "0"
+align = 2
 
 [node name="OpenModDialog" type="FileDialog" parent="."]
 margin_right = 500.0
