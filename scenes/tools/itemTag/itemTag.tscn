@@ -13,6 +13,9 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -60,7 +63,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ImageFileScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer"]
-editor/display_folded = true
 margin_right = 638.0
 margin_bottom = 1026.0
 size_flags_horizontal = 3
@@ -113,7 +115,6 @@ margin_bottom = 326.0
 Number = "9"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-editor/display_folded = true
 margin_top = 370.0
 margin_right = 1278.0
 margin_bottom = 696.0
@@ -140,7 +141,6 @@ margin_bottom = 326.0
 Number = "6"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
-editor/display_folded = true
 margin_top = 700.0
 margin_right = 1278.0
 margin_bottom = 1026.0

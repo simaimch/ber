@@ -1,0 +1,11 @@
+{
+    "description":{
+        "editorTool": "multiline",
+        "required": true,
+        "valueType": "String"
+    },
+	"name":{
+        "required": true,
+        "valueType": "String"
+    }
+}

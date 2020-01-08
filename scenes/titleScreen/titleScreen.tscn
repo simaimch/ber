@@ -9,6 +9,9 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -26,7 +29,7 @@ margin_right = -20.0
 margin_bottom = -20.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
-margin_right = 1750.0
+margin_right = 2008.0
 margin_bottom = 980.0
 
 [node name="MenuVBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
@@ -94,31 +97,37 @@ text = "Simaimch"
 
 [node name="LogoContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer"]
 margin_left = 364.0
-margin_right = 1750.0
+margin_right = 2008.0
 margin_bottom = 980.0
 size_flags_horizontal = 3
 
 [node name="Logo" type="TextureRect" parent="MarginContainer/HBoxContainer/LogoContainer"]
-margin_left = 53.0
+margin_left = 182.0
 margin_top = 170.0
-margin_right = 1333.0
+margin_right = 1462.0
 margin_bottom = 810.0
 texture = ExtResource( 3 )
 stretch_mode = 4
 
 [node name="ToolsContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 visible = false
-margin_left = 364.0
-margin_right = 1750.0
+margin_left = 1648.0
+margin_right = 2008.0
 margin_bottom = 980.0
 size_flags_horizontal = 3
 alignment = 1
 
 [node name="ToolsItemTag" parent="MarginContainer/HBoxContainer/ToolsContainer" instance=ExtResource( 2 )]
-margin_top = 452.0
-margin_right = 1386.0
-margin_bottom = 528.0
+margin_top = 412.0
+margin_right = 360.0
+margin_bottom = 488.0
 caption = "ItemTag"
+
+[node name="ToolsModInspect" parent="MarginContainer/HBoxContainer/ToolsContainer" instance=ExtResource( 2 )]
+margin_top = 492.0
+margin_right = 360.0
+margin_bottom = 568.0
+caption = "ModInspect"
 
 [node name="ModOverview" parent="MarginContainer/HBoxContainer" instance=ExtResource( 4 )]
 visible = false
@@ -139,4 +148,5 @@ current_path = "user://"
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons/ToolsButton" to="." method="_on_Tools_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/MenuVBoxContainer/MenuButtons/QuitButton" to="." method="_on_QuitButton_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/ToolsContainer/ToolsItemTag" to="." method="_on_ToolsItemTag_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/ToolsContainer/ToolsModInspect" to="." method="_on_ToolsModInspect_pressed"]
 [connection signal="file_selected" from="LoadGameDialog" to="." method="_on_LoadGameDialog_file_selected"]

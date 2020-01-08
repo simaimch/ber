@@ -19,7 +19,7 @@
             "text": "Gala"
         },
         "office":{
-            "result":{"purpose":"dance"},
+            "result":{"purpose":"office"},
             "text": "Office"
         },
         "school":{
