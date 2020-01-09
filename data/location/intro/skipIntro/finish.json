@@ -18,7 +18,8 @@
                         "purpose": "everyday"
                     },
                     "shoes":{
-                        "height": 0
+                        "height": [5,15],
+                        "perception": null
                     },
                     "bra":{
                         "price": [0,40]

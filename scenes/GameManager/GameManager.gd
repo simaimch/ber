@@ -2845,12 +2845,14 @@ func setPlayerOutfit(playerOutfit):
 			var matched = true
 			
 			for filterId in playerOutfitItem:
-				
-				if !item.has(filterId): 
-					matched = false
-					break
 					
 				var filterTarget = playerOutfitItem[filterId]
+				
+				if !item.has(filterId): 
+					if filterTarget == null: continue
+					matched = false
+					break
+				
 				match typeof(filterTarget):
 					TYPE_ARRAY, TYPE_REAL_ARRAY, TYPE_INT_ARRAY:
 						if filterTarget.size() == 2 and Util.isNumber(filterTarget[0]) and Util.isNumber(filterTarget[1]): # a range
@@ -2859,6 +2861,10 @@ func setPlayerOutfit(playerOutfit):
 								break
 					TYPE_STRING, TYPE_INT, TYPE_BOOL, TYPE_REAL:
 						if !Util.equals(item[filterId],filterTarget):
+							matched = false
+							break
+					TYPE_NIL:
+						if item.has(filterId):
 							matched = false
 							break
 							
