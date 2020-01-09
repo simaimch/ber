@@ -14,7 +14,6 @@
         "values":["bra","clothes","panties","shoes"]
     },
     "attractiveness":{
-        "condition": "PARAM1.type='clothes'",
         "editorTool": "select",
         "required":true,
         "valueType": "StringSelect",
@@ -41,6 +40,13 @@
         "valueMin": 0,
         "valueType":"Int"
     },
+    "shoeType":{
+        "condition": "PARAM1.type='shoes'",
+        "editorTool": "select",
+        "required":true,
+        "valueType": "StringSelect",
+        "values":["sandal","sandalWedge","pump","boot","bootok","running","dorsay","oxford","chucks"]
+    },
     "color":{
         "required": true,
         "valueType":"String"
@@ -50,5 +56,10 @@
         "required":true,
         "valueType": "StringSelect",
         "values":["low+","low","average","high","high+"]
+    },
+    "perception":{
+        "editorTool": "select",
+        "valueType": "StringSelect",
+        "values":["extravagant","fetish"]
     }
 }
