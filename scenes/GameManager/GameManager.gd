@@ -590,6 +590,13 @@ func getValueFromPath(path,default=""):
 	if path == "false": return false
 	if path == "true": return true
 			
+	if path.begins_with("[") and path.ends_with("]"):
+		var arrayStr = path.substr(1,path.length()-2)
+		var array = arrayStr.split(",")
+		result = []
+		for e in array:
+			result.append(getValueFromPath(e))
+		return result
 			
 	path = pathArrayParase(path)
 		
@@ -2072,6 +2079,9 @@ func executeCommands(commands):
 		var messageText = getValue(message,"text","Message Missing")
 		var msg2ui = {"text":messageText}
 		get_tree().call_group("uiMessage","messageShow",msg2ui)
+		
+	if getValue(commands,"weatherUpdate",false):
+		weatherUpdate(now())
 				
 	# Comes here so that conditionals can override non-conditionals but do not get canceld by consuming events
 	if commands.has("conditionExecute"):

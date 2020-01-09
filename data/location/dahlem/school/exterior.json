@@ -1,5 +1,13 @@
 {
-    "bg":"texture/locations/dahlem/schoolExterior.jpg",
+    "~bg":{
+        "100":{
+            "value":"texture/locations/dahlem/schoolExteriorNight.jpg",
+            "condition":"WorldData.weather.timeOfDay⊆['night','dawn1','dusk3']"
+        },
+        "0":{
+            "value":"texture/locations/dahlem/schoolExterior.jpg"
+        }
+    },
     "label":"School",
     "text":"School.",
     "rl":[

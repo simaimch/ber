@@ -96,6 +96,7 @@
             "ShowStatusBar":true,
             "PCDetailsEnabled":true,
             "Theme": null
-        }
+        },
+        "weatherUpdate":true
     }
 }
