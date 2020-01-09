@@ -43,7 +43,7 @@
                 },
                 "100":{
                     "value":{
-                        "goto":"dahlem.school.classes.start"
+                        "goto":"SELF.classListen"
                     }
                 }
             }
@@ -60,7 +60,7 @@
                 },
                 "100":{
                     "value":{
-                        "goto":"dahlem.school.classes.start"
+                        "goto":"SELF.classDaydream"
                     }
                 }
             }

@@ -1,29 +1,32 @@
 {
-    "~onStart":{
+    "~inherit":{
         "1":{
             "condition":"MiscData.school.currentHour=1",
-            "value":{
-                "goto":"SELF.classEnd1"
-            }
+            "value":"SELF.classEnd1"
         },
         "2":{
             "condition":"MiscData.school.currentHour=2",
-            "value":{
-                "goto":"SELF.classEnd2"
-            }
+            "value":"SELF.classEnd2"
         },
         "3":{
             "condition":"MiscData.school.currentHour=3",
-            "value":{
-                "goto":"SELF.classEnd3"
-            }
+            "value":"SELF.classEnd3"
         },
         "4":{
             "condition":"MiscData.school.currentHour=4",
-            "value":{
-                "goto":"SELF.classEnd4"
+            "value":"SELF.classEnd4"
+        }
+    },
+    "onStart":{
+        "skillCheck":{
+            "#skill":"MiscData.school.currentCourse",
+            "difficulty":30,
+            "&experience":"20*MiscData.school.currentEffort",
+            "result":{
+                "0":{
+                    
+                }
             }
         }
-
     }
 }

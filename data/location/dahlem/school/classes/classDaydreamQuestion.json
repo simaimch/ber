@@ -1,0 +1,28 @@
+{
+    "bg":"texture/events/school/class/questioned_1.jpg",
+    "text":"You don't pay attention to the lesson. You teacher seems to notice you missing interest in the subject and asks you a question.",
+    "actions":{
+        "4000":{
+            "Label":"Correct answer",
+            "Disabled": true,
+            "Tooltip": "You didn't listen to the question. You can only guess."
+        },
+        "3000":{
+            "Label":"Educated guess",
+            "Tooltip": "You don't know the answer, but you know enough about the subject to make a guess that could be right and wouldn't sound too stupid if it were wrong."
+        },
+        "2000":{
+            "Label":"Wild guess",
+            "Tooltip": "You don't know the answer, and you don't know enough about the subject to make a smart guess. Your wild guess could be right, but it might also sound stupid."
+        },
+        "1000":{
+            "Label":"Distract",
+            "Tooltip": "You could try to lead the attention of your teacher to something else. If you succeed you appear as if you paid extra close attention, if you fail you look even stupider than before."
+        },
+        "0":{
+            "Label":"Admit not having listened",
+            "Tooltip": "Worse than giving the right answer but better than giving the wrong one."
+        }
+    },
+    "onStart":{"MiscData":{"school.currentEffort":0.2}}
+}

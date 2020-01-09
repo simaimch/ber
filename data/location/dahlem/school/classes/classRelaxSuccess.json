@@ -1,9 +1,11 @@
 {
-    "text":"SUCCESS",
-    "actions":{
-        "1000":{
-            "Label":"Next",
-            "goto":"SELF.classEnd"
-        }
-    }
+    "|bg":[
+        "texture/events/school/class/sleep_1.jpg",
+        "texture/events/school/class/sleep_2.jpg",
+        "texture/events/school/class/sleep_3.jpg",
+        "texture/events/school/class/sleep_4.jpg"
+    ],
+    "text":"You manage to rest your eyes everytime the teacher doesn't pay attention.\nWhen the lesson is finally over you haven't learned a thing, but at least you are a little bit less tired now.",
+    "inherit":"SELF.classEnd",
+    "onStart":{"MiscData":{"school.currentEffort":0}}
 }

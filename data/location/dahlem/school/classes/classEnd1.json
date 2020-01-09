@@ -6,10 +6,5 @@
             }
         }
     },
-    "actions":{
-        "1":{
-            "Label":"Break",
-            "goto":"SELF.break1"
-        }
-    }
+    "inherit":"SELF.break_Generic"
 }

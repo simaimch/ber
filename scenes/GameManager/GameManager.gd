@@ -965,7 +965,7 @@ func getServiceById(serviceId):
 	return result
 
 func getSkill(id):
-	return misc.skills[id]
+	return misc.skills.get(id,{})
 
 func getStatusmods()->Array:
 	#functionParameters.append([PlayerData])

@@ -1,0 +1,16 @@
+{
+    "|onStart":{
+        "1":{
+            "weight":100,
+            "value":{
+                "goto":"SELF.classDaydreamNoEvent"
+            }
+        },
+        "2":{
+            "weight":100,
+            "value":{
+                "goto":"SELF.classDaydreamQuestion"
+            }
+        }
+    }
+}
