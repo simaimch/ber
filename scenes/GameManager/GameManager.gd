@@ -176,6 +176,13 @@ func getColor(id):
 		return misc.colors[id]
 	return {"name":id,"rgb":"000000"}
 
+func getCurrentTheme()->Theme:
+	if CurrentUi.has("Theme"):
+		return GameManager.getTheme(CurrentUi["Theme"])
+	
+	var timeOfDay = GameManager.getValueFromPath("WorldData.weather.timeOfDay","night")
+	return GameManager.getTheme(timeOfDay)
+
 func getDialogue(dialogueId):
 
 	if !dialogues.has(dialogueId):
@@ -583,6 +590,13 @@ func getValueFromPath(path,default=""):
 	if path == "false": return false
 	if path == "true": return true
 			
+	if path.begins_with("[") and path.ends_with("]"):
+		var arrayStr = path.substr(1,path.length()-2)
+		var array = arrayStr.split(",")
+		result = []
+		for e in array:
+			result.append(getValueFromPath(e))
+		return result
 			
 	path = pathArrayParase(path)
 		
@@ -977,6 +991,10 @@ func modValueAtPath(path,mode,value):
 		setValueAtPath(path,value)
 		return
 		
+	if mode == "unset": 
+		unsetValueAtPath(path,value)
+		return
+		
 	var oldValue = getValueFromPath(path,0)
 	var newValue
 
@@ -1022,6 +1040,9 @@ func shop(arguments):
 	CurrentUi.ShowShop = true
 	CurrentUi.ShowWearInformation = true
 	CurrentUi.ShopID = arguments.ID
+	
+	WorldData.shopPriceMod = getValue(arguments,"pricemod",1.0)
+	
 	shopUpdateItems()
 	
 
@@ -1041,6 +1062,7 @@ func shopItems(shop:Shop)->Array:
 	var itemCountTarget = rng.randi_range(itemCountMin,itemCountMax)
 	
 	for itemId in items:
+		
 		var item = getItem(itemId)
 		if item.get("isTemplate",false) == true: continue
 		if item.get("hide",false) == true: continue
@@ -1051,9 +1073,9 @@ func shopItems(shop:Shop)->Array:
 			for key in filter:
 				var matchFilter = filter[key]
 				var matchItem = item.get(key,null)
-				if !matchItem:
-					matched = false
-					break
+#				if !matchItem:
+#					matched = false
+#					break
 				match typeof(matchFilter):
 					TYPE_STRING, TYPE_INT, TYPE_REAL, TYPE_BOOL:
 						if !Util.equals(matchFilter,matchItem):
@@ -1063,6 +1085,15 @@ func shopItems(shop:Shop)->Array:
 						if !matchFilter.has(matchItem):
 							matched = false
 							break
+					TYPE_DICTIONARY:
+						match matchFilter.get("mode"):
+							"rangeINT":
+								matchItem = int(str(matchItem))
+								var val_min = matchFilter.get("min",0)
+								var val_max = matchFilter.get("max",1000000)
+								if Util.bigger(matchItem,val_max) or Util.bigger(val_min,matchItem):
+									matched = false
+									break
 			if matched: result.append(itemId)
 						
 	result.shuffle()
@@ -1077,8 +1108,9 @@ func shopUpdateItems():
 	CurrentUi.ShopItems.clear()
 	
 	for itemId in shopItems:
-		#var item = items[itemId]
 		var item = getItem(itemId)
+		item = item.duplicate()
+		item.price = item.get("price",0)*WorldData.shopPriceMod
 		if CurrentUi.get("ShopShowOwned",false) or !(itemId in PlayerData.inventory):
 			CurrentUi.ShopItems.append(item)
 			
@@ -1729,6 +1761,8 @@ func detailsHide():
 	updateUI()
 
 func detailsShow():
+	if !CurrentUi.get("PCDetailsEnabled",true): return
+	
 	MiscData.currentNpcId[3] = PlayerData.ID
 	
 	#functionParameters.append([PlayerData]) #popped by detailsHide
@@ -1951,14 +1985,18 @@ func executeCommands(commands):
 		if commands.has(dataContainer):
 			var command = commands[dataContainer]
 			for key in command:
-				if typeof(command[key]) == TYPE_DICTIONARY:
-					if command[key].has("mode"):
-						var newValue =getValue(command[key],"value",0)
-						modValueAtPath(dataContainer+"."+key,command[key].mode,newValue)
-					else:
-						modValueAtPath(dataContainer+"."+key,"set",getValue(command[key],"value",0))
-				else:
-					setValueAtPath(dataContainer+"."+key,command[key])
+				match typeof(command[key]):
+					TYPE_DICTIONARY:
+						if command[key].has("mode"):
+							var newValue =getValue(command[key],"value",0)
+							modValueAtPath(dataContainer+"."+key,command[key].mode,newValue)
+						else:
+							modValueAtPath(dataContainer+"."+key,"set",getValue(command[key],"value",0))
+					TYPE_NIL:
+						#dataContainer.erase(key)
+						modValueAtPath(dataContainer+"."+key,"unset",null)
+					_:
+						setValueAtPath(dataContainer+"."+key,command[key])
 	
 	if commands.has("skill"):
 		var skill= commands.get("skill")
@@ -2041,6 +2079,9 @@ func executeCommands(commands):
 		var messageText = getValue(message,"text","Message Missing")
 		var msg2ui = {"text":messageText}
 		get_tree().call_group("uiMessage","messageShow",msg2ui)
+		
+	if getValue(commands,"weatherUpdate",false):
+		weatherUpdate(now())
 				
 	# Comes here so that conditionals can override non-conditionals but do not get canceld by consuming events
 	if commands.has("conditionExecute"):
@@ -2913,6 +2954,20 @@ func weatherForecast(targetTimeDict:Dictionary,allowMeta = true):
 	if typeof(forecast) == TYPE_NIL:
 		forecast = weatherForecastGenerate(targetTimeDict,allowMeta)
 	return forecast
+
+func unsetValueAtPath(path,value):
+	var cObj
+	var pathArr = path.split(".")
+	var i = 0
+	cObj = getObjectFromPath(pathArr[0])
+	i+= 1
+	while(i < pathArr.size()-1):
+		if !cObj.has(pathArr[i]):
+			return
+		cObj = cObj[pathArr[i]]
+		i+=1
+		
+	cObj.erase(pathArr[i])
 
 func weatherForecastGenerate(targetTimeDict:Dictionary,allowMeta = true):
 	var forecast = "mild"

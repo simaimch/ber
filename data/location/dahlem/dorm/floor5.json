@@ -26,6 +26,11 @@
             "time": 20,
             "label":"4th Floor",
             "textureDisabled":true
+        },
+        {
+            "locationId":"SELF.uniformStorage",
+            "time": 30,
+            "label":"Uniform Storage"
         }
     ]
 }

@@ -2,7 +2,9 @@
 
     "onStart":{
         "CurrentUi":{
-            "ShowStatusBar":false
+            "ShowStatusBar":false,
+            "PCDetailsEnabled":false,
+            "Theme": "day"
         },
         "MiscData":{
             "const.occupationStart.school":0,
@@ -32,20 +34,7 @@
             "stat.hygiene_body.current": 9000
         },
         
-        "playerOutfit":{
-            "clothes":{
-                "price": [0,100]
-            },
-            "shoes":{
-                "height": 0
-            },
-            "bra":{
-                "price": [0,40]
-            },
-            "panties":{
-                "price": [0,40]
-            }
-        },
+        
         "Time":{"Offset":1537430400},
         "goto":  "intro.start"
     }

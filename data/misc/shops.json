@@ -16,7 +16,13 @@
     },
     "fn_shoes":{
         "filter":{
-            "type":"shoes"
+            "type":"shoes",
+            "priceClass": ["low+","low"],
+            "height":{
+                "mode":"rangeINT",
+                "min":5,
+                "max":15
+            }
         },
         "itemCount":{
             "min": 10,
