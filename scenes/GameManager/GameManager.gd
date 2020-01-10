@@ -135,10 +135,11 @@ func commandLine(c:String)->void:
 		return
 	
 	var cParts = c.split("=")
+	
 	if cParts.size() == 1:
-		LOG.out(getValueFromPath(c))
+		LOG.out(getValueFromPath(c.strip_edges()))
 	elif cParts.size() == 2:
-		setValueAtPath(cParts[0],JSON.parse(cParts[1]).result)
+		setValueAtPath(cParts[0].strip_edges(),JSON.parse(cParts[1].strip_edges()).result)
 
 func QUIT():
 	print("QUIT")
@@ -280,17 +281,19 @@ func itemslot2bodypart(itemslot):
 
 func hasValue(obj, index):
 	if obj.has(index): return true
-	var cindex = "~"+index
-	var findex = "%"+index
-	var lindex = ">"+index
-	var rindex = "#"+index
-	var ranindex="|"+index
-	var sindex = "^"+index
-	if obj.has(cindex): return true
-	if obj.has(findex): return true
-	if obj.has(lindex): return true
-	if obj.has(rindex): return true
-	if obj.has(sindex): return true
+	var chars = []
+	
+	chars.append("~") # pick first entry with valid condition
+	chars.append("%") # compute using a function
+	chars.append(">") # use a list
+	chars.append("&") # it's math
+	chars.append("#") # the value is a reference, look it up
+	chars.append("|") # the value is taken from a random list
+	chars.append("^") # the value is a string that needs to be parsed
+	
+	for c in chars:
+		if obj.has(c+index): return true
+	
 	#if obj.has("persist"): return hasValue(obj.persist, index)
 	
 	var indexArr = index.split(".")
@@ -2266,12 +2269,15 @@ func executeLocationCommands(location:Location,omitStart=false,updateLocationId=
 	if updateLocationId:
 		currentLocationSet(location)
 	
+	match location.get("value"):
+		null: pass
+		var value: executeLocationCommands(Location.new(value),false,false)
+	
 	var onStart = getValue(location,"onStart")
 	if !omitStart and onStart:
 		if execute(onStart): return
 	
 	var bgTemp = getValue(location,"bg")
-	#if bgTemp != null:
 	CurrentUi.Bg  = bgTemp
 	
 	match getValue(location,"text",null):

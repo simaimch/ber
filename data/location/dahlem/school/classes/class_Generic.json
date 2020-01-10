@@ -19,7 +19,7 @@
                 },
                 "100":{
                     "value":{
-                        "goto":"dahlem.school.classes.start"
+                        "goto":"SELF.classParticipate"
                     }
                 }
             }

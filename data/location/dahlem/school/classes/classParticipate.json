@@ -1,0 +1,16 @@
+{
+    "|onStart":{
+        "1":{
+            "weight":80,
+            "value":{
+                "goto":"SELF.classParticipateNoEvent"
+            }
+        },
+        "2":{
+            "weight":20,
+            "value":{
+                "goto":"SELF.classParticipateWriteBoard"
+            }
+        }
+    }
+}

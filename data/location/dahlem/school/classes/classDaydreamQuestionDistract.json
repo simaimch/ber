@@ -1,0 +1,17 @@
+{
+    "|value":{
+        "1":{
+            "weight":100,
+            "value":{
+                "text":"Your distraction is successful."
+            }
+        },
+        "2":{
+            "weight":100,
+            "value":{
+                "text":"Your distraction failed."
+            }
+        }
+    },
+    "inherit":"SELF.classEnd"
+}

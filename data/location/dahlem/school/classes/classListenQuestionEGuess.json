@@ -1,0 +1,17 @@
+{
+    "|value":{
+        "1":{
+            "weight":100,
+            "value":{
+                "text":"Your answer seems to be right enough to satisfy your teacher."
+            }
+        },
+        "2":{
+            "weight":100,
+            "value":{
+                "text":"Your answer is wrong."
+            }
+        }
+    },
+    "inherit":"SELF.classEnd"
+}

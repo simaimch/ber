@@ -14,7 +14,7 @@
                 },
                 "100":{
                     "value":{
-                        "goto":"SELF.classListen"
+                        "goto":"SELF.classListenQuestionCorrect"
                     }
                 }
             }
@@ -31,23 +31,26 @@
                 },
                 "100":{
                     "value":{
-                        "goto":"SELF.classListen"
+                        "goto":"SELF.classListenQuestionEGuess"
                     }
                 }
             }
         },
         "2000":{
             "Label":"Wild guess",
-            "Tooltip": "You don't know the answer, and you don't know enough about the subject to make a smart guess. Your wild guess could be right, but it might also sound stupid."
+            "Tooltip": "You don't know the answer, and you don't know enough about the subject to make a smart guess. Your wild guess could be right, but it might also sound stupid.",
+            "goto":"SELF.classListenQuestionWGuess"
         },
         "1000":{
             "Label":"Distract",
-            "Tooltip": "You could try to lead the attention of your teacher to something else. If you succeed you appear as if you paid extra close attention, if you fail you look even stupider than before."
+            "Tooltip": "You could try to lead the attention of your teacher to something else. If you succeed you appear as if you paid extra close attention, if you fail you look even stupider than before.",
+            "goto":"SELF.classListenQuestionDistract"
         },
         "0":{
             "Label":"Admit not knowing the answer",
-            "Tooltip": "Since you paid attention to the lesson your teacher won't mind."
+            "Tooltip": "Since you paid attention to the lesson your teacher won't mind.",
+            "goto":"SELF.classListenQuestionAdmit"
         }
     },
-    "onStart":{"MiscData":{"school.currentEffort":0.2}}
+    "onStart":{"MiscData":{"school.currentEffort":1}}
 }
