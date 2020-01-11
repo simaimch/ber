@@ -2,5 +2,5 @@
     "bg":"texture/events/school/class/writeBoard_1.jpg",
     "text":"You pay close attention to the lesson and raise your hand to give good answers and ask smart questions.\nAt one point your teacher calls you in front of the class to write your answers on the blackboard. They are mostly right.",
     "inherit":"SELF.classEnd",
-    "onStart":{"MiscData":{"school.currentEffort":1.2}}
+    "onStart":{"MiscData":{"school.currentAssessment":1.5}}
 }

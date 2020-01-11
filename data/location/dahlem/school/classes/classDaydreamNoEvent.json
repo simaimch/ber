@@ -2,5 +2,5 @@
     "bg":"texture/events/school/class/dream_1.jpg",
     "text":"You don't pay attention to the lesson. Thinking about nice things is way nicer than the lecture anyways. While not listening to most of the lesson you nevertheless catch one information or two.",
     "inherit":"SELF.classEnd",
-    "onStart":{"MiscData":{"school.currentEffort":0.2}}
+    "onStart":{"MiscData":{"school.currentAssessment":0}}
 }

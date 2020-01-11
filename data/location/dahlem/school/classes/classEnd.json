@@ -17,15 +17,23 @@
             "value":"SELF.classEnd4"
         }
     },
-    "onStart":{
+    "onAfterStart":{
         "skillCheck":{
             "#skill":"MiscData.school.currentCourse",
             "difficulty":30,
-            "&experience":"20*MiscData.school.currentEffort",
+            "&experience":"20*MiscData.school.currentLearning",
             "result":{
                 "0":{
                     
                 }
+            }
+        },
+        "PlayerData":{
+            "school.grade":{
+                "#key": "MiscData.school.currentCourse",
+                "mode": "returnKurve",
+                "&value":"50*MiscData.school.currentAssessment",
+                "divisor": 50
             }
         }
     }

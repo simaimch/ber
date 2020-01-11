@@ -69,5 +69,6 @@
             "Label":"Relax",
             "goto":"SELF.classRelax"
         }
-    }
+    },
+    "text":"Your grade: #schoolInt2Grade(PlayerData.school.grade[MiscData.school.currentCourse])#"
 }

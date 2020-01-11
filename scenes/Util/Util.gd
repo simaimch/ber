@@ -342,6 +342,8 @@ func asFloat(val)->float:
 			return val
 		TYPE_INT:
 			return val+0.0
+		TYPE_STRING:
+			return float(val)
 	
 	return result
 	

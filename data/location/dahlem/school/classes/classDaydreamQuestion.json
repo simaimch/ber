@@ -23,6 +23,5 @@
             "Label":"Admit not having listened",
             "Tooltip": "Worse than giving the right answer but better than giving the wrong one."
         }
-    },
-    "onStart":{"MiscData":{"school.currentEffort":0.2}}
+    }
 }

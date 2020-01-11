@@ -987,7 +987,7 @@ func getTheme(id,subId="main"):
 	LOG.out(["Theme not found: ",id,"/",subId],LOG.ERROR)
 	return Theme.new()
 
-func modValueAtPath(path,mode,value):
+func modValueAtPath(path,mode,value,param={}):
 	
 	
 	if mode == "set": 
@@ -1010,6 +1010,13 @@ func modValueAtPath(path,mode,value):
 			setValueAtPath(path,newValue)
 		"append":
 			oldValue.append(value)
+		"returnKurve":
+			var divisor = param.get("divisor",100)
+			var multiplier = 1
+			if sign(oldValue) == sign(value) or oldValue == 0:
+				multiplier = 1 / (abs(oldValue/divisor)+1)
+			newValue = oldValue + value*multiplier
+			setValueAtPath(path,newValue)
 		
 	
 
@@ -1331,6 +1338,8 @@ func checkConditionString(condition:String) -> bool:
 			
 			var lowVal = getValueFromPath(setArr[0].substr(1,setArr[0].length()-1))
 			var highVal= getValueFromPath(setArr[1].substr(0,setArr[1].length()-1))
+			val1 = Util.asFloat(val1)
+			
 			
 			if lowVal <= highVal:
 				match lowMode:
@@ -1988,18 +1997,23 @@ func executeCommands(commands):
 		if commands.has(dataContainer):
 			var command = commands[dataContainer]
 			for key in command:
-				match typeof(command[key]):
+				var entry = command[key]
+				match typeof(entry):
 					TYPE_DICTIONARY:
-						if command[key].has("mode"):
-							var newValue =getValue(command[key],"value",0)
-							modValueAtPath(dataContainer+"."+key,command[key].mode,newValue)
+						var insideKey = getValue(entry,"key",null)
+						if insideKey:
+							key = key + "." + insideKey
+						
+						if entry.has("mode"):
+							var newValue =getValue(entry,"value",0)
+							modValueAtPath(dataContainer+"."+key,entry.mode,newValue,entry)
 						else:
-							modValueAtPath(dataContainer+"."+key,"set",getValue(command[key],"value",0))
+							modValueAtPath(dataContainer+"."+key,"set",getValue(entry,"value",0))
 					TYPE_NIL:
 						#dataContainer.erase(key)
 						modValueAtPath(dataContainer+"."+key,"unset",null)
 					_:
-						setValueAtPath(dataContainer+"."+key,command[key])
+						setValueAtPath(dataContainer+"."+key,entry)
 	
 	if commands.has("skill"):
 		var skill= commands.get("skill")
@@ -2276,6 +2290,10 @@ func executeLocationCommands(location:Location,omitStart=false,updateLocationId=
 	var onStart = getValue(location,"onStart")
 	if !omitStart and onStart:
 		if execute(onStart): return
+		
+	var onAfterStart = getValue(location,"onAfterStart")
+	if !omitStart and onAfterStart:
+		if execute(onAfterStart): return
 	
 	var bgTemp = getValue(location,"bg")
 	CurrentUi.Bg  = bgTemp

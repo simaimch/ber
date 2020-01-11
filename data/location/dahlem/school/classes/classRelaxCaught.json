@@ -2,5 +2,5 @@
     "bg":"texture/events/school/class/caught_1.jpg",
     "text":"You are too tired to keep you eyes open any longer.\nYou fall asleep for only a few seconds, but when you open your eyes your teacher is staring at you angrily.\nWhen the lesson is finally over you haven't learned a thing, but at least you are a little bit less tired now.",
     "inherit":"SELF.classEnd",
-    "onStart":{"MiscData":{"school.currentEffort":0}}
+    "onStart":{"MiscData":{"school.currentAssessment":-2}}
 }

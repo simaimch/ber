@@ -1,5 +1,5 @@
 {
-    "|onStart":{
+    "|onAfterStart":{
         "1":{
             "weight":100,
             "value":{
@@ -12,5 +12,6 @@
                 "goto":"SELF.classDaydreamQuestion"
             }
         }
-    }
+    },
+    "onStart":{"MiscData":{"school.currentLearning":0.25}}
 }

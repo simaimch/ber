@@ -2,5 +2,5 @@
     "bg":"texture/events/school/class/listen_1.jpg",
     "text":"You pay close attention to the lesson. You take notes and think about the subject, but you don't participate actively. Your teacher seems to notice that you are paying attention.",
     "inherit":"SELF.classEnd",
-    "onStart":{"MiscData":{"school.currentEffort":1}}
+    "onStart":{"MiscData":{"school.currentAssessment":1}}
 }

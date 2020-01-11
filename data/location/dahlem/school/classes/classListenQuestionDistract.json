@@ -3,13 +3,15 @@
         "1":{
             "weight":100,
             "value":{
-                "text":"Your distraction is successful."
+                "text":"Your distraction is successful.",
+                "onStart":{"MiscData":{"school.currentAssessment":0}}
             }
         },
         "2":{
             "weight":100,
             "value":{
-                "text":"Your distraction failed."
+                "text":"Your distraction failed.",
+                "onStart":{"MiscData":{"school.currentAssessment":-1}}
             }
         }
     },

@@ -7,5 +7,5 @@
     ],
     "text":"You manage to rest your eyes everytime the teacher doesn't pay attention.\nWhen the lesson is finally over you haven't learned a thing, but at least you are a little bit less tired now.",
     "inherit":"SELF.classEnd",
-    "onStart":{"MiscData":{"school.currentEffort":0}}
+    "onStart":{"MiscData":{"school.currentAssessment":0}}
 }
