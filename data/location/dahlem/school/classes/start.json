@@ -1,5 +1,6 @@
 {
     "onStart":{
-        "goto":"SELF.class1"
-    }
+        "PlayerData":{"school.wasAtSchool":true}
+    },
+    "inherit":"SELF.class1"
 }

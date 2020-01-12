@@ -1,5 +1,4 @@
 {
-    "inherit":"SELF.class2_Generic",
     "bg":"texture/npc/schoolTeachers/germanBigHor.png",
     "onStart":{
         "MiscData":{

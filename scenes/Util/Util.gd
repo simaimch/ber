@@ -188,11 +188,46 @@ func getDaysTilDate(now,target,anyyear = true)->int:
 	var daysTilDate = int(secondsTilDate/86400)
 	return daysTilDate
 	
+func getDaysTilTimeArray(now,target):
+	var nowDict = getDateTime(now)
+	var targetDict= getDateTime(target)
+	
+	var result = []
+	
+	var days = getHoursTilTime(now,target)
+	
+	var timeDict = nowDict.duplicate()
+	timeDict.hour = 0
+	timeDict.minute = 0
+	timeDict.second = 0
+	var timeUnix = getUnixTime(timeDict)
+	for i in range(days):
+		result.append(getDateTime(timeUnix+(i+1)*86400))
+	
+	return result
+	
 func getHoursTilTime(now,target)->int:
 	var nowDict = getDateTime(now)
 	var targetDict= getDateTime(target)
 	
 	return int(targetDict.hour - nowDict.hour + 24*getDaysTilDate(now,target,false))
+	
+func getHoursTilTimeArray(now,target)->Array:
+	var nowDict = getDateTime(now)
+	var targetDict= getDateTime(target)
+	
+	var result = []
+	
+	var hours = getHoursTilTime(now,target)
+	
+	var timeDict = nowDict.duplicate()
+	timeDict.minute = 0
+	timeDict.second = 0
+	var timeUnix = getUnixTime(timeDict)
+	for i in range(hours):
+		result.append(getDateTime(timeUnix+(i+1)*3600))
+	
+	return result
 
 func getSecondsTil(now,target,sameDay = false)->int:
 	var unixNow = getUnixTime(now)

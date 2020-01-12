@@ -1,0 +1,8 @@
+{
+    "bg":"texture/npc/schoolTeachers/politicsBigHor.jpg",
+    "onStart":{
+        "MiscData":{
+            "school.currentCourse":"politics"
+        }
+    }
+}

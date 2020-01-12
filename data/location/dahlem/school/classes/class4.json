@@ -1,5 +1,6 @@
 {
-    "onStart":{
-        "goto":"SELF.class4_Art"
-    }
+    "^inherit":[
+        "SELF.class_subject#schoolCurrentSubject(WorldData.TimeDict.weekday,4)#",
+        "SELF.class4_Generic"
+    ]
 }

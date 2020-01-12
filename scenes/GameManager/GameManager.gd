@@ -368,7 +368,13 @@ func getValue(obj, index, default = null):
 			TYPE_DICTIONARY:
 				result = getValueFromRandom(options.values())
 	elif obj.has(sindex):
-		result = parseText(obj[sindex])
+		match typeof(obj[sindex]):
+			TYPE_STRING:
+				result = parseText(obj[sindex])
+			TYPE_ARRAY, TYPE_STRING_ARRAY:
+				result = []
+				for e in obj[sindex]:
+					result.append(parseText(e))
 	elif obj.has("persist"):
 		var persistValue = getValue(obj.persist,index)
 		if persistValue: result = persistValue
@@ -1452,7 +1458,7 @@ func loadEvents():
 		events[category] = catArray
 	print("Complete loading Events")
 
-func eventCategoryExecute(cat, times = 1):
+func eventCategoryExecute(cat, param, times):
 	if !events.has(cat): 
 		LOG.out(["Event category not found: ",cat],LOG.ERROR)
 		return
@@ -1461,8 +1467,10 @@ func eventCategoryExecute(cat, times = 1):
 	
 	for i in range(times):
 		for event in category:
-			execute(event.actions)
-			if getValue(event,"consume",false) == true: return
+			var condition = event.get("condition",null)
+			if !condition or checkConditionParameter(condition,param):
+				executeWithParameter(event.actions,param)
+				if getValue(event,"consume",false) == true: return
 
 func eventArgumentExecute(cat, arg, minutes=0):
 	if !events.has(cat): return
@@ -2111,10 +2119,21 @@ func executeCommands(commands):
 		var cEs = commands.conditionExecute
 		for cEID in cEs:
 			var cE = cEs[cEID]
-			if !cE.has("condition") or checkCondition(cE.condition):
+			if !cE.has("condition"):
 				if execute(cE): 
 					result.consume = true
 					return result
+			else:
+				if checkCondition(cE.condition):
+					if execute(cE): 
+						result.consume = true
+						return result
+				else:
+					var elseCommand = cE.get("else")
+					if elseCommand:
+						if execute(elseCommand): 
+							result.consume = true
+							return result
 	
 		
 	#if commands.has("goto"):
@@ -2729,17 +2748,22 @@ func timePass(t:int,activity):
 	var tenMinutesToCalc = int(targetTime/600) - int(now()/600)
 	if tenMinutesToCalc > 0:
 		painDecrease(tenMinutesToCalc)
-		eventCategoryExecute("timePass_10Minutes")
+		eventCategoryExecute("timePass_10Minutes",{},tenMinutesToCalc)
 		
 	
 	if hoursToCalc > 0:
-		eventCategoryExecute("timePass_HOUR",hoursToCalc)
+		var hours = Util.getHoursTilTimeArray(now(),targetTime)
+		for hour in hours:
+			eventCategoryExecute("timePass_HOUR",hour,1)
+			if hour.hour == 0: eventCategoryExecute("timePass_DAY",hour,1)
 		#modifiersCalculate()
 		
 		weatherUpdate(targetTime)
 	
-	if daysToCalc > 0:
-		eventCategoryExecute("timePass_DAY",daysToCalc)
+	#if daysToCalc > 0:
+	#	var days = Util.getDaysTilTimeArray(now(),targetTime)
+	#	for day in days:
+	#		eventCategoryExecute("timePass_DAY",day,1)
 	
 	MiscData.modifiersRecalc = true
 	timeMove(t)
@@ -2910,7 +2934,7 @@ func setItemWorn(item):
 
 func setItemWornAtSlot(slot:String,itemID:String):
 	PlayerData.outfit.CURRENT[slot] = itemID
-	eventCategoryExecute("outfitUpdate")
+	eventCategoryExecute("outfitUpdate",{},1)
 	updateUI()
 
 func serviceBuy(serviceId):

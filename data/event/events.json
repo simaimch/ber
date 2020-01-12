@@ -120,5 +120,35 @@
     "stateThirstUpdate":{
         "listen":"timePass_10Minutes",
         "actions":{"modifierUpdate":{"keyword":"thirst"}}
+    },
+    "schoolUpdateStat":{
+        "listen":"timePass_HOUR",
+        "condition":"(PARAM1.hour==15) AND (MiscData.school.isSchoolDay==true)",
+        "actions":{
+            "conditionExecute":{
+                "1000":{
+                    "condition":"PlayerData.school.wasAtSchool==true",
+                    "PlayerData":{
+                        "school.daysAttended":{"mode":"inc","value":1}
+                    },
+                    "else":{
+                        "PlayerData":{
+                            "school.daysMissed":{"mode":"inc","value":1}
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "schoolResetStatMidnight":{
+        "listen":"timePass_DAY",
+        "actions":{
+            "conditionExecute":{
+                "1000":{
+                    "MiscData":{"school.isSchoolDay":{"mode":"set","#value":"schoolIsSchoolDay(PARAM1)"}},
+                    "PlayerData":{"school.wasAtSchool":false}
+                }
+            }
+        }
     }
 }

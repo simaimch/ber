@@ -1,0 +1,8 @@
+{
+    "bg":"texture/npc/schoolTeachers/physicsBigHor.jpg",
+    "onStart":{
+        "MiscData":{
+            "school.currentCourse":"physics"
+        }
+    }
+}
