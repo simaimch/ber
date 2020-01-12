@@ -769,7 +769,7 @@ func getValueFromFunction(functionId,functionParameter=null):
 		"DATE_WITH_AGE":
 			result = Util.getDateTimeWithAge(now(),currentParameters[0])
 			result = Util.formtTime(result,"{day}.{month}.{year}")
-		"NOW_UNIX":
+		"NOW","NOW_UNIX":
 			result = now()
 		"NPC_ACTIVITY":
 			var npcParam = currentParameters[0]
@@ -820,12 +820,18 @@ func functionExecute(function:Dictionary,currentParameters=[]):
 						match paramTypes[i]:
 							"BOOL":
 								currentParameters[i] = false
+							"DATETIME":
+								currentParameters[i] = Util.getDateTime(0)
 							"FLOAT":
 								currentParameters[i] = 0.0
 							"INT":
 								currentParameters[i] = 0
 							"STRING":
 								currentParameters[i] = ""
+					else:
+						match paramTypes[i]:
+							"DATETIME":
+								currentParameters[i] = Util.getDateTime(currentParameters[i])
 			var typeParamTypes:
 				LOG.out(["Unknown type of paramTypes ",typeParamTypes, " in ",function],LOG.ERROR)
 			

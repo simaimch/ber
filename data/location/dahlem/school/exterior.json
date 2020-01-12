@@ -36,7 +36,7 @@
             "condition": "schoolIsStudent(PlayerData)=true",
             "~value":{
                 "1000":{
-                    "condition":"schoolTimeForClass()=false",
+                    "condition":"schoolTimeForClass(NOW())=false",
                     "value":{
                         "Disabled": true,
                         "Tooltip": "It is not the right time for classes."
@@ -44,10 +44,15 @@
                 },
                 "100":{
                     "value":{
-                        "goto":"dahlem.school.classes.start"
+                        "goto":"SELF.classes.start"
                     }
                 }
             }
+        },
+        "5001":{
+            "Label": "Debug: Go to class",
+            "goto":"SELF.classes.start"
+                   
         },
         "5000":{
             "Label":"Debug: Class List",

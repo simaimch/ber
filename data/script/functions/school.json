@@ -1,9 +1,42 @@
 {
+    "schoolIsSchoolDay":{
+        "paramTypes": ["DATETIME"],
+        "result": {
+            "10000":{
+                "condition":"PARAM1.weekday⊆[0,6]",
+                "value":false
+            },
+            "0":{
+                "value": true
+            }
+        }
+    },
     "schoolIsStudent":{
         "result": true
     },
     "schoolTimeForClass":{
-        "result": true
+        "paramTypes": ["DATETIME"],
+        "result": {
+            "10000":{
+                "condition":"schoolIsSchoolDay(PARAM1)==false",
+                "value":false
+            },
+            "5000":{
+                "condition":"PARAM1.hour€[9,6]",
+                "value":false
+            },
+            "4000":{
+                "condition":"PARAM1.hour=7 and PARAM1.minute<30",
+                "value":false
+            },
+            "3000":{
+                "condition":"PARAM1.hour=8 and PARAM1.minute>30",
+                "value":false
+            },
+            "0":{
+                "value": true
+            }
+        }
     },
     "schoolInt2Grade":{
         "result":{
